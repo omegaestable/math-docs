@@ -1,3 +1,15 @@
+# Ignore everything by default
+*
+
+# Allow directories so git can recurse into them
+!*/
+
+# Allow TeX and PDF files anywhere in the tree
+!**/*.tex
+!**/*.pdf
+
+# Keep this file tracked
+!.gitignore
 *.fls
 *.aux
 *.log
