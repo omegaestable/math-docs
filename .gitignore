@@ -3,4 +3,6 @@
 *.log
 *.gz
 *.out
-*.pdf
+
+*.toc
+*.fbd_latexmk
