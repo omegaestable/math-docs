@@ -1,0 +1,362 @@
+%% Preprint, November 25th, 2015 by RAZR
+%% Last modified: March 21st, 2018 by RAZR.
+
+\documentclass[a4paper,12pt,twoside]{article}
+\date{today}
+
+\usepackage[english]{babel}
+\usepackage{lmodern,fancyhdr,lastpage,nccfoots,caption}
+\usepackage{hyperref}
+\hypersetup{
+    %bookmarks=true,         									% show bookmarks bar?
+    %unicode=false,          									% non-Latin characters in Acrobat?s bookmarks
+    %pdftoolbar=true,        									% show Acrobat?s toolbar?
+    %pdfmenubar=true,        									% show Acrobat?s menu?
+    %pdffitwindow=false,     									% window fit to page when opened
+    pdfstartview={FitH},     									% fits the width of the page to the window {FitH},{FitV}
+    pdftitle={El espacio de tipos},             				% title
+    pdfauthor={Juan Padilla},     						% author
+    pdfsubject={Model Theory},           				% subject of the document
+    %pdfcreator={Creator},    									% creator of the document
+    %pdfproducer={Producer},  									% producer of the document
+    pdfkeywords={tipos completos, finitamente consistente, compacidad},% list of keywords
+    pdfnewwindow=true,        									% links in new window
+    colorlinks=true,          									% false: boxed links; true: colored links
+    linkcolor=blue,           									% color of internal links
+    citecolor=red,            									% color of links to bibliography
+    %filecolor=magenta,        									% color of file links
+    urlcolor=blue             									% color of external links
+}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[all]{xy}
+\usepackage{array}
+\usepackage{graphicx,color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumerate}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{textcomp}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+
+\fancyhead{} 
+\setlength{\headheight}{15pt}
+\fancyhead[CO]{J. Ignacio Padilla Barrientos}
+\fancyhead[CE]{El espacio de $n-$tipos $S_n^\mathcal{M} (A)$}
+%\fancyfoot[C]{\tiny{ pp.\ \thea-\pageref{LastPage}}}
+% \newcounter{a} %% no longer needed 
+% \setcounter{a}{\thepage}
+% \ifodd\thea\else\stepcounter{a}\fi
+\pagestyle{fancy}
+\fancypagestyle{plain}{
+\fancyhf{}}
+
+%%%%================= Useful macros: ===================%%%%
+
+\DeclareMathOperator{\End}{End}     %% space of endomorphisms
+\DeclareMathOperator{\GCD}{GCD}     %% greatest common divisor
+\DeclareMathOperator{\Hom}{Hom}     %% space of homomorphisms
+\DeclareMathOperator{\rk}{rk}       %% rank
+\DeclareMathOperator{\Sym}{Sym}     %% symmetrization
+\DeclareMathOperator{\tr}{tr}       %% (matrix) trace
+
+\newcommand{\la}{\lambda}           %% short for \lambda
+\newcommand{\Om}{\varOmega}         %% short for \varOmega
+\newcommand{\sg}{\sigma}            %% short for \sigma
+\addto\captionsenglish{%
+\renewcommand{\abstractname}{Abstract}
+\renewcommand{\refname}{Referencias}
+}
+\newcommand{\bC}{\mathbb{C}}        %% complex numbers
+  {\par\bigskip}
+\newcommand{\bN}{\mathbb{N}}        %% natural numbers
+\newenvironment{poliabstract}[1]
+   {\renewcommand{\abstractname}{#1}\begin{abstract}}
+   {\end{abstract}}
+%% \newcommand{\bQ}{\mathbb{Q}}        %% rational numbers
+\newcommand{\bR}{\mathbb{R}}        %% real numbers
+\newcommand{\bS}{\mathbb{S}}        %% sphere
+\newcommand{\bZ}{\mathbb{Z}}        %% integer numbers
+\newcommand{\bP}{\mathbb{P}}        %% projective plane
+
+%% \newcommand{\sE}{\mathcal{E}}       %% Euclidean space
+\newcommand{\gG}{\mathcal{G}}       %% gauge group
+\newcommand{\sJ}{\mathcal{J}}	    %% Jacobian
+\newcommand{\sM}{\mathcal{M}}       %% moduli space of Higgs bundles
+\newcommand{\sN}{\mathcal{N}}       %% moduli space of vector bundles
+\newcommand{\sO}{\mathcal{O}}       %% a sheaf
+
+\newcommand{\td}{\tilde{d}}	    %% tilde d
+
+\newcommand{\dd}{\mathbf{d}}        %% vector d
+\newcommand{\rr}{\mathbf{r}}        %% vector r
+
+\renewcommand{\geq}{\geqslant}        %% (to save typing)
+\newcommand{\hookto}{\hookrightarrow} %% embedding
+\renewcommand{\leq}{\leqslant}        %% (to save typing)
+\newcommand{\ox}{\otimes}             %% tensor product
+\renewcommand{\:}{\colon}             %% colon in  f: A -> B
+
+\newcommand{\word}[1]{\quad\text{#1}\quad} %% well-spaced word(s)
+
+\def\longto^#1{\xrightarrow{\;#1\;}} %% arrow with rider
+%%%%%%%% Theorems and suchlike %%%%%%%%%%%%%%
+
+\theoremstyle{plain}
+\newtheorem{Th}{Teorema}[section]   %% Theorem 1.1
+\newtheorem*{nonum-Th}{Theorem}     %% No-numbered Theorem
+\newtheorem{Prop}[Th]{Proposición}  %% Proposition 1.2
+\newtheorem{Lem}[Th]{Lema}         %% Lemma 1.3
+\newtheorem{Cor}[Th]{Corolario}     %% Corollary 1.4
+\newtheorem*{nonum-Cor}{Corollary}  %% No-numbered Corollary 
+
+\theoremstyle{definition}
+\newtheorem{Def}[Th]{Definición}    %% Definition 1.5
+
+\theoremstyle{remark}
+\newtheorem{Rmk}[Th]{Observación}        %% Remark 1.6
+
+\numberwithin{equation}{section}
+
+\newcommand*{\QEDA}{\hfill\ensuremath{\boxminus}} % End thm with no proof
+\DeclareRobustCommand{\QEDA}{\ifmmode
+  \else \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill \fi
+  \quad\hbox{\qedasymbol}}
+\newcommand{\qedasymbol}{$\boxminus$} %% Non-proofs end with `\QEDA'
+
+\newcommand{\hideqed}{\renewcommand{\qed}{}} %% to suppress `\qed'
+
+%%%%%%%% This deflates (sub)section titles %%%%%%%%%%%%%%
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+                        {-3.5ex \@plus -1ex \@minus -.2ex}%
+                        {2.3ex \@plus.2ex}%
+                        {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+                        {-3.25ex \@plus -1ex \@minus -.2ex}%
+                        {1.5ex \@plus .2ex}%
+                        {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+                        {-3.25ex \@plus -1ex \@minus -.2ex}%
+                        {1.5ex \@plus .2ex}%
+                        {\normalfont\normalsize\itshape}}
+\renewcommand{\@dotsep}{200} %% suppress dots in Contents
+\makeatother
+
+%=====================================================================
+%% ++++++++++++++++++++ Article begins here ++++++++++++++++++++++++++
+%=====================================================================
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{center}
+\Large
+\textsc{El espacio de $n-$tipos $S_n^\mathcal{M} (A)$}\\
+
+\bigskip
+\normalsize
+  16 de junio, 2018\\
+  
+\bigskip
+\emph{J. Ignacio Padilla Barrientos} \\
+\small Escuela de Matemáticas\\
+\bigskip
+\small MA-704 Topología\\
+\small Universidad de Costa Rica\\
+\small e-mail: \texttt{padillajignacio@gmail.com}\\
+\small Profesor: Ronald A. Zúñiga Rojas
+\end{center}
+
+\begin{poliabstract}{Resumen} 
+   {\footnotesize El objetivo principal de este proyecto es exponer el uso de herramientas topológicas en la lógica, y más específicamente, en la teoría de modelos. Como resultado principal, el teorema $3.3$ muestra que $S_n^\mathcal{M} (A)$ es un espacio de Stone (es compacto y totalmente disconexo). Adicionalmente, se presentan los conceptos elementales de lógica y de semántica necesarios para el desarrollo de los resultados. Finalmente se termina con una aplicación concreta de algunas de las ideas estudiadas.}
+\end{poliabstract}
+\begin{poliabstract}{Abstract}
+   {\footnotesize The main objective of this article is to exhibit the use of topological tools in the area of logic, and more specifically, model theory. As a main result, theorem $3.3$ shows that $S_n^\mathcal{M} (A)$ is a Stone Space (it is compact and totally disconnected). Additionally, the basic concepts of predicate calculus and logic are also presented, in order to work out the results properly. Finally, some concrete applications of these ideas are presented.}
+\end{poliabstract}
+\begin{flushleft}
+\small
+\emph{Palabras clave}:
+Compacidad, finitamente consistente, fórmula,  $n$-tipos, $\mathcal{L}-$estructuras. \\
+\emph{Clasificación: } Primaria: 03C07 (Propiedades de estructuras y lenguajes de primer orden). Secundaria: 03C98 (Aplicaciones de la teoría de modelos).
+
+\end{flushleft}
+
+\section*{Introducción} La teoría de modelos es un área de la lógica que se centra en el estudio de estructuras matemáticas, y su caracterización por medio de sus propiedades lógicas. Esta área de estudio se encuentra profundamente relacionada con el álgebra, puesto que en la gran mayoría de los casos, una estructura algebraica se introduce por medio de axiomas básicos (podemos pensar en la teoría de grupos, por ejemplo).
+\par
+En una estructura, vamos a tener una noción intuitiva de un \textbf{tipo}, los cuales van a ser conjuntos de expresiones en símbolos lógicos (fórmulas), que intenten describir un determinado elemento (o elementos) de la estructura. \par
+Al estudiar los tipos de una estructura, es posible deducir propiedades de ésta, sin embargo, dependiendo de la estructura con la que se trabaje, los tipos pueden llegar a ser muy complicados, por lo cual se necesitan herramientas más fuertes para tratarlos. Es por esto que se introdujo la topología de Stone, que convierte al conjunto de todos los tipos en un espacio topológico.
+\label{sec:0} 
+\section{Preliminares}%%1
+\label{sec:1}
+\subsection{Lenguajes de primer orden}
+\begin{Def}
+Vamos a definir\footnote{ Todas las definiciones preliminares fueron tomadas de [1] y [2].} un \textbf{lenguaje de primer orden}, como un conjunto $\mathcal{L}$ de símbolos que consiste de dos partes:
+\begin{itemize}
+\item Un conjunto de variables, el cual usualmente se enumera,
+$$ \mathcal{V} = \{v_0,v_1, \dots , v_n, \dots\},  $$
+junto con los siguientes símbolos: ), ( , $ =, \neg, \land, \lor, \Leftarrow , \Rightarrow, \iff, \exists, \forall $, Este primer conjunto está presente en cualquier lenguaje.
+\item Tres conjuntos $\mathcal{C}, \mathcal{F}_n$ y $\mathcal{R}_n$, para $n \in \bN$ tales que:
+\begin{align*}
+\mathcal{C}&\coloneqq  \{ \text{Símbolos de constantes, ej: } 0,1,e,i \} \\
+\mathcal{F}_n&\coloneqq  \{ \text{Símbolos de funciones $n-$arias, ej: } +,*,f(\cdot), g(\cdot, \cdot, \cdot) \} \\ 
+\mathcal{R}_n&\coloneqq  \{ \text{Símbolos de relaciones $n-$arias, ej: } <,\in,\mathcal{R}\}
+\end{align*}
+Estos símbolos son opcionales, un lenguaje puede prescindir de ellos.
+\end{itemize}
+\end{Def}
+\noindent
+\textbf{Ejemplo: }Podemos considerar el siguiente lenguaje
+$$ \{e,*\}$$
+El cual, junto con las variables y los demás símbolos lógicos, forma el \textbf{lenguaje de grupos}.
+\begin{Def} Diremos que una \textbf{fórmula} de un lenguaje $\mathcal{L}$, es un conjunto de símbolos que es ``sintácticamente válido''. Es decir, diremos informalmente que una fórmula es un conjunto de símbolos con sentido. Por ejemplo, que los símbolos de relaciones y funciones $n$-arias estén asociados con sus respectivos argumentos, que los paréntesis coincidan, y donde se empleen los conectores correctamente.
+\begin{itemize}
+\item $\forall x \ \exists y \ x+y=0$ es una fórmula.
+\item $f(x,y,z) = 0 \iff x+y+z=z+y+x$ es también una fórmula.
+\item $\exists x+y \lor = 0$ no es una fórmula.
+
+\item $\forall x=0$ tampoco es una fórmula.
+\end{itemize}
+
+\end{Def}
+\begin{Rmk} Esta noción de fórmula puede formalizarse con todo rigor, sin embargo no es necesario para el desarrollo de este proyecto. 
+\end{Rmk}\par
+Usualmente, las fórmulas del lenguaje se denotan $\phi(x_1, \dots, x_n)$ , o $\phi(\bar{x})$, en donde la tupla $(x_1, ... , x_2)$ consiste en aquellas variables \textbf{libres}, o sea, aquellas que no están cuantificadas por un $\exists$, o un $\forall$. 
+
+\subsection{$\mathcal{L}-\text{estructuras} $ y modelos} 
+
+\begin{Def} Diremos que una \textbf{estructura} $\mathcal{M}$ es un conjunto $M$, en donde se definen funciones y relaciones. Por ejemplo, $\langle \bR, + , \cdot, < \rangle$ es una estructura conocida como cuerpo ordenado.
+\end{Def} 
+\begin{Def}Dado un lenguaje $\mathcal{L} = \mathcal{V} \cup \mathcal{C} \cup \mathcal{F}_n \cup \mathcal{R}_n$ , una $\mathcal{L}-$\textbf{estructura} es una estructura $\mathcal{M}$ de la forma
+$$\mathcal{M} = \langle M, \overline{\mathcal{C}}^\mathcal{M},\overline{\mathcal{F}_n}^\mathcal{M},\overline{\mathcal{R}_n}^\mathcal{M} \rangle$$
+En donde $M$ es un conjunto no vacío, y $\overline{\mathcal{C}}^\mathcal{M},\overline{\mathcal{F}_n}^\mathcal{M},\overline{\mathcal{R}_n}^\mathcal{M}$ Representan elementos de $M$, funciones de $n-$variables $f:M \to M$ y relaciones $n-$arias en $M^n$, respectivamente. A estos conjuntos se les llama usualmente una \textbf{interpretación} de los símbolos del lenguaje. Por ejemplo, en el lenguaje de grupos $ \mathcal{G} = \{e,*\}$, una $\mathcal{G}-$estructura es $\langle \bZ,0, + \rangle$ 
+\end{Def}
+\begin{Def} Sea $\phi(x_1,\dots,x_n)$ una fórmula en un lenguaje $\mathcal{L}$, y sea $\mathcal{M}$ una $\mathcal{L}$-estructura. Decimos que la fórmula $\phi$ es \textbf{satisfecha} por $\mathcal{M}$, en $(m_1,\dots, m_n) \in M^n$, si al interpretar todos los símbolos de $\phi$, y al sustituir $x_i$ por $m_i$, la fórmula resultante se verifica en $\mathcal{M}$. Denotamos
+$$ \mathcal{M} \models \phi(m_1,\dots,m_n)$$
+Además, cuando $\phi$ es \textbf{cerrada} (es decir,cuando todas sus variables están cuantificadas), se puede usa la notación
+$$ \mathcal{M} \models \phi$$
+Y en dicho caso, decimos que $\mathcal{M}$ es un \textbf{modelo} de $\phi$, o equivalentemente, que $\phi$ es \textbf{cierta} en $\mathcal{M}$. 
+\end{Def}
+\noindent
+\textbf{Ejemplo: } Considere el lenguaje $\{<,+\}$ y la estructura $\mathcal{N} = \langle \bN , <,+ \rangle$. La formula
+$\phi(x,y) \coloneqq x+y < 10$ Es satisfecha por $\mathcal{N}$, en  $(2,2)$, sin embargo, no es correcto decir que $\phi$ es cierta en $\mathcal{N}$, pues no es cerrada. En cambio, la fórmula $\varphi \coloneqq \forall x \ \neg(x<0)$ tiene a $\mathcal{N}$ como modelo.
+\begin{Def} Sea $\mathcal{L}$ un lenguaje:
+\begin{enumerate}[i)]
+\item Un conjunto de fórmulas cerradas de $\mathcal{L}$ se llama una \textbf{teoría} de $\mathcal{L}$.
+\item Dada una teoría $T$ y una $\mathcal{L}$-estructura $\mathcal{M}$, decimos que  $\mathcal{M}$ es un modelo de  $T$ (o que  $T$ es satisfecha en  $\mathcal{M}$, si cada fórmula de $T$ es cierta en  $\mathcal{M}$. Denotamos $\mathcal{M} \models T$.
+\item Una teoría es \textbf{consistente} si tiene algún modelo.
+\item Una teoría es \textbf{finitamente consistente} si cualquier subconjunto finito de ésta tiene un modelo.
+\end{enumerate}
+\end{Def}
+Usualmente, fuera de la lógica, a los elementos de las teorías se les dice axiomas. Por ejemplo, al escribir las fórmulas respectivas para la asociatividad, existencia de neutro, y existencia de inversos, se tiene la teoría de grupos. Los modelos de la teoría de grupos se conocen claramente como grupos.
+\begin{Th}[Teorema de compacidad para el cálculo de predicados]
+\footnote{La prueba de este teorema abarca un capítulo entero de [1].}
+Sea $T$ una teoría en un lenguaje de primer orden. Entonces $T$ es consistente si y solo si es finitamente consistente.
+\end{Th}
+
+\section[Tipos y n-tipos]{Tipos y $n$-tipos\protect\footnote{Las definiciones de esta sección son tomadas y resumidas de [3] y [4]}}
+\label{sec:2}
+Supongamos que $\sM$ es una $\mathcal{L}$-estructura y que $A \subseteq M$. Vamos a definir un nuevo lenguaje $\mathcal{L}_A$, agregando, para cada $a \in A$, un símbolo de constante $a$. Claramente $\sM$ se puede considerar como una $\mathcal{L}_A$-estructura (interpretando cada nuevo símbolo como la constante que representa). Sea $\operatorname{Th}_A(\sM)$ el conjunto de todas las $\mathcal{L}_A$-fórmulas ciertas en $\sM$ (Recuerde que para afirmar que una fórmula es cierta, ésta debe ser cerrada).
+\begin{Def} Sea $p$ un conjunto de $\mathcal{L}_A$-fórmulas con variables libres $x_1, ... , x_n$. Decimos que $p$ es un \textbf{$\bf{n}$-tipo} si $p \cup \operatorname{Th}_A(\sM)$ es finitamente consistente, es decir, cualquier subconjunto finito de fórmulas en $p$, tiene una tupla respectiva en $M^n$ que la verifica. Decimos que $p$ es un \textbf{$\bf{n}$-tipo completo}, si para cualquier fórmula $\phi$ en variables libres $x_1, ... , x_n$, se tiene que $\phi \in p$ o que $\neg\phi \in p$ (exclusivamente). Vamos a llamar al \textit{conjunto de todos los $n$-tipos completos sobre $A$} como $S_n^\sM(A).$
+
+\end{Def}
+\noindent
+\textbf{Ejemplos:} Considere $\sM = \langle \mathbb{Q}, < \rangle$, y $A = \bN$.
+
+\begin{itemize}
+\item El conjunto de fórmulas $p \coloneqq \left\{1<v, \ 2<v, \ 3<v,... \right\}$ es un $1$-tipo.
+\item
+\ El conjunto $q \coloneqq \left\{ \phi(v) \in \mathcal{L}_A : \sM \models \phi\left(\frac{1}{2}\right) \right\}$ es un $1$-tipo completo.
+\end{itemize}
+El segundo ejemplo se puede generalizar para construir el tipo asociado a algún elemento en particular. Es decir, es posible construir el conjunto de todas las fórmulas que ``describan" a un elemento de una estructura. Si $\sM$ es una $\mathcal{L}$-estructura, $A \subseteq M$, y $\bar{m} \in M^n$. Denotamos $\operatorname{tp}^\sM(\bar{m}/A) =  \{\phi(x_1,\dots,x_n) \in \mathcal{L}_A : \sM \models \phi(m_1,\dots,m_n)\}$, el cual es el $n$-tipo completo asociado a $\bar{m}$.
+\section[Espacios de Stone]{Espacios de Stone\protect\footnote{[3] hace un desarrollo exhaustivo de los espacios de Stone y su topología.}}
+\label{sec:3}
+Es posible dotar al espacio de $n$-tipos completos $S_n^\sM(A)$ de una topología. Para una $\mathcal{L}_A$-fórmula $\phi$, con variables libres $x_1, \dots, x_n$, sea
+$$ \left[\phi\right] \coloneqq \{p \in S_n^\sM(A) : \phi \in p \}$$
+Observe que si $p$ es un tipo completo y $\phi \lor \psi \in p$, entonces $\phi \in p$ ó $\psi \in p$. Por lo tanto, $\left[\phi \lor \psi \right] = \left[\phi\right] \cup \left[\psi\right]$. Similarmente tenemos que 
+$\left[\neg\phi\right] =S_n^\sM(A) \setminus \left[\phi\right]  $ y que $\left[\phi \land \psi \right] = \left[\phi\right] \cap \left[\psi\right]$ \par
+\begin{Def}
+La \textbf{topología de Stone} es la que se obtiene al tomar como base de abiertos a los conjuntos $\left[\phi\right]$, para todas las $\mathcal{L}_A$-fórmulas en $n$ variables libres.
+\end{Def}
+\noindent
+Note que, como $\left[\neg\phi\right] =S_n^\sM(A) \setminus \left[\phi\right]  $, tenemos que los básicos son también cerrados. Vamos a verificar que se trata de una topología: \pagebreak
+\begin{Th} El conjunto $\mathcal{B} = \{ \left[\phi\right] : \phi \text{ es } \mathcal{L}_A-\text{fórmula} \}$, genera una topología en $S_n^\sM(A)$.
+\end{Th}
+\noindent
+Basta con demostrar que $\mathcal{B}$ cumple los requisitos de una base.
+\begin{enumerate}[i)]
+\item Para ver que $\mathcal{B}$ recubre a $S_n^\sM(A)$, observe que si $p \in S_n^\sM(A)$, y si $\phi \in p$, entonces $p \in \left[\phi\right]$.
+\item Suponga que $p \in \left[\phi\right] \cap \left[\psi\right]$, entonces $p \in \left[\phi \land \psi\right]$, el cual es un básico.
+\end{enumerate}
+\QEDA \par \noindent
+\begin{Th} $S_n^\sM(A)$ Es un espacio de Stone\footnote{La demostración de este resultado fue adaptadada de [4], p.$119$}, esto es:
+\begin{enumerate}[i)]
+\item $S_n^\sM(A)$ es compacto
+\item $S_n^\sM(A)$ Es totalmente disconexo; si $p,q \in S_n^\sM(A)$, con $p \neq q$, entonces existe un $U$ abierto y cerrado en $S_n^\sM(A)$, de tal forma que $p \in U$ , y $q \notin U$. Esto en particular prueba que $\operatorname{CC}(p) = \{p\}$, y que $ S_n^\sM(A)$ es \textit{Hausdorff}. 
+\end{enumerate}
+\end{Th}
+\noindent
+\textbf{Prueba:}
+\begin{enumerate}[i)]
+\item Vamos a mostrar que todo cubrimiento de abiertos de $S_n^\sM(A)$ tiene un subcubrimiento finito. Suponga que no es el caso. Sea entonces $C = \{ \left[\phi_\alpha(\bar{x})\right] : \alpha \in \mathcal{A} \}$ un cubrimiento por abiertos de $S_n^\sM(A)$, que no posea un subcubrimiento finito. Definamos $$ \Gamma = \{ \neg\phi_\alpha(\bar{x}) : \alpha \in \mathcal{A} \} $$
+Vamos a afirmar que $\Gamma \cup \operatorname{Th}_A(\sM)$ es satisfacible. Si $\mathcal{A}_0$ es un subconjunto finito de $\mathcal{A}$, entonces, como $C$ no tiene subcubrimientos finitos, debe existir un tipo completo $p$ tal que
+$$ p \notin \bigcup_{\alpha \in \mathcal{A}_0}\left[\phi_\alpha\right] $$
+Como $p \cup \operatorname{Th}_A(\sM)$ es finitamente consistente, por el teorema $1.8$ (Teorema de Compacidad), es consistente, es decir, $p \cup \operatorname{Th}_A(\sM)$ tiene un modelo (no es necesariamente $\mathcal{M}$). En particular existe $\mathcal{N}$ una $\mathcal{L}_A$-estructura, modelo de $\operatorname{Th}_A(\sM)$,  que realiza a $p$, esto es, que contiene una tupla $\bar{n}$ que verifica a todas las fórmulas de $p$ al mismo tiempo. Entonces
+$$ \mathcal{N} \models \operatorname{Th}_A(\sM) \cup \bigwedge_{\alpha \in \mathcal{A}_0} \neg \phi_\alpha(\bar{n}) $$
+Esto nos dice que $\Gamma \cup \operatorname{Th}_A(\sM)$ es finitamente consistente, y por el teorema de compacidad, consistente. Sea entonces $\mathcal{P}$ un modelo de $\Gamma$, y sea $ \bar{b} \in P^n$ una tupla que satisfaga todas las formulas de $\Gamma$ simultáneamente. Esto implica que 
+$$ \operatorname{tp}^\mathcal{P}(\bar{b}/A) \ \in S_n^\mathcal{M} (A) \setminus \bigcup_{\alpha \in \mathcal{A}}\left[\phi_\alpha (\bar{x})\right] = S_n^\mathcal{M} (A) \setminus C $$ Lo cual es una contradicción.
+\par \noindent
+
+\item Si $p \neq q$, entonces existe una fórmula $\phi$ tal que $\phi \in p$ y $\neg\phi \in q$. Entonces tenemos que $\left[ \phi \right]$ es un básico (abierto y cerrado), que separa a $p$ y a $q$.
+\QEDA
+\par \noindent
+\end{enumerate}
+\textbf{Nota: }En la demostración de \textit{i)}, hemos usado un lema técnico, cuya demostración requiere conceptos de extensiones de estructuras, su desarrollo se puede encontrar en [4] (p.$115-118$).
+\begin{Lem} En el contexto de la prueba de \textit{i)}:
+\begin{itemize}
+\item $ \mathcal{N} \models \operatorname{Th}_A(\sM)$
+\item
+$ \operatorname{tp}^\mathcal{P}(\bar{b}/A) \ \in S_n^\mathcal{M} (A)$.
+\end{itemize}
+\end{Lem}
+\section[Ejemplos]{Ejemplos\protect\footnote{Los ejemplos son adaptados de [4], (p.$121-122$)} }
+Vamos a citar algunos ejemplos (sin demostración), de los espacios $S_n^\sM(A)$, para casos particulares de modelos de teorías importantes.
+\begin{enumerate}
+\item\textbf{DLO (Dense Linear Orderings): } Sea $\sM \models DLO$ (en otras palabras, $\sM$ es un conjunto totalmente ordenado, cuyo orden es denso), y sea $A \subseteq M$ no vacío. Entonces los tipos en $S_1^\sM(A)$ que no sean realizados por elementos de $A$, corresponden con cortes de $A$. Recordemos que un corte es una partición $C_1,C_2$ disjunta de $A$, de tal forma que $c_1  < c_2$ para todo $c_1,c_2$ en $C_1,C_2$ respectivamente.
+\par \noindent
+Más concretamente, si tomamos $\sM = A= \bR^+$, entonces el tipo $$ p = \left\{x< \frac{1}{n}, n\in \mathbb{N} \right\}$$ es finitamente satisfacible, pero no es realizado por un número real positivo, por lo cual es posible identificar este tipo con un corte de los números reales positivos. Dicho corte dejará ``por fuera" un elemento infinitesimal.
+\item\textbf{Topología de Zariski: } Sea $\sM \models ACF$ (un cuerpo algebraicamente cerrado), y sea $k \subseteq M$ un cuerpo . Para un $n$-tipo completo $p$, definimos el ideal primo
+$$ I_p  = \{ f(X_1, \dots, X_n) \in k\left[X_1,\dots,X_n\right] :  f(\bar{x}) = 0 \in p \}$$
+Entonces el mapa $p \mapsto I_p$ es una biyección continua entre $S_n^\sM(k)$ y $\operatorname{Spec}(k\left[X_1,\dots,X_n\right])$\footnote{Recuerde que el espectro de un anillo $A$ es su conjunto de ideales primos. La topología está dada por los cerrados básicos $\langle I \rangle = \{P \in \operatorname{Spec}(A) : I \subseteq p \}$, donde $I$ es un ideal cualquiera}.
+\textbf{Corolario: } Con la topología de Zariski, 
+$\operatorname{Spec}(k\left[X_1,\dots,X_n\right])$ es compacto, pues $S_n^\sM(k)$ lo es.
+\end{enumerate}
+\section{Conclusión y Agradecimientos} 
+El espacio de tipos $S_n^\mathcal{M} (A)$ es un objeto de investigación actual. Recientemente se ha estudiado el comportamiento de distintas acciones de grupos topológicos sobre éste, lo cual requiere uso de técnicas de la \textit{topología dinámica}. Al aplicar una acción de un grupo sobre el espacio de tipos, es posible describir algunos aspectos de su topología (y del grupo), en particular trabajando sobre las órbitas de los elementos del espacio, es posible deducir propiedades interesantes. Un ejemplo de una aplicación concreta de la topología dinámica es la demostración de la paradoja de \textbf{Banach-Tarski}. \par
+Me gustaría agradecer a Samaria Montenegro y a Rafael Zamora, por sus aportes y aclaraciones necesarias para el desarrollo de este trabajo.
+\newpage
+\begin{thebibliography}{3}
+
+\bibitem{cor1} 
+R. Cori, D. Lascar. 
+\emph{Logique Mathématique 1. Calcul propositionnel, algèbre de Boole, calcul des predicats}
+. Dunod  Paris, 2003.
+\bibitem{cor2} 
+R. Cori, D. Lascar. 
+\emph{Logique Mathématique 2. Fonctions récursives, théorème de Gödel, théorie des ensembles, théorie des modèles}
+. Dunod  Paris, 2003.
+\bibitem{hod} 
+W. Hodges,
+\emph{Model Theory}. Encyclopedia of Mathematics and its Applications. Cambridge University Press. Reino Unido, 1993.
+
+\bibitem{mar} 
+D. Marker,
+\emph{Model Theory: An Introduction}. Graduate Texts In Mathematics, Springer,
+New York, 2002.
+
+\end{thebibliography}
+
+\end{document}
