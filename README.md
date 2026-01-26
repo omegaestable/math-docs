@@ -1,5 +1,5 @@
 # 2026
-This is a collection of mathematical notes, projects, exercises &solutions, and research that I've accumulated throughout my teaching career and continued exploration of mathematics. Rather than focusing purely on pedagogy, this repository documents my journey—problem sets I've created and refined over years of classroom experience, alongside deeper investigations into topics that interest me.
+This is a collection of mathematical notes, projects, exercises & solutions, and research that I've accumulated throughout my teaching career and continued exploration of mathematics.
 
 ## What's Here
 
@@ -13,7 +13,6 @@ All documents are written in LaTeX, available both as source files and compiled 
 
 Feel free to use these materials for learning or teaching purposes. If something here interests you or if you have questions, I'd be happy to hear about it.
 
-Files migrated from Overleaf
 
 ---
 
