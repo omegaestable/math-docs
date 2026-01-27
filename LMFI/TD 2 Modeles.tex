@@ -1,0 +1,233 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+% \usepackage[francais]{babel}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\UU}{\mathcal U}
+\doublespacing
+\begin{document}
+\homework{Thèorie des modeles TD2}{Date: 04/10/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercise 0.1} Consider the following classes. For each class, decide whether it is elementary. If yes, find a suitable language and axiomatization. Is the class finitely axiomatizable? Is the theory of the class complete?
+\begin{enumerate}
+    \item The class of totally ordered sets.
+    \item The class of well-ordered sets.
+    \item The class of finite abelian groups.
+    \item The class of algebraically closed. fields.
+    \item The class of non-oriented connected graphs without loops.
+          \\
+\end{enumerate}
+\textbf{Solution 0.1}
+\begin{enumerate}
+    \item The class of totally ordered sets. Take $\LL= \{ < \}$. The axioms are
+          \begin{itemize}
+              \item $\forall x \forall y \forall z (x<y \land y< z \Rightarrow x < z)$
+              \item $\forall x x \not< x$.
+              \item $\forall x \forall y (x=y \lor x<y \lor y<x)$.
+                    This theory is not complete, $(\N,<)$ and $(\R,<)$ are total orders but the second one satisfies density:
+                    $$\forall x \forall y (x<y \Rightarrow \exists z \ x<z<y)$$
+          \end{itemize}
+    \item The class of well-ordered sets. It is not axiomatizable: as in TD1, take $(\N , < )$ and $\N^\UU$ for some $\N$-ultrafilter $\UU$. The first structure is a well order while the latter isn't. Consider the set $I$ of infinite elements in $\N^\UU$, it is not empty but has no minimum, because otherwise one would have for $x= \min I$,
+          $$\underbrace{\op{pred}(x)}_{finite} < \underbrace{x}_{infinite}$$
+          which would imply that $\N$ has a maximum element. $\op{pred}(x)$ is defined by
+          $$y = \op{pred}(x) \iff y<x \land \forall z (z<x \implies z \leq y).$$
+    \item The class of finite abelian groups. Abelian groups can be axiomatized by group axioms and $\forall x,y \  x+y=y+x$ in the languange $\LL = \{0, + \}$. Finite abelian groups, however, are not. Suppose that some theory $T$ axiomatizes them. Take
+          $$T' = T_{ab.groups} \cup T \cup \{\phi_k \}_{k \in \N}$$
+          Where $\phi_k$ is a formula stating "has at least $k$-elements". For any finite
+          $$\Delta \subseteq T_{ab.groups} \cup T \cup \{\phi_k \}_{k < N}$$
+          we can give a model: $(\Z / N\Z , +)$. By compactness, $T'$ is satisfiable. A model of $T'$ is a finite abelian group with more than $k$-elements for all $k$, and this is imposible.
+    \item The class of algebraically closed fields. We can take $\LL$ to be tha language of rings $\{0,1,+,\cdot,- \}$ and $T_{fields}$ to be the field axioms. We add to $T$, for each $n$, the formula
+          $$\varphi_n = \forall a_1, \forall a_2 \dots \forall a_{n-1} \exists x \  x^n + a_{n-1}x^{n-1} + \dots + a_1x_1 + a_0 = 0.$$
+          This theory is not complete: $\C$ and $\bar{\mathbb F_p}^{alg}$ are both algebraically closed but have different characteristic. This theory is also not finitely axiomatizable: suppose it is, so there is a formula $\phi$ that axiomatizes it. By a lemma we saw in class, there is a finite subset  $\Delta \subseteq T \cup \{ \varphi_n\}_{n \in \N}$  such that $\Delta \models \phi$. Since $\Delta$ is finite, for some $n$ , $\varphi_n \not\in \Delta$. We'll show that $\Delta \cup \{\neg \varphi_n  \}$ is satisfiable.\\
+          Consider $\Q$ and let $\Q_n$ be the field obtained by adjoining every root for every polynomial of degree strictly less than $n$. Let $p>n$ be a prime, so the polynomial $x^p = 1$ has no roots in $\Q_n$ (because for every $\alpha \in \Q_n$, the degree of its minimal polynomial over $\Q$ is at most $n$). We have that
+          $$\Q_n \models \Delta  \cup \{\neg \varphi_n  \} \models \phi$$
+          so that $\Q_n$ is algebraically closed, a contradiction.
+    \item The class of non-oriented connected graphs without loops. Consider $\LL = \{ R\}$ where $R$ is a binary predicate symbol. A graph is an $\LL$ structure whose domain is regarded a set of vertices and we regard $x R y$ as $x,y$ being connected by an edge. The axioms for non-oriented graphs without loops are
+          \begin{itemize}
+              \item $\forall x \ \neg  x  R x$
+              \item $\forall x, y \ xRy \Rightarrow y R x$
+          \end{itemize}
+\end{enumerate}
+Connectednes is not axiomatizable, consider the formula
+$$\varphi_n(x,y) = \neg  \exists z_1,\dots,z_n \left(z_1 = x , z_n = y , \bigwedge_{k=1}^{n-1}z_k R z_{k+1} \right)$$
+Which says "there is no path of length $n$ connecting $x$ and $y$".\\
+Assume by contradiction that a theory $T$ axiomatizes connected graphs. Then, consider for $c_1,c_2$ new constants the theory
+$$T' = T \cup \{ \phi_k(c_1,c_2\}_{k \in \N}.$$
+For a finite
+$$\Delta \subseteq T \cup \{ \phi_k(c_1,c_2\}_{k < N},$$
+we construct the graph with vertices labeled $\{0,1,\dots,N+1\}$, such that for $0 \leq k \leq N$, $k R k+1$. This graph satisfies $\phi_k(0,N+1)$ for every $k<N$ so it is a model of $\Delta$. By compactness theorem, there is a connected graph with two vertices that are not connected by any finite path, this is impossible.\\
+
+
+
+
+
+\textbf{Exercise 0.2} Let $\LL$ be a language and $I$ be an infinite set. Let $\{ \MM\}_{i \in I}$, and $\{ \NN\}_{i \in I}$ be two families of $\LL$-structures. Show that the following are equivalent:
+\begin{enumerate}
+    \item for every non-principal ultrafilter $\UU$ on $I$, we have $\prod_{i \in I} \MM_i / \UU \equiv \prod_{i \in I} \NN_i / \UU$.
+    \item For every $\LL$-sentence $\varphi$, $\MM_i \models \varphi \iff \NN_i \models \varphi$ holds for all but finitely many $i \in I$.
+\end{enumerate}
+\textbf{Solution 0.2}\\
+First, assume (1). By Łos theorem,
+\begin{align*}
+    \{ i, \MM_i \models \varphi \} \in \UU & \iff \prod_{i \in I} \MM_i / \UU \models \varphi                        \\
+                                           & \iff \prod_{i \in I} \NN_i / \UU \models \varphi \ \text{by hypothesis} \\
+                                           & \iff \{ i, \NN_i \models \varphi \} \in \UU
+\end{align*}
+Notice that $C= \{i, \MM_i \models \varphi , \NN_i \not\models \varphi \}$ is contained in both $A=\{i, \MM_i \models \varphi\}$ and $B=\{i, \NN_i \not\models \varphi  \}$, so if $A \in \UU$ then $  B \not\in \UU$ by the above, and $C \not \in \UU$, otherwise, if $A \not\in \UU$ then again $C \not\in \UU$. We can repeat this argument to show that $C'=\{i, \MM_i \not\models \varphi , \NN_i \models \varphi \} \not\in \UU$ and conclude that $$C \cup C' = \{ i, \neg( \MM_i \models \varphi \iff \NN_i \models \varphi) \} \not\in \UU.$$ This shows that for any ultrafilter $\UU$, $\{ i,  \MM_i \models \varphi \iff \NN_i \models \varphi \} \in \UU$. Since this holds for any choice of $\UU$, it holds for every $i \in\cap_{ \ \UU \text{ultrafilter} \ } \UU \subseteq Frechet$, so it holds for a cofinite set of indices.\\
+We now assume (2). Let $\UU$ be any ultrafilter over $I$ and suppose by contradiction that $\{i, \MM_i \models \varphi \} \in \UU$ and $\{i, \NN_i \models \varphi \} \not\in \UU$. Then we have that their intersection,  $ \{i, \MM_i \models \varphi , \NN_i \not\models \varphi \} \in \UU$ is contained in $$\{ i, \neg( \MM_i \models \varphi \iff \NN_i \models \varphi) \},$$
+but this set cannot be in $\UU$ since it would contradict our assumption (if a condition holds for a cofinite set of indices then that set belongs to the Fréchet filter which is contained in $\UU$). We conclude from this that $\{i , \MM_i \models \varphi \} \in \UU$ if and only if  $\{i , \N_i \models \varphi \} \in \UU$. Now we can apply Łos theorem:
+\begin{align*}
+    \prod_{i \in I} \MM_i / \UU \models \varphi & \iff  \{ i, \MM_i \models \varphi \} \in \UU                        \\
+                                                & \iff \{ i, \NN_i \models \varphi \} \in \UU  \ \text{by hypothesis} \\
+                                                & \iff   \prod_{i \in I} \NN_i / \UU \models \varphi
+\end{align*}
+
+
+\newpage
+
+\textbf{Exercise 1.} Show that an abelian group is orderable if and only if all of its finitely generated subgroups are.\\
+\textbf{Solution 1.} Let $G$ be an abelian group. One direction is clear, if $(G,<)$ is orderable then for any subgroup $H$, the restriction of $<$ to $H$ orders it an respects the group structure. Now, suppose that every finitely generated subgroup of $G$ is orderrable. Let $\LL$ be the language of groups and consider the language $\LL(G)$ . Define $\Psi$ as the theory containing the following $\LL(G)$-sentences for every $a,b,c \in G$:
+\begin{enumerate}
+    \item $a \not < a$.
+    \item $a<b \lor a=b \lor a>b$.
+    \item $a<b \land b<c \Rightarrow a<c$.
+    \item $a<b \land a+c <b+c$.
+\end{enumerate}
+Consider also the set
+$$D(G) = \{ \varphi \text{ an $\LL(G)$-sentence}  , G^* \models \varphi\}$$
+where $G^*$ is the expansion of $G$ obtained by interpreting every constant symbol as itself in $G$. We now consider the $\LL(G)$-theory
+$$T' =  \Psi \cup D(G).$$
+This theory is finitely satisfiable: if $\Delta \subseteq T'$ is finite, then there are finite  $a_1,\dots,a_n \in G$ appearing as symbols in $T'$, and since $H=\langle a_1,\dots a_n \rangle$ (the group generated by the $a_i$'s) is a substructure of $G^*$, it satisfies every quantifier free sentence that ``mentions'' them that is true in $G^*$, so they satisfy whatever finite part of $D(G)$ that may be  in $\Delta$. By our hypothesis, $H$ can be ordered, which means $H \models \Psi$. By compactness theorem, there is $G'$, a model of $T'$. We need to show that $G$ is contained in $G'$, so consider the map $f:G \to G' $, that sends $a \mapsto a^{G'}$ (sends and element of $G$ to the interpretation of its symbol in $G'$). This is an embedding since clearly $f(0)=0$ and if, for $a,b,c \in G$, $a+b=c$ then  $G' \models a+b=c$ or equivalently $G' \models a^{G'} + b^{G'} = c^{G'}$ so that $f(c) = f(a)+f(b)$. Similarly one proves that $f(-a) = -f(a)$. Finally, one can conclude that $G$ is isomorphic to a subgroup of $G' \restriction{\LL}$, and since $G'$ is orderable, then $G$ is.\\
+
+\pagebreak
+\textbf{Exercice 2.} Let $\MM$ be an $\LL$-structure, and let $\NN \equiv \MM$.
+\begin{enumerate}
+    \item Show that $|M| = |N|$.
+    \item Let $k \in \N$. Show that there exist finite formulas $\varphi_1,\dots,\varphi_N$ with $k$ free variables such that for every $\varphi \in \mathcal F(\LL)$, and every $\bar{b} \in M^k$, for some $\varphi_i$
+          $$\MM \models \varphi(\bar{b}) \leftrightarrow \varphi_i(b).$$
+    \item Let $k = |M|$ and let $\varphi_1,\dots,\varphi_N$ as in the previous question. Write $M = \{ a_1,\dots,a_n\}$. Show that there exists a bijection $\sigma: M \to N$ such that for every $i$,
+          $$\MM \models \varphi_i(a_1,\dots,a_n) \iff \NN \models  \varphi_i(\sigma(a_1),\dots,\sigma(a_n)). $$
+    \item Show that $\MM \simeq \NN$.
+\end{enumerate}
+\textbf{Solution 2.}
+\begin{enumerate}
+    \item For finite structures, we already know that their cardinality can be expressed by a 1st order sentence. Since $\NN \equiv \MM$, then they both satisfy this sentence.
+    \item Let $M = \{a_1 , \dots , a_n\}$. We will label all the free variables we are going to use as $x_1,\dots,x_n,\dots$. For each symbol in the language, we consider the set of formulas composed by
+          \begin{itemize}
+              \item If $c$ is a constant symbol and $c^\MM = a_i$, then add the formula $x_i=c$. If not, add its negation.
+              \item If $f$ is a $p$-ary function symbol, and if $f(a_{i_1},\dots,a_{i_p})=a_{i_j}$, then add the formula $f(x_{i_1},\dots,x_{i_p})=x_{i_j}$. If not, add its negation.
+              \item If $R$ is a $p$-ary predicate symbol, and if $R(a_{i_1},\dots,a_{i_p})$, then add the formula $R(x_{i_1},\dots,x_{i_p})$. If not, add its negation.
+          \end{itemize}
+          Define $F$ to be the set formed by formulas of the form
+          $$\phi(x_1,\dots,x_n) = \bigvee_{S_1}\bigwedge_{S_2} \varphi(x_1,\dots,x_n)$$
+          and their negations, where $\varphi$ is one of the above and $M_1,M_2$ are any finite subsets of $\{1,2,\dots,n\}$.
+          We will show by induction that any other formula $\phi(x_1,\dots,x_k)$ is equivalent to one of these (perhaps adding at most finitely many more formulas). Notice that our finite set of formulas all have their free variables among $x_1,\dots,x_n$, this doesn't matter much because we compare two formulas with different number of free variables, we can add to one something of the form $x_{n+1} = x_{n+1}$ to make it depend on more variables. We will then assume $k=n$.\\
+          Let $t(\bar{x})$ be a term, then if $t^\MM(\bar{a})= a_i$ for some $i$, there is a formula $\varphi(\bar{x})$ in $F$ such that $t^\MM(\bar{a})= a_i$ iff $\MM \models \varphi(\bar{a})$, we show this by induction: if $t$ is a constant $c$, then $t^\MM(\bar{a})= a_i$ iff $c = a_i$, and we have a formula for expressing this. If $t$ is $x_j$ then $t^\MM(\bar{a})= a_i$ iff $a_j=a_i$, so we can add $x_i = x_j$ to $F$ . And if $t(\bar{x}) = f(u_1(\bar{x}),\dots,u_p(\bar{x})$, then $t^\MM(\bar{a})= a_i$ iff for $i=1,2,\dots p$ and for some $a_{j_1},\dots a_{j_p} \in M$, $u_i(\bar{a})=a_{j_i}$ and $t(a_{j_1},\dots a_{j_p} ) = a_i$, but by induction hypothesis we have a formula in $F$ for each $u_i$ and also have the formula $t(x_{j_1},\dots x_{j_p} ) = x_i$.\\
+          We can now apply induction over formulas. If $\phi(\bar{x})$ has the form $t_1(\bar{x}) = t_2(\bar{x})$, then $t_1^\MM(\bar{a})=t_2^\MM(\bar{a})=a$ if and only if $\bigvee_{a\in M} t_1^\MM(\bar{a})=a \land t_2^\MM(\bar{a})=a$, we can then find a formula in $F$ equivalent to each of $t_1^\MM(\bar{a})=a , t_2^\MM(\bar{a})=a$ connect them by $\land$ and distribute to get one in $F$. If $\phi(\bar{x})$ has the form $R(t_1(\bar{x}),\dots,t_p(\bar{x}))$, then  $R^\MM(t_1^\MM(\bar{a}),\dots,t_p^\MM(\bar{a}))$ if and only if for each $1\leq i \leq p$ there is $b_i$ in $M$ such that $t_i(\bar{a}) = b_i$ and $  R^\MM(b_1,\dots,b_p)$, and we have a formula in $F$ for each of these.\\
+          For the boolean case, if $\phi(\bar{x}) = \psi(\bar{x}) \land \theta(\bar{x})$, then we can find one formula in $F$ for each $\psi$ and $\theta$ and consider their conjunction, then distribute to get one in $F$. For the negation case, it is a similar proof (recall by construction, $F$ is closed under $\neg$).\\
+          If $\phi(\bar{x})=\exists y \psi(y,\bar{x})$ then we find a formula in $F$ equivalent to $\psi(y,\bar{x})$ and notice that since $M$ is finite, $\phi(\bar{b})$ is equivalent to $\bigvee_{a \in M}\psi(a,\bar{b})$.
+    \item Let $\bar{a} = \{a_1,\dots, a_n \}$, for each $i = 1,\dots,N$, either $\MM \models \varphi_i(\bar{a})$ or not, so define $\varphi'(\bar{x})$ as  $\varphi(\bar{x})$ if it does, and as $\neg \varphi(\bar{x})$ if it does not. Consider
+          $$\Phi = \exists x_1 ,\dots x_n \bigwedge_{i=1}^{N} \varphi'_i(\bar{x})$$
+          By construction $\MM \models \Phi$, so $\NN \models \Phi$ by elementary equivalence. Let $b_1,\dots,b_n$ be the tuple of $n$ that satisfies this formula. Then we can take $a_i \mapsto b_i$, this map verifies what we want.
+    \item We just found a bijection that respects every $\varphi_i$. Since these formulas (by construction) actually express what the constants, predicates and functions are, this bijection is an embedding. Therefore $\MM \simeq \NN$.
+\end{enumerate}
+
+
+
+\pagebreak
+\textbf{Exercise 3.} Let $\mathcal K$ be a class of finite $\LL$-structures and let $T=\op{Th}(\mathcal K)$.
+\begin{enumerate}
+    \item Give a necessary and sufficient condition for $T$ to have an infinite model.
+    \item Suppose that $T$ has infinite models. Find an axiomatization $T^{\infty}$ fo the class of all infinite models of $T$.
+    \item Show that for all sentences $\varphi$, $\varphi$ is a consequence of $T^{\infty}$ if and only if there exists $n \in \N$ such that $\varphi$ is true in every $\MM \in \mathcal K$ such that $|M|>n$.
+\end{enumerate}
+\textbf{Solution 3. }
+\begin{enumerate}
+    \item $T$ has an infinite model iff if has arbitrarily large finite models.\\
+          \textbf{Proof:} Suppose $T$ has an arbitrarily large models first, and consider the theory
+          $$T'  = T \cup \{\phi_k \}_{k \in \N }$$
+          Where $\phi_k$ is the statement `` has more than $k$ elements ''. $T'$ is finitely satisfiable by hypothesis, so by the compactness theorem there is a model of $T'$, this model is inifite. Suppose that $T$ has no infinite model, so the theory $T'$ is not satisfiable, then by compactness there is a finite fragment of $T'$ that is not satisfiable, so for some $N \in \N$,
+          $$T \cup \{\phi_k \}_{k \leq N}$$
+          has no model. This means there is no member of $\mathcal K$ with $N$ or more elements.
+    \item Take $T^\infty = T'$ as above.
+    \item Suppose $T^{\infty} \models \varphi$. Then by compactness, for some finite $\Delta \subseteq T^{\infty}$, $\Delta \models \varphi$. Then for some $N \in \N$, $T \cup \{\phi_k \}_{k \leq N} \models \phi$, but every  $\MM \models T \cup \{\phi_k \}_{k \leq N}$ is a member of $\mathcal K$ with $|M| > n$. Conversely, if $T^\infty \not \models \varphi$, this means that $T^\infty \cup \{ \neg \varphi \}$ is satisfiable, so this means there are infinite models of $T$ that do not satisfy $\varphi$, and by (1), there are arbitarily large members of $\mathcal K$ where $\varphi$ is false.
+\end{enumerate} \pagebreak
+\textbf{Exercise 4.} Let $G$ be a group which has elements of arbitrarily large finite order and let $T= \op{Th}(G)$. Give two proofs of the following (one using ultraproducts and the other using compactness).
+\begin{enumerate}
+    \item There is $H\models T$ such that $H$ has infinitely many elements of infinite order.
+    \item There is no $\LL_G$-formula that defines the set of elements of finite order.
+\end{enumerate}
+\textbf{Solution 4.}
+\begin{enumerate}
+    \item \textit{Ultraproducts: } Let $\UU$ a non-principal ultrafilter over $\N$ and consider the ultrapower $G^\UU$. Let $\{ g_1,g_2,\dots \} \subseteq G $ where the order of $g_i$ is $i$. Consider $x= [g_i]_\UU$, this element has infinite order since for all $k$, $\{i , g_k^i \neq 1 \} $ is finite, hence $x^k \neq 1$. Therefore we can consider the set of infinite order elements $\{x,x^2,x^3,\dots \}$\\
+          \textit{Compactness: } Let $c$ be a new constant symbol and consider the theory
+          $$T' = T \cup \{c^n \neq 1 \}_{n \in \N}.$$
+          For any finite fragment $T_0 \subseteq T$, there is $N$ such that
+          $$T_0 \subseteq T \cup \{c^n \neq 1 \}_{n < N}.$$
+          So $G$ can model $T_0$ by interpreting $c$ as $g_{N+1}$. By compactness, we can find $\mathcal H  \models T'$, where $x=c^{\mathcal  H}$ is an element of infinite order.  Therefore we can consider the set of infinite order elements $\{x,x^2,x^3,\dots \}$.
+
+    \item Asssume such a formula exists, call it $\phi(y)$.\\
+          \textit{Ultraproducts: } In the same construction as above, we have that $G^\UU \models \phi(g_i)$ for all $i$, but $G^\UU \not\models \phi(x)$, which is a contradiction.\\
+          \textit{Compactness: } Consider the theory
+          $$T'' = T' \cup \{\phi(c) \}.$$
+          It is satisfiable by the same argument above and a model of $T''$ has an element $c$ of finite order larger than any natural, which is impossible. \newpage
+\end{enumerate}
+\textbf{Exercise 5. } An infinite $\LL$-structure $\MM$ is called \textit{minimal} if every definable $A\subseteq M$ is either finite or co-finite. Suppose $\LL$ contains an unary predicate $P$. Show that the class of minimal $\LL$-structures is not elementary. What about an arbitrary language?\\
+\textbf{Solution: } We will show that this class is not closed under ultraproducts. Consider the family of $\LL$-structures indexed by $\N$ given by $\mathcal N _i = \langle \N , P \rangle$, where $P^{\NN_i} = \{0, \dots,i-1 \}$. Notice that $\NN_i$ is minimal for every $i$, because being definable in $\NN_i$ amounts to being definable in $\N$ with the empty language \footnote{We showed in TD1 that in the empty language every structure is minimal}, as $P$ can be defined as
+$$P(x) \iff \bigvee_{k<n} k=x.$$
+Consider a non-principal ultrafiter $\UU$ over $\N$, and define the ultraproduct $$\NN = (\prod_{i \in \N} \NN_i)/ \UU.$$ $P^\NN$ is infinite and co-infinite: observe that for all $n$,  $[n,n,\dots] \in P^\NN$ and  $[n,n+1,n+2,\dots ] \not\in P^\NN$. We conclude that $\NN$ is not minimal.\\
+For arbitrary languages, we can consider cases:
+\begin{itemize}
+    \item If $P$ is $k$-ary then we can define an unary predicate $P'(x) \iff P(x,\dots,x)$, and repeat the above.
+    \item If $f$ is a $k$-ary function symbol, we can define a $k+1$-predicate $\op{Graph}(f)$ and repeat the above.
+    \item Constants do not affect definability since we can use parameters.
+\end{itemize}
+
+\end{document}
