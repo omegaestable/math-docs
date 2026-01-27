@@ -1,4 +1,4 @@
-# Math Docs
+# Mathematical Research & Teaching Archive
 
 Welcome to my personal collection of mathematical documents, research, and teaching materials. This repository serves as a central archive for my academic work and explorations, ranging from undergraduate projects to master's thesis materials and miscellaneous notes accumulated throughout my teaching career.
 
