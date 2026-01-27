@@ -1,0 +1,138 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+% \usepackage[francais]{babel}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\NN}{\mathcal N}
+\doublespacing
+\begin{document}
+\homework{Thèorie des ensembles, Devoir Maison}{Date: 08/11/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercise 1.} Prove that $\omega_1$ with the order topology is not metrizable.\\
+\textbf{Solution. }\\
+Suppose it is metrizable, with a metric function $d:\omega_1 \times \omega_1 \to \mathbb R$. We denote the \textit{sphere of center $\alpha$ and radius $r$} by
+$$B_r(\alpha) = \{ \beta \in \omega_1 , d(\alpha,\beta)<r \}.$$
+Recall that if $X$ is a topological space and $A\subseteq X$, we say $A$ is \textit{dense} if its topological closure $\bar{A}=X$ and we say that $X$ is \textit{separable} if it contains some countable dense subset.We first see that $\omega_1$ is not separable, let $C \subseteq \omega_1$ countable, and let $\alpha = \sup C < \omega_1$. Then we have $C \subseteq [0, \alpha] \subsetneq \omega_1$ so that $C$ is contained in a proper closed set, therefore it cannot be dense.\\
+\textit{Lemma: } There is $\varepsilon > 0$ and an uncountable set $C \subseteq \omega_1$ such that for every $x\neq y \in C$, $d(x,y)>\varepsilon$.\\
+\textit{Proof: } We will construct $C$ and $\epsilon$. First, we define a sequence $\{ \alpha_\beta , \beta <  \omega_1\}$ and a function $k:\omega_1 \to \N$ inductively by
+\begin{itemize}
+    \item $\alpha_0=0$, $k_0 = 0$.
+    \item Suppose $\alpha_\gamma$ has been defined for all $\gamma < \beta$. Then $X=\{\alpha_\gamma , \gamma < \beta\}$ is countable, so it cannot be dense. Pick $\alpha_\beta \in \omega_1 \setminus \bar{X}$, and pick $k_\beta$ such that $B_{1/k_\beta}(\alpha_\beta) \cap X = \varnothing$. This implies that for all $\gamma \leq \beta$, $d(\alpha_\gamma,\alpha_\beta)>1/k_{\beta}$.
+\end{itemize}
+Since $k$ can be regarded as a map from $\omega_1$ to $\omega$, then $k$ is regressive, so there is $K \in \N$ such that $C = \{\alpha_\gamma \in \omega_1  ,  k_\gamma = K \}$ is uncountable. Given any $\alpha_{\gamma_1} ,\alpha_{\gamma_2} \in C$ with $\gamma_1 > \gamma_2$, by construction, $d(\alpha_{\gamma_1},\alpha_{\gamma_2})> 1/k_{\gamma_2} = 1/K$. We can then take $\varepsilon = 1/K$.\\
+To show the result, consider any sequence $\{\alpha_n , n<\omega\}$ in $C$, since it is countable, it converges in order topology (more precisely $\alpha =\sup \alpha_n < \omega_1$), but since we are assuming that the metric topology coincides with the order, we must have that
+$$\lim_{n \to \infty} d(\alpha_n,\alpha) = 0.$$
+Indeed for all $\epsilon > 0$ as the topologies coincide, $B_\epsilon(\alpha)$ contains a tail of $\alpha$, so in particular contains some $\alpha_n$. By the triangle inequality, $d(\alpha_m,\alpha_n) \leq d(\alpha_n,\alpha) + d(\alpha_m,\alpha)$, so we get
+$$\lim_{n,m \to \infty} d(\alpha_n,\alpha_m) = 0$$
+this contradicts that any two members of $C$ are at least $\varepsilon$ apart. Our initial assumption was therefore incorrect, $\omega_1$ cannot be metrizable.
+
+\textbf{Exercise 2.} Let $\alpha$ be a countable ordinal.
+\begin{enumerate}
+    \item Prove that the order topology in $\alpha$ coincides with the subspace topology $\alpha \subseteq \omega_1$.
+    \item Prove that the order topology in $\alpha$ is metrizable.
+    \item Conclude that if $X \subseteq \omega_1$, $X$ is metrizable with the induced order topology.
+\end{enumerate}
+
+\textbf{Solution. }
+\begin{enumerate}
+    \item Let $\tau_o,\tau_s$ be the order and subspace topology, respectively. It is clear that $\tau_o \subseteq \tau_s$ since every open interval in $\alpha$ is also open in $\omega_1$. To see the other direction, consider the $\tau_s$-open set $U=\alpha \cap (\beta,\gamma)$ for some open interval $(\beta,\gamma)$ in $\omega_1$. If $\beta \geq \alpha$, then $U\cap \alpha=\varnothing$ so it is open, otherwise $U\cap \alpha = (\beta , \min (\alpha,\gamma))$, which is $\tau_o$-open.
+    \item Let $\phi:\alpha \to \Q$ be an order-embedding. We will prove that $\alpha$ is homeomorphic to its image under $\phi$. Since $\phi$ is injective, we don't have to prove bijectivity. Notice that for any $\gamma_1 <\gamma_2<\alpha$ , we have $\phi [ (\gamma_1,\gamma_2)] = (\phi(\gamma_1),\phi(\gamma_2))$ (because $\phi$ preserves order), and for all $p<q \in \Q$, that $\phi^{-1}((p,q)\cap \operatorname{Im}(\phi)) = (\gamma_p,\delta_p)$
+          where $\gamma_p = \min \{ \beta < \alpha, \phi(\beta) > p\}$ and $\delta_p = \sup \{ \beta < \alpha, \phi(\beta) < q \}$. So, we have that $\phi$ and $\phi^{-1}$ both preserve open sets under preimage. Then, we can metrize $\alpha$ as $d(\beta,\gamma) = |\phi(\beta) - \phi(\gamma)|$ (we copy the metric of the homeomorphic image of $\alpha$ in $\Q$).
+    \item Lastly, if $X \subseteq \omega_1$ is bounded, it is countable (otherwise $\sup X$ would be some uncountable ordinal under $\omega_1$), and therefore metrizable by the preceding arguments.
+\end{enumerate}
+\pagebreak
+\textbf{Exercise 3.} Let $X \subseteq \omega_1$. Show that if $X$ is a club, then $X \approx \omega_1$ (homeomorphic spaces). Conclude that clubs are not metrizable.\\
+\textbf{Solution. } Consider the function $f:\omega_1 \to X$ defined inductively by
+\begin{itemize}
+    \item $f(0) = \min X$.
+    \item $f(\alpha +1) = \min \{x \in X , x > f(\alpha) \}$.
+    \item If $\alpha$ is a limit and $f(\beta)$ is defined for all $\beta< \alpha$, set $f(\alpha)= \sup_{\beta < \alpha} f(\beta)$. This is well-defined since $X$ is a club, so we can take $\sup$ and stay inside $X$.
+\end{itemize}
+Notice that, by construction $f$ respects suprema, and therefore $f$ is continuous (this was proved in TD1). Clearly $f$ is injective, let's prove that $f$ is surjective by contradiction: let $x = \min( X \setminus f[\omega_1])$. Let $A=\{ \beta <\omega_1, f(\beta)< x \}$, notice that $A$ is bounded by $x$ since for every $\beta$  , $f(\beta) \geq \beta$. Let $\alpha = \sup A$, so then we have that $f(\alpha) < x$ by monotonicity, and also $f(\alpha+1)> x $, because otherwise $\alpha+1$ would be in $A$ (the inequalities are both strict since $x$ is not in the image of $f$). We then have $f(\alpha)<x<f(\alpha+1)$ so that $x$ is less than the minimum element of $X$ bigger than $f(\alpha)$ (definition of $f(\alpha +1)$), so we  have reached a contradiction, and $f$ is therefore surjective. Finally, since $f$ is also an order-embedding, for all $\gamma < \beta < \omega_1$, $f[(\gamma,\beta)] = (f(\gamma),f(\beta))\cap X $ which means $f$ is an open map. All of these show that $f$ is a homeomorphism. To conclude, if $X$ were metrizable, then $\omega_1$ would be too, a contradiction to ex1, since homeomorphisms preserve metrizability (as they essentially copy the topology).
+\\
+
+
+
+\textbf{Exercise 4.} If $S\subseteq \omega_1$ is stationary, then it is not paracompact.\\
+\textbf{Solution. } Let us show first that if $C$ is a club, then $S\cap C$ is stationary: indeed if $C'$ is any club, since $C\cap C'$ is also a club, then $(S\cap C) \cap C' = S\cap (C\cap C')$ is non-empty, so $S\cap C$ is a club. This in particular allows us to assume $S$ only contains limit points, since we can restrict ourselves to the intersection of $S$ and the club of limit ordinals. Consider the covering of $S$ given by the family $U_\alpha = [0,\alpha+1)$ for $\alpha \in S$. Assume by contradiction that there is a cover $\VV$  that is a locally finite refinement of $\UU$. Then by definition, for every $\alpha \in S$ there is a neighborhood of $\alpha$ intersecting only finitely many elements of $\VV$, more specifically, since open neighborhoods contain tails of limit elements, there is $\beta(\alpha) < \alpha$ such that $[\beta(\alpha),\alpha+1)$ intersects finitely many elements of $\VV$. The function $\alpha \mapsto \beta(\alpha)$ is therefore regressive, and by Fodor's Pressing Down Lemma, there is a fixed $\beta<\omega_1$ and some stationary $T\subseteq \omega_1$ such that for all $\alpha \in T$, $[\beta,\alpha+1)$ intersects finitely many elements of $\VV$.
+
+We construct a sequence $\{\alpha_n , n < \omega \} \subseteq T$ by taking $\alpha_0 \in T$ any element bigger than $\beta$. If $\alpha_n$ is defined,  suppose $[\beta,\alpha_n+1)$ intersects $m_n <\omega$ many elements of $\VV$. Since $\VV$ is a refinement of $\UU$, there is $\gamma_n$ such that the union these $m_n$ sets in $\VV$ is contained in $[0,\gamma_n)$. Choose $\alpha_{n+1} > \gamma_n$ in $T$. Then the interval $[0,\alpha_{n+1}+1]$ intersects at least $m_n + 1$ elements in $\VV$, because $\alpha_{n+1}$ has to be in some  $V \in \VV$  not included among the other $m_n$  ones (thanks to $\VV$ also being a covering). Letting $\alpha = \sup \alpha_n$ we observe that $[\beta,\alpha +1 )$ intersects infinitely many sets in $\VV$, but $\alpha \in T$, this is a contradiction.
+\\
+\textbf{Exercise 5.} If $X$ is a metrizable topological space, $X$ is paracompact. Conclude that stationary sets in $\omega_1$ are not metrizable. \\
+\textbf{Solution. } Let $\{U_\alpha, \alpha < \kappa \}$ be an open cover of $X$ and suppose $d$ is a metric function. We define for $n>1$ (by induction) the sets $U_{\alpha,n}$ to be the union of all spheres of the form $B_{2^{-n}}(x)$ where $x$ satisfies the following:
+\begin{enumerate}
+    \item $\alpha$ is the least ordinal such that $x \in U_\alpha$.
+    \item For all $\beta \in \kappa$, $x \not \in U_{\beta,i}$ if $i < n$.
+    \item $B_{3 \cdot 2^{-n}}(x) \subseteq U_\alpha$.
+\end{enumerate}
+We will show that this family is a finitely local refinement of $U$ that is also a cover. Notice also that $U_{\alpha,n}$ are all open sets, being unions of spheres.\\
+First, it is clear that it is a refinement since each of the spheres that compose $U_{\alpha,n}$ are contained in $U_\alpha$ by (3). Second, to check that it is a covering, let $x \in X$, and let $\alpha$ be minimal such that $x \in U_\alpha$. Since $U_\alpha$ is open, we can choose $n$ big enough so that $B_{3\cdot2^{-n}}(x) \subseteq U_\alpha$. So we have (1) and (3), if $x$ satisfies (2) then automatically $x \in U_{\alpha,n}$, and otherwise $x \in U_{\beta,i}$ for some $\beta$ and some  $i<n $. Either way this shows that this family covers $X$.\\
+To prove that it is locally finite, let $x \in X$ be contained in some $U_{\alpha,n}$, and pick $k$ large enough so that $B_{2^{-k}}(x) \subseteq U_{\alpha,n}$. We claim that $B_{2^{-k-n}}(x)$ intersects finitely many $U_{\beta,i}$.
+
+\textit{(Case 1: $i <n+k $)}  We will show that for this case, $B_{2^{-k-n}}(x)$ can intersect at most one of the $U_{\beta,i}$. We will show this by proving that any element of $U_{\beta,i}$ is at least $2^{-i}$ distance away from any element in $U_{\gamma,i}$, for any $\beta < \gamma$: indeed let $x_1,x_2$ satisfying (1),(2),(3) such that if $a \in B_{2^{-i}}(x_1) \subseteq U_{\beta,i}$ and $b \in B_{2^{-i}}(x_2) \subseteq U_{\gamma,i}$. Then, by (3) $B_{3\cdot2^{-i}}(x_1) \subseteq U_{\beta,i}$ and by (1), $x_2 \not \in U_\beta$ (by minimality of $\gamma$). Therefore $d(x_1,x_2) \geq 3\cdot2^{-i}$ and consequently $d(a,b) \geq 2^{-i}$:  otherwise if $d(a,b) < 2^{-i}$, we would have by triangle inequality that $d(x_1,x_2) \leq d(a,x_1)+d(a,b)+d(b,x_2) < 3\cdot 2^{-i}$ (this is best seen with a drawing). But $i \leq n+k - 1$ , hence $d(a,b) \geq 2^{-n-k+1}$ so our sphere $B_{2^{-k-n}}(x)$ cannot possibly intersect both $U_{\beta,i}$ and $U_{\gamma,i}$. \\
+\textit{(Case 2: $i \geq n+k $)} For this case, we will show that $B_{2^{-k-n}}(x)$ does not intersect any other $U_{\beta,i}$. Let $U_{\beta,i}$ be the union of spheres of the form $B_{2^{-i}}(y)$ for $y$ satisfying (1),(2),(3). By (2), and because $i \geq n$, $y \not\in U_{\alpha,n}$. Now, since $B_{2^{-k}}(x) \subseteq U_{\alpha,n}$, we have that $d(x,y) \geq 2^{-k}$, this implies that $$B_{2^{-k-n}}(x) \cap B_{2^{-i}}(y) = \varnothing$$ because the radius of each sphere is less than half the distance between their centers. Taking union over all of the $y$ satisfying (1),(2),(3), we have shown that $B_{2^{-k-n}}(x) \cap U_{\beta,i} = \varnothing$.\\
+Finally, to conclude: if some stationary $X \subseteq \omega_1$ is metrizable, then it is paracompact by these arguments, but this contradicts exercise 4.\\
+
+
+
+
+\textbf{Exercise 6.} Show that if $S\subseteq \omega_1$ is non-stationary, it has a $\sigma$-locally finite base. Conclude that $S \subseteq \omega_1$ is metrizable if and only if $S$ is nonstationary.\\
+\textbf{Solution. } We start with a lemma from topology.\\
+\textit{Lemma :} If $X$ is a $T_3$ topological space, then every $Y \subseteq X$ is also $T_3$ with the subpsace topology.\\
+\textit{Proof:} Let $y \in Y$ and $C\cap Y$ with $C\subseteq X$ closed such that $y \not\in C$. Since $X$ is $T_3$, pick $U_1 , U_2$ open disjoint sets containing $y$ and $C$ respectively. Then $U_1\cap Y$ and $U_2 \cap Y$ are $Y$-open and separate $y$ and $C\cap Y$.\\
+First, let's show that $\omega_1$ is $T_3$ (every ordinal is $T_3$). Every point is closed since for all $\alpha \in \omega_1$, $\omega_1\setminus \{ \alpha\} = [0,\alpha) \cup (\alpha,\omega_1)$. Let $\alpha \in \omega_1$ and $C\subseteq \omega_1$ closed such that $\alpha \not\in C$. We know that succesor ordinals are isolated points in the order topology ( this is clear from $ \{ \gamma+1 \} =(\gamma,\gamma+2)$), so we can assume $\alpha$ is a limit and write $C=C'\cup C''$ where $C'$ contains the succesor elements in $C$ and $C''$ the limit elements, also $C'$ is open since it contains only isolated points. For all $\beta \in C''$ we can find $\gamma_\beta$ such that $\alpha \not\in (\gamma_\beta,\beta+1)$ (since $\{\alpha\}$ is closed) and by the same reason we can find $\gamma_\alpha$ such that $(\gamma_\alpha,\alpha+1) \cap C =\varnothing$. Then take as separating open sets
+$$U_1 = \bigcup_{\beta \in C''} (\gamma_\beta,\beta+1)\cup C' \ , \ U_2 = (\gamma_\alpha,\alpha+1).$$\\
+We now show that if $S \subseteq \omega_1$ is non-stationary, then it has a $\sigma$-locally finite basis. Since $\omega_1\setminus S$ contains some club $C$, then $S$ is contained in $\omega_1\setminus C$, an open set. We can then carry on the following construction in $\omega_1\setminus C$, or just assume $S$ is open and do it for $S$. Let's assume $S$ is open, then by definition of our topology, $S = \cup_{\alpha \in \kappa}S_\alpha$ for some family of open intervals $S_\alpha$. Since the union of open intervals with non-empty intersection is itself an open interval, we may assume (up to merging some $S_\alpha$'s) that $S$ is the union of disjoint open intervals. Also, if any of the $S_\alpha$ is unbounded, we would get that for some $\alpha < \omega_1$, $[\alpha,\omega_1) \subseteq S$, which is impossible since $\omega_1 \setminus S$ is unbounded, therefore every $S_\alpha$ must be bounded and therefore countable.\\
+By ex3, every $S_\alpha$ is metrizable (and countable by boundedness), so consider the countable basis $S_{\alpha,n}$ consisting of all $B_{1/n}(x)\cap S_\alpha$ for $x \in S_\alpha$ and $n \in \N$. This family is indeed a basis: it clearly covers $S_\alpha$, and also if $z\in B_{r_1}(x)\cap B_{r_2}(y)\cap S_\alpha$, by choosing $n$ such that $1/n < \min \{r_1-d(z,x) , r_2-d(z,y)\}$, we have that $B_{1/n}(z)\cap S_\alpha \subseteq B_{r_1}(x)\cap B_{r_2}(y)\cap S_\alpha$. Enumerate $S_{\alpha,n} = \{S_{\alpha,n}^1 ,S_{\alpha,n}^2 , \dots\}$. Now, define
+$$\mathcal B = \bigcup_{k < \omega}\{S_{\alpha,n}^k , \alpha \in \kappa \}.$$
+Each of the $\{ S_{\alpha,n}^k , \alpha \in \kappa\}$ is locally finite, since if $x \in S_{\alpha,n}^k$, we can always find an open neighborhood of $x$ contained in $S_{\alpha,n}^k$ that only intersects one set of index $k$ ($S_{\alpha,n}^k$ itself), because the $S_\alpha$ are taken open and disjoint. Since $\mathcal B$ contains bases for every $S_\alpha$, this means that $\mathcal B$ is a $\sigma$-locally finite basis for $S$.
+To conclude, if $S$ is nonstationary, then it has a $\sigma$-locally finite basis and since we proved $S$ is also $T_3$ , by Nagata-Smirnov theorem, $S$ is metrizable. Conversely if $S$ is metrizable but also stationary, then by ex3, $\omega_1 \approx S$ which implies $\omega_1$ is metrizable, contradicting ex1.
+
+
+
+\end{document}
