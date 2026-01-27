@@ -1,0 +1,320 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{amscd}        % Package used to produce simple commutative diagrams
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+%\setlength\parindent{0pt}
+
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\usepackage{enumitem}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Teorema}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{conjecture}[theorem]{Conjetura}
+
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Observación}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+
+
+%\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\bigcup}}
+%\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\bigcup}}
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+
+
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{question}[theorem]{claim}
+
+
+
+\newcommand{\cd}[4]{
+\begin{CD}
+#1    @>>>    #2\\
+@VVV    @VVV\\
+#3    @>>>    #4
+\end{CD}
+}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+
+
+
+
+\begin{document}
+
+\title{%
+Imposibilidad de integración en términos elementales. \\ El teorema de Liouville.}
+                                        
+\author{J. Ignacio Padilla Barrientos}
+
+\date{}   
+
+\address{Escuela de Matem\'atica, Universidad de Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{padillajignacio@gmail.com}
+
+\begin{abstract}
+En el cálculo elemental, es usual preguntarse si la primitiva, o integral indefinida, de una función de una variable, puede ser expresada de forma explícita como otra función ``sencilla'' o  ``elemental". Liouville demostró en general que la respuesta es no. En este trabajo vamos a explorar la demostración del teorema de Liouville, que toma elementos de la Teoría de Galois Diferencial, y otros de Variable Compleja.
+\end{abstract}
+
+
+\maketitle
+
+
+\section{Introducción} 
+En diferentes áreas de la matemática es necesario resolver problemas por medio de integración. Sin embargo, es usual encontrarse con funciones cuya integral no puede ser computada por medio del Teorema Fundamental del Cálculo, pues pareciera ser imposible encontrar una primitiva con las técnicas del cálculo elemental. Un ejemplo importante es la función
+$$ \Phi(x) = \frac{1}{\sqrt{2 \pi }} \int_{-\infty}^{x} e^{-\frac{t^2}{2}}dt ,$$
+la cual es usada ampliamente en probabilidad, pues asigna el área acumulada bajo la curva Gaussiana $ y = (1/\sqrt{2 \pi }) e^{-t^2  /2}$. Para estas aplicaciones, resulta necesario saber que $\Phi(\infty) = 1$ (lo cual sí se cumple). Sin embargo, el cálculo de este resultado no se hace por medio del TFC, si no por métodos de cálculo multivariable, o por métodos de variable compleja. En efecto, veremos que en general, $\Phi(a)$ no puede ser calculado por medio del TFC, para ningún $a$, pues esta función no posee una primitiva ``sencilla'', o ``elemental''. \par
+Otro ejemplo notable, en la teoría de números, tiene que ver con el Teorema de los Números Primos, en donde se define $\pi(x) = \# \{ 1 \leq n \leq x \suchthat n \text{ es primo} \}$ como la función que cuenta cuántos números primos hay, antes de un $x$ real. Dicha función satisface la fórmula asintótica $\pi(x) \sim x/ \log(x)$ cuando $x \to \infty$. Esto es
+$$\lim_{x \to \infty} \frac{\pi(x) \log(x)}{x} = 1$$
+En donde $\pi(x) = \# \{ 1 \leq n \leq x \suchthat n \text{ es primo} \}$ es la función que cuenta cuántos números primos hay, antes de un $x$ real. En 1838, Dirichlet conjeturó una posible mejor aproximación asintótica para $\pi(x)$, la cual viene dada por:
+$\pi(x) \sim \operatorname{Li}(x)$ cuando $x \to \infty$, en donde:
+$$ \operatorname{Li}(x) = \int_{2}^{x} \frac{dt}{\log t}$$
+Se conoce como la \textit{integral logarítmica desplazada}, su conjetura lleva hoy el nombre del teorema, que fue demostrado independiendemente por Hadamard y Vallée Poussin en 1896. Al igual que el caso anterior, los valores de  $\operatorname{Li}(x)$ no pueden ser calculados usando el TFC. Observe que tomando el cambio de variable $ u= \log t$ se tiene la expresión alternativa
+$$ \operatorname{Li}(x) = \int_{\log 2}^{\log x} \frac{e^u du}{u}.$$
+\par
+Volviendo a la discusión, la interrogante principal es la siguiente: \emph{¿Cuándo se puede expresar la primitiva de una función explícitamente, en forma cerrada, y en términos finitos, usando solamente funciones ``elementales''?} \par
+Es importante definir formalmente a lo que nos referimos como una función \textit{``elemental''}, lo cual se hará posteriormente con total rigor, pero por el momento, vamos a pensar en estas funciones como funciones que sean una combinación finita de operaciones algebraicas ($+$,$-$,$\times$,$\div$, $\sqrt[n]{\cdot}$) de polinomios, la función exponencial, y el logaritmo natural (exponenciales y logaritmos con base diferente a $e$ se pueden expresar en términos de la exponencial usual y el logaritmo natural). Dichas funciones pueden tomarse con argumentos complejos, por lo tanto, se permiten expresiones en términos de senos y cosenos (al considerar la función $f(z) = e^{iz}$). También se permiten como funciones elementales, la combinación de estas funciones con cualesquiera de sus inversas. Además, la composición de funciones elementales también se considera una función elemental. Por ejemplo,
+$$f(x) = \frac{\arctan{(1+x+8^{\sqrt{1+x^2}}})}{\sqrt[3]{(1+\cos x)}(\log{(\frac{1}{x})})}$$
+es una función elemental (en su dominio máximo). \par
+En 1835, Liouville en \cite{MR1578036} determinó la imposibilidad de integración para ciertas funciones, además, encontró un criterio para decidir si una función dada posee antiderivada elemental o no. La versión moderna tomada de \cite{MR0321914} y \cite{BC2005} de este resultado se puede formular y demostrar de manera puramente algebraica, al considerar \textit{cuerpos diferenciales}, o sea cuerpos en donde se define una operación de derivación. \par
+Una observación interesante constituye en que el abordaje que se toma para resolver este problema, es análogo al que se usa en la Teoría de Galois, para determinar la resolubilidad de polinomios por medio de radicales, esto es, encontrar las raíces de un polinomio por medio de combinaciones de raíces $n$-ésimas, y de operaciones básicas a partir de sus coeficientes. Veremos que en nuestro contexto, en vez de polinomios, se van a resolver \textit{ecuaciones diferenciales}, sobre un cuerpo diferencial, en donde los ``coeficientes"  van a ser las funciones elementales, y los elementos ``algebraicos'', van a corresponder con las soluciones de estas ecuaciones. Además, veremos que análogamente es posible encontrar funciones que no son solución de una ecuación diferencial, al igual que es posible encontrar números trascendentes. La demostración del resultado principal se encuentra en \cite{MR0321914}
+
+\section{Preliminares}
+\subsection{Funciones $\C$ valuadas} \quad \par
+Si bien el propósito del trabajo es estudiar integrales indefinidas de funciones reales, al igual que en el caso de resolución de polinomios con coeficientes racionales, extender nuestro trabajo a $\C$ resultará muy ventajoso. Vamos a utilizar funciones $\C$-valuadas, es decir,  $f:\R \to \C$, como por ejemplo $e^{ix}$. Gracias a esto, será posible expresar las funciones trigonométricas (y sus inversas) en términos de la exponencial y el logaritmo. Recuerde que este tipo de funciones se puede expresar en la forma $f(x) = u(x) + iv(x)$, donde $u$ y $v$ son funciones reales, y que, además, $f$ es continua (o diferenciable) si y sólo si $u$ y $v$ lo son. Igualmente, la integración de $f$ se define en términos de las integrales de $u$ y $v$. \par
+Decimos que una función $\C$-valuada $f$ es \textbf{analítica} si su parte real e imaginaria pueden ser expresadas localmente como una serie de Taylor convergente. La propiedad de regularidad (ser analítica) se preserva bajo operaciones algebraicas, además se preserva bajo diferenciación e integración. Incluso, la inversa de una función analítica (al menos localmente) es también una función analítica, gracias al teorema de la función inversa. Finalmente, la composición de funciones analíticas será analítica, gracias a la regla de la cadena.
+\\
+\textbf{Observación:} Usando el hecho de que
+$$ \tan(z) = \frac{e^{iz} - e^{-iz}}{i(e^{iz} + e^{-iz})} , $$
+es posible, por medio de despeje, y haciendo la salvedad de que el logaritmo complejo es multivaluado (al igual que la tangente inversa), llegar a la identidad
+$$\tan^{-1}(z) = \frac{1}{2i}  \log{\left(\frac{z-i}{z+i}\right)}$$
+considerando alguna rama apropiada del logaritmo complejo. Este resultado, junto a las identidades
+$$\cos^{-1}(x) = \tan^{-1} \left( \sqrt{\frac{1}{x^2} - 1} \right) \quad , \quad \sin^{-1}(x) = \tan^{-1} \left( \frac{1}{\sqrt{1-x^2}}\right)  \quad , \quad  \text{para }|x|<1 , $$ 
+hacen posible expresar todas las funciones trigonométricas inversas por medio de logaritmos. En otras palabras, hemos visto que es posible expresar las funciones trigonométricas y sus inversas, al extender el dominio de nuestras funciones elementales a $\C$. \par
+Como vamos a integrar funciones, es importante omitir sus singularidades, pues las funciones no estarán definidas aquí y eso haría imposible encontrar una antiderivada. Más específicamente, vamos a limitar nuestro trabajo al conjunto de funciones \textit{meromorfas}, definidas en un cierto intervalo $ I \subseteq \R$. Estas funciones son aquellas que son analíticas en $I$, salvo por una cantidad a lo sumo contable, de puntos aislados, que serán los \textit{polos} de la función. De manera intuitiva, las operaciones algebraicas de funciones meromorfas se hacen de manera formal, esto es ``ignorando'' los puntos en donde estas no estén definidas. Dicho esto, el conjunto de funciones meromorfas en un intervalo fijo es un \textit{cuerpo}, en el cual podemos definir el mapa de derivación $f \mapsto f'$, que satisface las reglas de usuales (cadena, cociente, producto). El cuerpo de funciones meromorfas, junto con el operador de derivación es el contexto en el cual trabajaremos, y en el cual el teorema de Liouville aplica.
+\section{Elementos de Álgebra Diferencial }
+\noindent La presente sección se adaptó de \cite{MR0321914}.
+\begin{definition} Un \textbf{cuerpo diferencial } es un cuerpo $k$ equipado con una derivación, esto es, una función $(\cdot)':k \to k$ que cumple que, para todo $a,b \in k$
+\begin{enumerate}
+\item $(a+b)' = a' + b'$
+\item $(ab)' = a'b + ab'.$
+\end{enumerate}
+\end{definition}
+Consecuencias inmediatas de esto son las propiedades: $(ab^{-1})'=(ab'-a'b)(b^{-1})^2$ para $b \neq 0 $, y $(a^n)' = na^{n-1}a'$. Además, como $1' = (1^2)' = 1\cdot1' + 1\cdot1' = 1' + 1'$, entonces $1'=0$. Podemos ahora definir el subcuerpo de \textbf{constantes} de F como el conjunto de $c \in F$ tal que $c'= 0$.
+\begin{definition} Si $k$ es un cuerpo diferencial y  $a,b \in k$, decimos que $a$ es una \textbf{exponencial} de $b$, o equivalentemente, que $b$ es un \textbf{logaritmo} de $a$, si $b' = a'/a$. Note que esto coincide con las propiedades diferenciales de $e^x$ y $\log(x)$. Tenemos entonces  la identidad de derivación logarítmica
+$$\frac{(a_1^{p_1} \cdots a_n^{p_n})'}{(a_1^{p_1} \cdots a_n^{p_n})} = p_1\frac{a_1'}{a_1} + \cdots + p_n\frac{a_n'}{a_n}.$$ 
+\end{definition}
+El siguiente resultado es importante para el desarrollo de este trabajo, se demuestra detalladamente en \cite{MR0321914}
+\begin{theorem}
+Sea $F$ un cuerpo diferencial de caracterísitica $0$ y $K$ una extensión algebraica de $F$. Entonces una derivación en $F$ se puede extender a una derivación en $K$. Dicha extensión es única.
+\end{theorem}
+\begin{definition}
+Sea $F$ un cuerpo diferencial, diremos que un cuerpo diferencial $K$  una \textbf{extensión diferencial de $F$} si la derivación en $K$ extiende a la derivación en $F$.
+\end{definition}
+\begin{lemma} Sea $F$ un cuerpo diferencial, $t$ un elemento trascendente sobre $F$, y $F(t)$ una extensión diferencial de $F$ que tenga el mismo subcuerpo de constantes. Entonces
+\begin{enumerate}
+\item Si $t' \in F$, entonces para todo polinomio $f(X) \in F[X]$ no constante, $(f(t))'$ es un polinomio en $t$ con coeficientes en $F$. El grado de  $(f(t))'$ será el mismo que el de $f$, salvo si el coeficiente principal de $f$ es una constante. En dicho caso será un grado menor.
+\item Si $t'/t \in F$, entonces para todo $a \in F$ y todo entero no nulo $n$, se tiene que $(at^n)' = ht^n$, para algún $h \in F$ no nulo. Entonces para cualquier polinomio $f(X) \in F[X]$ no constante, $(f(t))'$ es un polinomio con coeficientes en $F$, del mismo grado que $f$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Consideremos primero el caso $t' \in F$. Sea $f(t) = a_nt^n+a_{n-1}t^{n-1}+\dots + a_0$, con $a_i \in F$ para $i = 1,2,...,n$ y $a_n \neq 0 $. Derivando a $f$ se tiene que
+$$(f(t))' = a'_nt^n + (na_nt'+a'_{n-1})t^{n-1} + \dots + (2a_2t' + a'_1)t + a_1t' +  a_0'.$$
+Entonces vemos que en efecto, $(f(t))' \in F[t]$, Observe que si $a_n$ es constante, su derivada es cero y el grado se vería reducido en $1$. El grado no se puede reducir más, ya que si se asume que $a'_n = 0$ y que $na_nt' + a'_{n-1} = 0$ esto implicaría que $na_nt + a_{n-1}$ es una constante, y por lo tanto $t \in F$, lo cual es contradictorio.
+
+Ahora, si $t'/t \in F$, sea $a \in F$ distinto de $0$, y $n \in \mathbb N$ también distinto de $0$. Entonces
+$$ (at^n)' = a't^n + nat^{n-1}t' = \left(a' + na\frac{t'}{t}\right)t^n.$$
+Note que una vez más, $\left(a' + na\frac{t'}{t}\right) $ no puede ser $0$, puesto que esto implicaría que $at^n$ es constante y $t \in F$. Entonces esta expresión no se anula. Aplicando este resultado para sumandos de monomios se obtiene el resultado para polinomios.
+\end{proof}
+\begin{definition}
+Sea $F$ un cuerpo diferencial. Diremos que una \textbf{extensión elemental} de $F$ es una extensión diferencial que es obtenida al adjuntar un número finito de elementos que son algebraicos, exponenciales, o logaritmos. Más precisamente, se trata de una extensión $F(t_1,...,t_N)$ en donde, para cada $i$, el elemento $t_i$ es algebraico sobre $F(t_1,...,t_{i-1})$, o un logaritmo (o una exponencial) de algún elemento de $F(t_1,...,t_{i-1})$. Cada uno de los cuerpos intermedios será una extensión diferencial elemental.
+
+\end{definition}
+El siguiente teorema corresponde a una versión moderna del trabajo de Liouville. Si bien la prueba original  de \cite{MR1578036} explora conceptos analíticos, el problema se puede reformular algebraicamente de manera general.
+\begin{theorem}[Liouville\footnote{La prueba moderna se debe a Ostrowski, 1946, y fue adaptada de \cite{MR0321914}.}, 1835]
+Sea $F$ un cuerpo diferencial de característica $0$, y sea $\alpha \in F$. Si la ecuación $y' = \alpha$ tiene solución en alguna extensión elemental (diferencial) de $F$, cuyo subcuerpo de constantes coincida con el de $F$, entonces existen constantes $c_1, \dots, c_n \in F$, y elementos $u_1, \dots , u_n , v \ in F$ de manera que
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + v'$$
+\end{theorem}
+El recíproco del teorema no es complicado de demostrar. Es decir, si $\alpha$ tiene una expresión de este tipo en alguna extensión elemental, entonces posee una integral en dicha extensión.
+\begin{proof}
+Por hipótesis, existe una torre de extensiones diferenciales
+$$ F \subset F(t_1)\subset \cdots \subset F(t_1, \dots, t_N)  $$
+Que comparten el mismo cuerpo de constantes, y en donde cada $t_i$ es algebraico, exponencial, o logarítmico sobre la extensión anterior. Sea $y \in F(t_1, \dots, t_N)$ tal que $y' = \alpha$. Vamos a aplicar inducción sobre $N$. El caso $N=0$ es trivial, puesto que la expresión para $\alpha$ es ella misma. Suponga que $N>0$ y que el resultado aplica para $N-1$. Considerando un paso menos en la torre 
+$$  F(t_1)\subset \cdots \subset F(t_1, \dots, t_N)  $$
+podemos aplicar la hipótesis de inducción y deducir que existe una expresión para $\alpha$ de la forma deseada, pero con $u_1, \dots , u_n , v \in F(t_1),$ 
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + v'.$$
+A partir de ahora denotamos $t_1 = t$. Solo falta encontrar una expresión similar para $\alpha$, con los elementos que necesitamos en $F$.
+
+\textbf{Caso 1:} Suponga primero que $t$ es algebraico sobre $F$, en cuyo caso es posible hallar polinomios $U_1, \dots, U_n , V \in F[X]$ tales que $U_i(t) = u_i$ para $i = 1, \dots, n$, y $V(t)  = v$. Considere ahora una extensión que $F(t)$ que contenga a todos los conjugados de $t$, y les llamaremos $\tau_1, \tau_2, \dots, \tau_s$ con $t = \tau_1$. Entonces tenemos las expresiones $$\alpha = \sum_{i=1}^{n} c_i \frac{(U_i(\tau_j))'}{U_i(\tau_j)} + (V(\tau_j))'$$
+las cuales son válidas para $j=1,\dots,s$. Al sumar todas estas expresiones y dividir por $s$ se llega a
+$$\alpha = \sum_{i=1}^{n} \frac{c_i}{s}\frac{(U_i(\tau_1) \cdots U_i(\tau_s))'}{(U_i(\tau_1) \cdots U_i(\tau_s))} + \left(\frac{V(\tau_1) + \dots + V(\tau_s)}{s}\right)'$$
+en donde se aplicó la regla de derivación logarítmica. Note que las expresiones $U_i(\tau_1) \cdots U_i(\tau_s)$ y $V(\tau_1) + \dots + V(\tau_s)$ corresponden con la norma y la traza de $t$ sobre $F$. Por lo tanto toman valores en $F$. Entonces la expresión anterior tiene la forma deseada para $\alpha$.
+
+\textbf{Caso 2:} Asumamos ahora que $t$ es exponencial o logarítmico sobre $F$, y que además, es trascendente. Volviendo a la expresión original, se puede escribir como
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i(t)}{u_i(t)} + (v(t))'$$
+con $u_1(t), \dots, u_n(t) , v(t) \in F(t)$. Ahora, factorizando cada $u_i(t)$ en factores mónicos irreducibles (posiblemente factorizando constantes de camino), es posible reescribir la suma $\sum_{i=1}^{n} c_i u'_i(t)/u_i(t)$ de manera que todos los $u_i$ sean distintos, mónicos, e irreducibles. Además sin pérdida de generalidad, se asume que ninguno de los $c_i$ es $0$. Ahora, al tomar la descomposición por fracciones parciales de $v$, que la expresa como la suma de un elemento de $F[t]$ más términos de la forma $g(t)/f(t)^r$, en donde $f$ es irreducible y mónico, $r$ es un entero positivo, y $g$ tiene grado menor al de $f$. Para ver que todas estas expresiones suman siempre $\alpha$, conviene considerar dos casos.
+
+Primero se asume que $t$ es el logaritmo de algún elemento de $F$. Es decir, $t' = a'/a$, para $a \in F$. Sea $f(X)$ un polinomio mónico irreducible en $F[X]$. Sabemos que $(f(t))'$ es también un polinomio con coeficientes en $F$, de grado estrictamente menor al de $f$, y por ende vemos que $f(t) \nmid (f(t))'$. Entonces, aplicando esta observación a los $u_i(t)$, vemos que la fracción $(u_i(t))'/u_i(t)$ está expresada en forma canónica. Ahora, si $g(t)/f(t)^r$ ocurre en la descomposición de fracciones parciales de $v$ (en la forma discutida previamente). Entonces $(v(t))'$ consiste de varios términos que contienen a $f(t)$ en el denominador (a lo sumo elevado a la $r+1$). en particular se tiene el elemento $(g/(f^r)') = -rgf'/(f^{r+1})'$. Como $f(t)$ no divide a $g(t)(f(t))'$, tenemos que un término con denominador $(f(t))^{r+1}$ aparecerá en $(v(t))'$. Todo esto nos dice que $\alpha$ depende de $t$, pues no es posible deshacerse del denominador que contiene a $f(t)$. Claramente $\alpha$ no debe depender de $t$, por lo tanto es erróneo suponer que $f(t)$ aparece como denominador en $v(t)$, ni como uno de los $u_i(t)$. Como $f(t)$ es arbitrario, en particular aplica para los $u_i(t)$, quienes se asumieron mónicos irreducibles. Es decir, debe cumplirse que $u_i(t) \in F$, y que $v$ no tiene denominadores en su descomposición, esto es, $v(t) \in F[t]$. Pero como $(v(t))' \in F$, gracias al lema 3.5, tenemos que $v(t) = ct +d$, y por lo tanto la expresión para $\alpha$ es
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + c\frac{a'}{a} + d'.$$
+Finalmente, considere el caso en donde $t$ es la exponencial de algún elemento $b \ in F$. O sea, $t'/t = b$. Volviendo a aplicar el lema 3.5, vemos que $f(t) \nmid (f(t))'$. Repitiendo el razonamiento anterior, concluimos que $f$ tampoco puede aparecer en los denominadores de ninguna de los sumandos de la expresión original para $\alpha$. Por lo tanto, $v(t)$ es de la forma $\Sigma_j a_jt^j$, en donde $j \in \Z$ y los $u_i(t)$ son elementos en $F$ que no dependen de $t$ (salvo la posibilidad de que algún $u_i$ sea el polinomio $t$).Como las expresiones $(u_i(t))'/(u_i(t))$ están en $F$, despejando de la fórmula original, vemos una vez más que $(v(t))' \in F$, y por lo tanto $v(t) \in F$ por el lema. Por último, si cada uno de los $u_i(t)$ están en $F$, entonces tenemos la expresión deseada. De no ser el caso, entonces sin pérdida de generalidad asuma que $u_1(t) = t$, mientras que los demás sí están en $F$. Podemos escribir entonces
+$$\alpha = c_1\frac{t'}{t} +  \sum_{i=2}^{n} c_i \frac{u'_i}{u_i} + v' = \sum_{i=2}^{n} c_i \frac{u'_i}{u_i}  + (c_1b + v)'$$
+donde $u_2,\dots,u_n, c_1b+v \in F$. Esto termina la demostración.
+\end{proof}
+\section{Funciones elementales}
+Vamos a volver nuevamente al contexto de interés, que es el cuerpo de funciones meromorfas, con la derivada usual. Esta sección está ampliamente basada en \cite{BC2005}.
+\begin{definition}
+Si $f_1, \dots, f_n$ son funciones meromorfas de una variable $x$, entonces $\C(f_1,...,f_n)$ denota al cuerpo de funciones meromorfas  que consisten de expresiones racionales en variables $x,f_1, \dots, f_n$. Es decir, funciones de la forma
+$$ h(x) = \frac{p(x,f_1,\dots,f_n)}{q(x,f_1,\dots,f_n)},$$
+donde $p$ y $q$ son polinomios en $\C[X_0,X_1,\dots,X_n]$, y $q \neq 0$. Recordemos que cabe la posibilidad de que estas expresiones no estén definidas, gracias a los polos de las funciones, sin embargo siempre se puede restringir el dominio. A continuación se presenta la esperada definición de función elemental.
+\end{definition}
+\begin{definition}
+Un cuerpo diferencial $K$ de funciones meromorfas se dice ser \textbf{elemental} si es una extensión elemental de $\C(X)$ de la forma $K = \C(f_1,\dots,f_n)$. Una función meromorfa es \textbf{elemental} si pertenece a algún cuerpo elemental de funciones meromorfas.
+\end{definition}
+\begin{remark}
+Recuerde que al extender un cuerpo diferencial, es posible extender la derivación. Esto en particular nos dice que los cuerpos elementales son cerrados bajo la diferenciación. O en otras palabras, \textit{la derivada de una función elemental, es una función elemental.}
+\end{remark}
+\begin{remark}
+Es importante enfatizar que no todo cuerpo de la forma $\C(f_1,\dots,f_n)$ es un cuerpo diferencial. Por ejemplo $\C(\sin (x),\cos (x))$ es un cuerpo diferencial (de hecho es elemental, gracias a las identidades de Euler), pero $\C(\sin (x))$ no lo es, puesto que la derivada de $\sin(x)$ no se encuentra definida aquí. \end{remark}
+Tenemos ahora una de las definiciones más importantes del trabajo:
+\begin{definition}
+Una función meromorfa $f$ puede \textbf{ser integrada en términos elementales} si  $f=g'$, para alguna función elemental $g$. Observe que esto implica que $f$ es elemental.
+\end{definition}
+Estamos entonces en condiciones para formular el teorema de Liouville en términos de integrabilidad elemental de funciones $\C$-valuadas. Note que en este caso, todas las extensiones elementales de los complejos comparten el mismo cuerpo de constantes ($\C$ propiamente).
+\begin{theorem}[Liouville] Sea $f$ una función elemental, y sea $K$ un cuerpo elemental que contenga a $f$. Entonces la función $f$ puede ser integrada en términos elementales si y solo si existen $c_1, \dots, c_n \in \C$, $g_1, \dots, g_n \in K$, y un elemento $h \in K$ tal que
+$$ f = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+\end{theorem}
+Note que se trata de una simple reformulación del teorema 3.7. Recuerde además que las expresiones $g'_j/g_j$ son derivadas logarítmicas de las funciones $g_j$.
+
+Este teorema es una herramienta muy fuerte para determinar integrabilidad, ya que impone condiciones muy rígidas acerca de qué tipo de funciones pueden ser integradas en términos elementales. Este teorema se puede considerar como un análogo lejano al teorema de Galois de irreducibilidad de polinomios, que establece que un polinomio puede ser resuelto por radicales si y solo si su grupo de Galois es soluble.
+
+Antes de hablar de ejemplos es importante enfatizar un punto importante con respecto a estos resultados, el cual es la importancia de trabajar sobre los números complejos. Si los resultados aquí presentados se aplicaran al cuerpo de los números reales, el criterio de Liouville seguiría siendo válido, pero no funciona como se esperaría. A manera de ejemplo, se puede considerar $f(x) = 1/(1+x^2)$. La antiderivada de esta función es la tangente inversa, como cualquier estudiante de cálculo diferencial podrá notar. Sin embargo, al aplicar el criterio de Liouville a esta función, se obtiene que esta función no es integrable en términos elementales sobre $\R$ (el lector puede verificar que es imposible escribir $f$ de la forma requerida en el teorema). Esto se debe directamente a que las funciones trigonométricas no son exponenciales ni logarítmicas sobre ninguna extensión elemental de $\R$.
+\section{Ejemplos y Aplicaciones}
+
+Las aplicaciones del teorema de Liouville son tomadas de \cite{RC2016} y de \cite{BC2005}. Comenzamos con un corolario directo del teorema 4.6
+\begin{corollary}
+Sea $E$ un cuerpo elemental, y sea $g \in E$. Sea $K(l)$ una extensión elemental de $E$, en donde $l$ es la exponencial de $g$ (podemos escribirlo como $l=e^g$ pues ya estamos trabajando en $\C$). Sea $f \in E$ arbitrario. Entonces $fl=fe^g$ es integrable en términos elementales sobre alguna extensión de $K$ si y solo si existe un elemento $a \in E$ tal que $$f = a' + ag'$$
+o equivalentemente
+$$fe^g = (ae^g)'.$$
+\end{corollary}
+\begin{proof}
+Asumamos integrabilidad, esto nos garantiza la existencia de $c_j \in \C$, y funciones $g_j,h \in K$ de tal forma que 
+$$ fl = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+Entonces, tomando el lado derecho como función de $l$, y argumentando de manera similar a la demostración del teorema de Liouville (para el caso $t$ trascendente y exponencial), se concluye que el monomio $l$ es el único factor mónico irreducible que puede aparecer en la descomposición de fracciones parciales de $h$, además de ser la única opcion posible para las $g_j(l)$ (salvo claramente ser constantes). Similarmente a la prueba del teorema, se llega a una expresión para $fl$ de la forma
+$$fl = c + \sum_{j=-t}^{t}k'_jl^j + g' \sum_{j=-t}^{t}jk_jl^j$$
+con coeficientes $k_j \in E$ (recuerde que $l'/l = g'$). Entonces, comparando coeficientes de igual potencia a cada lado de la igualdad, se tiene que $fl =  k'_1 + k_1g'$, exactamente lo que buscamos. Finalmente, el recíproco es obvio, cuando se cumplen las hipótesis suficientes, entonces la primitiva de $fe^g$ viene dada directamente por $ae^g$.
+\end{proof}
+\begin{example}
+La función $f(x) = e^{-x^2}$ no tiene primitiva elemental.
+
+Observe que vamos a trabajar sobre el cuerpo elemental $K = \C(e^{-x^2})$. Entonces basta con demostrar que no existe $a \in \C(x)$ tal que $1=a'-2ax$. Suponga que $a = p/q$ es dicha función, y sin pérdida de generalidad, que $p$ y $q$ son coprimos. Entonces
+\begin{align*}
+1=a'-2ax &\Rightarrow 1=\frac{qp'-q'p}{q^2} - 2\frac{px}{q} \\
+&\Rightarrow q^2 = qp'-q'p -2xqp \\
+&\Rightarrow q(q+2px-p') = -q'p \\
+&\Rightarrow q\mid q'p \\
+&\Rightarrow q\mid q' \\
+&\Rightarrow q' = 0.
+\end{align*}
+Entonces $q$ debe ser una constante. Entonces $a$ es un polinomio, y la expresión $1=a'-2ax$ se vuelve absurda después de una breve inspección de grados. Hemos demostrado que los valores de las funciones Gaussianas (como la función error $\operatorname{erf}(X)$) no pueden ser calculados por medio del teorema fundamental del cálculo directamente. Esto no implica de ninguna manera que la ecuación diferencial lineal $1=a'-2ax$ no se pueda resolver. Simplemente no se puede resolver en términos elementales (volvemos a recalcar la analogía con los polinomios no resolubles).
+\end{example}
+\begin{example}
+Un ejemplo menos concreto, se trata la familia de integrales elípticas, las cuales son integrales de la forma $\int dx/\sqrt{P(x)}$, donde $P(x)$ es un polinomio cúbico, o cuártico. Dichas integrales surgen en los cálculos de longitudes de arco a lo largo de elipses y curvas similares. En general, si $P$ tiene grado mayor o igual que $3$, y no posee raíces repetidas, la integral $\int dx/\sqrt{P(x)}$ no es una función elemental. Gracias al teorema de Liouville, basta con estudiar la existencia de coeficientes complejos $c_i$ y de funciones $g_j$ en $\C(\sqrt{P(x)})$ de tal forma que 
+$$ \frac{1}{\sqrt{P(x)}} = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+Dicha imposibilidad se debe a la teoría de superficies de Riemann, que corresponde con resultados geométricos avanzados, por lo cual se omitirá.
+\end{example}
+\begin{example}
+Retomando el ejemplo de la introducción, vimos que calcular la integral logarítmica equivale a calcular la integral 
+$$ \operatorname{Li}(x) = \int_{\log 2}^{\log x} \frac{e^u du}{u}.$$
+Sin embargo, al aplicar el corolario 5.1 a esta función, vemos que necesitamos encontrar una función racional $a$ que resuelva la ecuación diferencial $1/x = a' + a$. Se deja al lector la verificación de la imposibilidad de este hecho (se argumenta similar al ejemplo 5.2). Entonces hemos visto que una función tan central en la teoría de números, evade las herramientas básicas del cálculo.
+
+De hecho, empleando el corolario 5.1, y con la ayuda de algunos cambios de variable, es posible demostrar que las siguientes funciones no tienen primitiva elemental:
+\begin{itemize}
+\item $f(x) = e^{e^{x}}$
+\item $f(x) = 1/\log(x)$
+\item $f(x) = \log(\log(x))$ (aquí es necesario aplicar integración por partes).
+\end{itemize}
+\end{example}
+\section{Conclusión}
+El estudio algebraico de las ecuaciones diferenciales ha rendido muchos frutos, y el teorema de Liouville representa uno de los primeros avances en esta área. Posteriormente, en el siglo XX, Risch desarrolló un algoritmo que es capaz de calcular la antiderivada de una función, el cual se basa fuertemente en la expresión necesaria dada por el teorema.
+
+Adicionalmente, en \cite{MR0028347}, se da una clasificación de los tipos de funciones, de acuerdo al tipo de extensión necesaria para incluirla en un cuerpo. Al igual que en la teoría de Galois, hay funciones algebraicas y trascdendentes, las cuales corresponden adecuadamente a aquellas funciones que son soluciones a polinomios con coeficientes constantes, y a aquellas que no, respectivamente. Los ejemplos sencillos de funciones algebraicas son las expresiones racionales, incluyendo los polinomios. Ejemplos de funciones trascendentes son: la función exponencial, el logaritmo, y las trigonométricas. Sin embargo, por medio de extensiones diferenciales, es posible caracterizar estas últimas funciones como soluciones de ecuaciones diferenciales, con coeficientes elementales. Existe un tercer tipo de funciones, las cuales no tienen análogo directo en la teoría de cuerpos, a las que se les llamó funciones hipertrascendentales, las cuales no son solución de ninguna ecuación diferencial con coeficientes elementales. Ejemplos notables de funciones hipertrascendentales sobre $\C$ son las funciones $\Gamma(s)$ y $\zeta(s)$.
+\bibliographystyle{siam}
+\bibliography{Referencias}
+
+
+
+\end{document}
