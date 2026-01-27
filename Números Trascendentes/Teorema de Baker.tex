@@ -1,0 +1,407 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{amscd}        % Package used to produce simple commutative diagrams
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage[english,spanish]{babel}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+%\setlength\parindent{0pt}
+
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Teorema}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{conjecture}[theorem]{Conjetura}
+\renewenvironment{proof}{\paragraph{\textbf{Prueba: }}}{\hfill$\blacksquare$}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Observación}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+
+
+%\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\bigcup}}
+%\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\bigcup}}
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+\renewcommand{\baselinestretch}{1}
+
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{question}[theorem]{claim}
+
+
+
+\newcommand{\cd}[4]{
+\begin{CD}
+#1    @>>>    #2\\
+@VVV    @VVV\\
+#3    @>>>    #4
+\end{CD}
+}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+
+
+\begin{document}
+
+\title{%
+  Teoría de Números Trascendentes. El Séptimo Problema de Hilbert}
+
+\author{J. Ignacio Padilla Barrientos
+}
+
+
+
+\pagestyle{fancy}
+\fancyhead[]{}
+\lhead{MA-506 Teoría Analítica de Números}
+\rhead{Prof. Adrián Barquero Sánchez}
+\setlength{\headheight}{13pt}
+
+\address{Escuela de Matem\'atica, Universidad de Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{juan.padillabarrientos@ucr.ac.cr}
+\begin{abstract}
+  La teoría de números trascendentes estudia aquellos números que no son solución de ninguna ecuación polinomial (con coeficientes enteros). El problema de demostrar que un número es trascendente, ha resultado retador a lo largo de la historia. En 1900, David Hilbert presentó una lista con 23 problemas, los cuales desarrollarían la matemática durante el siglo pasado. El objetivo principal de este trabajo, es presentar la solución al problema número 7, dada por Gelfond y Schneider, de manera independiente en 1934.
+
+  \noindent
+  \textit{Palabras Clave:} algebraico, altura, independiente, irracional, trascendente. \\
+  \textit{Clasificación:} 11J81
+\end{abstract}
+\maketitle
+\section{Introducción: }
+
+El teorema fundamental del álgebra nos dice que cualquier polinomio no constate con coeficientes enteros (o equivalentemente racionales) tiene raíces en los números complejos. Una pregunta importante que surge, es en cierta manera un recíproco, ¿Dado un número complejo $\alpha$, existirá un polinomio $p(x) \in \mathbb{Z}[x]$ de tal manera que $p(\alpha)=0$?. Si tal polinomio no existe, diremos que ese número es \textbf{trascendente} sobre $\mathbb{Q}$. Como no vamos a trabajar sobre otros cuerpos, diremos solo trascendente.
+
+Más generalmente, un conjunto de números $\{\alpha_1,\dots , \alpha_n \}$ se dice ser \textbf{algebraicamente independiente} (sobre $\mathbb{Q}$), si no existe un polinomio no nulo, en varias variables $p \in \Q[x_1,\dots,x_n]=0$ tal que $p(\alpha_1,\dots ,\alpha_n )$. Caso contario, decimos que el conjunto es \textbf{algebraicamente dependiente}. Note que el concepto de trascendencia simplemente es un caso de independencia algebraica (para un conjunto con $1$ elemento).
+Una pregunta interesante es ¿Existen números trascendentes?. No es fácil probar que un número es trascendente a partir de la definición, pues necesitaríamos descartar todos los posibles polinomios de todos los grados. La primera respuesta afirmativa a esta pregunta fue dada por Liouville en 1840. Posteriormente, gracias a las ideas de cardinalidad de Cantor, se descubrió que la vasta mayoría de números complejos son de hecho trascendentes.
+
+Otros números se han demostrado trascendentes, como $\pi$ y $e$, sin embargo, en general, el estudio de trascendencia es diferente para cada número, o al menos así lo fue hasta que en 1900, en el congreso internacional de matemáticas, Hilbert enunció una lista de 23 problemas, uno de los cuales está relacionado con el estudio de los números trascendentales. El sétimo problema de Hilbert establece que si \textit{$\alpha,\beta$ son números algebraicos,  $\alpha \notin \{0,1\}$, y $\beta$ es irracional, entonces $\alpha^\beta$ es un número trascendente.}
+
+Después de algunos avances menores, en \cite{AG1934}, Gelfond demostró el problema 7. Schneider también llegó independientemente a la misma conclusión. Ambos trabajos se basaron en ideas de Siegel del cálculo complejo multivariable.
+
+Finalmente, como un resultado más fuerte (el cual fue conjeturado originalmente por el mismo Gelfond), Baker, en \cite{AB1966}, demostró que dados $\alpha_1,\dots , \alpha_n $ algebraicos no nulos, si $ \log \alpha_1 , \dots , \log\alpha_n$ y $ 2\pi i$ son linealmente independientes sobre $\mathbb{Q}$, entonces $\log \alpha_1 , \dots , \log\alpha_n $ son linealmente independientes sobre $\overline{\Q}^{alg}$(el conjunto de todos los números algebraicos sobre $\Q$). Este resultado, junto a otros trabajos en la teoría de trascendencia, hicieron a Baker acreedor de la medalla Fields, en 1970.
+
+\section{Preliminares}
+La primera sección de este trabajo es basada en  \cite{KS2010} y en \cite{EB2014}, los cuales resumen adecuadamente muchos resultados necesarios. También se adaptaron algunos resultados de \cite{AB1975}, el cual es un libro del propio Baker,  que recopila muchos resultados en la teoía de números trascendentes.
+
+Vamos a establecer algunos resultados y definiciones preliminares, los cuales son de interés histórico, y también nos ayudarán a entender las secciones posteriores de los teoremas de Gelfond y Baker. El primer resultado es muy sencillo, y fue el que permitió a Liouville encontrar los primeros números trascendentes.
+\begin{theorem}[Liouville]
+  Si $p(x) \in \Z[x]$ es un polinomio de grado $n$, y $\alpha$ es una raíz irracional de $p$, entonces existe una constante $c = c(\alpha) >0$ tal que
+  $$\left| \alpha - \frac{a}{q}\right| \geq \frac{c(\alpha)}{q^n}$$
+  para cualesquiera enteros positivos $a,q$.
+
+\end{theorem}
+\begin{proof}
+  La prueba es sencilla. Suponga sin pérdida de generalidad $p$ es irreducible (si no lo fuera, entonces $\alpha$ anula a un factor de $p$ de grado $k<n$, y entonces $1/q^k \geq 1/q^n$). Por el teorema del valor medio,
+  $$p(\alpha) - p(a/q) = (\alpha - a/q)p'(\xi)$$
+  para algún $\xi$ entre $\alpha$ y $a/q$. Pero $p(\alpha)=0$, y $p(a/q)$ es un número racional con denominador $q^n$. Por lo tanto
+  $$\frac{A}{q^n} \leq \left|\alpha - \frac{a}{q} \right| \sup_{[\alpha , a/q]} |p'(x)|, \quad    A\in \Z$$
+  Además, si $\left|\alpha - \frac{a}{q} \right|>1$ el resultado es trivial, entonces podemos asumir que $a/q$ está a lo sumo a distancia $1$ de $\alpha$. Por lo que obtenemos
+  $$\frac{A}{q^n} \leq \left|\alpha - \frac{a}{q} \right| \sup_{[\alpha -1,\alpha+1]} |p'(x)|,$$
+  que es lo que buscamos.
+\end{proof}
+
+En resumen, este teorema dice que un número algebraico no puede ser aproximado \textit{demasiado bien} por números racionales. Según \cite{KS2010}, Liouville usó esto para probar que el siguiente número es trascendente
+$$\sum_{n=1}^{\infty} 10^{-n!},$$
+pues si se asumiera lo contrario, sería fácil contradecir el teorema 2.1. Este resultado puede ser mejorado, cambiando el $n$ del denominador por un $2+\varepsilon$, donde $\varepsilon >0$.
+
+Vamos ahora a presentar un resultado importante, sobre el cual gran parte de la teoría de trascendencia se basa. La prueba será solo un boceto, tomado de \cite{AB1975}.
+\begin{theorem}[Hermite] $e$ es un número trascendente.
+\end{theorem}
+\begin{proof}
+  Primero, observemos que si $f(x)$ es un polinomio real de grado $m$, y si
+  $$I(t) \coloneqq \int_0^{t} e^{t-u}f(u)du,$$
+  donde $t\in \mathbb{C}$, y la integral se interpreta como una integral de línea sobre el segmento que une a $0$ y a $t$, integrando por partes repetidamente, se obtiene
+  \begin{align}I(t,f) = e^t \sum_{j=0}^{m} f^{(j)}(0) - \sum_{j=0}^m f^{(j)}(t),\end{align}
+  Y por lo tanto,
+  $$|I(t,f)| \leq \int_0^t|e^{t-u}f(u)|du \leq |t|e^{|t|}\hat{f}(|t|),
+  $$
+  donde $\hat{f}(t)$ denota el polinomio obtenido por reemplazar los coeficientes de $f$ por sus valores absolutos.
+
+  Ahora asumimos que $e$ es algebraico, de manera que para algunos enteros $q_0 , \dots, q_n,$
+  \begin{align}q_0 + q_1e + \dots + q_ne^n = 0 \end{align}
+  Considere ahora el número
+  $$J \coloneqq q_0I(0,f) + q_1I(1,f) + \dots + q_nI(n,f),$$
+  donde
+  $$f(x) = x^{p-1}(x-1)^p \cdots (x-n)^p,$$
+  con $p$ un número primo grande. Por (2.1) y (2.2), se demuestra que
+  $$J=-\sum_{j=0}^m \sum_{k=0}^n q_k f^{(j)}(k),$$
+  para $m=(n+1)p -1$. Claramente $f^{(j)}(k) = 0$ si $j<p$ , $k>0$, o si $j<p-1$ , $k=0$, entonces para todos los $j,k$ distintos de $j=p-1$ , $k=0$, se tendrá que $f^{(j)}(k)$ es un entero divisible por $p!$. Además,
+  $$f^{(p-1)}(0) = (p-1)! (-1)^{np}(n!)^p,$$
+  por lo que, si $p>n$, $f^{(p-1)}(0)$ es un entero divisible por $(p-1)!$, pero no por $p!$. Se sigue que si $p > |q_0|$, entonces $J$ también es un entero (no nulo) divisible por $(p-1)!$. Finalmente, con el estimado trivial $\tilde{f}(k) \leq (2n)^m$, junto con nuestra hipótesis produce
+  $$(p-1)! \leq |J| \leq |q_1|e\tilde{f}(1) + \dots + |q_n|ne^n \tilde{f}(n) \leq c^p.$$
+  para algún $c$ que no depende de $p$. Estos estimados son inconsistentes si $p$ se toma demasiado grande, por lo que se llega a una contradicción.
+\end{proof}
+
+La prueba de este resultado, si bien es un poco técnica, tiene argumentos importantes, los cuales se consideran como estándares. De hecho, utilizando ideas muy similares, se puede demostrar
+\begin{theorem}[Lindemann] $\pi$ es un número trascendente
+\end{theorem}
+Este teorema confirma la imposibilidad de la cuadratura del círculo, problema clásico de la antigua Grecia.
+
+Posteriormente, en 1882, Lindemann refinó sus argumentos, y produjo un boceto de demostración del siguiente resultado. Su demostración rigurosa se debe a Weierstrass.
+\begin{theorem}[Lindemann-Weierstrass] Para cualesquiera números algebraicos distintos $\alpha_1, \dots , \alpha_n$, y cualesquiera números algebraicos $\beta_1,\dots,\beta_n$ (no nulos), se tiene
+  $$\beta_1e^{\alpha_1} + \dots + \beta_ne^{\alpha_n} \neq 0$$
+\end{theorem}
+La demostración es una generalización directa de la prueba del teorema 2.2, sin embargo es más elaborada.
+
+Es importante que este poderoso resultado implica inmediatamente la trascendencia de muchos números. Entre ellos $e, \pi, e^{\alpha} , \sin(\alpha) , \cos(\alpha), \tan(\alpha), \log(\alpha)$  para $\alpha$ algebraico no nulo (y distinto de $1$ para el logartimo). Adicionalmente, de este teorema se sigue que si los $\alpha$'s son además, linealmente independientes (sobre $\Q$), los $e^{\alpha}$'s son entonces algebraicamente independientes (también sobre $\Q$). Este teorema resume satisfactoriamente todos los preliminares de esta sección, y podemos proseguir a estudiar el teorema de Gelfond-Schneider.
+\section{El teorema de Gelfond-Schneider}
+En esta sección vamos a presentar un resumen de la solución original de Gelfond al problema 7 de Hilbert, la cual fue publicada en \cite{AG1934} en una revista de la Unión Soviética, por lo que su notación se encuentra bastante desactualizada. Además el idioma original del artículo es el francés.
+
+\noindent Primero veamos las siguientes equivalencias:
+\begin{theorem}
+  Las siguientes aserciones son equivalentes
+  \begin{enumerate}[1)]
+    \item Si $\alpha$ y $\beta$ son números algebraicos con $\alpha \notin \{0,1\}$, y $\beta$ irracional, entonces $\alpha^\beta$ es trascendente (esto no es nada más que el problema de Hilbert).
+    \item Si $l$ y $\beta$ son números complejos, con $l \neq 0$, y $\beta$ irracional, al menos uno de los siguientes números es trascendente: $e^l, \beta, e^{\beta l}$.
+    \item Si $\alpha,\beta$ son números algebraicos no nulos, con\footnote{Vamos a asumir la rama principal del logaritmo, aunque se podría trabajar en cualquier rama (fija).} $\log(\alpha)/\log(\beta)$ irracional, entonces $\log(\alpha)$ y $\log(\beta)$ son linealmente independientes sobre los números algebraicos. Esto es equivalente a que (asumiendo que $\beta \neq 1$) $\log(\alpha)/\log(\beta)$ es un número trascendente.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{itemize}
+    \item Para ver que 1) implica 2), tome $\alpha = e^l$. Entonces claramente $\alpha^\beta = e^{l\beta}$ es trascendente.
+    \item Para ver que 2) implica 3), Tome $l=\log \beta$, $\beta' = \log(\alpha)/\log(\beta)$, inmediatamente vemos que $\beta'$ debe ser trascendente pues ni $e^l$ ni $e^{l\beta}$ lo son.
+    \item Para ver que 3) implica 1), sean $\alpha,\beta$ como en 1). Si $\beta' = \alpha ^\beta = e^{\beta \log \alpha}$ es algebraico, entonces podemos usar la contrapositiva de 3), pues note que $\log \beta'$ y $\log \alpha$ son \textit{l.d} sobre los algebraicos, lo cual implica que  $\log \beta' / \log \alpha = \beta$ es racional, lo cual prueba una contraposición de 1).
+  \end{itemize}
+\end{proof}
+
+Gelfond se concentró principalmente en demostrar 3) del teorema anterior, lo cual resuelve igualmente el problema. Para proseguir con la prueba, tendremos una vez más que $\alpha \notin \{0,1\}$, y $\beta$ irracional . Asumiremos por contradicción que $\eta = \log(\alpha) / \log(\beta)$ es irracional algebraico. Sean $p_1,p_2,p_3$ los grados algebraicos de $\alpha,\beta,\eta$, respectivamente. Sean además $\alpha_1,\dots,\alpha_{p_1}$ los conjugados algebraicos de $\alpha$ (en una extensión lo suficientemente grande), $\beta_1,\dots,\beta_{p_2}$ los de $\beta$, y $\eta_1,\dots,\eta_{p_3}$ los de $\eta$. Podemos además escoger un número $c$ tal que $c\alpha,c\beta$ y $c\gamma$ sean enteros algebraicos (que sus polinomios minimales son mónicos, y están en $\Z[x]$).
+
+Definimos ahora $\gamma$ como un número real suficientemente grande que depende de $\alpha,\beta,\eta$ (y sus conjugados). Definimos entonces $\lambda_1, \lambda_2, \lambda_3, \lambda_4, \lambda_5$ de la siguiente manera
+\begin{align}
+  \lambda_1 & = 2 (\log 3) p_1p_2p_3.               \\
+  \lambda_2 & = (2\log \gamma + 4 \log c) p_1p_2p_3 \\
+  \lambda_3 & = 2p_1p_2p_3.                         \\
+  \lambda_4 & = \log(2\log \gamma).                 \\
+  \lambda_5 & = 2 \log \gamma.
+\end{align}
+Seguidamente vamos a introducir $8$ constantes reales
+$$q_1,\dots, q_8,$$
+junto con $8$ desigualdades (las cuales no son importantes pues no las utilizaremos explícitamente), de tal manera que si $x \in [q_i,q_{i+1}]$, $x$ deba cumplir la $i$-ésima desigualdad, y si $x>q_8$, $x$ deba cumplir la octava desigualdad. En otras palabras estamos definiendo una especie \textit{nodos y cotas}, que nos van a describir una función ideal. Estas constantes no dependen de nada más que $\alpha,\beta,\eta$ ( y de sus conjugados).
+
+\pagebreak
+Finalmente, definimos
+$$r_1 = \floor*{ \frac{q_0^2}{\log q_0 \log \log q_0}} , \quad  \quad \floor*{r_2 = \log^2 \log q_0 }, $$
+donde
+$$q_0 = 1+ \max \{3^{3^5},q_1,\dots,q_8 \}$$
+Vamos a examinar exhaustivamente la función de variable compleja
+$$f(x) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl}\alpha^{kx} \beta^{lx}$$
+Donde los números $C_{kl}$ son enteros para $0\leq k,l \leq q_0$. En realidad, la razón para definir tantas constantes es simplemente por motivo efectividad. Es decir, el autor original deseaba darle un valor aproximado a las cotas que vamos a necesitar más adelante. Sin embargo, realmente sólo vamos a estudiar $f(x)$, y podríamos haber pedido $q_0$ suficientemente grande desde un principio.
+\begin{lemma}
+  En la definición de $f(x)$, si los coeficientes satisfacen $|C_{k,l}| \leq 3^{q_0^2}$ y bajo la hipótesis que $\alpha,\beta,\eta$ son todos algebraicos. Para cualquier natural $s$, o bien la siguiente desigualdad se cumple:
+  $$|f^{(s)}(t)| > e^{-(\lambda_1q_0^2 + \lambda_2q_0t + \lambda_3s\log q_0)}$$
+  o la siguiente igualdad:
+  $$f^{(s)}(t) = 0$$
+\end{lemma}
+\begin{lemma}
+  Bajo la condición $   |C_{k,l}| \leq 3^{q_0^2}$, los coeficientes no nulos de la función $f(x)$ pueden ser escogidos de manera que se cumpla
+  $$|f^{(s)}(t)| < e^{-\frac{q_0^2 \log q_0}{\log \log q_0}}, \quad 0 \leq s \leq r_1-1 , \quad 0 \leq t \leq r_2 - 1$$
+\end{lemma}
+\begin{lemma}
+  Si $   |C_{k,l}| \leq 3^{q_0^2}$, entonces $f(x)$ satisface la siguiente desigualdad
+  $$|f(x)| < e^{2\log (3) q_0^2 + \lambda_5q_0|x|}$$
+  para cualquier $x \in \C$.
+\end{lemma}
+Las demostraciones de los lemas se omiten por brevedad. Sin embargo, es importante destacar que lo que dicen los lemas es precisamente que $f(x)$ es la función ideal que buscamos. Tenemos entonces lo suficiente para demostrar el teorema
+\begin{theorem}[Gelfond-Schneider]
+  Sean $\alpha$ y $\beta$ son números algebraicos con $\alpha,\beta \notin \{0,1\}$. Entonces $\eta = \log(\alpha) / \log(\beta)$ es un número racional o trascendente.
+\end{theorem}
+\begin{proof}
+  La idea de la prueba no es complicada, pero la prueba sí lo es, pues requiere una serie de refinamiento de cotas superiores. Básicamente, vamos a buscar el despeje de los $C_{kl}$, demostrando poco a poco que con nuestra escogencia de constantes inicial, existen demasiados valores para los cuales $f$ se anula, lo cual hace que sus coeficientes sean todos cero.
+  Asumimos una vez más por contradicción que $\eta$ es un número irracional algebraico. Por el lema 3.3, podemos tomar una función
+  $$f(x) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl}\alpha^{kx}\beta^{kx}, \quad |C_{kl}| \leq 3^{q_0}$$
+  donde los coeficientes $C_{k,l}$ son enteros no nulos que satisfacen que
+  $$|f^{(s)}(t)| < e^{-\frac{q_0^2 \log q_0}{\log \log q_0}}, \quad 0 \leq s \leq r_1-1 , \quad 0 \leq t \leq r_2 - 1$$
+
+  \pagebreak
+  Sabemos además, por el lema 3.2, que debemos tener que, para todo $s$, y para todo $m$ enteros positivos, o bien
+  $$|f^{(s)}(m)| > e^{-(\lambda_1q_0^2 + \lambda_2q_0m + \lambda_3s\log q_0)}$$
+  o
+  $$f^{(s)}(m) = 0.$$
+  Combinando estas últimas dos desigualdades, hemos forzado a que
+  $$f^{(s)}(m) = 0, \quad 0 \leq s \leq r_1-1 , \quad 0\leq m \leq r_2-1$$
+  Entonces, la función $f(x)[x(x-1)\cdots(x-r_2+1)]^{-r_1}$ debe ser entera (holomorfa en todo $\C$). De aquí se sigue, gracias al principio del módulo máximo y al lema 3.4, la desigualdad
+  $$|f(x)[x(x-1)\cdots(x-r_2+1)]^{-r_1}| < e^{2 \log 8 + \lambda_6)q_0^2 - r_1r_2\log \frac{q_0}{2}}$$
+  para $|x| < q_0$. Es fácil deducir a partir que aquí , que si ahora $|x| < \sqrt{q}$, entonces
+  $$|f(x)| < e^{(2 \log 3 + \lambda 5)q_0^2 - r_1r_2 \log \frac{q_0}{2} + \frac{2}{3}r_1r_2\log{2q_0}}$$
+  Luego de simplificar un poco, y aplicando las desigualdades que se deben cumplir en cada intervalo $[q_i,q_{i+1}]$, se tiene
+  $$|f(x)| < e^{-\frac{1}{6}q_0^2 \log \log q_0}, \quad |x| \leq q^{2/3}$$
+  Ahora, como $f$ es holomorfa, para $m$ entero, por la fórmula integral de Cauchy
+  $$f^{(s)}(m) = \frac{s!}{2 \pi i} \int_{\gamma} \frac{f(x)}{(x-m)^{s+1}}dx, \quad 0 \leq m \leq \floor*{\sqrt{q_0}}$$
+  donde $\gamma$ es una circunferencia de radio $\sqrt{q_0}$ alrededor del origen. Esto nos permite estimar el módulo de $|f^{(s)}(m)|$ dentro de este disco. Tendremos que
+  $$|f^{(s)}(m)| < e^{-\frac{1}{12}q_0^2\log \log q_0}, \quad 0 \leq s \leq r_1 , \quad  0\leq m \leq \floor*{\sqrt{q_0}}.$$
+  Juntando este resultado, con la desigualdad del lema 3.2, obtenemos esta vez que
+  $$f^{(s)}(m) = 0, \quad 0 \leq s \leq r_1-1 , \quad 0\leq m \leq \sqrt{q_0},$$
+  por lo que podemos concluir ahora que la función $f(x)[x(x-1)\cdots(x-\floor*{\sqrt{q_0}})]^{-r_1}$ es entera. Utilizando de nuevo el principio del módulo máximo, llegamos a la desigualdad
+  $$|f(x)[x(x-1)\cdots(x-\floor*{\sqrt{q_0}})]^{-r_1}|<e^{(2 \log 3 + \lambda_5)q_0^2 - r_1 \sqrt{q_0} \log \frac{q_0}{2}}$$
+  siempre que $|x|< q_0$. Ahora, vemos que si $|x| =2$, gracias a las propiedades de los $q_i's$, obtenemos
+  $$|f(x)| < e^{-2q_0^{7/3}}$$
+  Usando otra vez la fórmula de Cauchy y utilizando desigualdades, llegamos a que
+  $$|f^{(s)}(0)| < e^{-q_0^{7/3}}, \quad 0 \leq s \leq 5q_0^2,$$
+  y finalmente se obtiene que
+  $$f^{(s)}(0) = 0\quad 0 \leq s \leq 5q_0^2,$$
+  lo cual nos lleva a un sistema de ecuaciones homogéneas con $(q_0+1)$ variables $C_{kl}$. A saber
+  $$f^{(s)}(0) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl} (k\log\alpha + l \log \beta)^s = 0, \quad 0\leq s \leq (q_0+1)^2-1,$$
+  pues $5q_0^2 > (q_0+1)^2$. El determinante de este sistema es de tipo Vandermonde , lo cual lo hace distinto de $0$, por lo tanto la única solución posible es que $C_{kl}$ sea $0$ para todo $l$ y para todo $k$. Esto es una contradicción, dado que estos coeficientes se escogieron no nulos desde un inicio. Por lo tanto, $\eta$ no puede ser irracional algebraico.
+\end{proof}
+\pagebreak
+\section{El teorema de Baker}
+El resultado principal que Baker presenta en \cite{AB1966} es una mejora directa del teorema de Gelfond. La idea es generalizar la independencia algebraica de los logaritmos de $2$ números algebraicos, a la independencia de los logaritmos de $n$ números algebraicos.
+
+Definimos primero la \textbf{altura} de un número algebraico, como el máximo de los valores absolutos de los coeficientes de su polinomio minimal (en $\Z[x]$). Tenemos entonces:
+
+\begin{theorem}[Baker]
+  Sea $n\geq 2$, y sean $\alpha_1,\dots,\alpha_n$ números algebraicos que no sean $0$ ni $1$. Si $\log \alpha_1, \dots , \log \alpha_n, 2\pi i$ son\footnote{Baker, a diferencia de Gelfond, trabaja en una rama arbitraria del logaritmo, de ahí que sea necesario la independencia de $2\pi i$.} \textit{l.i} sobre $\Q$, $\kappa$ es un número entero mayor a $n+1$, y $d$ es cualquier entero positivo. Tenemos que existe una constante (efectiva)
+  $$C=C(n,\alpha_1,\dots,\alpha_n,\kappa,d)>0,$$
+  de tal manera que para cualesquiera números algebraicos $\beta_1,\dots,\beta_n$ (no todos nulos), con grados algebraicos a lo sumo $d$, tenemos
+  \begin{align}|\beta_1\log\alpha_1 + \dots + \beta_n \log \alpha_n| > Ce^{-(\log H)^{\kappa}},\end{align}
+  donde $H$ denota el máximo de las alturas de los $\beta$'s.
+\end{theorem}
+Claramente, la desigualdad 4.1 implica que el número de la derecha no es $0$, lo cual nos permite deducir los siguientes corolarios, de los cuales el primero es directo, y el segundo requiere una demostración, la cual es elemental, y se presenta en \cite{AB1966}, p.215.
+\begin{corollary}
+  Si $\alpha_1,\dots,\alpha_n$ son algebraicos no nulos, y  $\log \alpha_1, \dots , \log \alpha_n, 2\pi i$ son \textit{l.i} sobre $\Q$, entonces $\log \alpha_1, \dots , \log \alpha_n,$ son \textit{l.i} sobre el cuerpo de números algebraicos.
+\end{corollary}
+
+\begin{corollary}
+  Si $\alpha_1,\dots,\alpha_n$ son algebraicos distintos de $1$, y $\beta_1,\dots,\beta_n$ son algebraicos \textit{l.i} sobre $\Q$, entonces $\alpha_1^{\beta_1},\dots,\alpha_n^{\beta_n}$ es trascendente.
+\end{corollary}
+
+\noindent Este corolario corresponde con la ``mejora'' directa al teorema 3.5.
+Las aplicaciones de este teorema son amplias en la teoría de números. Este resultado ha sido utilizado para resolver problemas importantes relacionados con ecuaciones Diofánticas en varias variables (las cuales son muy difíciles de resolver), y también ha sido utilizado en el estudio del número de clase de cuerpos cuadráticos.
+
+El método de prueba es una generalización natural al utilizado por Gelfond, el cual consistió en estudiar una función auxiliar, cuyas propiedades analíticas complejas permitieron acotarla hasta el punto de llegar a una contradicción. El enfoque es parecido, solo que esta vez, la función auxiliar utilizada posee varias variables complejas. Sin embargo, el método de acotamiento sucesivo no es suficiente en este caso, y fue necesario ingeniar nuevas técnicas.
+
+\begin{proof}
+  La prueba completa escomplicada, por lo que se hará un boceto muy simplificado de la misma.
+
+  El autor comienza por mostrar que basta probar la desigualdad ligeramente más débil que 4.1 para $\beta_1,\dots,\beta_{n-1}$ algebraicos,
+  $$|\beta_1\log\alpha_1 + \dots + \beta_{n-1} \log \alpha_{n-1}- \log \alpha_n| > e^{-(\log H)^{\kappa}}$$
+  donde ahora $H$ ``absorbe'' el aporte de $C$.
+  Luego proseguimos a enunciar $4$ lemas, los cuales ayudan a la prueba del resultado principal. Escribimos por brevedad
+  $$\zeta = \frac{1}{2} (1+\kappa /(n+1)) , \quad \varepsilon = (1-1/\zeta)/(2n).$$
+  \begin{lemma}
+    Sean $M<N$ enteros positivos, y sean  $u_{ij}$ (con $1\leq i \leq M$, $1\leq j \leq N$) enteros con valor absoluto menor a algún $U$. Entonces existen enteros $x_1,\dots,x_N$ no todos nulos, con valores absolutos a lo sumo $(NU)^{M(N-M)}$ tales que
+    $$\sum_{j=1}^N u_{ij}x_j = 0 , \quad (1\leq i \leq M).$$
+  \end{lemma}
+  \begin{lemma}
+    Existen enteros $p_{\lambda_1,\dots,\lambda_n}$ no todos nulos, con valor absoluto no mayor a $e^{2hk}$ (donde $h = \floor*{H}$), tal que la función
+    $$\Phi(z_1,\dots,z_n) \coloneqq \sum_{\lambda_1 = 0}^L \cdots \sum_{\lambda_n=0}^L p_{\lambda_1,\dots,\lambda_n} \alpha_1^{\gamma_1z_1}\cdots \alpha_{n-1}^{\gamma_{n-1}z_{n-1}},$$
+    donde $L=\floor{k^{1-\varepsilon}}$ y $\gamma_r = \lambda_r + \lambda_n\beta_r$ ($1\leq r < n$), satisface
+    \begin{align}\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(l,l,\dots,l) \right| < e^{-\frac{1}{2}h\kappa},\end{align}
+    para todos los enteros $l$ tales que $1\leq l \leq h$ y todos los enteros no negativos $m_1,\dots,m_{n-1}$ tales que $m_1+\dots+m_{n-1} \leq k$.
+  \end{lemma}
+  \begin{lemma}
+    Para cualesquiera enteros positivos $m_1,\dots,m_{n-1}$ tales que $m_1+\dots+m_{n-1} \leq k$, y para cualquier número complejo $z$, se cumple
+    $$\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(z,z,\dots,z) \right| \leq e^{4hk}c_1^{L|z|}, \quad c_1 > 0.$$
+    Además, para cualquier entero $l$ con $0 < l \leq h^{\kappa - \zeta + \frac{1}{2} \varepsilon \zeta}$ se cumple $4$.$2$ o la desigualdad
+    $$\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(l,l,\dots,l) \right| > (e^{6hk}c_2^{Ll})^{-d^{2n-1}}$$
+  \end{lemma}
+  \begin{lemma}
+    Sea $J$ cualquier entero que satisfaga $0 \leq J < \tau$, donde
+    $$\tau = 2 \varepsilon ^{-1}((\kappa-1)\zeta^{-1}-1)+1.$$
+    Entonces la desigualdad $4$.$2$ vale para todos los enteros $l$ con $1\leq l \leq hk^{\frac{1}{2}\varepsilon J}$, y para cualquier conjunto de enteros no negativos $m_1,\dots,m_{n-1}$ tales que $m_1+\dots+m_{n-1} \leq k/2^J.$
+  \end{lemma}
+  Como el lector podrá notar, la naturaleza de los lemas es altamente técnica, y sus demostraciones lo son aún más. Sin embargo, asumiendo estos resultados, la prueba que presenta Baker no es larga. Se define ahora la función
+  $$\Psi(l) = \Phi(l,\dots,l),$$
+  y usando todos estimados, se llega después de algunas manipulaciones a que
+  $$|\Psi(l)| < 2e^{-\frac{1}{2}h\kappa}$$
+  Luego, se define, para $l$ entero,
+  $$\omega(l) \coloneqq A^{Ll}\Psi(l),$$
+  donde $A$ es un número algebraico que dependerá de los conjugados de $\alpha$, cuyo grado será a lo sumo $d^{2n-1}$. Usando la última desigualdad, se demuestra que para todo $l$,
+  $$|\operatorname{Norm}(\omega)|<1.$$
+  Esto fuerza, gracias a los estimados por los lemas, a que $\Psi(l) = 0$, para $1\leq l \leq (L+1)^n$, lo cual nos arroja finalmente un sistema de ecuaciones lineales homogéneas, cuyo determinante es de tipo Vandermonde, y por ende es no nulo, lo cual contradecirá la hipótesis de independencia lineal de los logaritmos de los $\alpha$'s, demostrando así el teorema.
+\end{proof}
+
+
+\newpage
+\section{Conclusión}
+El estudio del sétimo problema de Hilbert llevó a un desarrollo importante de la teoría de números durante el siglo pasado. Esto es una ocurrencia usual en el proceso de solución de problemas difíciles, y normalmente lo más valioso que se obtiene son las ideas que aparecen en el camino, no tanto la solución directa del problema. Tenemos entonces resultados muy poderosos, que nos permiten demostrar la trascendencia e independencia algebraica de muchos conjuntos de números.
+
+Quedan aún sin embargo, muchas preguntas abiertas. Por ejemplo, nadie sabe si $\zeta(5)$ es trascendente (ni siquiera se sabe si es irracional). Otro ejemplo, es la independencia algebraica de $\pi$ y $e$, la cual es un problema abierto. Por lo tanto,vemos que la teoría de números trascendentes es una oportunidad de investigación en el futuro.
+\bibliographystyle{siam}
+\bibliography{Referencias}
+
+\end{document}
