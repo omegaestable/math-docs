@@ -1,0 +1,170 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+% \usepackage[francais]{babel}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\AAA}{\mathcal A}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\RR}{\mathcal R}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\SSS}{\mathcal S}
+\newcommand{\KK}{\mathcal K}
+\newcommand{\OO}{\mathcal O}
+\doublespacing
+\begin{document}
+\homework{Thèorie des modeles TD4}{Date: 09/11/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+
+\textbf{Exercise 0.1} Consider the ordered set $\RR = \langle \R, < \rangle$, and the subset $\Q \subseteq \R$. Describe $\op{acl}_{\RR}(\Q)$.\\
+\textbf{Solution: } Both $\R$ and $\Q$ are dense linear orderings without endpoints, and it is clear that $\Q \subseteq \R$. We will use the fact that $\sf{DLO}$ eliminates quantifiers to show that $\Q \preceq \R$. Let $\bar{q} \in \Q$ and let $\phi(x,\bar{y})$ be an $\{ < \}$-formula. Let $\psi(\bar{y})$ be a quantifier-free formula such that $\sf{DLO}$ $ \models \forall \bar{y} ( \exists x \phi(x,\bar{y}) \leftrightarrow  \psi(\bar{y}))$. Then we have that
+\begin{align*}
+    \R & \models \exists x \phi(x, \bar{q})                                             \\
+    \R & \models  \psi(\bar{q})                                                         \\
+    \Q & \models  \psi(\bar{q})  \quad  \text{since $\psi$ is qf-free}                  \\
+    \Q & \models \exists x \phi(x, \bar{q})  \quad  \text{since $\Q\models$ $\sf{DLO}$}
+\end{align*}
+So by Tarski-Vaught, $\Q \preceq \R$. Then by a remark made in class, $\op{acl}_\R (\Q) = \op{acl}_\Q (\Q) = \Q$.\\
+\textbf{Exercise 0.2 (Tarski's Chain Lemma)} Let $(I,<)$ be a directed set. Consider a collection of $\LL$-structures $\{ \MM_i\}_{i \in I}$ such that for all $i<j$ , $\MM_i \subseteq \MM_j$. Let $M=\bigcup_i M_i$.
+\begin{enumerate}
+    \item Turn $M$ into an $\LL$-structure $\MM$ such that for every $i \in I$, $\MM_i \subseteq \MM$.
+    \item Let $T$ be an $\LL$-theory and suppose that for every $i \in I$, $\MM_i \models T$. Does $\MM \models T$?
+    \item Suppose now that for all $i<j$ , $\MM_i \preceq \MM_j$. Show that for all $i$, $\MM_i \preceq \MM$.
+    \item Suppose that $\{ M_i\}_{i\in I}$ is an elementary chain and that $\NN$ is an $\LL$-structure. If for all $i$, $\MM_i \preceq \NN$, then $\MM \preceq \NN$.
+\end{enumerate}
+\textbf{Solution: }
+\begin{enumerate}
+    \item Let $c$ be a constant symbol, since its interpretation is the same in every $\MM_i$, then take $c^\MM=c^{\MM_i}$. Let $f$ be a function symbol of any arity, and define $f^\MM = \bigcup_i f^{\MM_i}$, this is well defined since if $\bar{a} \in M_i \cup M_j$, take some $k \geq i,j$, and then since $M_i \cup M_j \subseteq M_k$, $f^{\MM_i}(\bar{a}) = f^{\MM_k}(\bar{a})=f^{\MM_j}(\bar{a})$. Similarly, for a function symbol $R$, define $R^\MM = \bigcup_i R^{\MM_i}$. We have that $R^\MM \cap M_i = \bigcup_j R^{\MM_j}\cap M_i =  \bigcup_{j\leq i} R^{\MM_j} =R^{\MM_i}$: this follows from the fact that if $i \leq j, R^{\MM_j} \subseteq M_i$ and if $i<j$,$R^{\MM_j} \cap M_i = R^{\MM_i}$, by hypothesis. The structure given satisfies what is needed by construction.
+    \item Not necessarily, consider $T$ the theory of linear orders with both endpoints. The family of models given by $\MM_i = \{-i,-i+1,\dots,0,\dots,i-1,i \}$ with the evident ordering, has $\Z$ as its union, which has no endpoints.
+    \item Let $\phi(x,\bar{y})$ an $\LL$-formula, let $i \in I$, $\bar{a} \in M_i$, and $m \in M$ such that $\MM \models \phi(m,\bar{a})$. There is $k \geq i$ such that $m,\bar{a} \in M_k$, so $\MM_k \models \phi(m,\bar{a})$ and therefore $\MM_i \models \exists x (x,\bar{a})$ by hypothesis. Conversely if $\MM_i \models \exists x (x,\bar{a})$ it inmediately follows that $\MM \models \exists x (x,\bar{a})$. Hence, $\MM_i \preceq \MM$.
+    \item Let $\bar{a} \in M$ and $\phi(\bar{x})$ any formula, then $\NN \models \phi(\bar{a})\iff \MM_i \models \phi(\bar{a}) \iff \MM \models \phi(\bar{a})$.
+\end{enumerate}
+\textbf{Exercise 1.} Let $\AAA,\BB,\CC$ $\LL$-structures such that $\AAA \subseteq \BB \subseteq \CC$. We aim to show $\AAA \preceq \BB$ and $\AAA \preceq \CC$ does not imply $\BB \preceq \CC$.
+\begin{enumerate}
+    \item Start with $\mathcal A = \langle \Z , < \rangle$, construct a proper elementary extension $\CC$.
+    \item Find $\BB \subseteq \CC$ such that $|C\setminus B|=1$, together with an isomorphism $\sigma:\CC \to \BB$ such that  $\sigma(a) =a \ \forall a \in A$.
+    \item Find an existential formula $\varphi$ with parameters from $B$ such that $\mathcal C \models \phi$ and $\BB \models \neg \phi$.
+\end{enumerate}
+\textbf{Solution: }
+\begin{enumerate}
+    \item Consider the theory
+          $$T = \op{Diag}_{el}(\AAA) \cup \{ c>a\}_{a \in \Z}$$
+          where $c$ is a new constant symbol. Any finite part of $T$ has the form
+          $$T_0 \subseteq \op{Diag}_{el}(\AAA) \cup \{ c>a\}_{a < m}$$
+          for some $m \in \Z$. So by interpreting $c$ as $m+1$ (the succesor an predecessor of an element can be defined in our language), we have that $\AAA \models T_0$. Therefore, any model $\CC \models T$ is a proper elementary extension of $\AAA$ (as $\{ < \}$-structures).
+    \item Consider $\BB = \CC \setminus \{ c\}$, and we interpret $<^{\BB} = <^{\CC}\cap B^2$. Let $\sigma:\CC \to \BB$ defined as
+          $$\sigma(x) = \begin{cases}
+                  x   & \text{ if } x<c \\
+                  x+1 & \text{ if not}
+              \end{cases}$$
+          this is clearly an order-embedding that fixes $A$.
+    \item Consider $\phi$ as $\exists x \ c-1 < x < c+1$.
+\end{enumerate}
+\textbf{Exercise 2:} Let $\MM$ be an $\LL$-structure and $A\subseteq M$. Define $\op{dcl}_\MM(A) = \{ b \in M , \{ b\} \text{ is $A$-definable} \}$.
+\begin{enumerate}
+    \item Show that $\op{dcl}_\MM$ is a closure operator on $\mathcal P (M)$, which has finite character.
+    \item Show that every PEM $f: \MM \supseteq A \hookrightarrow \NN$ has a unique extension to a PEM \linebreak $\hat{f}: \MM \supseteq \op{dcl}_\MM(A) \hookrightarrow \NN$ and that $\op{Im}(\hat{f}) = \op{dcl}_\NN(\op{Im}(f))$.
+    \item Let $b \in \op{dcl}_\MM(A)$ and $\sigma \in \op{Aut}_A(\MM) = \{\sigma \in \op{Aut}(\MM): \sigma(a) = a \ \forall a \in A \}$. What can we say about the orbit of $b$ under the action of $\sigma$?
+    \item Let $b,c \in M$ and $A\subseteq M$. Show that $c \in \op{dcl}_\MM(A \cup \{b \})$ if and only if there if $f:M \to N$ $A$-definable such that $f(b)=c$.
+    \item Let $T$ be a theory with built-in Skolem functions and let $\MM \models T$. Show that for every $A \subseteq M$, $\op{dcl}_\MM(A) = \langle A \rangle _\MM$.
+    \item Let $T$ be a theory with definable Skolem functions and let $\MM \models T$. Show that \linebreak $\op{dcl}_\MM(A) \preceq \MM$.
+    \item Let $\MM$ be an expansion of a total order. Show that $\op{acl}_\MM = \op{dcl}_\MM$.
+    \item Let $\MM \equiv \langle \N , 0,1,+, \cdot,< \rangle$ and let $\varnothing \neq A \subseteq M$.Show that $\op{dcl}_\MM(A) \preceq \MM$.
+\end{enumerate}
+\textbf{Solution:}
+\begin{enumerate}
+    \item It is reflexive since for any $a \in A$, we consider the formula $x = a$ which defines $\{ a\}$. It is monotonic because if $\{a \}$ is $A$-definable, and $A\subseteq B$, then automatically $\{a \}$ is $B$-definable. These two properties imply that $\op{dcl}_\MM(A) \subseteq \op{dcl}_\MM(\op{dcl}_\MM(A))$. To check the other inclusion, let $b \in \op{dcl}_\MM(\op{dcl}_\MM(A))$, and let $\varphi(x,\bar{c})$ an $\LL$-formula with $\bar{c} \in \op{dcl}_\MM(A)$ such that $\varphi(\MM,\bar{c}) =\{b\}$ . For each $c_i$, let $\phi_i(x,\bar{a}_i)$ be a formula with $\bar{a}_i \in A$ such that $\phi_i(\MM,\bar{a}_i)=\{c_i\}$. Then, consider the $\LL_A$ formula $$\psi(x,\bar{y}) = \exists ! z \varphi(z,\bar{y}) \land \varphi(x,\bar{y}) \land \bigwedge_i \phi_i(y_i,\bar{a}_i).$$
+          Since there is only one tuple $\bar{c}$ such that $\bigwedge_i \phi_i(y_i,\bar{a}_i)$, and only one $b$ such that $\varphi(b,\bar{c})$, we conclude that this formula defines a single tuple $(b,\bar{c})$. Hence, its projection is definable and $\{b \} = \{ x , \exists \bar{y} \psi(x,\bar{y})\}$.
+    \item Let $\Omega$ be the set of PEM functions with domain $A \subseteq A' \subseteq \op{dcl}_\MM(A)$ and image $B \subseteq B' \subseteq \op{dcl}_\NN(B)$ ordered by function extension. It is a direct verification that $\Omega$ is closed under taking chains, so by Zorn's Lemma we can get a maximal $g \in \omega$, with domain $A_0$ and image $B_0$. We claim that $A_0 =  \op{dcl}_\MM(A)$ and $B_0 = \op{dcl}_\NN(B)$. Suppose by contradiction that there is $c \in  \op{dcl}_\MM(A) \setminus A_0$, since $A \subseteq A_0$, $c \in  \op{dcl}_\MM(A_0).$ Choose $\varphi(x,\bar{a})$, with $\bar{a} \in A_0$ such that $\varphi(\MM ,\bar{a}) = \{ c\}$. In other words, $\MM \models \exists ! x \varphi(x, \bar{a})$, and since $g_0$ is a PEM,  $\NN \models \exists ! x \varphi(x,  {f(\bar{a})}).$ Since $c \not \in A_0$, we get that $\varphi(\MM,\bar{a})\cap A_0 = \varnothing$ and hence $\varphi(\NN, {g_0(\bar{a})})\cap B_0 = \varnothing$. Let $d$ the only element in $\varphi(\NN, {g_0(\bar{a})})\setminus B_0$ (in particular $d \in \op{dcl}_\NN(B_0)$). Define $g_1:A_0 \cup \{ c\} \to B_0 \cup \{d\}$ extending $g_0$ and sending $c$ to $d$. If we prove $g_1$ is a PEM, we contradict maximality of $g_0$. Let $\theta(c,\bar{a}')$ an $\LL_{A_0 \cup \{c\}}$-sentence satisfied by $\MM$, then $\MM \models \theta(c,\bar{a}')\land \varphi(c,\bar{a})$, and since $|\theta(\MM,\bar{a}')\cap \varphi(\MM,\bar{a})| =1$, we have
+          \begin{align*}
+              \MM & \models \forall x (\varphi(x,\bar{a}) \rightarrow \theta(x,\bar{a}')           \\
+              \NN & \models \forall x (\varphi(x, {g_0(a)}) \rightarrow \theta(x, {g_0(\bar{a}')})
+          \end{align*}
+          But since $\NN \models \varphi(d,g_0(\bar{a}))$, then $\NN \models \theta(d,g_0(\bar{a}'))$, and therefore $\NN \models \theta( g_1(c),g_1(\bar{a}'))$. Repeating this argument with $\neg \theta$ gives us the other direction to conclude \linebreak
+          $\MM_{A_0 \cup \{c\}} \equiv \NN_{g_1(A_0 \cup \{c\})}$. To prove $B_0 = \op{dcl}_\NN(B)$ we use the same argument but for the PEM $g_0^{-1}$, if we extend this map, the inverse of this extension will extend $g_0$ again contradicting maximality. Finally, to check uniqueness, let $c \in \op{dcl}_\MM(A)$, then there is a $\LL_A$-formula $\varphi(x,\bar{a})$ such that $\MM \models \exists ! x \varphi(x,\bar{a})$, then $\NN \models \exists ! x \varphi(x, f(\bar{a}))$, so that any two extensions of $f$ into $\op{dcl}_\MM(A)$ must agree everywhere.
+    \item We have that $\{ \sigma^m(b) , m \in \N \} = \{b\}$: if $\varphi(x,\bar{a})$ is a formula defining $\{ b\}$ with $\bar{a} \in A$, then
+          \begin{alignat*}{2}
+                   &  & \MM & \models \varphi(b,\bar{a})                 \\
+              \iff &  & \MM & \models \varphi(\sigma(b),\sigma(\bar{a})) \\
+              \iff &  & \MM & \models \varphi(\sigma(b),\bar{a})         \\
+              \iff &  &     & \sigma(b) \in \{ b\}
+          \end{alignat*}
+    \item Suppose $c \in \op{dcl}_\MM(A)$, then there is some formula $\varphi(x,\bar{a},b)$ such that $\varphi(\MM,\bar{a},b) = \{ c \}$. The set $D = \{ x , \exists ! y \  \varphi(y,\bar{a},x)\}$ is $A$-definable. Fix $a \in A$, and define
+          $$f(m) = \begin{cases}
+                  n & \text{ such that $\varphi(n,\bar{a},m)$ , if $m \in D$ } \\
+                  a & \text{ if not}
+              \end{cases}$$
+          by definition, $f(b) =c$. Conversely, suppose there is an $A$-definable function $f:M \to N$ that sends $b$ to $c$. Let $\theta(x,y,\bar{a})$ be a formula defining the graph of $f$. Then $\theta(b,\MM,\bar{a}) = \{c\}$.
+    \item ``$\subseteq$'': Let $b \in \op{dcl}_\MM(A)$, and choose $\varphi(x,\bar{a})$ such that $\MM\models \exists ! y \varphi(y,\bar{a}) \land \varphi(b,\bar{a})$, then by hypothesis there is $f \in \LL$ a function such that $\MM \models \varphi(f(\bar{a}),\bar{a})\land \varphi(b,\bar{a})$, hence $b = f(\bar{a})$ which implies $b \in \langle A \rangle_\MM $.\\
+          ``$\supseteq$'': Let  now $b \in \langle A \rangle_\MM $, so $b = t(\bar{a})$ for some term $t$, we show that $b \in \op{dcl}_\MM(A)$ by induction on terms: the case where $t$ is a variable or a constant is inmediate, so assume $b = f(t_1(\bar{a}),\dots,t_m(\bar{a}))$ with $t_i(\bar{a}) \in  \op{dcl}_\MM(A)$ and $f$ and $f \in \LL$. Consider the formula $\theta(\bar{x},y)$ that defines the graph of $f$, so we have $$\MM \models \exists ! y \ \theta (t_1(\bar{a}),\dots,t_m(\bar{a}),y) \land \theta (t_1(\bar{a}),\dots,t_m(\bar{a}),b)$$
+          so that $b \in \op{dcl}_\MM(\op{dcl}_\MM(A))=\op{dcl}_\MM(A)$.
+    \item Let $\bar{a} \in \op{dcl}_\MM(A)$ and any formula $\varphi$ such that $\MM \models \exists x \ \varphi(x,\bar{a})$. Then by hypothesis \linebreak $\MM \models \exists z \ \varphi(z,\bar{a}) \land \theta_\varphi(z,\bar{a})$, where $\theta_\varphi$ defines the graph of the Skolem function for $\varphi$. In particular $|\theta_\varphi(\MM,\bar{a})|=1$, so if $b \in \MM$ is such that $\MM \models \varphi (\bar{a},b)$, then there is $b' \in \MM$ such that $\MM \models  \varphi(b',\bar{a}) \land \theta_\varphi(b',\bar{a})$, in particular $\MM \models  \theta_\varphi(b',\bar{a})$, so $b' \in \op{dcl}_\MM(\op{dcl}_\MM(A))=\op{dcl}_\MM(A)$.
+    \item Clearly $\op{dcl}_\MM(A) \subseteq \op{acl}_\MM(A)$ since an $A$-definable set of size $1$ has finite size. Let \linebreak $b \in \op{acl}_\MM(A)$, then there is $\varphi$ such that $|\varphi(\MM,b)| = n$ and $\MM \models \varphi(b,\bar{a})$. Suppose that $\varphi(\MM,b) = \{b_1, \dots, b_n \}$ and without loss of generality $b_1 < \dots < b_n$. Then for some $k$ , $b= b_k$ and we define $\{ b_k \} $ with the formula
+          $$\varphi(x,\bar{a}) \land \exists^{k} y \ (\varphi(y,\bar{a}) \land y < x) \land \exists^{n-k} y \ (\varphi(y,\bar{a}) \land y > x) $$
+    \item It is enough to show that $T=\op{Th}(\MM)$ has definable Skolem functions. Let $\varphi(\bar{x},y)$ be a formula such that for $\bar{a} \in \MM$, $T \models \exists y \varphi(\bar{a},y)$, so that $D=  \{ \bar{b} ,  \MM\models \exists y \ \varphi(\bar{b},y) \}$ is a definable, non-empty set. Consider the function
+          $$f_\varphi(\bar{b}) = \begin{cases}
+                  \min \{ c, \MM \models \varphi( \bar{b},c)\} & \text{ if } b \in D \\
+                  0                                            & \text{ if not }
+              \end{cases}.$$
+          The graph of $f_\varphi$ is defined by the formula $\theta(\bar{x},y)$ given by
+          $$(\bar{x} \in D \land \varphi(\bar{x},y)\land \forall z \ (\varphi(\bar{x},z) \rightarrow z \geq y)) \lor (\bar{x} \not \in D \land y = 0).$$
+          So we can conclude that $\MM$ has definable Skolem functions, and by (6), we have the result.
+\end{enumerate}
+\textbf{Exercise 3:}
+Let $T$ be an $\LL$-theory. The following are equivalent:
+\begin{enumerate}
+    \item For every $\MM\models T$ and for every $\AAA, \BB \preceq \MM$ we have $\AAA \cap \BB \preceq \MM$.
+    \item  For every $\MM\models T$ and for every $C \subseteq M$, we have $\op{acl}_\MM(C) \preceq \MM$.
+\end{enumerate}
+\textbf{Solution: }
+To prove (2) implies (1), let $\AAA,\BB \preceq \MM$, so in particular $\AAA \equiv \BB \equiv \MM$, then we can apply the joint embedding property (twice), to find $\mathcal S$ such that $\AAA,\BB,\MM \preceq \SSS$. We can also ask that  $\op{acl}_\SSS(\varnothing) = A\cap B$. Since $\varnothing \subseteq \MM \preceq \SSS$, $\op{acl}_\SSS(\varnothing) = \op{acl}_\MM(\varnothing)$ and hence by hypothesis $\AAA \cap \BB = \op{acl}_\MM(\varnothing) \preceq \MM$.
+\end{document}
