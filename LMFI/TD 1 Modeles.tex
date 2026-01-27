@@ -1,106 +1,122 @@
 \documentclass[11pt, reqno]{amsart}
 \usepackage[utf8]{inputenc}
-% Set target color model to RGB
+\usepackage[T1]{fontenc}
 \usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{setspace}
 \usepackage{float}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{mathtools} % Loads amsmath
+\usepackage{amssymb}   % Loads amsfonts
 \usepackage{nomencl}
 \usepackage[makeroom]{cancel}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{cite}
 \usepackage{multirow}
-\usepackage{fullpage} 
 \usepackage{fancyvrb}
 \usepackage{tikz-cd}
-\usepackage{epsfig}
+\usepackage{graphicx}
 \usepackage{fancyhdr}
-\usepackage{amssymb}
 \usepackage{pifont}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{dsfont}
 \usepackage{enumerate}
-\usepackage{mathtools}
 \usepackage{bm}
 \usepackage{listings}
-\usepackage{setspace}
-\usepackage{amsfonts}
 \usepackage[document]{ragged2e}
-\usepackage{mathtools}
 \usepackage{longtable}
 \usepackage{verbatim}
 \usepackage{subcaption}
-\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
-%\usetikzlibrary{through,backgrounds}
-
-%\usetikzlibrary{shadows}
-% \usepackage[francais]{babel}
 \usepackage{booktabs}
+\usepackage{babel} % Recommended for correct hyphenation if language is mixed or FR
+
 \input{macros.tex}
-\newcommand{\op}[1]{ \operatorname{#1} }
-\newcommand{\LL}{\mathcal L}
-\newcommand{\MM}{\mathcal M}
-\newcommand{\N}{\mathbb N}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\NN}{\mathcal N}
-\newcommand{\UU}{\mathcal U}
+
+% User Definitions
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\UU}{\mathcal{U}}
+
 \doublespacing
+
 \begin{document}
-\homework{Thèorie des modeles TD1}{Date: 21/09/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+
+\homework{Théorie des modèles TD1}{Date: 21/09/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
 \justify
-\textbf{Exercise 0.1} Let $\MM$ be an $\LL$-structure, $m,n \in \N$ and $A \subseteq M^{n+m}$ be definable in $\MM$. For $\bar{b} \in M^m$, let $A_{\bar{b}} = \{\bar{a} \in M^n , (\bar{a},\bar{b}) \in A \}$ the fiber of $A$ over $b$. Let $k \in \N$. Show that the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< k \}$ is definable. (*) Is the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ definable?\\
-\textbf{Solution 0.1} If $A \subseteq M^{n+m}$ is definable, then there is some $\bar{s} \in M$, and some formula $\phi(\bar{x},\bar{y},\bar{z})$ such that $A = \{(\bar{x},\bar{y}) \in M^{n+m} , \MM \models \phi(\bar{x},\bar{y},\bar{s}) \}$. The following formula states that the $A_{\bar{b}}-$fiber has less than $k$ elements.
-$$\phi_{k}(y_1,\dots,y_m) = \forall \bar{x_1}\dots \bar{x_k} \left(\bigwedge_{i=1}^{k}\phi(\bar{x_i},\bar{y}) \Rightarrow \bigvee_{1\leq i\neq j \leq k} \bar{x_i} = \bar{x_j} \right).$$
+
+\noindent\textbf{Exercise 0.1.} Let $\MM$ be an $\LL$-structure, $m,n \in \N$ and $A \subseteq M^{n+m}$ be definable in $\MM$. For $\bar{b} \in M^m$, let $A_{\bar{b}} = \{\bar{a} \in M^n , (\bar{a},\bar{b}) \in A \}$ the fiber of $A$ over $b$. Let $k \in \N$. Show that the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< k \}$ is definable. (*) Is the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ definable?\\
+
+\noindent\textbf{Solution 0.1.} If $A \subseteq M^{n+m}$ is definable, then there is some $\bar{s} \in M$, and some formula $\phi(\bar{x},\bar{y},\bar{z})$ such that $A = \{(\bar{x},\bar{y}) \in M^{n+m} , \MM \models \phi(\bar{x},\bar{y},\bar{s}) \}$. The following formula states that the $A_{\bar{b}}-$fiber has less than $k$ elements.
+\[
+    \phi_{k}(y_1,\dots,y_m) = \forall \bar{x_1}\dots \bar{x_k} \left(\bigwedge_{i=1}^{k}\phi(\bar{x_i},\bar{y}) \Rightarrow \bigvee_{1\leq i\neq j \leq k} \bar{x_i} = \bar{x_j} \right).
+\]
 We see that $\MM \models \phi_k(\bar{b})$ if and only if $A_{\bar{b}}$ has less than $k$ elements.
-(*) Consider $\NN = (\N,<)$, and let $\mathcal U$ a non-principal ultrafilter over $\N$. Let $\MM = \NN ^{\mathcal U}$. We can identify each $n \in \N$ with $[n,n,\dots,]_{\mathcal U} \in \MM$. Notice that for every $n \in N$,
-$$\omega = [0,1,2,\dots,n,n+1,\dots]_{\mathcal U} > n$$
-We call elements bigger than every $n$, \textit{infinite.} Suppose now the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ is definable by some formula $\phi(x,\bar{m})$ with parameters $\bar{m} \in \MM$. In other words, $\MM \models \phi(x, \bar{m})$ if and only if there is a finite number of elements below $x$ (in the usual finite sense), we show this implies that $x$ is necessarily finite: suppose not, then for every $n$, $\mathcal U$-almost everywhere, $x_i \neq n$. We want to prove that actually $x_i \geq n$: if it were not the case, then again, $\mathcal U$-almost everywhere $x_i < n \Rightarrow x_i \in  \{ 0,1,\dots,n-1\} = \bigcup_{j=0}^{n-1} \{j\}$. In other words, this means that
-$$ \bigcup_{j=0}^{n-1} \{i  , x_i = j \} \in \UU.$$
-By ultrafilter properties, (if $A \cup B \in \UU$ then either $A \in \UU$ of $B \in \UU$) we conclude that for some $k$, $[x] = [k]$, which is a contradiction since $x$ is infinite. We consider now $\Sigma(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k \in \N} \cup \{ \phi(x,\bar{m}) \}$. It is finitely consistent, since if  $\Sigma_N(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k < N} \cup \{ \phi(x,\bar{m}) \}$ is a finite part of $\Sigma$, then $\MM \models \Sigma_N(N,\bar{m})$ ($N$ has at least $k$ elements below it for every $k>N$, and also has a finite number of elements below it since it is finite). By compactness, there is $N' \in \MM$ such that $\MM \models \Sigma_N(N',\bar{m})$. We conclude that $N'$ has at least $k$ elemements below it for every $k$, and that $N$ is finite by the above. This is a contradiction, so  $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ is not definable. \\
 
+\noindent (*) Consider $\NN = (\N,<)$, and let $\UU$ a non-principal ultrafilter over $\N$. Let $\MM = \NN ^{\UU}$. We can identify each $n \in \N$ with $[n,n,\dots,]_{\UU} \in \MM$. Notice that for every $n \in \N$,
+\[
+    \omega = [0,1,2,\dots,n,n+1,\dots]_{\UU} > n
+\]
+We call elements bigger than every $n$, \textit{infinite.} Suppose now the set $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ is definable by some formula $\phi(x,\bar{m})$ with parameters $\bar{m} \in \MM$. In other words, $\MM \models \phi(x, \bar{m})$ if and only if there is a finite number of elements below $x$ (in the usual finite sense), we show this implies that $x$ is necessarily finite: suppose not, then for every $n$, $\UU$-almost everywhere, $x_i \neq n$. We want to prove that actually $x_i \geq n$: if it were not the case, then again, $\UU$-almost everywhere $x_i < n \Rightarrow x_i \in  \{ 0,1,\dots,n-1\} = \bigcup_{j=0}^{n-1} \{j\}$. In other words, this means that
+\[
+    \bigcup_{j=0}^{n-1} \{i  , x_i = j \} \in \UU.
+\]
+By ultrafilter properties, (if $A \cup B \in \UU$ then either $A \in \UU$ of $B \in \UU$) we conclude that for some $k$, $[x] = [k]$, which is a contradiction since $x$ is infinite. We consider now $\Sigma(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k \in \N} \cup \{ \phi(x,\bar{m}) \}$. It is finitely consistent, since if  $\Sigma_N(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k < N} \cup \{ \phi(x,\bar{m}) \}$ is a finite part of $\Sigma$, then $\MM \models \Sigma_N(N,\bar{m})$ ($N$ has at least $k$ elements below it for every $k>N$, and also has a finite number of elements below it since it is finite). By compactness, there is $N' \in \MM$ such that $\MM \models \Sigma_N(N',\bar{m})$. We conclude that $N'$ has at least $k$ elements below it for every $k$, and that $N$ is finite by the above. This is a contradiction, so  $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ is not definable. \\
 
-\textbf{Exercise 2.} Let $M$ be a set and $\mathcal D = \bigcup_n D_n$ be a collection of subsets of $\bigcup_n M^n$ containing $\varnothing$, $M^n$ for every $n$, the diagonals, and closed under permutartion of the coordinates, cartesian products, the boolean set operations and linear projections. Show that $\mathcal D = \op{Def}(\MM , \varnothing)$, for some language $\LL$ and some $\LL$-structure $\MM$.\\
-\textbf{Solution 0.2} Take $\mathcal C = \varnothing$, and $\mathcal R = \bigcup_{n \in N} \{(x_1,\dots,x_n), (x_1,\dots,x_n) \in D_n  \}$.
+\noindent\textbf{Exercise 2.} Let $M$ be a set and $\mathcal D = \bigcup_n D_n$ be a collection of subsets of $\bigcup_n M^n$ containing $\varnothing$, $M^n$ for every $n$, the diagonals, and closed under permutation of the coordinates, cartesian products, the boolean set operations and linear projections. Show that $\mathcal D = \op{Def}(\MM , \varnothing)$, for some language $\LL$ and some $\LL$-structure $\MM$.\\
+
+\noindent\textbf{Solution 0.2.} Take $\mathcal C = \varnothing$, and $\mathcal R = \bigcup_{n \in \N} \{(x_1,\dots,x_n), (x_1,\dots,x_n) \in D_n  \}$.
 In other words, take no constants and set each of the $D_n$'s to be a predicate. For each $n$,  if for every $(x_1,\dots,x_n) \in M^n$, there exists $y \in M$ such that $(x_1,\dots,x_n,y) \in D_{n+1}$, we set $f:M^{n} \to M$ which sends $(x_1,\dots,x_n)$ to $y$. We may have to do this (possibly infinitely) many  times since such $y$ may not be unique. \\
 
-\textbf{Exercise 0.3} Let $\MM$ be an expansion of a total order equipped with the \textit{order topology}. Let $A \subseteq M^n$ and $f:A \to M$ both definable.
+\noindent\textbf{Exercise 0.3.} Let $\MM$ be an expansion of a total order equipped with the \textit{order topology}. Let $A \subseteq M^n$ and $f:A \to M$ both definable.
 \begin{enumerate}
     \item Show that $A^\circ, \overline{A}$ and $\op{bd}(A)$ are all definable.
     \item Show that the set of discontinuity points of $f$ is definable.
     \item Show that the following properties are definable: $A$ is discrete, $A$ is bounded.
     \item What about $A$ is compact and connected?
 \end{enumerate}
-\textbf{Solution 0.3} We use the following abbreviations: $\bar{x} < \bar{y}$ for $x_i < y_i$ for each $i$ and if $\phi$ is a formula then $Q x \in A \  (\phi)$ (where $Q$ is a quantifier) for $Q x ( x \in A \Rightarrow \phi$).
+
+\noindent\textbf{Solution 0.3.} We use the following abbreviations: $\bar{x} < \bar{y}$ for $x_i < y_i$ for each $i$ and if $\phi$ is a formula then $Q x \in A \  (\phi)$ (where $Q$ is a quantifier) for $Q x ( x \in A \Rightarrow \phi$).
 \begin{enumerate}
-    \item $ \bar{x} \in A^\circ$ if and only if $\exists \bar{y}, \bar{z}  \in A \ ( \bar{z}< \bar{x} < \bar{y})$.\\ $\bar{x} \in \bar{A}$ if and only if $\forall \bar{y} , \bar{z} ((\bar{z}< \bar{x} < \bar{y})  \Rightarrow \exists \bar{w} \in A  (\bar{z}< \bar{w} < \bar{y}))$ \\
+    \item $ \bar{x} \in A^\circ$ if and only if $\exists \bar{y}, \bar{z}  \in A \ ( \bar{z}< \bar{x} < \bar{y})$.\\
+    $\bar{x} \in \bar{A}$ if and only if $\forall \bar{y} , \bar{z} ((\bar{z}< \bar{x} < \bar{y})  \Rightarrow \exists \bar{w} \in A  (\bar{z}< \bar{w} < \bar{y}))$ \\
           $\bar{x} \in \op{bd}(A)$ if and only if $\bar{x} \notin A^\circ \land \bar{x} \in \bar{A}$.
     \item $\bar{x}$ is a discontinuity point of $f$ if and only if
-          $$\exists r \exists s ((r < f(\bar{x}) < s) \land \forall \bar{y},\bar{z} \in A ((\bar{z}< \bar{x} < \bar{y}) \Rightarrow \exists \bar{w} ((\bar{z}< \bar{w} < \bar{y})\land (f(\bar{w})<r \lor f(\bar{w}) > s))$$
+          \[
+              \exists r \exists s ((r < f(\bar{x}) < s) \land \forall \bar{y},\bar{z} \in A ((\bar{z}< \bar{x} < \bar{y}) \Rightarrow \exists \bar{w} ((\bar{z}< \bar{w} < \bar{y})\land (f(\bar{w})<r \lor f(\bar{w}) > s))
+          \]
     \item We say $A$ is discrete if $\forall \bar{x} \in A \  \exists \bar{y} \in A (\bar{x} < \bar{y} \Rightarrow \not \exists \bar{z} \in A  ( \bar{x} < \bar{z} < \bar{y}))$. We say $A$ is bounded if $\forall \bar{x} \in A  \ \exists \bar{y} ,  \bar{z} ( \bar{x} < \bar{y} \land \bar{x} > \bar{z})$.
     \item Consider $\UU$ a non-principal ultrafilter on $\NN$ and let $\R^* = \R ^\UU$. Consider
-          $$\varepsilon = [1,1/2,1/3,\dots, 1/n , \dots ]_\UU.$$
-          Notice that for $i \geq n$, $\varepsilon_i < 1/n$, and since $\{ n, n+1 , \dots \} \in \UU$ (it is cofinite), we conclude that for every $n$, $\varepsilon < 1/n$. This proves that $\R^*$ is not archimedean, and in particular this also proves that archimedianity for a field is not axiomatizable, since if it were by, say, some theory $T$, we would have $\R \models T$ and $\R^* \not \models T$, contradicting  Łos' theorem. We will show that connectedness and compactness are not 1st order expressible: consider $E$ the set of \textit{infinitesimal} elements in $\R^*$, i.e the set of elements smaller than every $1/n$.\\
+          \[
+              \varepsilon = [1,1/2,1/3,\dots, 1/n , \dots ]_\UU.
+          \]
+          Notice that for $i \geq n$, $\varepsilon_i < 1/n$, and since $\{ n, n+1 , \dots \} \in \UU$ (it is cofinite), we conclude that for every $n$, $\varepsilon < 1/n$. This proves that $\R^*$ is not archimedean, and in particular this also proves that archimedianity for a field is not axiomatizable, since if it were by, say, some theory $T$, we would have $\R \models T$ and $\R^* \not \models T$, contradicting  \L os' theorem. We will show that connectedness and compactness are not 1st order expressible: consider $E$ the set of \textit{infinitesimal} elements in $\R^*$, i.e the set of elements smaller than every $1/n$.\\
           $E$ is closed: Let $\varepsilon \in \bar{E}$, then for every $x,y \in \R^*$ such that $x<\varepsilon<y$ there is $\epsilon \in E$ such that $x < \epsilon < y$. If $\varepsilon \geq 1/n$ for some $n$, then we can find some infinitesimal $1/n < \epsilon < 1$, a contradiction.\\
-          $E$ is open: For any $\varepsilon \in E$ we have $\varepsilon/2 < \varepsilon < 2\varepsilon$. We have to show these are infinitesimal: for $\varepsilon/2$ is is trivial since it is below an infinitesimal. Now if $2\varepsilon \notin E$, we can fin $n$ such that $1/n < 2\varepsilon \Rightarrow 1/2n < \varepsilon$, which is impossible.\\
-          $E$ has no supremum: Let $r = \sup E$. We have that, $r \notin E$ (otherwise $r<2r \in E$), now let $\epsilon \in E$, and we claim $r-\epsilon$ bounds $E$: suppose not, so there is $\varepsilon \in E$ such that $$r-\epsilon < \varepsilon < r \Rightarrow r < \varepsilon +\epsilon < r  +\epsilon.$$ Notice also that $\epsilon + \varepsilon \in E$ because, for any $n \in \N$ since $\epsilon,\varepsilon < 1/2n$, then $\epsilon + \varepsilon < 1/n$. We have that $r \leq $some infinitesimal, a contradiction. $E$ cannot have a supremum.\\
+          $E$ is open: For any $\varepsilon \in E$ we have $\varepsilon/2 < \varepsilon < 2\varepsilon$. We have to show these are infinitesimal: for $\varepsilon/2$ is is trivial since it is below an infinitesimal. Now if $2\varepsilon \notin E$, we can find $n$ such that $1/n < 2\varepsilon \Rightarrow 1/2n < \varepsilon$, which is impossible.\\
+          $E$ has no supremum: Let $r = \sup E$. We have that, $r \notin E$ (otherwise $r<2r \in E$), now let $\epsilon \in E$, and we claim $r-\epsilon$ bounds $E$: suppose not, so there is $\varepsilon \in E$ such that \[ r-\epsilon < \varepsilon < r \Rightarrow r < \varepsilon +\epsilon < r  +\epsilon. \] Notice also that $\epsilon + \varepsilon \in E$ because, for any $n \in \N$ since $\epsilon,\varepsilon < 1/2n$, then $\epsilon + \varepsilon < 1/n$. We have that $r \leq $some infinitesimal, a contradiction. $E$ cannot have a supremum.\\
           E is not compact: the sequence
-          $$\varepsilon < 2\varepsilon < \dots < n\varepsilon < \dots $$
-          is contained in $E$ (by the above argument), it is strictly increasing and is bounded above by $1$. The above argument can be used to show it has no limit point. This proves $E$ is not compact. If compactness of some set $A$ was given by some sentence $\phi_A$, then we would have $\R \models \phi_{[0,1]}$ but  $\R^* \not\models \phi_{[0,1]}$, contradicting  Łos' theorem.\\
-          Finaly, since $E$ is clopen and it is neither $\varnothing$ nor $[0,1]$, we conclude that $[0,1]$ is not connected in $\R^*$, and we can infer that connectedess is also not 1st order expressible.
+          \[
+              \varepsilon < 2\varepsilon < \dots < n\varepsilon < \dots
+          \]
+          is contained in $E$ (by the above argument), it is strictly increasing and is bounded above by $1$. The above argument can be used to show it has no limit point. This proves $E$ is not compact. If compactness of some set $A$ was given by some sentence $\phi_A$, then we would have $\R \models \phi_{[0,1]}$ but  $\R^* \not\models \phi_{[0,1]}$, contradicting  \L os' theorem.\\
+          Finaly, since $E$ is clopen and it is neither $\varnothing$ nor $[0,1]$, we conclude that $[0,1]$ is not connected in $\R^*$, and we can infer that connectedness is also not 1st order expressible.
 \end{enumerate}
 
+\noindent\textbf{Exercise 1.} Let $\LL = \varnothing$ and $\MM$ be an $\LL$-structure. Show that $A \subseteq M$ is definable in $\MM$ if and only if $A$ is either finite or cofinite.\\
 
-
-\textbf{Exercise 1.} Let $\LL = \varnothing$ and $\MM$ be an $\LL$-structure. Show that $A \subseteq M$ is definable in $\MM$ if and only if $A$ is either finite or cofinite.\\
-\textbf{Solution 1.} \\
-\textbf{Lemma: }If $A$ is $S$-definable, then every automorphism $ \sigma$ that fixes $S$ pointwise fixes $A$ pointiwse. \\
-\textbf{Proof:} Let $\psi(x,\bar{s})$ be a formula defining $A$, since automorphisms preserve formula, then we have
-$$\MM \models \psi(x,\bar{s}) \iff \MM \models \psi(\sigma(x) ,\sigma(\bar{s})) \iff  \MM \models \psi(\sigma(x) ,s) $$
-so that $\sigma(X) = X$. \\
+\noindent\textbf{Solution 1.}
+\begin{lem}
+    If $A$ is $S$-definable, then every automorphism $ \sigma$ that fixes $S$ pointwise fixes $A$ pointiwse.
+\end{lem}
+\begin{proof}
+    Let $\psi(x,\bar{s})$ be a formula defining $A$, since automorphisms preserve formula, then we have
+    \[
+        \MM \models \psi(x,\bar{s}) \iff \MM \models \psi(\sigma(x) ,\sigma(\bar{s})) \iff  \MM \models \psi(\sigma(x) ,s)
+    \]
+    so that $\sigma(X) = X$.
+\end{proof}
 If there was some definable $A$ which is neither finite nor cofinite, then we can choose infinite sets
 \begin{align*}
     \{a_0 , a_1 \dots , a_n , \dots \} & \in A\setminus S               \\
@@ -108,41 +124,56 @@ If there was some definable $A$ which is neither finite nor cofinite, then we ca
 \end{align*}
 Then the bijection which sends $a_i$ to $b_i$ and fixes everything else (in particular $S$) is an automorphism that doesn't fix $A$, a contradiction.
 Conversely, if $A = \{ a_0 \dots, a_n \}$ is finite, the formula
-$$\phi (x, \bar{a} ) = \bigvee_{i=0} ^n x = a_i$$
+\[
+    \phi (x, \bar{a} ) = \bigvee_{i=0} ^n x = a_i
+\]
 defines $A$. If $A$ is cofinite repeat this argument for $M \setminus A$. \\
 
-
-
-\textbf{Exercice 2.} Let $\MM$ be an $\LL$-structure, let $m,n \in \N$. A collection $\mathcal A = \{A_{\bar{b} }\}_{\bar{b} \in M^m}$ of subsets of $M^n$ is a \textit{definable family} if there exists $S \subseteq M$ and a formula $\phi \in \mathcal F_{n+m}(\LL_S)$ such that $A_{\bar{b}}= \{\bar{a} \in M^n , \MM_S \models \phi(\bar{a},\bar{b}) \}$. Let $D \subseteq M$ be a finite set. Given a $D$-definable family $\mathcal A= \{A_{\bar{b} }\}_{\bar{b} \in M^m}$  , let $A=\cup \mathcal A$ and let $f:A \to M$ a function.
+\noindent\textbf{Exercise 2.} Let $\MM$ be an $\LL$-structure, let $m,n \in \N$. A collection $\mathcal A = \{A_{\bar{b} }\}_{\bar{b} \in M^m}$ of subsets of $M^n$ is a \textit{definable family} if there exists $S \subseteq M$ and a formula $\phi \in \mathcal F_{n+m}(\LL_S)$ such that $A_{\bar{b}}= \{\bar{a} \in M^n , \MM_S \models \phi(\bar{a},\bar{b}) \}$. Let $D \subseteq M$ be a finite set. Given a $D$-definable family $\mathcal A= \{A_{\bar{b} }\}_{\bar{b} \in M^m}$  , let $A=\cup \mathcal A$ and let $f:A \to M$ a function.
 \begin{enumerate}
     \item Show that $f$ is $D$-definable if and only if all restrictions $f\restriction A_{\bar{b}}$ are $D$-definable.
     \item What can we say if $D$ is infinite?
 \end{enumerate}
-\textbf{Solution 2.} Suppose there is $\phi \in \mathcal F_{n+1} ( \LL_D) $ such that $f(a_1,\dots,a_n) = y$ if and only if $\mathcal M_D \models \phi(\bar{a},y)$. Then $f \restriction_{A_{\bar{b}}}(\bar{a}) = y$ if and only if $\MM_D \models \varphi(\bar{a},\bar{b}) \land \phi(\bar{a},y)$, where $\varphi$ is the formula which defines the family $\{ A_{\bar{b}}\}_{\bar{b} \in D^m}$. Conversely if there is $\phi_{\bar{b}}$ which defines each $f\restriction_{A_{\bar{b}}}$, we have that $f(\bar{a}) = y$ if and only if
-$$\MM_D \models \bigvee_{\bar{b} \in D^m} \varphi(\bar{a},\bar{b}) \land \phi_{\bar{b}}(\bar{a},y).$$
-In case $D$ is infinite, the first direction holds, but the converse may not, for instance take $\MM = \langle  \mathbb C ,+,-,\times,0,1 \rangle$ and $D=\mathbb R$. Take $A_b = \{ a \in \mathbb R , a=b \} = \{ b \}$, and $f:A_b \to \mathbb C$ as the identity. Since $A = \mathbb R$, and the inclusion $\mathbb R \subseteq \mathbb C$ is not definable, even though its restrictions are. \\
 
+\noindent\textbf{Solution 2.} Suppose there is $\phi \in \mathcal F_{n+1} ( \LL_D) $ such that $f(a_1,\dots,a_n) = y$ if and only if $\mathcal M_D \models \phi(\bar{a},y)$. Then $f \restriction_{A_{\bar{b}}}(\bar{a}) = y$ if and only if $\MM_D \models \varphi(\bar{a},\bar{b}) \land \phi(\bar{a},y)$, where $\varphi$ is the formula which defines the family $\{ A_{\bar{b}}\}_{\bar{b} \in D^m}$. Conversely if there is $\phi_{\bar{b}}$ which defines each $f\restriction_{A_{\bar{b}}}$, we have that $f(\bar{a}) = y$ if and only if
+\[
+    \MM_D \models \bigvee_{\bar{b} \in D^m} \varphi(\bar{a},\bar{b}) \land \phi_{\bar{b}}(\bar{a},y).
+\]
+In case $D$ is infinite, the first direction holds, but the converse may not, for instance take $\MM = \langle  \C ,+,-,\times,0,1 \rangle$ and $D=\R$. Take $A_b = \{ a \in \R , a=b \} = \{ b \}$, and $f:A_b \to \C$ as the identity. Since $A = \R$, and the inclusion $\R \subseteq \C$ is not definable, even though its restrictions are. \\
 
-\textbf{Exercise 3.} Let $\bar{\R} = \langle \R,0,1,-,+,\cdot,< \rangle$ be the real ordered field. Let $f$ be a unary symbol and $\LL = \LL_{OR} \cup \{ f\}$.
+\noindent\textbf{Exercise 3.} Let $\bar{\R} = \langle \R,0,1,-,+,\cdot,< \rangle$ be the real ordered field. Let $f$ be a unary symbol and $\LL = \LL_{OR} \cup \{ f\}$.
 \begin{enumerate}
     \item Show that the $\LL$-structures $\langle \bar{\R}, \sin{\left( \frac{1}{1+x^2}\right)}  \rangle$ and $\langle \bar{\R},  \arctan{x} \rangle$
     \item Show that $\bar{\R}$ is definable int he structure $\langle  \R, + , \exp(x) \rangle$.
     \item Let $\R_{\exp} = \langle \bar{\R} , \exp \rangle$ be the real ordered exponential field. An \textit{exponential polynomial} is a function $F:\R^n \to \R$ such that there exists a polynomial $P \in \R[X_1,\dots,X_n,Y_1,\dots,Y_m]$ such that $F(x_1,\dots, x_n) = P(x_1,\dots,x_n,e^{x_1},\dots,e^{x_n})$. Show that every set $A \in \R^m$ existentially definable in $\R_{\exp}$ is a linear projection of the zero-set of some exponential polynomial $F_A$.
 \end{enumerate}
-\textbf{Solution 3. }
+
+\noindent\textbf{Solution 3.}
 \begin{enumerate}
     \item We first define $\sin(x)\restriction_{[0,1]}$ from $\sin{\left( \frac{1}{1+x^2}\right)}$:
-          $$\op{graph}\sin(x)\restriction_{[0,1]} = \left\{(x,y) , (x=0 \land y=0) \lor \exists z (x(1+x^2)=1 \land y = \sin{\left( \frac{1}{1+z^2}\right)} \right\}.$$\\
+          \[
+              \op{graph}\sin(x)\restriction_{[0,1]} = \left\{(x,y) , (x=0 \land y=0) \lor \exists z (x(1+x^2)=1 \land y = \sin{\left( \frac{1}{1+z^2}\right)} \right\}.
+          \]\\
           We can now define
-          $$x = \frac{\pi}{2} \iff2 \sin^2\restriction_{[0,1]}(x/2) = 2$$
+          \[
+              x = \frac{\pi}{2} \iff2 \sin^2\restriction_{[0,1]}(x/2) = 2
+          \]
           And define for $0<x <\pi/2$,
-          $$\tan(x) = \frac{2 \sin\restriction_{[0,1]}(x/2)\sqrt{1-\sin^2\restriction_{[0,1]}(x/2)}}{1-2\sin^2\restriction_{[0,1]}(x/2)}.$$
+          \[
+              \tan(x) = \frac{2 \sin\restriction_{[0,1]}(x/2)\sqrt{1-\sin^2\restriction_{[0,1]}(x/2)}}{1-2\sin^2\restriction_{[0,1]}(x/2)}.
+          \]
           And for $-\pi/2 <x < 0$
-          $$\tan(x) = -\tan(-x).$$
+          \[
+              \tan(x) = -\tan(-x).
+          \]
           Then finally set
-          $$y = \arctan(x) \iff \tan(x) = y.$$
+          \[
+              y = \arctan(x) \iff \tan(x) = y.
+          \]
           For the other direction we can define $\tan x $ from $\arctan x$ and set
-          $$\sin\restriction_{[0,1]} x  = \frac{\tan x}{\sqrt{1+\tan^2 x}}$$
+          \[
+              \sin\restriction_{[0,1]} x  = \frac{\tan x}{\sqrt{1+\tan^2 x}}
+          \]
           define $\sin ( 1/(1+x^2))$ as above.
     \item
           \begin{enumerate}
@@ -153,18 +184,26 @@ In case $D$ is infinite, the first direction holds, but the converse may not, fo
               \item $xy = \exp( \log x + \log y)$
           \end{enumerate}
     \item Let $\varphi(\bar{x},\bar{c})$ and existential formula in $\LL_{\exp}$ with parameters $\bar{c} \in \R$. We can assume $\varphi$ has the form
-          $$\varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s \theta_{ij}(\bar{x},\bar{z},\bar{c})$$
+          \[
+              \varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s \theta_{ij}(\bar{x},\bar{z},\bar{c})
+          \]
           where $\theta_{ij}$ is atomic or $\neg$-atomic. We know that atomic formulas have the form $t_1=t_2, t_1 < t_2 , t_1 = 0$ or $t_1<0$ for $t_1,t_2$ terms with parameters $\bar{c}$. We can replace in  $\theta_{ij}$, $t\neq0$ for $t<0 \land -t<0$   and $t<0$ for $\exists y ty^2 + 1 = 0$ $t \neq 0 $, and $t_1=t_2$ for $t_1-t_2=0$. In other words, we can assumme $\theta_{ij}$ to be of the form $t=0$. We know show by induction on $t(\bar{x},\bar{c})$ that any term can be replaced by a conjunction of existential formulas containing only terms of the form $F(\bar{x},\bar{y},\bar{c})$, where $F$ is an exponential polynomial and $\bar{y}$ are new variables. In other words, $t(\bar{x},\bar{c})=0$ becomes a system of exponential polynomial equations on variables $\bar{y}$.\\
           If $t=c$ then $c=0$ is already of the form we want.\\
           If $t = t_1 + t_2$ then, since the sum of exponential polynomials is also an exponential polynomial, we can just add each of the rows of each system of equations to get one for $t=0$.\\
           The case $t_1t_2$ is similar.\\
           If $t(\bar{x},\bar{c}) = e^{t_1(\bar{x},\bar{c})}$ , then we can replace
-          $$t(\bar{x},\bar{c})=0 \iff \exists w e^w = 0 \land w = t_1(\bar{x},\bar{c})$$
+          \[
+              t(\bar{x},\bar{c})=0 \iff \exists w e^w = 0 \land w = t_1(\bar{x},\bar{c})
+          \]
           and then we can apply induction on $t_1$, adding the variable $w$ to our exponential polynomial.\\
           We can then suppose (renaming variables and reindexing) that $\theta_{ij}$ has the form $F_{ij}(\bar{x},\bar{z},\bar{c})=0$ for some exponential polynomial. So that
-          $$\varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s F_{ij}(\bar{x},\bar{z},\bar{c})=0.$$
+          \[
+              \varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s F_{ij}(\bar{x},\bar{z},\bar{c})=0.
+          \]
           It is clear that the set of zeros of
-          $$F = \sum_{i=1}^l \left( \prod_{j=1}^s F_{ij}(\bar{x},\bar{c}) \right)^2$$
+          \[
+              F = \sum_{i=1}^l \left( \prod_{j=1}^s F_{ij}(\bar{x},\bar{c}) \right)^2
+          \]
           defines the same set as $\varphi(\bar{x},\bar{c})$.
 \end{enumerate}
 
