@@ -1,0 +1,133 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+% \usepackage[francais]{babel}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\NN}{\mathcal N}
+\doublespacing
+\begin{document}
+\homework{Thèorie des ensembles, TD1}{Date: 19/07/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercise 1.} Let $R$ be a relation on a set $X$. Show that $R$ is not well-founded if and only if there is a sequence $\{ x_n \} \subseteq X$ such that $x_{n+1}Rx_n$ for al $n \in \N$.\\
+\textbf{Solution: }Suppose that $R$ is not well founded (this implies $X \neq \varnothing$), then there exists some non-empty $Y \subseteq X$ with no minimal element. That is, for every $y \in Y$ there exists $z \in Y$ such that $ z R y$. Take any $x_0 \in Y$ (\textit{choice}) and take $x_1 \in Y$ such that $x_1 R x_0$. Inductively, if $\{x_0,\dots,x_k\} \subseteq Y$ are such that $x_{i+1}Rx_i$ for $i<k$, then by hypothesis, there is $x_{n+1} \in Y$ such that $x_{n+1}Rx_n$. By axiom of \textit{union}, we can form $S = \{x_n \}_{n \in \N}$ as required. Conversely, suppose $\{x_n\}$ is a sequece as stated, then $S = \{x_0,x_1,\dots,x_n,\dots\}$ has no minimal element.\\
+
+\textbf{Exercise 2.} Show that $\in$ is a well-founded set-like extensional relation on $V$. Is $\in$ transitive? Is $\in$ a strict order?\\
+\textbf{Solution:} If $\in$ weren't well founded there would exist some sequence $S=\{x_n\}$ of sets in $V$ with $x_{n+1} \in x_n$. The fact that $S$ is a set contradicts the axiom of \textit{regularity}, since for every $n$, $x_{n+1} \in x_n \cap S $. The relation $\in$ is set-like, take a set $x$, then $\in^{-1} [x] = \{ y , y \in x \} = \{y \in x , y \in x \} = x$. It is also extensional since $\in^{-1} [x] = \in^{-1} [y]$ means that $x,y$ have the same elements, therefore $x=y$ by \textit{extensionality}. It is not transitive, take some set $x$ and take $A= \{ \{ x \} \}$, then $x \in \{x\}$ and  $\{ x \} \in \{ \{ x \} \} $ but $x \not \in A $. It is also not a strict order since it is not transitive.\\
+
+\textbf{Exercise 3.} Let $x$ be a set. Show that there is a transitive $y$ such that $x \subseteq y$. Show that such $y$ can be chosen in a minimal way, which we will call the \textbf{transitive closure of $x$}.\\
+\textbf{Solution.} Take $x_0 =x$ and inductively $x_{n+1} = \cup x_{n}$. Then take $y = \cup _{n \in \N} x_n$. Clearly $x = x_0 \subseteq y$, to see that $y$ is transitive, let $w \in z \in y$, then for some $k$, $z \in x_k$, and since $x_{k+1}= \cup x_{k}$, we have $w \in x_{k+1} \subset y$. Finally, to see minimality, let $x \subseteq T$ for some transitive set $T$. We will show that $y \subseteq T$. Let $z=z_k \in y$, so that for some $k$, $z_k \in x_k$. This means that for some $z_{k-1} \in x_{k-1}$, $z_k \in z_{k-1}$, repeating this argument, we get a finite sequence $z_k,z_{k-1},\dots, z_0$ such that for $i=0,\dots k$, $z_i \in x_i$ and $z_{i} \in z_{i-1}$. Since $z_0 \in x_0 \subseteq T$, by transitivity of $T$, $z_1 \in T, \dots , z_k = z \in T$. \\
+
+\textbf{Exercise 4.} Use the axiom of regularity and the transitive closure to show that if $C$ is a class, then $C$ has a $\in$-minimal element.\\
+\textbf{Solution: } Let $x$ be any set in $C$, if $x$ and $C$ have no elements in common, then $x$ is minimal. Otherwise there is some $y \in S \cap x$ (informal notation for $y$ is in $C$ and in $x$). Note that $\op{TC}(y) \cap C$ is a non-empty set. By \textit{regularity}, there is a minimal $z \in \op{TC}(y) \cap C$ (otherwise there would be a descending infinite sequence in $w$). Let's see that $z$ is actually $\in$-minimal in $C$: if it weren't, there would be $z' \in C$ such that $z' \in z$. This means $z' \in \op{TC}(y)$, and therefore $z' \in \op{TC}(y) \cap C$, contradicting the minimality of $z$ in this last set.  \\
+
+\textbf{Exercise 5.} Show that if $M_1$ and $M_2$ are transitive classes and $\pi:M_1 \to M_2$ is an $\in$-isomorphism, then $\pi$ is the identity.\\
+\textbf{Solution: } We define the class $C = \{ x , \pi(x) \neq x \}$. By ex.4, choose some minimal $x \in C$. We will show that $\pi(x) = x$ and arrive at a contradiction. First let's see that $x \subseteq \pi(x)$. Let $y \in x \Rightarrow y \in M_1 \land \pi(y) \in \pi(x)$. Since $x$ is minimal in $C$, $\pi(y) = y$ and therefore $y \in \pi(x)$. Now let's check $\pi(x) \subseteq x$: take $w \in \pi(x)$, then $\pi^{-1}(w) \in x$ and by minimality of $x$ we have $w = \pi(\pi^{-1}(w))  = \pi^{-1}(w) \Rightarrow w \in x$. There is a contradiction, $C$ cannot have a $\in$-minimal element, so it must be empty. This implies that $\pi \equiv id$.\\
+
+\textbf{Excercise 6. (Mostowski's Collapsing Lemma}). Let $C$ be a class and $R$ be a well-founded, set-like, extenional relation. Then there is a unique transitive class $M$ and a unique isomorphism $(C,R) \rightarrow (M, \in)$.\\
+\textbf{Solution: } First, we note that the $R$-minimal element $x \in C$ is unique, since if there were another minimal $y \in C$ , we would have $R^{-1}[x] = R^{-1}[y] = \varnothing$, which would imply $x = y$ by extensionality. We now define $\pi(x) = \varnothing$, and for every other $y \in C$, $\pi(y) = \{ \pi(z) , z R y \} = \pi ( R^{-1}[x])$. This function is $\in$-preserving since $y R x \Rightarrow y \in R^{-1}[x] \Rightarrow \pi(y) \in \pi(R^{-1}[x])=\pi(x)$. We now take $M= \cup_{x \in C} \pi(x)$. Note that $M$ is a transitive class because if $z \in M$ it means there are $x,y \in C$ such that $z = \pi(y)$ with $yRx$, this implies $z \in M$. By construction, $\pi$ is clearly surjective. Finally, to see that $\pi$ is injective, take $x \neq y$ in $C$, then by extensionality $R^{-1}[x] \neq R^{-1}[y]$ so there exists $z \in C$ such that $z R x \land z \cancel{R} y$, which implies $\pi(x) \neq \pi(y)$. To check uniqueness, we can suppose $M_1$ and $M_2$ are transitive classes that satisfy the lemma, with respective mappings $\pi_1,\pi_2$. We then would have the $\in$-isomorphism $\pi_1 \circ \pi_2^{-1}:M_2 \rightarrow M_1$. By ex.5, it is the identity, so $M_1 = M_2$. \\
+
+\center
+\begin{tikzcd}
+
+    & M_1 \arrow[dd, "=", no head] \\
+    C \arrow[ru, "\pi_1"] \arrow[rd, "\pi_2"'] &                                    \\
+    & M_2
+\end{tikzcd}
+\justify
+\textbf{Exercise 7.} Let $(X,<_1)$, $(Y,<_2)$ be ordered sets. Define $<_3$ on $X \times Y$ by $(x,y) < (x',y')$ if and only if $x <_1 x'$ and $y <_2 y'$. Show that this is and order. If $<_1$ and $<_2$ are total orders, is $<_3$ a total order?.\\
+\textbf{Solution: } Easy.\\
+
+\textbf{Exercise 8.} Let $(X,<_1)$, $(Y,<_2)$ be totally ordered sets. Show that $<_{lex}$ totally orders $X \times Y$. If $<_1$ and $<_2$ are well-orders, is $<_{lex}$ such?\\
+\textbf{Solution.} Easy, it is a well order.\\
+
+\textbf{Exercise 9.} Show that all countable total orders embed into $\mathbb Q$.\\
+\textbf{Solution: }\\
+\textit{Lemma: } If $X=\{ x_0,\dots,x_n \}$ is a finite total order, $X' = X \cup \{x_{n+1} \}$ is a total order extending the one in $X$, and $\varphi:X \to \mathbb Q$ is an embedding, then there exists an embedding $\varphi':X' \to \mathbb Q$ such that $\varphi' \restriction_X = \varphi$.\\
+\textit{Proof: } We have three cases: if $x_{n+1} > \max(X)$, then take $\varphi'(x_{n+1}) = \varphi(\max(X))+1$, else if if $x_{n+1} < \min(X)$, then take $\varphi'(x_{n+1}) = \varphi(\min(X))-1$. Otherwise, there are $i,j \in \{0,1,\dots,n\}$ such that $x_i < x_{n+1} < x_j$, then take $\varphi'(x_{n+1}) = \frac{1}{2}(\varphi(x_j) + \varphi(x_i))$, this completes the proof of the lemma.\\
+To show that $X=\{ x_0, \dots , x_n , \dots \}$ embeds into $\mathbb Q$, set $X_0 = {x_0}$ and $X_{n+1}= X_n \cup x_{n+1}$. Taking $\varphi_0:X_0 \to \mathbb Q$ as $x_0 \mapsto 0$, and using the lemma to define $\varphi_n:X_n\to \mathbb Q$ such that $\varphi_{n+1}\restriction{X_n} = \varphi_n$, we can take our embedding to be $\varphi = \cup_{n \in \N} \varphi_n$.\\
+
+\textbf{Exercise 10.} Let $X$ be a set. Show that $(\mathcal P (X) , \subseteq)$ is ordered. Show that $\subseteq$ is extensional on $\mathcal P (x)$.\\
+\textbf{Solution:} $\subseteq$ is clearly an order. If $\subseteq^{-1}[A] = \subseteq^{-1}[B]$, since $\subseteq$ is reflexive, we have in particular that $A \subseteq B$ and $B \subseteq A$. Thus, $A=B$.
+
+\textbf{Exercise 11.} Let $(X,<)$ be an ordered set. Show that there is an order morphism of $(X,<)$ in $(\mathcal P (X) \subseteq )$. Explicitly, write a morphism $\phi$ with the property that $\phi$ is injective if and only if $<$ is extensional.\\
+\textbf{Solution: } $x \mapsto \{ y \in X , y < x \}$.
+
+\textbf{Exercise 12.} For $A,B \subseteq \N$, define
+$$A \subseteq^* B \text{ if and only if } A \setminus B \text{ is finite} $$
+Show that $\subseteq^*$ is transitive. Is it an order? Describe al $\subseteq^*$-predecesors of $\varnothing$.\\
+\textbf{Solution:} Transitivity follows from the fact that $A \setminus C \subseteq A \setminus B \cup B \setminus C$. Is is not an order since it is not antisymmetric (take $\{1,2\}$ and $\{2,3\}$. The set of predecesors of $\varnothing$ consists of all the finite sets.\\
+
+\textbf{Exercise 13. } Let $\mathcal P (\N)$ be endowed with $\Delta$ and $\cap$ as addition and product. Show that this is a commutative ring with unity. Show that the set
+$$\op{Fin} = \{ A \subseteq \N , A \text{ is finite} \}$$
+is an ideal.\\
+\textbf{Solution: } It is routine to show that $\Delta$ and $\cap$ are commutative and associative. $\varnothing$ is the identity for addition and $\N$ for multiplication. Given $A \subseteq \N$, then $A \Delta A = \varnothing$ . Finally, using the fact that $X \cap (Y \setminus Z) = (X\cap Z) \setminus (X \cap W)$, we get distributivity:
+\begin{align*}
+    A\cap (B\Delta C) & = A \cap ((B \setminus C) \cup (C \setminus B))                           \\
+                      & = (A \cap ((B \setminus C)) \cup (A \cap ((C \setminus B))                \\
+                      & = ((A\cap B) \setminus (A \cap C)) \cup (( A \cap C) \setminus (A\cap B)) \\
+                      & = (A \cap B) \Delta (A \cap C)
+\end{align*}
+All of these show that $(\mathcal P (\N), \Delta , \cap)$ is a ring with identity. The family of finite sets forms an ideal since it is clearly closed under $\Delta$ and the intersection of any $X \subseteq \N$ with a finite set is finite.
+
+\textbf{Exercise 14. } On $\mathcal P (\N) / \op{Fin}$, define $[A] \subseteq [B]$ iff $A \subseteq^* B$. Show that this relation is well defined. Conclude that $\subset^*$ strictly orders $\mathcal P (\N) / \op{Fin}$, and show that it is extensional.\\
+\textbf{Solution: } Notice that $[A]=[B]$ iff $A \Delta B$ is finite iff $A \subseteq^* B$ and  $B \subseteq^* A$. Suppose that $A\subseteq^* B$, $[C]=[A]$ and that $[D] = [B]$. Then we have by the above that $C \subseteq^* A \subseteq^* B \subseteq^* D$, the result follows from transitivity of $\subseteq^*$. To check extensionality, notice that $ [X] \subseteq [X]$ for every $X \subseteq \N$, if we suppose that $\subseteq^{-1}[A] = \subseteq^{-1}[B]$, then in particular $A \subseteq^* B$ and viceversa, this proves that $[A] = [B]$.
+
+\textbf{Exercise 15. } Two elements of an ordered set are incompatible if there is no element which is below both of them, a subset $C \subset X$ is a chain if for al $x,y, \in C$ either $x>y$ or $y>x$. Show that there is an uncountably infinite family of pairwise incompatible elements of \linebreak $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing], \subset^*)$, and that there is an uncountable well-founded chain in $(\mathcal P (\N) / \op{Fin} \setminus [\N], \subset^*)$. Conclude that $\mathcal P (\N) / \op{Fin} , \subset)$ does not order-embed into $(\mathcal P(\N),\subset)$.\\
+\textbf{Solution: }Notice that  $[\varnothing]$ and $[\N]$ represent the classes of finite and co-finite sets, respectively. Also, two elements $[A],[B]$ are incompatible if and only if $A \cap B$ is finite: suppose that $ Y = A\cap B$ is infinite, then $[Y] \subseteq [A]$ and $[Y] \subseteq [B]$, which makes $[A],[B]$ compatible, on the other hand, if $A \cap B$ is finite, if we suppose that there exists
+$[X] \subseteq [A],[B]$, then $X \setminus (A\cap B) = (X \setminus A) \cup (X\setminus B)$ is finite, which implies $[X] \subseteq [A\cap B] \Rightarrow X$ is finite, a contradiction since we excluded $[\varnothing]$. \\
+To show the existence of an uncountably infinite family of pairwise incompatible sets we will show that any countable family of these can be extended, and that a maximal family of such sets cannot be countable.\\
+Take a countable family of pairwise incompatible elements of $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing]$, say $[X_n]$, $n \in \N$. Let
+$$Y_0 = X_0 \text{ and } Y_{n+1} = X_{n+1} \setminus \bigcup _{i \leq n} X_{n}.$$
+All of the $Y_n$ are pairwise disjoint and $[Y_n] = [X_n]$ for every $n$, since $X_n \cap Y_n = X_n \cap (\bigcap_{i< n} X_n \setminus X_i)$ is finite. Pick an element $x_n \in Y_n$, then the set $Y = \{x_n , n \in \N \}$ is almost disjoint from each $X_n$, which makes the original family not maximal. By Zorn's Lemma, we can extend any family of pairwise incompatible elements to a maximal one containing it. Finally, take for every $n$,  $X_n = \{p_n^k , k > 0 \}$ where $p_n$ is the $n$-th prime number. This is a countable family of pairwise incompatible sets, and we can extend it to a maximal one, which cannot be uncountable. Next, we have to show that there is no embedding of $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing ], \subseteq) $ into $(\mathcal P( \N) , \subseteq)$.\\
+\textit{Lemma: } All well-founded chains in  $(\mathcal P( \N) , \subset)$ are countable.\\
+Proof: Suppose there is an uncoutable $\subset$-chain. For $x$ in $C$, let $S(x)$ be the $\subset$-minimal element of $C$ above $x$ (exists because of well-foundedness). If $x \neq y$, then \textit{wlog} $x \subseteq y$ and hence $S(x) \subseteq y$. This implies that for every $x \neq y$ in $C$
+$$(S(x) \setminus x) \cap (S(y)\setminus y) = \varnothing.$$
+Since each of $S(x) \setminus x$ is nonempty (strict ordering), the set $X = \bigcup_{x \in C} S(x) \setminus x \subseteq \N$ is uncountably infinite, this is a contradiction. Since embeddings of chains are chains, we just need to find an uncountably infinite well-founded chain in $\mathcal P (\N) / \op{Fin} \setminus [\N ]$. Let
+$$\mathcal{D} = \{ \mathcal C \subset \mathcal P (\N) / \op{Fin} \setminus [\N ] , \mathcal C \text{ is a well-founded chain}\}.$$
+We can order $\mathcal D$ by end-extensions of chains. Taking by Zorn's Lemma a maximal chain in $\mathcal D$, there is a well-founded chain in $\mathcal P (\N) / \op{Fin} \setminus [\N ]$ that cannot be end-extended. Such chain cannot be countable, to prove this we'll show \textit{that every countable chain in $\mathcal D$ is end-extendable.}\\
+\textit{Proof: } Let $\mathcal C = [A_n]$ be a countable chain (we assume the $[A_n]$'s to be different). We want to find a non-cofinite $C \subseteq \N$ such that for every $n$, $A_n \subseteq^* C$. Let $B_n = \bigcup_{i \leq n}A_n$, and notice that $B_n \subseteq B_{n+1}$ for all $n$. Notice that $B_{n+1} \setminus B_{n}$ is infinite for every $n$ since $[A_n] \subsetneq [A_{n+1}]$ implies $A_{n+1} \setminus A_n$ is infinite. Note that if $C$ a non-cofinite set such that for every $n$, $B_n \subseteq^* C$, the same is true for every $A_n$. Let $k_i = \min B_{i+1} \setminus B_i$ and $C = \N \setminus \{k_n\}_{n \in \N}$ (it is non-cofinite by construction). We have that if $i \geq n$, then $k_i \notin B_n$, which implies that for every $n$, $B_n \cap \{k_i\}_{i \in \N}$ is finite or equivalently, $B_n \subseteq^* C$. To conclude, we can assume said $\mathcal C$ to be well-founded and extend it to a uncountably infinite maximal chain in $\mathcal P (\N) / \op{Fin} \setminus [\N ]$ which cannot be embedded intro $\mathcal P (\N)$ as a consequence of one of the lemmas. \\
+
+
+\end{document}
