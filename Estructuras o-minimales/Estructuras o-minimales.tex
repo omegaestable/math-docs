@@ -1,0 +1,446 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{amscd}        % Package used to produce simple commutative diagrams
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage[english,spanish]{babel}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+%\setlength\parindent{0pt}
+
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Teorema}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{conjecture}[theorem]{Conjetura}
+\renewenvironment{proof}{\paragraph{\textbf{Prueba: }}}{\hfill$\blacksquare$}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Observación}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+
+
+%\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\bigcup}}
+%\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\bigcup}}
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+\renewcommand{\baselinestretch}{1.1}
+
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{question}[theorem]{claim}
+
+
+
+\newcommand{\cd}[4]{
+\begin{CD}
+#1    @>>>    #2\\
+@VVV    @VVV\\
+#3    @>>>    #4
+\end{CD}
+}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+
+
+
+
+\begin{document}
+
+\title{%
+    Estructuras O-minimales}
+
+\author{J. Ignacio Padilla Barrientos
+}
+
+
+
+\pagestyle{fancy}
+\fancyhead[]{}
+\lhead{MA-711 Lógica}
+\rhead{Prof. Samaria Montenegro}
+\setlength{\headheight}{13pt}
+
+\address{Escuela de Matem\'atica, Universidad de Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{juan.padillabarrientos@ucr.ac.cr}
+\begin{abstract}
+    Las estructuras o-minimales buscan generalizar las propiedades de los órdenes lineales (como el orden natural de $\R$). En ellas, se pueden encontrar propiedades deseables a nivel modelo-teórico, algebraico, e incluso topológico. El objetivo principal de este trabajo es introducir las estructuras y teorías o-minimales, desde la lógica de primer orden, explorando algunos resultados conocidos. Un resultado importante que se expondrá será el teorema de descomposición celular. Se asume que el lector está familiarizado con algunos conceptos de álgebra abstracta, topología básica, y lógica de primer orden (principalmente semántica). \\
+
+    \noindent
+    \textit{Palabras Clave:} célula, definible, estructura, intervalo, o-minimal.\\
+    \textit{Clasificación:} 03C64
+\end{abstract}
+\maketitle
+\section{Introducción: }
+Uno de los primeros trabajos en donde se mencionó explicitamente la o-minimalidad, fue \cite{AP1986}. Previamente, la clase de conjuntos linealmente ordenados (o totalmente ordenados), había sido de gran interés para los modelo-teóricos. Algunas teorías que extienden a los órdenes totales, como AP (Peano), la teoría de grupos ordenables, y RCF (cuerpos  real-cerrados), habían sido estudiadas de manera exitosa, sin embargo, no se tenía un marco modelo-teórico que las uniera. Este primer trabajo busca aislar las propiedades generales que comparten estas teorías, desde un punto de vista de primer orden.
+
+A su vez, según van der Dries en \cite{LD1998}, a principios de los 80's los matemáticos notaron que muchas propiedades de los conjuntos semialgebraicos (aquellos conjuntos que corresponden a soluciones de ecuaciones e inecuaciones polinomiales en varias variables) podían demostrarse a partir de axiomas relativamente simples, los cuales llamaron \textbf{axiomas de o-minimalidad} (la ``o'' proveniente de ``orden'', y del hecho que son lo ``mínimo'' que se necesita satisfacer para respetar dicho orden). En su trabajo, se buscó establecer, a partir de las estructuras o-minimales, un marco de referencia robusto, sobre el cual se pudieran desarrollar ciertas topologías, las cuales el autor llamó \textit{moderadas.} Los resultados que discute tienen aplicaciones directas en geometría real algebraica y real analítica.
+
+En \cite{DM2000}, se presenta un recopilado rápido de resultados más modernos en o-minimalidad, sin proveer mayor detalle técnico. En este trabajo se resumen algunos de los resultados de \cite{LD1998} y \cite{AP1986}, y se incluyen otros más, como por ejemplo el estudio de algunas variantes de la o-minimalidad, como las versiones débil y fuerte, y la C-minimalidad. Sin embargo, la discusión de muchos de estos conceptos modernos se escapa del objetivo del presente proyecto, por lo que nos limitaremos a los preliminares de este recopilado.  \newpage
+\section{Conceptos básicos: }
+Lo primero que se debe mencionar, es que el concepto de o-minimalidad no es único de la teoría de modelos. Esto quiere decir que hay muchas formas de acercarse al tema. Por ejemplo, \cite{LD1998} introduce primero el concepto de manera puramente conjuntista, a partir de álgebras Booleanas, sin mencionar lenguajes ni estructuras semánticas. Sin embargo, se ha visto que es más sencillo trabajarlo desde el punto de vista lógico.
+
+Comenzamos entonces con las definiciones más sencillas , tomadas de \cite{LD1998} y \cite{AP1986}, las cuales son en su mayoría naturales
+\definition Sea $R$ un conjunto totalmente ordenado. Decimos que $R$ es \textbf{denso} si para cualesquiera $a,b \in R$, tales que $a<b$, existe $c \in R$ que cumple $a<c<b$. Un subcojunto $X$ de $R$ se dice \textbf{convexo} (en $R$) si $a<c<b$, con $a,b \in X$ implica $c \in X$.
+
+Si $R$ no tiene elemento máximo ni mínimo, podemos introducir símbolos $-\infty, +\infty$, y establecer que
+$$-\infty < a < +\infty  \quad ; \quad  \forall a \in R$$
+Llamaremos \textbf{intervalos abiertos} a los conjuntos de la forma
+$$(a,b) \coloneqq \{x \in R \suchthat a<x<b \} \quad ; \quad \text{con $-\infty \leq a < b \leq +\infty$}$$
+
+\noindent
+También podemos definir los \textbf{intervalos cerrados, y semiabiertos} de manera natural
+
+\begin{align*}
+    [a,b] & \coloneqq \{x \in R \suchthat a\leq x\leq b \} \quad ; \quad \text{con $-\infty \leq a < b \leq +\infty$} \\
+    [a,b) & \coloneqq \{x \in R \suchthat a\leq x<b \} \quad ; \quad \text{con $-\infty \leq a < b \leq +\infty$}     \\
+    (a,b] & \coloneqq \{x \in R \suchthat a<x\leq b \} \quad ; \quad \text{con $-\infty \leq a < b \leq +\infty$}
+\end{align*}
+Nos referiremos como \textbf{intervalo}, a cualquiera de este tipo de conjuntos. Note que los intervalos son convexos.
+
+Por cuestiones de completitud, añadimos la definción de estructura de primer orden.
+\definition{Un lenguaje $\mathcal{L}$, consiste en la unión de un conjunto de símbolos lógicos (variables y conectores) y conjuntos (posiblemente vacíos) $\mathcal{C}$,$\mathcal{F}$,$\mathcal{R}$, los cuales se llaman conjuntos de constantes, funciones, y relaciones, respectivamente.
+
+    \noindent
+    Dado un lenguaje $\mathcal{L}$, una $\mathcal{L}-$\textbf{estructura} es una tupla $\mathcal{M}$ de la forma
+    $$\mathcal{M} = \langle M, \mathcal{C}^\mathcal{M},\mathcal{F}^\mathcal{M},\mathcal{R}^\mathcal{M} \rangle$$
+    En donde $M$ es un conjunto no vacío, y $\mathcal{C}^\mathcal{M},\mathcal{F}^\mathcal{M},\mathcal{R}^\mathcal{M}$ representan elementos de $M$, funciones y relaciones de cualquier aridad sobre $M$ , respectivamente. El conjunto $M$ se llama el \textbf{universo }de la estructura
+
+    \noindent
+    Un conjunto de tuplas $C \in M^n$ se dice ser \textbf{definible con parámetros $b_1,\dots,b_k$} si existe una $\mathcal{L}$-fórmula
+    $\phi(x_1,\dots,x_n,y_1,\dots,y_k)$ y $b_1,\dots,b_k \in M$ tales que
+    $$C = \{ (c_1,\dots,c_n) \in M^n \suchthat \mathcal{M} \models \phi( (c_1,\dots,c_n,b_1,\dots,b_k)\}$$
+    Si $C$ es definible sin parámetros, solo diremos que $C$ es \textbf{definible}
+}
+Note que todos los intervalos son definibles con parámetros.
+
+Entonces tenemos lo suficiente para dar la definición modelo teórica de o-minimalidad. Supongamos a partir de ahora que $\mathcal{L}$ es un lenguaje que contiene al símbolo $<$, el cual siempre se interpreta como una relación de orden total.
+\definition{\textbf{O-minimalidad: }  Sea $\mathcal{M}$ una  $\mathcal{L}$-estructura. Decimos que $\mathcal{M}$ es \textbf{o-minimal} si todo subconjunto de $M$ definible por parámetros es una unión finita de intervalos en $\mathcal{M}$. Una teoría $T$ se dice ser \textbf{o-minimal} si todo modelo de $T$ es o-minimal.}
+
+\textbf{Nota: }En la definición anterior, permitimos que los intervalos sean abiertos, semiabiertos, cerrados, e incluso \textit{degenerados} (es decir, puntos).
+
+Seguidamente, enunciaremos los primeros resultados sencillos e interesantes de o-minimalidad, cuyas pruebas se omiten por brevedad.
+
+El primer resultado es el ejemplo más simple de una estructura o-minimal, para la cual sólo necesitamos el lenguaje que contiene al símbolo de orden $<$.
+\begin{proposition}
+    Sea $(R,<)$ un conjunto totalmente ordenado, denso, y sin máximos ni mínimos ($\sf{DLOWE}$, en inglés). Entonces $R$ es una estructura o-minimal.
+\end{proposition}
+Note que en particular, $(\R,<)$ y $(\Q,<)$ son estructuras o-minimales. Por Löwenheim-Skolem, podemos deducir entonces que existen estructuras o-minimales de cualquier cardinalidad.
+
+Considere ahora el contexto de \textit{grupos ordenados}, es decir, grupos equipados con un orden total, el cual es invariante a la izquierda y derecha. Formalmente, considere modelos de la teoría de grupos, junto con los axiomas de orden total, y el enunciado
+$$\forall x \forall y \forall z ( x<y \Rightarrow zx < zy \land xz < yz )$$
+\begin{proposition} {Sea $(G, \cdot,e,<)$ un grupo o-minimal. Entonces $G$ es abeliano, divisible, y libre de torsión. Esto es
+        \begin{itemize}
+            \item Para todos $x,y \in G$, $xy = yx$
+            \item Para todo entero positivo $n$ y para todo $x \in G$, existe $y$ tal que $x = y^n$.
+            \item Para todo $x \in G^\times$, y para todo entero positivo $n$, $x^n \neq e$ (todo elemento distinto de la unidad tiene orden infinito).
+        \end{itemize}
+    }
+\end{proposition}
+Note que estas tres propiedades implican que el grupo se comporta muy bien algebraicamente. Es decir, por medio de agregar la hipótesis de o-minimalidad, la cual impone reglas sobre los conjuntos definibles, obtenemos propiedades algebraicas deseables. Veremos que esto será una tendencia.
+
+Seguidamente, ubiquémonos en el contexto de \textit{anillos ordenados}. Es decir, vamos a considerar la teoría de anillos, junto con los axiomas de orden total, y los enunciados
+\begin{enumerate}[1)]
+    \item $0<1.$
+    \item $\forall x \forall y \forall z(x<y \Rightarrow x+z < y+z )$ (invarianza bajo traslación).
+
+    \item $\forall x \forall y \forall z (x<y \land z>0 \Rightarrow xz < yz)$ (invarianza bajo multiplicación por un positivo).
+\end{enumerate}
+\begin{proposition}
+    Sea $(R,+,\cdot,0,1,<)$ sea un anillo o-minimal. Entonces $R$ es un \textbf{cuerpo real cerrado}. Esto es
+    \begin{itemize}
+        \item El producto en $R$ es conmutativo
+        \item Todos los elementos no nulos de $R$ tienen inverso multiplicativo.
+        \item $R$ satisface la propiedad del valor intermedio, es decir, para todo polinomio con una variable $ f(x) \in R[x]$, si $a,b \in R$ ($a<b$), son tales que $f(a)<0<f(b)$, entonces existe $c \in (a,b)$ tal que $f(c)=0$.
+    \end{itemize}
+\end{proposition}
+\noindent
+Una vez más, vemos que la hipótesis de o-minimalidad implica excelentes propiedades algebraicas. En este caso, obtenemos incluso un criterio para la existencia de raíces de polinomios.
+
+Finalmente, presentamos un resultado, también básico, más ``puro'', con respecto a la teoría de modelos de estructuras o-minimales.
+\definition{ Sea $\mathcal{M}$ una $\mathcal{L}$-estructura. Decimos que $\mathcal{M}$ es \textbf{definiblemente completa} si cualquier subconjunto $A \subseteq \mathcal{M}$ definible con parámetros, y acotado superiormente (respetivamente inferiormente), tiene un supremo (respectivamente un ínfimo) en $\mathcal{M}$. Esto es completamente análogo a la propiedad del extremo superior de $\R$.}
+
+\begin{proposition}
+    Cualquier estructura o-minimal es definiblemente completa.
+\end{proposition}
+\noindent
+El recíproco de esta proposición es falso (ver \cite{AP1986}, p 566).
+
+Tenemos entonces una idea general de qué es una estructura o-minimal. Estos resultados nos proveen de algunos ejemplos sencillos de estas estructuras, junto con evidencia de las diferentes propiedades favorables que garantiza la hipótesis de o-minimalidad.
+
+\section{O-minimalidad y teoría de modelos: }
+Esta sección es ampliamente basada en \cite{AP1986}. En ella, vamos a explorar teoremas más relacionados con el estudio modelo teórico de las estructuras y teorías o-minimales. Se presentan dos lemas básicos, los cuales se consideran estándar.
+\begin{lemma}
+    Sea $\mathcal{M}$ una estructura o-minimal, y $A \subseteq M$. Para cualquier fórmula $\varphi(\bar{x},\bar{a})$ con parámetros en $A$, existe una fórmula $\psi(\bar{x},\bar{a}'))$, también con parámetros en $A$, tal que
+    $$\mathcal{M} \models \forall \bar{x}
+        \left(  \psi(\bar{x},\bar{a}') \rightarrow \varphi(\bar{x},\bar{a})\right)$$
+    y para cada fórmula $\theta(\bar{x},\bar{b})$ con parámetros en $A$, se cumple una y solo una de las siguientes
+    \begin{align*}
+        \mathcal{M} & \models \forall \bar{x}
+        \left(  \psi(\bar{x},\bar{a}') \rightarrow \theta(\bar{x},\bar{a})\right) \\
+        \mathcal{M} & \models \forall \bar{x}
+        \left(  \psi(\bar{x},\bar{a}') \rightarrow \neg \theta(\bar{x},\bar{a})\right)
+    \end{align*}
+    En otras palabras, cualquier fórmula con parámetros en $A$, es implicada por una fórmula completa (en el sentido de teoría completa), con parámetros en $A$.
+\end{lemma}
+\begin{proof}
+    Procedemos por inducción sobre el número de variables. Primero, notemos que el paso inductivo es fácil. Asuma el resultado para $n$ variables y suponga que $\bar{x} = (x_1,\cdots,x_{n+1})$. Sea $\psi(x_1,\dots,x_n,\bar{a}') $ la fórmula completa asociada a $\exists x_{n+1} \varphi (x_1,\dots,x_{n+1},\bar{a})$. Como $\psi$ es completa, sea $\bar{c} = (c_1,\dots,c_n) \in \mathcal{M}$ tal que $\mathcal{M} \models \psi(\bar{c})$. Sea ahora, $\theta(\bar{c},x_{n+1}) $ una fórmula con parámetros en $A \cup \bar{c}$, que sea completa para $\varphi(\bar{c},x_{n+1},\bar{a})$. Es fácil ver que $\psi(x_1,\dots,x_n,\bar{a}') \land \theta(x_1,\dots,x_{n+1}) $ es completa para $\varphi (x_1,\dots,x_{n+1},\bar{a})$.
+
+    Resta demostrar el caso $n=1$. Por o-minimalidad, el conjunto $\Phi$ definido por $\varphi(x,\bar{a})$ es una unión finita de intervalos. Además, si cualquiera de los extremos de cualquiera de estos intervalos satisface $\varphi(x,\bar{a})$, entonces basta tomar la definición de este punto, con parámetros $\bar{a}$ para obtener una fórmula completa (pues dicha fórmula solo se cumplirá si $x$ es el punto). Entonces, sin pérdida de generalidad, podemos asumir que $\Phi$ es unión finita de intervalos abiertos. Sea $\varphi_0(x,\bar{a})$, la fórmula satisfecha en $\mathcal{M}$ por \textit{exactamente} el primero de esos intervalos (según el orden total). Si $\varphi_0(x,\bar{a})$ no fuera completa, entonces existe una fórmula $\psi(x,\bar{a}')$ con parámetros en $A$ tal que
+    $$\mathcal{M} \models \exists x \left( \varphi_0(\bar{x},\bar{a}) \land \psi(\bar{x},\bar{a}')\right) \land \exists x \left(\varphi_0(\bar{x},\bar{a}) \land \neg \psi(\bar{x},\bar{a}') \right)$$
+    Una vez más por o-minimalidad, esto significa $\varphi_0$ (visto como conjunto), tiene puntos dentro y fuera de los intervalos que define $\psi$. Esto fuerza a que uno de estos intervalos que definen $\psi$ esté entro de $\varphi_0$ (un dibujo puede ayudar a ver la situación). Como este punto será definible por una fórmula, entonces dicha fórmula será completa.
+\end{proof}
+
+Si bien la demostración anterior es un tanto técnica, se consideró importante, pues expone el uso estándar de las ideas de o-minimalidad. Es importante además, que no se tiene aún un análogo para intervalos en más dimensiones (por ejemplo si quisiéramos estudiar los definibles en $M^n$). Por esta razón la prueba anterior procedió por inducción. Más adelante vamos a caracterizar estos definibles por lo que llamaremos \textit{celdas.}
+
+El siguiente lema nos permite caracterizar las subestructuras elementales de una estructura o-minimal
+\begin{lemma}
+    Sea $A \subseteq M$, donde $\mathcal{M}$ es o-minimal. Suponga además que $A=\operatorname{dcl}(A)$ ( $\{x\} \subseteq M$ es definible con parámetros en $A$ si y solo si $x \in A$). Entonces $A \preccurlyeq \mathcal{M}$ si y sólo sí para cualesquiera $a,b  \in A \cup \{\pm \infty \}$ con $a<b$, siempre que $\mathcal{M} \models \exists x (a < x < b)$, entonces $\mathcal{M} \models a < c < b$ para algún $c \in A$.
+\end{lemma}
+\begin{proof}
+    La dirección hacia la derecha es trivial. Para probar la otra dirección, asuma la hipótesis, y que para alguna fórmula $\varphi (x,\bar{a})$ (donde $\bar{a} \in A^n$), se tiene que $\mathcal{M} \models \exists x (\varphi(x,\bar{a})$. Necesitamos probar que el testigo que buscamos está precisamente en $A$. Si el conjunto $\Phi$ (definido por la fórmula  $\phi$) contiene puntos extremos de intervalos cerrados, o puntos aislados, estos puntos serán singuletes definibles con parámetros en $A$, y como $A=\operatorname{dcl}(A)$, se tiene lo que buscamos. Entonces, si $\Phi$ es una unión finita de intervalos abiertos. Sean $a_0,a_1 \in A$, $a_0<a_1$, los extremos del primero de estos intervalos. Por hipótesis, existe un $b \in A$ tal que $a_0<b<a_1$, entonces $\mathcal{M} \models \varphi(b,\bar{a})$, como se desea.
+\end{proof}
+
+
+Es posible también dar un criterio para determinar si una estructura bien ordenada es o-minimal. Sin embargo, este criterio requiere algunas definiciones un tanto técnicas, como el concepto de \textit{corte} en una $\mathcal{L}$-teoría, y los conceptos de \textit{tipo} y \textit{tipo completo}, los cuales se salen de los objetivos del curso y por lo tanto del proyecto.
+
+Para finalizar la discusión modelo-teórica de o-minimalidad, es importante destacar el lugar que tienen las teorías o-minimales en el ``universo'' de todas las teorías. Las teorías o-minimales se clasifican como $\sf NIP$ (\textit{Non-independence property} en inglés). Sin entrar en detalles, este tipo de teorías son fáciles de estudiar hasta cierto punto, sólo siendo superadas en ``facilidad'' por las teorías \textbf{estables} (como $\sf ACF_0$ por ejemplo). Es en parte por esta simplicidad, que al tener la hipótesis de o-minimalidad, se obtienen resultados fuertes algebraicos.
+
+\section{ El teorema de descomposición celular}
+El propósito la última sección es brindar el análago multidimensional de los conjuntos definibles en una estructura o-minimal, el cual se comentó anteriormente. A partir de ahora, asumamos que $\mathcal{M}$ es una estructura o-minimal, cuyo universo es denso, y no tiene mínimo ni máximo. Además, no nos preocuparemos tanto por la aridad de los conjuntos definibles por parámetros\footnote{ A los cuales nos referiremos solamente como \textit{definibles}} (cuando decimos que $X$ es definible, se sobreentenderá que $X\subseteq M^n$ para algún $n$). Vamos a comenzar con uno de los resultados más fuertes de o-minimalidad.
+\begin{theorem}[Teorema de monotonía]
+    Sea $f:(a,b) \to M$ una función definible. Entonces existen puntos $a=a_0<a_1<\dots<a_n=b$ en $M$ tales que, en cada subintervalo $(a_i,a_{i+1})$, la función es constante, o estrictamente monótona (y continua \footnote{ Con respecto a la topología natural generada por los intervalos abiertos}).
+
+\end{theorem}
+Antes de proceder con (un boceto de) la prueba, presentamos un corolario casi directo del teorema, su demostración es breve y se encuentra en \cite{JK1986}, p.$595$. \begin{corollary}
+    Sea $f$ una función definible en un intervalo $(a,b) \subseteq M$. Entonces ambos
+    $$\lim_{x\to a^+} f(x)  \quad \text{ y } \quad \lim_{x \to b^-} f(x) $$
+    existen y están en $M \cup \{ \pm \infty \}$.
+\end{corollary}
+\begin{proof}{(del teorema $4$.$2$)}
+    La prueba se deriva de los siguientes tres lemas, cuya demostración es larga y técnica. (ver \cite{LD1998}). En los tres lemas, se asume que $f:I\to M$ donde $I$ es un intervalo.
+
+    \textbf{Lema 1: }\textit{Existe un subintervalo de $I$ en donde $f$ es constante o inyectiva.}
+
+    \textbf{Lema 2: }\textit{Si $f$ es inyectiva, entonces $f$ es estrictamente monótona en un subintervalo de $I$.}
+
+    \textbf{Lema 3: }\textit{Si $f$ es estrictamente monótona, entonces $f$ es continua en un subintervalo de $I$.}
+
+    \noindent
+    Asumiendo estos tres resultados, defina
+    \begin{align*}
+        X \coloneqq \{ x \in (a,b) \suchthat & \text{en algún subintervalo de $(a,b)$, que contenga a $x$, la función $f$} \\&\text{es constante, o estrictamente monótona y continua} \quad \}
+    \end{align*}
+    Note que $(a,b)\setminus X$ debe ser finito, pues del contrario contendría a algún intervalo $I$, y aplicando los lemas, se puede subdividir $I$ hasta que $f$ sea constante o monótona en algún de sus subintervalos, pero esto implicaría que $I \subseteq X$, lo cual es una contradicción.
+    Con esto, es posible adaptar la prueba al caso $(a,b)=X$, pues solo habría que repetir el caso para cada intervalo abierto que compone a $(a,b)\setminus X$. Así, dividiendo a $(a,b)$ aún más, se reduce la demostración a uno de los siguientes casos:
+
+    \textbf{Caso 1:} Para todo $x \in (a,b)$, f es constante en un vecindario de $x$.
+
+    \textbf{Caso 2:} Para todo $x \in (a,b)$, f es estrictamente creciente en un vecindario de $x$.
+
+    \textbf{Caso 3:} Para todo $x \in (a,b)$, f es estrictamente decreciente en un vecindario de $x$.
+
+    \noindent Vamos a probar el caso 1, los demás son análogos.
+
+    \noindent Sea $x_0 \in (a,b)$ y defina
+    $$s \coloneqq \sup \left\{ x \suchthat x_0<x<b \text{ y } f \text{ es constante en } [x_0,x)  \right\}$$
+    Entonces $s=b$, pues si $s<b$ implica que $f$ es constante en algún vecindario de s, lo cual es contradictorio. Esto implica que $f$ es constante en $[x_0,b)$. De la misma manera, se demuestra que $f$ es constante en $(a,x_0]$. Entonces $f$ es constante en $(a,b)$.
+
+\end{proof}
+
+
+Este teorema nos permite caracterizar completamente las funciones con una variable que son definibles en estructuras o-minimales, y como es de esperar, tienen un excelente comportamiento analítico y topológico (monotonía a trozos y continuidad).
+
+Ahora introduciremos los conjuntos definibles ``básicos'' en varias dimensiones, los cuales llamaremos celdas. Su definición se hace inductivamente.
+\definition{
+    (Celda).
+    \begin{enumerate}
+        \item Si $X=\{a\}$, con $a\in M$, decimos que $X$ es una \textbf{celda (o célula)} y que $\dim{X} = 0$
+        \item Suponga que $X \subseteq M^n$ es una celda tal que $\dim X=k$. Entonces definimos dos tipos de celda asociados a $X$.
+              \begin{enumerate}
+                  \item Sea $f:X \to M$ definible y continua. Entonces
+                        $$X_1 = G(f) \coloneqq \{ (\bar{x},f(\bar{x})) \suchthat \bar{x} \in X \}$$
+                        es una \textbf{celda} en $M^{n+1}$ y $\dim X_1 = k$ (no cambia).
+
+                        \pagebreak
+
+                  \item Sean $f_1,f_2$ definibles y continuas de $X$ en $M \cup \{ \pm \infty \}$ tal que $f_1 < f_2$ en $X$. Entonces
+                        $$X_2 = (f_1,f_2)_X \coloneqq \{ (\bar{x},y) \suchthat \bar{x} \in X , f_1(\bar{x}) < y < f_2(\bar{x}) \}$$
+                        es una \textbf{celda} en $M^{n+1}$ y $\dim X_2 = k+1$.
+              \end{enumerate}
+        \item Ningún otro conjunto es una celda.
+    \end{enumerate}
+}
+\noindent
+\textbf{Nota: }Es fácil ver que todas las celdas son definibles, y que la dimensión de una celda $X \subseteq M^n$ siempre es menor o igual a $n$. Además, es claro que si $X$ es una celda en $M^{n+1}$, entonces la proyección natural $\pi(X)$ es una celda en $M^n$.
+
+Estamos ya encaminados hacia el teorema. Solamente hace falta una última definición.
+\definition{
+
+    \noindent
+    Una \textbf{descomposición }de $M^n$ es un tipo de partición especial en finitas celdas, definida por inducción
+    \begin{enumerate}[1)]
+        \item Una descomposición de $M$ es una colección del tipo
+              $$\{ ( -\infty,a_1) , (a_1,a_2) , \dots , (a_k , +\infty) , \{a_1\}, \dots , \{a_k\} \}$$
+              donde $a_1 < a_2 < \dots < a_n$ son puntos en $M$.
+        \item Una descomposición de $M^{n+1}$ es una partición finita de $M^{n+1}$ en celdas, de tal manera que el conjunto que consiste en las proyecciones de cada celda, sea una descomposición de $M^{n}$.
+    \end{enumerate}
+    Decimos además que una descomposición $\mathcal{D}$ de $M^n$ \textbf{particiona} un conjunto $S\subseteq M^n$ si cada celda de $\mathcal{D}$ es, o parte de $S$ o disjunta de $S$.
+}
+Enunciamos entonces nuestro resultado principal
+\begin{theorem}[Knight-Pillay-Steinhorn]
+    Para todo $m > 0$, se cumple
+    \begin{enumerate}[i)]
+        \item Dados cualesquiera conjuntos definibles $A_1 , \dots , A_k \subseteq M^n$, hay una descomposición de $M^n$ que particiona a cada uno de los  $A_1 , \dots , A_k$.
+        \item Para cada función definible $f:A \to M$ , $A \subseteq M^n$, existe una descomposición $\mathcal{D}$ de $M^n$ que particiona a $A$, de tal manera que las restricciones $f\restriction_B :B \to M$ en cada celda $B \in \mathcal{D}$ (que esté contenida en $A$), son continuas.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    La prueba de este teorema es muy larga, y está completa en \cite{JK1986}. Vamos a presentar una idea general de sus partes.
+
+    Se procede por inducción, notando que para el caso $m=1$, $I$ se sigue directo de o-minimalidad, y $II$ se sigue del teorema de monotonía. Decimos que un conjunto $Y \subseteq M^{n+1}$ es \textbf{finito sobre }$M^n$ si para cada $x \in M^n$ la fibra $Y_x \coloneqq \{ a \in M \suchthat (x,a) \in Y \}$ es finita, además, decimos que $Y$ es \textbf{uniformemente finito }sobre $M$ si existe $N \in \mathbb{N}$ tal que $|Y_x| \leq N$ para todo $x \in M$. Entonces necesitaremos el siguiente lema de finitud. Su demostración se omite.
+    \begin{lemma}
+        Suponga que $Y \subseteq M^{n+1}$ es definible, y finito sobre $M^n$, entonces es uniformemente finito sobre $M^n$.
+    \end{lemma}
+    Por o-minimalidad, es fácil ver que si $A \subseteq M$, entonces la frontera (en el sentido topológico) de $A$, denotado por $\operatorname{bd}(A)$, es finita, y que el intervalo definido entre dos puntos de esta frontera, está contenido en $A$ o en $M\setminus A$. Defínase ahora
+    $$\operatorname{bd}_m (A) \coloneqq \{ (x,m) \in M^{n+1} \suchthat m \in \operatorname{bd}(A_x) \}$$
+    Note que este conjunto es definible (inductivamente), y sigue siendo finito sobre $M^n$, por lo que es uniformemente finito.
+    \pagebreak
+
+    \noindent
+    \textbf{Prueba de I: }(paso inductivo) Sean $A_1, \dots, A_k$ definibles en $M^{n+1}$. Sea
+    $$Y \coloneqq \operatorname{bd}(A_1) \cup \dots \cup \operatorname{bd}_m(A_k)$$
+    Entonces $Y$ es definible y (uniformemente) finito sobre $M^n$. Sea entonces $N \in \mathbb{N}$ tal que  $|Y_x| \leq N$ para todo $x \in M$. Para cada $i \in \{0,\dots,M\}$, sea $B_i \coloneqq \{ x \in M^n \suchthat |Y_x| = i\}$, y defina funciones $f_{i1} ,f_{i2}, \dots, f_{ii}$ en $B_i$ como
+    $$Y_x = \{ f_{i1}(x) ,f_{i2}(x), \dots, f_{ii}(x) \}  \quad , \quad f_{i1}(x) <f_{i2}(x)< \dots< f_{ii}(x)$$
+    y defina además $f_{i0} = -\infty$. $f_{ii+1} = +\infty$. Defina también para cada $\lambda \in \{1,\dots,k\}$ , $ i \in \{0 ,\dots, M \}$ y $1\leq j \leq i$
+    \begin{align*}
+        C_{\lambda i j}              & \coloneqq \{ x \in B_i \suchthat f_{ij}(x) \in (A_\lambda)_x \}                     \\
+        D_{\lambda i j} \coloneqq \{ & x \in B_i \suchthat \left( f_{ij}(x) , f_{ij+1}(x)\right) \subseteq (A_\lambda)_x\}
+    \end{align*}
+    Entonces podemos tomar una descomposición $\mathcal{D}$ de $M^n$ que particione a cada $B_i$, cada $C_{\lambda i j}$, y cada $D_{\lambda i j}$, y que además cumpla que si $E \in \mathcal{D}$ está contenida en $B_i$, entonces $f_{i1}\restriction_ E , \dots , f_{ii}\restriction_E$ son continuas.
+
+    Para cada celda $E \in \mathcal{D}$, sea $\mathcal{D}_E$ la siguiente partición de $E \times R$
+    $$ \mathcal{D}_E \subseteq \left\{ (f_{i0}\restriction_E, f_{i1} \restriction_E) , \dots , (f_{ii}\restriction_E, f_{ii+1} \restriction_E), G(f_{i1}\restriction_E), \dots ,  G(f_{ii}\restriction_E) \right\} $$
+    donde $i \in \{ 0, \dots , M \}$ es tal que $E\subseteq B_i$. Entonces $D^* = \bigcup \{\mathcal{D}_E \suchthat E \in \mathcal{D} \}$ es una descomposición de $M^{n+1}$ que particiona los conjuntos $A_1, \dots, A_k$.
+
+    \noindent
+    \textbf{Prueba de 2: }(paso inductivo) La prueba de la segunda parte se basa en el siguiente lema técnico
+    \begin{lemma}
+        Sea $X$ un espacio topológico, $(R_1,<)$ , $(R_2,<)$ ordenes totales densos, sin extremos, y sea $f:X\times R_1 \to R_2$ una función que cumple que para cada $(x,r) \in X \times R_1$
+        \begin{itemize}
+            \item $f(x,\cdot):R_1 \to R_2$ es continua y monótona en $R_1$.
+            \item $f(\cdot,r):X \to R_2$ es continua en $x$.
+
+
+        \end{itemize}
+        Entonces $f$ es continua.
+    \end{lemma}
+
+    \noindent Continuando con la demostración de $II$, sea $f:A \to M$ una función definible en $A \subseteq M^{n+1}$. Entonces necesitamos demostrar que $f$ es continua por celdas. Por $I$, sabemos que es posible particionar a $A$ en celdas. Además, por comodidad y brevedad, vamos a asumir que $A$ es una celda abierta (en caso contario, es necesario particionar la frontera de $A$).
+
+    \noindent
+    Decimos que $f$ se \textbf{comporta bien} en un punto $(p,r) \in A$ si $p \in C$ para alguna caja $C \subseteq M^n$ y $a<r<b$, para algunos $a,b \in M$ que cumplen
+    \begin{enumerate}[1)]
+        \item $C \times (a,b) \subseteq A$.
+        \item para todo $x \in C$, la función $f(x,\cdot)$ es continua y monótona en $(a,b)$.
+        \item La función $f(\cdot,r)$ es continua en $p$.
+    \end{enumerate}
+    \noindent Llamamos entonces $A^*$ al conjunto de los puntos en $A$ en los cuales $f$ se comporta bien. Note que $A$ es definible
+    \pagebreak
+
+    \textbf{Hecho: }$A^*$ es denso en $A$.
+
+    \noindent Sea $\mathcal{D}$ una descomposición de $M^{n+1}$ que particiona a $A$ y a $A^*$. Sea $D \in \mathcal{D}$ una celda abierta contenida en $A$.
+
+    \noindent Solo necesitamos mostrar que $f$ es continua en $D$. Como $D \subseteq A$, entonces $D \subseteq A^*$ por densidad y porque $D$ pertenece a una partición. En particular, para cada punto $(p,r) \in D$, la función $f(\cdot,r)$ es continua en $p$. Por lo tanto, $D$ es la unión de cajas $C \times (a,b)$ que satisfacen las condiciones $1), 2), 3)$ anteriores, para cada punto $p \in C$, $a<r<b$. Por el lema $4$.$8$, $f$ es continua en cada una de esas cajas, y por lo tanto es continua en $D$. Esto concluye la prueba del teorema.
+\end{proof}
+
+Tenemos entonces una caracterización muy fuerte, que permite trabajar cualquier colección finita de conjuntos definibles (de cualquier dimensión), sobre estructuras o-minimales. Esto claramente tiene consecuencias topológicas muy deseables, pues según \cite{LD1998}, es posible definir invariantes topológicas en estructuras o-minimales, como números de Euler y conceptos similares. Incluso, es posible hacer cálculo (multivariable) sobre estructuras o-minimales, pues se tiene el axioma del extremo superior (su análogo definible), por lo que se pueden  definir nociones de derivadas y jacobianos.
+
+Finalmente, como se mencionó a lo largo de este trabajo, existen muchos más resultados de o-minimalidad, ya sea del tipo algebraicos, como los de la segunda sección, modelo-teóricos, como los de la tercera, y topológicos/conjuntistas, como los de la cuarta, los cuales todos se desprenden de la simple hipótesis de pedir que los definibles sean uniones finitas de intervalos. Es por esto que las estructuras y teorías o-minimales merecen un estudio riguroso, desde múltiples puntos de vista.
+\newpage
+\bibliographystyle{siam}
+\bibliography{Referencias}
+
+\end{document}
