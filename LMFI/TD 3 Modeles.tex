@@ -1,10 +1,10 @@
 \documentclass[11pt, reqno]{amsart}
 \usepackage[utf8]{inputenc}
-% Set target color model to RGB
+\usepackage[T1]{fontenc}
 \usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{setspace}
 \usepackage{float}
-\usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{nomencl}
 \usepackage[makeroom]{cancel}
@@ -12,64 +12,58 @@
 \usepackage{algpseudocode}
 \usepackage{cite}
 \usepackage{multirow}
-\usepackage{fullpage} 
 \usepackage{fancyvrb}
 \usepackage{tikz-cd}
-\usepackage{epsfig}
+\usepackage{graphicx}
 \usepackage{fancyhdr}
-\usepackage{amssymb}
 \usepackage{pifont}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{dsfont}
 \usepackage{enumerate}
-\usepackage{mathtools}
 \usepackage{bm}
 \usepackage{listings}
-\usepackage{setspace}
-\usepackage{amsfonts}
 \usepackage[document]{ragged2e}
-\usepackage{mathtools}
 \usepackage{longtable}
 \usepackage{verbatim}
 \usepackage{subcaption}
-\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
-%\usetikzlibrary{through,backgrounds}
-
-%\usetikzlibrary{shadows}
-% \usepackage[francais]{babel}
 \usepackage{booktabs}
+\usepackage{babel}
+
 \input{macros.tex}
-\newcommand{\op}[1]{ \operatorname{#1} }
-\newcommand{\LL}{\mathcal L}
-\newcommand{\MM}{\mathcal M}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\F}{\mathbb F}
-\newcommand{\C}{\mathbb C}
-\newcommand{\NN}{\mathcal N}
-\newcommand{\FF}{\mathcal F}
-\newcommand{\UU}{\mathcal U}
-\newcommand{\RR}{\mathcal R}
-\newcommand{\VV}{\mathcal V}
-\newcommand{\KK}{\mathcal K}
-\newcommand{\OO}{\mathcal O}
+
+% User Definitions
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\OO}{\mathcal{O}}
+
 \doublespacing
+
 \begin{document}
-\homework{Thèorie des modeles TD3}{Date: 08/11/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+
+\homework{Théorie des modèles TD3}{Date: 08/11/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
 \justify
 
-\textbf{Exercise 0.1} Let $I$ be an infinite set, $I_0 \subseteq I$ and $\UU$ an ultrafilter on $I$ such that $I_0 \in \UU$.
+\noindent\textbf{Exercise 0.1.} Let $I$ be an infinite set, $I_0 \subseteq I$ and $\UU$ an ultrafilter on $I$ such that $I_0 \in \UU$.
 \begin{enumerate}
-    \item Show that $\UU\restriction{I_0} = \{X\cap I_0 , X \in \UU \}$ is an ultrafilter over $I_0$.
+    \item Show that $\UU\restriction_{I_0} = \{X\cap I_0 , X \in \UU \}$ is an ultrafilter over $I_0$.
     \item Show that $\prod_{i \in I} \MM_i / \UU \simeq  \prod_{i \in I_0} \MM_i / \UU\restriction I_0$
 \end{enumerate}
 
-\textbf{Solution: }
+\noindent\textbf{Solution.}
 \begin{enumerate}
-    \item Let $A\subseteq I_0$, then either $A \in \UU$ or not. If yes, then since $A=A\cap I_0$ then $A \in \UU\restriction{I_0}$, if not, then $I\setminus A \in \UU$ and $I_0 \setminus A = I_0 \cap (I \cap A) \in \UU$.
+    \item Let $A\subseteq I_0$, then either $A \in \UU$ or not. If yes, then since $A=A\cap I_0$ then $A \in \UU\restriction_{I_0}$, if not, then $I\setminus A \in \UU$ and $I_0 \setminus A = I_0 \cap (I \cap A) \in \UU$.
     \item Consider the map that sends $[a_i]_{i \in I}$ to its restriction $[a_i]_{i \in I_0}$ (equivalence classes in $\UU$ and $\UU\restriction I_0$ respectively). It is well defined since if $[a_i]_{i \in I} = [b_i]_{i \in I}$ , then $\{i , a_i=b_i \} \in \UU$, so $\{i , a_i=b_i \}\cap I_0 \in \UU\restriction I_0$, and hence $[a_i]_{i \in I_0} = [b_i]_{i \in I_0}$. It is also surjective: given $[a_i]_{i \in I_0}$ we can define $[b_i]_{i \in I_0}$ by setting $b_i = a_i$ for $i \in I_0$ and $b_i = $ anything for $i \not\in I_0$, clearly $[a_i]_{i \in I_0}$ is a restriction of $[b_i]_{i \in I}$. Let $\varphi(\bar{x}) \in \FF(\LL)$, then if $\bar{a} \in \prod_{i \in I} \MM_i / \UU$, we have that
           \begin{align*}
               \bar{a} \in \prod_{i \in I} \MM_i / \UU & \iff \{i , \MM_i \models \varphi(\bar{a_i}) \} \in \UU                          \\
@@ -77,34 +71,42 @@
                                                       & \iff  \prod_{i \in I_0} \MM_i / \UU\restriction I_0 \models \varphi(\bar{a})
           \end{align*}
 \end{enumerate}
-\pagebreak
-\textbf{Exercise 0.2} Let $\varphi$ be a sentence in the language of rings. Suppose that $\sf{ACF_0} \models \varphi$. Show that there exists $N$ such that $\sf{ACF_n} \models \varphi$ for all $n>N$.
 
-\textbf{Solution: } We use the axiomatization for algebraically closed fields of char. 0 given by
-$$T = T_{fields} \cup \{\underbrace{1+1+\dots+1}_{n-\text{times}} \neq 0 \}_{n \in \N}$$
+\noindent\textbf{Exercise 0.2.} Let $\varphi$ be a sentence in the language of rings. Suppose that $\mathsf{ACF}_0 \models \varphi$. Show that there exists $N$ such that $\mathsf{ACF}_n \models \varphi$ for all $n>N$.
+
+\noindent\textbf{Solution.} We use the axiomatization for algebraically closed fields of char. 0 given by
+\[
+    T = T_{\text{fields}} \cup \{\underbrace{1+1+\dots+1}_{n-\text{times}} \neq 0 \}_{n \in \N}
+\]
 Since $T \models \varphi$, there is some finite $\Delta \subseteq T$ such that $\Delta \models \varphi$. In particular, there is $N$ such that
-$$ \Delta \subseteq  T_{fields} \cup \{\underbrace{1+1+\dots+1}_{n-\text{times}} \neq 0 \}_{n < N},$$
+\[
+    \Delta \subseteq  T_{\text{fields}} \cup \{\underbrace{1+1+\dots+1}_{n-\text{times}} \neq 0 \}_{n < N},
+\]
 so if $F$ is a field of characteristic $n>N$ then $F\models \Delta$, hence $F\models \varphi$.
-\newpage
-\textbf{Exercise 1} Let  $I$ be an infinite set and $\{ \MM_i\}$ a collection of $\LL$-structures. Let $\UU$ , $\VV$ ultrafilters on $I$ and consider the ultraproducts $\MM = \prod_{i \in I} \MM_i / \UU $ and $\NN = \prod_{i \in I} \MM_i / \VV$. Discuss whether $\MM \simeq \NN$ depending on the choice of $\UU$, $\VV$.
+
+\noindent\textbf{Exercise 1.} Let  $I$ be an infinite set and $\{ \MM_i\}$ a collection of $\LL$-structures. Let $\UU$ , $\VV$ ultrafilters on $I$ and consider the ultraproducts $\MM = \prod_{i \in I} \MM_i / \UU $ and $\NN = \prod_{i \in I} \MM_i / \VV$. Discuss whether $\MM \simeq \NN$ depending on the choice of $\UU$, $\VV$.
 \begin{enumerate}
-    \item  Let $I = \N$ and $M_i = \overline{\Q[x_1,\dots,x_i]}^{alg}$.
-    \item Let $I = {p , p \text{ prime } }$, and let $\MM_p = \F_p$.
+    \item  Let $I = \N$ and $M_i = \overline{\Q[x_1,\dots,x_i]}^{\text{alg}}$.
+    \item Let $I = \{p , p \text{ prime } \}$, and let $\MM_p = \F_p$.
 \end{enumerate}
 
-\textbf{Solution: }
+\noindent\textbf{Solution.}
 \begin{enumerate}
-    \item First, if $\UU$ and $\VV$ are both principal, then $\MM \simeq \overline{\Q[x_1,\dots,x_i]}^{alg}$ and $\NN \simeq \overline{\Q[x_1,\dots,x_j]}^{alg}$, so $\MM \not\simeq \NN$ unless $i=j$, as they would have different transcendence degree over $\Q$. Now, if both $\UU$ and $\VV$ are non-principal, then by a theorem of the lectures, as $M_i$ is countably infinite for every $i$, we have that $|M| = |N| = 2^{\aleph_0}$, so that $\MM,\NN$ are algebraically closed fields of characteristic $0$, and by an algebra fact these are both $\simeq \C$. If one is principal and the other isn't, they can't be isomorphic for cardinality reasons.
+    \item First, if $\UU$ and $\VV$ are both principal, then $\MM \simeq \overline{\Q[x_1,\dots,x_i]}^{\text{alg}}$ and $\NN \simeq \overline{\Q[x_1,\dots,x_j]}^{\text{alg}}$, so $\MM \not\simeq \NN$ unless $i=j$, as they would have different transcendence degree over $\Q$. Now, if both $\UU$ and $\VV$ are non-principal, then by a theorem of the lectures, as $M_i$ is countably infinite for every $i$, we have that $|M| = |N| = 2^{\aleph_0}$, so that $\MM,\NN$ are algebraically closed fields of characteristic $0$, and by an algebra fact these are both $\simeq \C$. If one is principal and the other isn't, they can't be isomorphic for cardinality reasons.
     \item First, if $\UU$ and $\VV$ are both principal, then $\MM \simeq \F_i$ and $\NN \simeq \F_j$, so $\MM \not\simeq \NN$ unless $i=j$. On the other hand, consider $I_0$ to be the set of primes congruent to $1$ modulo $4$. By a number-theoretic fact, $I_0$ is infinite and co-infinite, so we can find non-principal ultrafilters $\UU$,$\VV$ containing $I_0$ and $I\setminus I_0$ respectively. Consider the sentence $\exists x \  x^2 + 1 =0$. By another number-theoretic fact, we know that $\F_p \models \phi$ if and only if $p \in I_0$, which allows us to conclude $\MM \models \phi$ and $\NN \not \models \phi$. Finally, if one is principal and the other isn't, they can't be isomorphic again for cardinality reasons.
 \end{enumerate}
-\newpage
-\textbf{Exercise 2} Let $\bar{\Q}$ be the ordered field of the rationals and let $\UU$ be a non-principal ultrafilter on $\N$. Consider the ultrapower $\KK = \bar{\Q}^\UU$, and let $i$ be the diagonal embedding of $\Q$ into $\KK$.
+
+\noindent\textbf{Exercise 2.} Let $\bar{\Q}$ be the ordered field of the rationals and let $\UU$ be a non-principal ultrafilter on $\N$. Consider the ultrapower $\KK = \bar{\Q}^\UU$, and let $i$ be the diagonal embedding of $\Q$ into $\KK$.
 \begin{enumerate}
     \item Show that $\KK$ is an ordered field, and give at least two reasons why $\KK \not\simeq \R$.
     \item Let
-          $$\mathcal O = \{ a \in K , \exists q \in \Q ^{>0} \ i(-q)<a<i(q)\}$$
+          \[
+              \OO = \{ a \in K , \exists q \in \Q ^{>0} \ i(-q)<a<i(q)\}
+          \]
           and
-          $$ \MM =  \{ a \in K , \forall q \in \Q ^{>0}  \ i(-q)<a<i(q)\}$$
+          \[
+              \MM =  \{ a \in K , \forall q \in \Q ^{>0}  \ i(-q)<a<i(q)\}
+          \]
           Show that $\OO$ is a ring and that $\MM$ is a maximal ideal in $\OO$.
 
     \item Let $R = \OO / \MM$. Show that $R$ can be equipped with a structure $\RR$ of ordered field.
@@ -112,11 +114,11 @@ so if $F$ is a field of characteristic $n>N$ then $F\models \Delta$, hence $F\mo
     \item Show that $\RR \simeq \R$ as ordered fields
 \end{enumerate}
 
-\textbf{Solution: }
+\noindent\textbf{Solution.}
 \begin{enumerate}
     \item $\KK$ is an ultraproduct of structures belonging to an elementary class (ordered fields), therefore $\KK$ belongs to the same class. $\KK$ has infinitesimal elements: for example let $n\in \N$ and $\varepsilon=(1,1/2,1/3,\dots)_\UU$ positive but less than $i(1/n)$ a.e with respect to $\UU$, so $\KK \models \varepsilon < i(1/n)$. Also $\KK$ has infinitely large elements, for example $1/\varepsilon$.
-    \item We have that $0=i(0), 1=i(1) \in \OO$. It suffices to show that $\OO$ is closed under addition, multiplication, and additive inverse. Let $a$,$b \in \OO$ and pick $q,r \in \Q^{>0}$ such that $i(-q) < a < i(q)$ and $i(-r)<b<i(r)$. Recall that $i$ is an elementary embedding, so we sum $i(-q)+i(-r) < a+b < i(q)+i(r)$ and get $i(-q-r) < a+b < i(q+r)$. Similarly one proves that $i(-qr) < ab < i(qr)$ (there are 3 cases to consider), it is clear also that $i(-q)<-a<i(q)$, so $\OO$ is a ring. Now consider $a,b \in \MM$, and let $q \in \Q$, then \linebreak $i(-q/2)<a,b<i(q/2)$, so by adding the two inequalities we obtain $i(-q)<a+b<i(-q)$, and also it's easy to see that $\MM$ is closed under $-$. To check that $\MM$ is an ideal, let $a\in \MM$, $b \in \OO$, and $q\in \Q^{>0}$. Since $b \in \OO$ there is some $q'$ such that $i(-q')<b<i(q')$, and since $a\in \MM$ we have that in particular $i(-q/q')<a<i(q/q')$, so by multipliying these inequalities we get $i(-q)<ab<i(q)$ for any $q$, hence $ab \in \MM$. Finally, suppose there exists some ideal $I$ such that $\MM \subsetneq I \subseteq \OO$, and let $j \in I \setminus \MM$, so that there is some $q$ such that $j \not\in (i(-q),i(q))$. This implies $1/j \in (i(-q),i(q)) \rightarrow 1/j \in \OO$ so that $j/j = 1 \in I$, hence $I=\OO$. This proves that $\MM$ is maximal.
-    \item We denote $r + \MM$ for the equivalence class of $r$ modulo $\MM$. We already know $\OO/\MM$ is a field, as $\MM$ is a maximal ideal, so it suffices to define an ordering that preserves its field structure. Define $r+ \MM < s+ \MM$ iff $\KK \models r<s$. This is well-defined, since given $r+ \MM < s+ \MM$, in particular $s-r \not\in \MM$  and also $\KK \models 0<s-r$.Let $q$ such that $\KK \models i(q) < s-r$ and notice that for all $\varepsilon_1,\varepsilon_2 \in \MM$, in $\KK$ it's true that:
+    \item We have that $0=i(0), 1=i(1) \in \OO$. It suffices to show that $\OO$ is closed under addition, multiplication, and additive inverse. Let $a$,$b \in \OO$ and pick $q,r \in \Q^{>0}$ such that $i(-q) < a < i(q)$ and $i(-r)<b<i(r)$. Recall that $i$ is an elementary embedding, so we sum $i(-q)+i(-r) < a+b < i(q)+i(r)$ and get $i(-q-r) < a+b < i(q+r)$. Similarly one proves that $i(-qr) < ab < i(qr)$ (there are 3 cases to consider), it is clear also that $i(-q)<-a<i(q)$, so $\OO$ is a ring. Now consider $a,b \in \MM$, and let $q \in \Q$, then \linebreak $i(-q/2)<a,b<i(q/2)$, so by adding the two inequalities we obtain $i(-q)<a+b<i(-q)$, and also it's easy to see that $\MM$ is closed under $-$. To check that $\MM$ is an ideal, let $a\in \MM$, $b \in \OO$, and $q\in \Q^{>0}$. Since $b \in \OO$ there is some $q'$ such that $i(-q')<b<i(q')$, and since $a\in \MM$ we have that in particular $i(-q/q')<a<i(q/q')$, so by multiplying these inequalities we get $i(-q)<ab<i(q)$ for any $q$, hence $ab \in \MM$. Finally, suppose there exists some ideal $I$ such that $\MM \subsetneq I \subseteq \OO$, and let $j \in I \setminus \MM$, so that there is some $q$ such that $j \not\in (i(-q),i(q))$. This implies $1/j \in (i(-q),i(q)) \rightarrow 1/j \in \OO$ so that $j/j = 1 \in I$, hence $I=\OO$. This proves that $\MM$ is maximal.
+    \item We denote $r + \MM$ for the equivalence class of $r$ modulo $\MM$. We already know $\OO/\MM$ is a field, as $\MM$ is a maximal ideal, so it suffices to define an ordering that preserves its field structure. Define $r+ \MM < s+ \MM$ iff $\KK \models r<s$. This is well-defined, since given $r+ \MM < s+ \MM$, in particular $s-r \not\in \MM$  and also $\KK \models 0<s-r$. Let $q$ such that $\KK \models i(q) < s-r$ and notice that for all $\varepsilon_1,\varepsilon_2 \in \MM$, in $\KK$ it's true that:
           \begin{align*}
               r+\varepsilon_1 & < r+ i(q/2) \\ &< s-i(q/2) \\ &< s+\varepsilon_2
           \end{align*}
@@ -132,6 +134,5 @@ so if $F$ is a field of characteristic $n>N$ then $F\models \Delta$, hence $F\mo
 
           We define the mapping from $\R$ to $\RR$ that sends $(a_i)_\sim$ to $(a_i)_\UU + \MM$ (we will drop the $+\MM$ for commodity). This map is well defined: if $(a_i) \sim (b_i)$, then for all $n$ there is $N$ such that for $n \geq N$, $|a_i - b_i|<1/n$, in particular the set $\{i , -1/n < a_i-b_i<1/n \} \in \UU$ for all $n$, so $(a_i)_\UU - (b_i)_\UU \in \MM$. It is easy to see that this map is a field embedding, since $(a+b)_i = (a_i) + (b_i)$, so that $(a_i)_\sim+(b_i)_\sim$ is sent to $(a_i)_\UU + (b_i)_\UU = (a_i+b_i)_\UU$, and similarly for the product. This map also preserves order: if $(a_i)_\sim < (b_i)_\sim$, then there is $N$ such that for $n \geq N$, $a_i < b_i$, so again $\{i, a_i < b_i \} \in \UU$, and $(a_i)_\UU < (b_i)_\UU$. Finally we only need to check surjectivity: let $r \in \RR$, and choose a sequence of rationals $(q_i)$ such that for all $k >0$, there is $N$ such that $q_n \in (r-1/k,r+1/k)$ for $n \geq N$ (in other words pick a convergent sequence), this is possible by the previous item. Notice that $\RR \models (q_i)=r$, since otherwise, if for example $(q_i)<r$ then there is $k$ such that the set $\{i , q_i < r_i-1/k  \} \in \UU$ so it is an infinite set, contradicting the fact that $(q_i)$ converges to $r$. We claim that $(q_i)$ is Cauchy: let $k>0$ and pick $N$ such that for all $n \geq N$, $q_n \in (r-1/2k,r+1/2k)$, then if $m,n > N$, we have $q_n,q_m \in (r-1/2k,r+1/2k)$ so necessarily $-1/k < q_n - q_m < 1/k$, so we can conclude that $r$ is the image of $(q_i)$, and therefore $\R \simeq \RR$.
 \end{enumerate}
-
 
 \end{document}
