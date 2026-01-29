@@ -8,31 +8,31 @@ The contents of this repository are **multilanguage**, featuring documents in **
 ### 🎓 [LMFI](LMFI/) (Master's Material)
 Resources and documents related to my Master's studies (Logique Mathématique et Fondements de l'Informatique).
 
-*   **Memoire**: My Master's thesis material.
+*   **[Memoire](LMFI/Memoire/)**: My Master's thesis material.
 *   **Coursework**:
-    *   **Calculabilité** (Computability Theory)
-    *   **Ensembles** (Set Theory)
-    *   **Modeles** (Model Theory)
-*   **Exercises**: Problem sets and solutions (TDs).
+    *   **[Calculabilité](LMFI/TD%201%20Calculabilité.tex)** (Computability Theory)
+    *   **[Ensembles](LMFI/TD%201%20Ensembles.tex)** (Set Theory)
+    *   **[Modeles](LMFI/TD%201%20Modeles.tex)** (Model Theory)
+*   **[Exercises](LMFI/)**: Problem sets and solutions (TDs).
 
 ### 🏛️ [Undergrad](Undergrad/) (College Projects)
 A collection of projects and papers from my undergraduate years, covering various advanced mathematical topics:
 
 *   **Logic & Model Theory**:
-    *   *El espacio de n-tipos* (The Space of n-types)
-    *   *Estructuras o-minimales* (O-minimal Structures)
+    *   *[El espacio de n-tipos](Undergrad/El%20espacio%20de%20n-tipos/)* (The Space of n-types)
+    *   *[Estructuras o-minimales](Undergrad/Estructuras%20o-minimales/)* (O-minimal Structures)
 *   **Algebra & Analysis**:
-    *   *Cuerpos Ordenados* (Ordered Fields)
-    *   *Integrales no elementales* (Non-elementary Integrals)
-    *   *Números Trascendentes* (Transcendental Numbers)
-    *   *Zeros de L-funciones* (Zeros of L-functions)
+    *   *[Cuerpos Ordenados](Undergrad/Cuerpos%20Ordenados/)* (Ordered Fields)
+    *   *[Integrales no elementales](Undergrad/Integrales%20no%20elementales/)* (Non-elementary Integrals)
+    *   *[Números Trascendentes](Undergrad/Números%20Trascendentes/)* (Transcendental Numbers)
+    *   *[Zeros de L-funciones](Undergrad/Zeros%20de%20L-funciones/)* (Zeros of L-functions)
 *   **Numerical Analysis**:
-    *   **MATLAB scripts**: Implementations of algorithms for Chaos theory, Differential Equations, Interpolation, and Matrix operations.
+    *   **[MATLAB scripts](Undergrad/Análisis%20Numérico/)**: Implementations of algorithms for Chaos theory, Differential Equations, Interpolation, and Matrix operations.
 
 ### 📚 [Books](Books/)
 Longer-form content, teaching notes, and book drafts.
 
-*   **Notas 1005 Padilla**: A comprehensive set of notes (including source LaTeX and generated figures).
+*   **[Notas 1005 Padilla](Books/Notas%201005%20Padilla.tex)**: A comprehensive set of notes (including source LaTeX and generated figures).
 
 ## 🛠️ Usage
 
@@ -45,6 +45,8 @@ pdflatex filename.tex
 # or using latexmk for automatic dependency handling
 latexmk -pdf filename.tex
 ```
+
+For **MATLAB** files (`.m`), simply open them in the MATLAB environment or run them from the command window.
 
 
 ---
