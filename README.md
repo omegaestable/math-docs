@@ -10,9 +10,9 @@ Resources and documents related to my Master's studies (Logique Mathématique et
 
 *   **[Memoire](LMFI/Memoire/)**: My Master's thesis material.
 *   **Coursework**:
-    *   **[Calculabilité](LMFI/TD%201%20Calculabilité.tex)** (Computability Theory)
-    *   **[Ensembles](LMFI/TD%201%20Ensembles.tex)** (Set Theory)
-    *   **[Modeles](LMFI/TD%201%20Modeles.tex)** (Model Theory)
+    *   **[Calculabilité](LMFI/TD%201%20Calculabilité.pdf)** (Computability Theory)
+    *   **[Ensembles](LMFI/TD%201%20Ensembles.pdf)** (Set Theory)
+    *   **[Modeles](LMFI/TD%201%20Modeles.pdf)** (Model Theory)
 *   **[Exercises](LMFI/)**: Problem sets and solutions (TDs).
 
 ### 🏛️ [Undergrad](Undergrad/) (College Projects)
@@ -32,7 +32,7 @@ A collection of projects and papers from my undergraduate years, covering variou
 ### 📚 [Books](Books/)
 Longer-form content, teaching notes, and book drafts.
 
-*   **[Notas 1005 Padilla](Books/Notas%201005%20Padilla.tex)**: A comprehensive set of notes (including source LaTeX and generated figures).
+*   **[Notas 1005 Padilla](Books/Notas%201005%20Padilla.pdf)**: A comprehensive set of notes (including source LaTeX and generated figures).
 
 ## 🛠️ Usage
 
