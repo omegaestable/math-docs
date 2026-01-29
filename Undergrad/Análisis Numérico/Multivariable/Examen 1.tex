@@ -1,0 +1,287 @@
+\documentclass[a4paper, 11pt,spanish]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{spalign}
+\usepackage{epsfig}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{spanish}
+\begin{document}
+
+\noindent
+\large\textbf{Universidad de Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize Escuela de Matemáticas \hfill Carné: B55272 \\
+MA-501 Análisis Numérico \hfill Prof. Juan Gabriel Calvo \\
+Examen Parcial 1 \hfill \today
+\section*{Parte 2}
+\subsection*{Problema 7}
+\justifying
+\begin{itemize}
+\item[7)] Dada una función $f \in C^2([a,b])$ y un valor inicial $x_0$, defina la sucesión $\{x_k\}_{k=0}^{\infty}$ dada por 
+ $$x_{k+1} = x_k + \frac{f(x_k)}{f'(x_k)}\left[1- \frac{f(x_k)}{f'(x_k)}\frac{f''(x_k)}{2f'(x_k)} \right]^{-1}$$
+ \begin{itemize}
+ \item[o)] Sea $f \in C^3([a,b])$ tal que $f(c)=0$, donde $c$ es un cero simple. Demuestre que existe $\delta > 0$ tal que si $x_0 \ \in (c-\delta,c+\delta)$, entonces $x_k$ converge a $c$. ¿Qué hipótesis adicionales se necesitan?
+ \end{itemize}
+ \begin{enumerate}[a)]
+ \item Demuestre que la velocidad de convergencia es cúbica, para $f$ en el punto o).
+ 
+ \textbf{Solución: } Se resolverá o) y a). Sea $\delta_1 > 0$ tal que $f'(x) \neq 0$ en $(c-\delta_1, c+\delta_1)$. Considere el desarrollo de Taylor de orden $3$ alrededor de $x_k$.
+ $$ 0 = f(c) = f(x_k) + (c-x_k)f'(x_k) + \frac{(c- x_k)^2 f''(x_k)}{2} + \frac{(c-x_k)^3f'''(\xi_k)}{6}$$
+ Donde $\xi_k $ está entre $c$ y $x_k$. Despejando un poco se obtiene
+ \begin{align*}
+ \frac{f(x_k)}{f'(x_k)} &= x_k-c - \frac{(x_k-c)^2f''(x_k)}{2f'(x_k)} + \frac{(x_k-c)^3f'''(\xi_k)}{6} \\
+ &= (x_k-c)\left(  1- \frac{(x_k-c)f''(x_k)}{2f'(x_k)}\right) + \frac{(x_k-c)^3f'''(\xi_k)}{6}   \label{eq:1} \tag{1}
+ \end{align*}
+ Ahora, tomando un desarrollo de Taylor de orden 2 alrededor de $x_k$, tenemos que
+ $$f(x_k) = (x_k-c)f'(x_k) -
+ \frac{(x_k-c)^2 f''(\xi'_k)}{2}$$
+ Donde $\xi'_k $ está entre $c$ y $x_k$. Despejando otra vez, se tiene que
+ $$x_k-c = \frac{f''(\xi'_k)(x_k-c)^2}{2f'(x_k)} + \frac{f(x_k)}{f'(x_k)}$$
+ Y sustituyendo en ($1$), se obtiene
+ \begin{align*}
+ \frac{f(x_k)}{f'(x_k)} &= (x_k-c)\left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2} - \frac{f''(\xi'_k)(x_k-c)^2f''(x_k)}{4(f'(x_k))^2} \right)+\frac{(x_k-c)^3f'''(\xi_k)}{6} \\
+ &= (x_k-c)\left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2}\right) + (x_k-c)^3 \left(\frac{f'''(\xi_k)}{6} - \frac{f''(\xi'_k)f''(x_k)}{4(f'(x_k))^2} \right)
+ \end{align*}
+ Si denotamos $G(x_k) =  \left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2}\right)$, entonces despejando se obtiene que
+ $$\frac{f(x_k)}{f'(x_k)}(G(x_k))^{-1} = x_k - c + (x_k-c)^3 \left(\frac{f'''(\xi_k)}{6} - \frac{f''(\xi'_k)f''(x_k)}{4(f'(x_k))^2} \right) (G(x_k))^{-1}$$
+ Y finalmente
+ $$|x_{k+1} - c| = \frac{1}{2}|x_k-c|^3\left|\frac{f'''(\xi_k)}{3} - \frac{f''(\xi'_k)f''(x_k)}{2(f'(x_k))^2} \right||G(x_k)|^{-1}$$
+ Por lo tanto, como hipótesis adicionales, se puede pedir que $G(x)$ esté bien definida cerca de $c$, y además que
+ $$\left|\frac{f'''(x)}{3} - \frac{f''(y)f''(z)}{2(f'(z))^2} \right|\left| 1 - \frac{f(z)f''(z)}{2(f'(z))^2}\right|^{-1} < M$$
+
+ Para algún $M >0$, y para todo $x,y,z \in (c-\delta_1, c+\delta_1)$. Bajo estas nuevas hipótesis, podemos tomar $\delta = \min\{1,1/M,\delta_1\}$ para obtener que, si $x_0 \in (c-\delta, c+\delta)$, como
+ $$|x_{k+1} - c| < \frac{1}{2}|x_k - c|^2$$
+ Y por inducción se sigue que $x_k \in (c-\delta, c+\delta)$. Además, es fácil deducir convergencia, puesto que 
+ $$|x_{k+1} - c| <  \frac{1}{2^{2k+1}}|x_0-c| \to 0.$$
+ Finalmente, el orden de convergencia es cúbico, puesto que
+ $$\lim_{k\to \infty} \frac{|x_{k+1}-c|}{|x_k-c|^3} = \left|\frac{f'''(c)}{6} - \frac{f''(c)f''(c)}{4(f'(c))^2} \right| $$
+ \item Escriba una función \texttt{suc = iter(f,x0,tol)} en \texttt{MATLAB} que calcule la sucesión definida anteriormente, donde las entradas son la función $f$, el valor inicial $x_0$ y cierta tolerancia \texttt{tol}. Por simplicidad en la implementación, asumiremos que $f$ es un polinomio, por lo que al calcular sus derivadas podemos hacerlo de manera exacta. 
+ 
+ \textbf{Solución: }Se adjuntó la función en los documentos.
+ 
+ \item Verifique el comportamiento de su función para $f(x) = 816x^3 - 3835x^2 + 6000x -3125$. Utilice $x_0 = 1.6$, \texttt{tol} $= 10^{-6}$. Compare el comportamiento de la sucesión obtenida con la que se obtiene al aplicar el método de Newton. Dibuje en un mismo gráfico el error $|x_k - c|$ para ambos casos. Comente sus resultados.
+ 
+ Al ejecutar ambos métodos para el valor inicial $\texttt{x0} = 1.6$, se obtiene la Gráfica 1.
+ 
+ 
+ \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica1.eps}
+\end{figure}
+En donde la sucesión verde, ($c_n$) corresponde a las iteraciones del método de Newton, mientras que la roja ($x_n$) corresponde al nuevo método. Es posible apreciar la convergencia superlineal de ambos, sin embargo, el nuevo método es claramente más rápido que el de Newton, pues se demostró que su convergencia es de hecho cúbica, lo cual se evidencia en la gráfica. Se debe notar que ambas convergencias son muy rápidas, alcanzando una exactitud de al menos $10$ decimales en menos de $5$ iteraciones.
+\textbf{Nota: } el método de Newton realizó una iteración más, pues eso le tomó alcanzar la tolerancia especificada.
+ 
+ \item Grafique los intervalos de atracción del método dado en ($2$). Para ello, considere el vector de valores iniciales \texttt{xx = linspace(1.4,1.7)}. Grafique el valor de convergencia del método en función de \texttt{xx}. ¿Existe alguna mejoría con respecto al método de Newton?
+ 
+ \textbf{Solución: } Es fácil ver que las raíces de $f$ son $x_0 = 25/17 \approx 1.4706$,  $x_1= 25/16 =1.5625$,  $x_2 = 5/3 \approx 1.66667$. Aplicando el método de Newton con valores iniciales \texttt{xx}, se tiene la Gráfica 2.
+ 
+  \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica2.eps}
+\end{figure}
+Mientras que aplicando el método nuevo, se obtiene la Gráfica 3.
+
+   \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica3.eps}
+\end{figure}
+Al examinar los intervalos de atracción, se puede observar que los intervalos de atracción del método nuevo con más amplios que los de Newton, esto es, no hace falta para un valor inicial estar tan cerca de una raíz, para converger a esta. Adicionalmente, vemos que en este caso específico, los valores iniciales convergen a su raíz más cercana, a diferencia del método de Newton, donde hay pequeñas anomalías cerca de $x=1.52$ y $x=1.63$. Esto sin embargo, podría ser buena suerte, y que para otras funciones, el método nuevo siga teniendo regiones donde cuya convergencia sea caótica.
+ \end{enumerate}
+\end{itemize}
+\subsection*{Problema 8}
+\begin{itemize}
+\item[8)] Al utilizar métodos de resolución de Ecuaciones Diferenciales Parciales, tales como métodos de Elementos Finitos o Métodos de Elementos Virtuales, es necesario calcular integrales sobre regiones poligonales en genreal. Para este ejercicio, considere el triángulo de referencia $T$ con vértices $A(0,0), B(1,0), C(0,1)$. En este ejercicio buscamos una fórmula de cuadratura para la integral
+\[\iint \limits_{T} f(x,y)dydx  \label{eq:2} \tag{2} \]
+que sea exacta para polinomios en dos variables de grado a lo sumo $n$.
+\begin{enumerate}[a)]
+\item Primero suponga que $n=1$. Un polinomio en dos variables de grado uno tiene la forma 
+$$p_1(x,y) = ax + by + c$$
+Donde $a,b,c \in \mathbb{R}$. Obtenga los valores de los pesos $w_j$ y los nodos $(x_j,y_j)$ tales que la fórmula 
+$$\iint \limits_{T} p_1(x,y)dydx = \sum_{j=0}^kw_jp_1(x_j,y_j)$$
+sea válida. ¿Cuál debe ser el valor de $k$?.
+
+\textbf{Solución: }Necesitamos que la cuadratura sea exacta para polinomios de grado $1$. En particular, debe ser exacta para los generadores de este espacio: $1,x,y$. Entonces basta con escoger $k$ y resolver el sistema de variables $w_j,y_j,x_j$
+
+\[
+  \spalignsys{
+    \iint \limits_{T} dydx = \sum_{j=0}^{k}w_j ;
+    \iint \limits_{T} xdydx = \sum_{j=0}^{k}w_jx_j ;
+    \iint \limits_{T} ydydx = \sum_{j=0}^{k}w_jy_j 
+  } \Rightarrow 
+   \spalignsys{
+     \frac{1}{2} = \sum_{j=0}^{k}w_j\quad ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jx_j ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jy_j 
+  }
+\]
+El cual tiene una solución fácil de calcular para $k=0$. Tome $w_0 = \frac{1}{2}$ y $x_0 = y_0 = \frac{1}{3}$. Esto nos da la fórmula de cuadratura
+$$\iint \limits_{T} f(x,y)dydx = \frac{1}{2}f\left(\frac{1}{3},\frac{1}{3}\right)$$
+La cual corresponde a la mitad del valor de $f$ en el centroide del triángulo.
+
+\item Calcule el error en la aproximación del inciso anterior; esto es, calcule una fórmula para 
+$$\mathcal E_1 = \iint \limits_{T} f(x,y)dydx - \sum_{j=0}^kw_jf(x_j,y_j)$$
+
+\textbf{Solución: } Podemos considerar una expansión multivariable de Taylor, de orden 1, con residuo.
+$$f(x,y) = F(x,y) + R(x,y)$$
+Donde
+\begin{align*}
+F(x,y) &= f(x_0,y_0) + (x-x_0)\frac{\partial{f}}{\partial{x}}(x_0,y_0) + (y-y_0)\frac{\partial{f}}{\partial{y}}(x_0,y_0) \\
+R(x,y) &= \frac{1}{2}\left( (x-x_0)^2 \frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2(x-x_0)(y-y_0)\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + (y-y_0)^2\frac{\partial^2{f}}{\partial{y}}(\xi,\eta)\right)
+\end{align*}
+En donde $(\xi,\eta) \in T$. Entonces, aplicando la cuadratura, el error $E$ viene dado por 
+$$E= \iint \limits_{T}F(x,y) + R(x,y)dydx - \frac{1}{2}\left(F\left(\frac{1}{3},\frac{1}{3}\right) + R\left(\frac{1}{3},\frac{1}{3}\right)\right)$$
+Como $F(x,y)$ es un polinomio de grado $1$, su cuadratura aproxima su integral de manera exacta, por lo tanto los términos con $F$ se cancelan y obtenemos 
+
+\begin{alignat*}{2}
+ & \quad E &&= \iint \limits_{T} R(x,y)dydx - \frac{1}{2}R\left(\frac{1}{3},\frac{1}{3}\right)\\
+ \Rightarrow & \quad |E| &&\leq \iint \limits_{T} |R(x,y)|dydx + \frac{1}{2}\left|R\left(\frac{1}{3},\frac{1}{3}\right)\right|
+\end{alignat*}
+Ahora, como $(x-x_0)\leq 1, |x-x_0||y-y_0|\leq 1, (y-y_0)\leq 1$, tenemos que 
+$$|R(x,y)| \leq \frac{1}{2}\left|\frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + \frac{\partial^2{f}}{\partial{y^2}}(\xi,\eta) \right|$$
+Si llamamos
+$$M \coloneqq \sup_{(\xi,\eta)\in T} \left|\frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + \frac{\partial^2{f}}{\partial{y^2}}(\xi,\eta) \right|$$
+Entonces tenemos que $|R(x,y)| \leq M/2$ para todo $(x,y) \in T$. Y por lo tanto se tendrá que
+$$|E| \leq \iint \limits_{T} \frac{M}{2} dydx + \frac{M}{2} = \frac{M}{2}$$
+
+\item Repita el inciso (a) para $n=2$; esto es, calcule nuevos pesos y nodos tales que la ecuación  ($2$) sea válida para polinomios de grado $2$, $p_2(x,y) = a + bx + cy + dx^2 + exy + fy^2$.
+
+\textbf{Solución: } Volvemos a escribir el sistema de ecuaciones que deseamos resolver.
+
+\[
+  \spalignsys{
+    \iint \limits_{T} dydx = \sum_{j=0}^{k}w_j ;
+    \iint \limits_{T} xdydx = \sum_{j=0}^{k}w_jx_j ;
+    \iint \limits_{T} ydydx = \sum_{j=0}^{k}w_jy_j ;
+    \iint \limits_{T} x^2dydx = \sum_{j=0}^{k}w_jx^2_j ;
+    \iint \limits_{T} y^2dydx = \sum_{j=0}^{k}w_jy^2_j ;
+    \iint \limits_{T} xydydx = \sum_{j=0}^{k}w_jx_jy_j
+  } \Rightarrow 
+   \spalignsys{
+     \frac{1}{2} = \sum_{j=0}^{k}w_j\quad ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jx_j ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jy_j ;
+     \frac{1}{12} = \sum_{j=0}^{k}w_jx^2_j ;
+     \frac{1}{12} = \sum_{j=0}^{k}w_jy^2_j ;
+     \frac{1}{24} = \sum_{j=0}^{k}w_jx_jy_j
+  }
+\]
+\textbf{Nota: } Los cálculos de las integrales dobles se omiten, pero son sencillos, pues son polinomiales sobre una región fácil de describir.
+
+Este sistema, al ser más robusto que el anterior, puede tener múltiples soluciones para distintos valores de $k$. En este caso, se escogió $k=3$, y por comodidad se asumió que los $3$ pesos valen lo mismo. Esto permite resolver el sistema con relativa facilidad, para el cual se obtiene
+\begin{align*}
+&w_0=w_1=w_2 = \frac{1}{6} \\
+&x_0=\frac{1}{6} , \quad x_1 = \frac{2}{3} , \quad  x_2 = \frac{1}{6} \\
+&y_0 = \frac{1}{6} , \quad y_1 = \frac{1}{6}, \quad y_2 = \frac{2}{3}
+\end{align*}
+Lo que da una\footnote{Hay muchas otras cuadraturas posibles, puesto que se pueden encontrar varias soluciones para este sistema cuando $k = 3$} cuadratura de grado $2$
+$$\iint \limits_{T} f(x,y)dydx = \frac{1}{6}\left( f\left(\frac{1}{6},\frac{1}{6}\right) + f\left(\frac{2}{3},\frac{1}{6}\right) + f\left(\frac{1}{6},\frac{2}{3}\right)\right).$$
+\item Escriba un código que implemente las fórmulas de cuadraturas obtenidas en los incisos (a) y (c). Verifique el comportamiento para las funciones $f_1(x,y) = y-x+1$ y $f_2(x,y) = x^2 - xy +x - y$. Compare sus resultados con el valor exacto.
+
+\textbf{Solución: }Se adjuntan las funciones \texttt{cuad1} y \texttt{cuad2} en \texttt{MATLAB}. Los resultados de las evaluaciones se resumen en la tabla 1
+\center{Tabla 1. Resultados de cuadraturas para $n=1,2$.}
+
+
+\begin{table}[h]
+\center
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Función} & \textbf{Valor exacto} & \textbf{Cuadratura $n=1$} & \textbf{Cuadratura $n=2$} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+$f_1(x,y)$ & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$ \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+$f_2(x,y)$ & $\frac{1}{24}$ & 0 & $\frac{1}{24}$ \\ \hline
+
+\end{tabular}
+\end{table}
+ 
+ \justifying 
+Podemos apreciar que todos los valores son exactos, salvo la cuadratura de grado $n=1$ para el polinomio de grado $2$, lo cual es de esperar, por la naturaleza de la cuadratura de orden $1$.
+
+\item[e)] Verifique el comportamiento de las cuadraturas obtenidas para 
+$$f(x,y) = \sin(\pi x)\cos(\pi y)$$
+Calcule el error relativo en cada caso. \newpage
+
+\textbf{Solución: } Tenemos
+\begin{align*}
+\iint \limits_{T} \sin(\pi x)\cos(\pi y) dy dx &= \int_0^1 \sin(\pi x) \int_0^{1-x} \cos(\pi y) dy dx \\
+&= \frac{1}{\pi}\int_0^1 \sin(\pi x) \left[\sin(\pi y)\right]_0^{1-x}dx \\
+&= \frac{1}{\pi}\int_0^1\sin(\pi x) \sin(\pi (1-x))dx \\
+&=\frac{1}{2\pi}\int_0^1\cos(2\pi x - \pi) - \cos(\pi) dx \\
+&= \frac{1}{2\pi}\int_0^1 1-\cos(2\pi x)dx \\
+&= \frac{1}{2\pi} \approx 0.15915494309189.
+\end{align*}
+Al ejecutar las funciones \texttt{cuad1} y \texttt{cuad2} se obtienen las aproximaciones $q_1 = 0.216506350946110$, y  $q_2= 0.155502116982037$ respectivamente. Calculando los errores relativos se tiene
+\begin{align*}
+2\pi\left|\frac{1}{2\pi}- q_1\right| &\approx 0.360349523175=36\% \\
+2\pi\left|\frac{1}{2\pi}- q_2\right| &\approx 0.022951383343 = 2,29\%
+\end{align*}
+Con lo que se concluye que la primera aproximación es mala, mientras que la segunda es decente.
+
+\item[f)] Considere el triángulo $\widehat{T}$ de vértices $(x_0,y_0),(x_1,y_1),(x_2,y_2)$. Mediante un cambio de variable, realice un cambio en la región de integración
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = \iint \limits_{T} f(x,y)dydx $$
+De esta manera, no es necesario calcular los nodos y pesos para cada nuevo triángulo $\widehat{T}$. Aproxime de esta manera la integral 
+$$\iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx$$
+Donde $\widehat{T}$ es el triángulo con vértices $(-1,1) , (1,3), (0,5)$, con las cuadraturas de orden uno y dos.
+
+\textbf{Solución: } Considere las funciones lineales
+\begin{align*}
+T_1(x,y) &= 1-x-y \\
+T_2(x,y)&=x \\
+T_3(x,y) &= y.
+\end{align*}
+Tomamos el cambio 
+$$(\widehat{x},\widehat{y}) = \left(\sum_{i=1}^3x_iT_i(x,y),\sum_{i=1}^3y_iT_i(x,y)\right) = (u(x) ,v(y))$$
+Donde $(x_i,y_i)$ son los vértices del triángulo. Observe que en particular, bajo este cambio de variable, se tiene que
+\begin{align*}
+(0,0) &\mapsto (x_1,y_1) \\
+(0,1) &\mapsto (x_2,y_2) \\
+(1,0) &\mapsto (x_3,y_3)
+\end{align*}
+Y al ser una transformación lineal, preservará las líneas que corresponden a los lados del triángulo original. Entonces tenemos que $T \mapsto \widehat{T}$, por lo que
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = \iint \limits_{T} f(u(x,y),v(x,y))|J(u,v)|dxdy$$
+Donde el Jacobiano viene dado por
+$$J(u,v) =  \begin{vmatrix} 
+\frac{\partial u}{\partial x} &\frac{\partial u}{\partial y} \\
+\frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+\end{vmatrix}. $$
+Como 
+\begin{align*}
+&\frac{\partial u}{\partial x} = x_2-x_1 ,\quad \frac{\partial u}{\partial y} = x_3-x_1 \\
+&\frac{\partial v}{\partial x} = y_2-y_1 ,\quad \frac{\partial v}{\partial y} = y_3-y_1
+\intertext{Entonces}
+J(u,v) &= (x_2-x_1)(y_3-y_1) - (x_3 - x_1)(y_2 - y_1) \\
+&= x_1(y_2-y_3) + x_2(y_3-y_1)+x_3(y_1-y_2) \\
+&= \det \begin{pmatrix} 
+1 & 1 & 1 \\
+x_1 & x_2 & x_3 \\
+y_1 & y_2 & y_3 
+\end{pmatrix} \\
+&= 2A_{\widehat{T}}
+\end{align*}
+Donde $A_{\widehat{T}}$ denota el área del triángulo $\widehat{T}$. Entonces obtenemos la fórmula de cambio de variable
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = 2A_{\widehat{T}} \iint \limits_{T} f(u(x,y),v(x,y))dxdy$$
+Para calcular la integral $$\iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx$$
+Donde $\widehat{T}$ es el triángulo con vértices $(-1,1) , (1,3), (0,5)$, se procede como se decribió. 
+\justifying
+Usando el método del determinante, se tiene que $2A_{\widehat{T}} =6$, por lo tanto
+$$I = \iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx = 6 \iint \limits_{T} (u(x,y))^2 e^{-(u(x,y)+v(x,y))}dy dx$$
+La cual es aproximada por \texttt{cuad1} y por \texttt{cuad2} para obtener
+$$I_1 =   1.8410\times10^{-33} , \quad I_2 =  0.0633318$$
+respectivamente.
+\end{enumerate}
+\end{itemize}
+\end{document}
