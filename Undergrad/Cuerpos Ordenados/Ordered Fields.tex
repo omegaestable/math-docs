@@ -1,0 +1,443 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand*{\quot}[2]{{^{\textstyle #1}\big/\relax{}_{\textstyle #2}}}
+\begin{document}
+   \begin{center}
+      \Large\textbf{Ordered Fields}\\
+       \vspace{10pt}
+      \large {{J. Ignacio Padilla B} }\\
+        \vspace{10pt}
+      \large {University of Costa Rica} \\
+      \vspace{10pt}
+      \large {Galois Theory} \\
+      \vspace{10pt}
+      \large {November 27, 2017} \\
+   \end{center}
+
+\setlength\parindent{24pt}
+\textwidth 986 pt
+
+
+\section{Introduction}
+\RaggedRight
+
+The theory of ordered fields is the branch of field theory (or Galois theory) that studies the properties of fields in which a total order can be defined, usually denoted by $<$. Like many other properties of fields, the axiomatization of ordered fields corresponds to an abstraction of the real numbers $\mathbb{R}$, which is mainly attributed to David Hilbert, Otto Hölder, and Hans Hahn. Eventually this theory was developed by Artin and Schreier. \par
+In this work, an introduction to the concepts of order in fields will be presented, and various definitions of order in fields (and rings) will be presented. The necessary conditions to be able to induce an order in a given field $K$ will also be introduced. Finally, the properties of orders under field extensions will be studied, with the intention of preparing the reader for the results of the theory of real closed fields. \par
+    
+\section{Ordered Fields}
+ \vspace{10pt}
+\RaggedRight
+An \textbf{ordered field}, denoted by $(K, <)$ is a field $K$ where $<$ defines a total order. Furthermore, the order must be compatible with the field structure, that is:
+\begin{itemize}
+  \item {O.F.1} If $x \leq y \Rightarrow x+z \leq y+z$, for all $x,y,z \in K$ 
+  \item {O.F.2} If $x \leq y$ and $z \geq 0$, then $xz \leq yz$, for all $x,y \in K$ 
+
+\end{itemize}
+  \textbf{Note:} Recall that the expression $ x\leq y $ corresponds to an abbreviation of $ x<y \vee x=y$, therefore when speaking of order, both will be used without distinction. \par
+  When one has a field $K$ together with an order $\leq$, it is possible to define the set of \textit{positive} elements of the field. We define:
+  \[P= \{x\in K : x \geq 0\}\]
+  We denote the \textit{negative} elements by:
+  \[-P = \{-x : x\in P\} = \{x \in K : x \leq 0\}\]
+  Note that under these conventions, $0$ is positive and negative. Furthermore, it can be observed that: \pagebreak
+  \begin{enumerate}[i)]
+      \item $P+P \subseteq P$
+      \item $P \cdot P \subseteq P$
+      \item $P \cap -P = \{0\}$
+      \item $P \cup -P = K$
+  \end{enumerate}
+  \textbf{Proposition 1.} Let $K$ be a field. If there exists $ P \subseteq K$ that satisfies properties i), ii), iii) and iv), then we can induce a total order $\leq_P$ in the following way:
+  \[x\leq_P y \iff y-x \in P\]
+  Furthermore, $\leq_P$ satisfies O.F.1 and O.F.2 (that is, it is compatible with the field structure of $K$).
+  Furthermore, $\leq_P$ satisfies O.F.1 and O.F.2 (that is, it is compatible with the field structure of $K$).
+  \begin{proof}[\textbf{Proof:}]
+   We have to see that $\leq_P$ satisfies conditions of reflexivity, antisymmetry, transitivity and totality. Furthermore we must verify that $\leq_P$ satisfies O.F.1 and O.F.2.
+  \begin{itemize}
+      \item Since $ 0 \in P$, then for all $x \in P$, $x-x \in P \Rightarrow x \leq_P x$. (\textit{Reflexivity}).
+      \item If $x \leq_P y$, $y \leq_P x$, then we have that $y-x\in P$, and $-(y-x) \in P$. Therefore $y-x = 0 \Rightarrow y = x$ (\textit{Antisymmetry}).
+      \item If $x \leq_P y$, $y \leq_P z$, then $y-x\in P$, and $z-y\in P$. Then $y-x+z-y = z-x \in P$, that is: $x \leq_P z$ (\textit{Transitivity}).
+      \item If $x,y \in P$, then $x-y \in P$ or $x-y \in -P$ (this since $P \cup -P = K$). That is $x \leq_P y  $ or $y \leq_P x  $ (\textit{Totality}).
+      \item If $x \leq_P y  $, then $y-x = y+z - z - x \geq_P 0$. Then $y+z \geq_P x+z$ (\textit{O.F.1}).
+      \item If $x \leq_P y$, $z \geq_P 0$, since $y-x \in P \wedge z\in P$, then $z(y-x) = zy-zx \geq_P 0 \Rightarrow zy \geq_P zx$ (\textit{O.F.2}).
+
+     
+  \end{itemize}
+     
+Therefore it is concluded that ($K , \leq_P$) is an ordered field.
+     \end{proof}
+\par
+     What the previous result tells us, is that actually the order of a given field can be determined by first defining the set of numbers that are desired to be positive (as long as they satisfy the hypothesis properties). From now on, when speaking of order, one can consider the set $P$ and the relation $<_P$ ($<$, abbreviated), without any distinction.\\ \par
+     As the reader will have noticed, the definition of ordered field does not really use the field properties of the structure (perhaps only commutativity, implicitly). In fact, an \textbf{ordered ring} can be defined analogously as a ring $A$, where there exists a set $ P \subseteq A$ such that:
+     \begin{enumerate}[i.]
+      \item $P+P \subseteq P$
+      \item $P \cdot P \subseteq P$
+      \item $P \cap -P = \{0\}$
+      \item $P \cup -P = A$
+  \end{enumerate}
+  \par In this case, one has a more general definition, since it is not needed that this order satisfies O.F.1 nor O.F.2. This definition will be useful to order polynomial rings as will be seen in following sections. Below is an interesting lemma:
+  \textbf{Lemma 2:} Let $P_1$ and $P_2$, be two orders on a field $K$, such that $P_1 \subseteq P_2$. Then $P_1 = P_2$
+  \begin{proof}[\textbf{Proof}]
+  Suppose there exists $x \in P_2 \setminus P_1$. Then
+  \begin{align*}
+  x \in -P_1 &\Rightarrow  -x \in P_2 \\ &\Rightarrow x = 0 \\
+  &\Rightarrow 0 \notin P_1 \\ 
+  &\Rightarrow 0<0 \\
+  &\Rightarrow   \Leftarrow
+  \end{align*}
+  \end{proof}
+  \noindent 
+  \textbf{Example 3:}
+   \begin{itemize}
+  \item ($\mathbb{R}, \leq $) is an ordered field, with its usual order. In this case $P = \mathbb{R}^+ \cup \{0\}$. Later we will see that this is the only possible order in $\mathbb{R}$.
+  \item ($\mathbb{Q}, \leq$) is an ordered field, with the order inherited from $\mathbb{R}$. It also happens that there is a unique order that satisfies the axioms of OF.
+  \item $\mathbb{C}$ is not an ordered field. This will be shown at the end of the chapter.
+  \end{itemize}
+  \textbf{Proposition 4:} 
+  If $x,y \in (K, <)$ are such that $x,y<0$, then $xy >0$. This since as $ -x \in P$  $-y \in P$, then $(-x)(-y) = xy \in P$. In particular: $x^2 \geq 0 $ for all $x$.
+  \paragraph{}We are now going to study some possibilities of order in polynomial rings. More specifically, consider the ring of polynomials with real coefficients $\mathbb{R}[x]$. Let $p(x) \in \mathbb{R}[x]$,
+  \[p(x) = a_n x^n + a_{n-1}x^{n-1} + \cdots + a_0\]
+  We define the \textbf{order at infinity} ($>_{+\infty}$) in $\mathbb{R}[x]$ as:
+  \[p(x) >_{+\infty} 0 \iff a_n > 0\]
+  By way of clarification: 
+   \[p(x) \ge_{+\infty} 0 \iff p(x) >_{+\infty} 0  \text{ or } p(x) = 0\]
+   Then we can define the set $P$ of positive polynomials:
+   \[P = \{ p(x) \in \mathbb{R}[x] : p(x) \ge_{+\infty} 0 \}\]
+    \textbf{Proposition 5:}  ($\mathbb{R}[x], P$) is an ordered ring. \pagebreak
+    \begin{proof}[\textbf{Proof}] We only need to verify:
+    \begin{enumerate}[i.]
+      \item $P+P \subseteq P$
+      \item $P \cdot P \subseteq P$
+      \item $P \cap -P = \{0\}$
+      \item $P \cup -P = A$
+  \end{enumerate}
+  Properties i), ii) and iv) are easily deduced. To prove iii), take $p(x) \in  P \cap -P $, then if $p(x) \neq 0 $, we have that $a_n > 0 \wedge a_n <0$, which is not possible. Therefore $p(x) = 0 $.
+     \end{proof}
+     \noindent
+  \underline{Some observations:}
+  \begin{itemize}
+  \item If $p,q \in \mathbb{R}[x]$, such that $\deg p > \deg q$, then $p(x) - q(x) > 0$ if and only if $p(x) > 0$. In other words, $p(x) > q(x)$, for all $q$ with degree less than $p$. 
+  \item In a particular case of this observation, it can be noted that for all $r\in \mathbb{R}$:
+  \[x- r >_{+\infty} 0\]
+  That is: 
+  \[x >_{+\infty} r\]
+  We obtained an element in $\mathbb{R}[x]$ that is greater than all real numbers, something that is not possible with the order $>$ of the reals. We call these elements \textbf{infinite} elements.
+  \item $>_{+\infty}$ extends the usual order of $\mathbb{R}$, in the sense that, if we consider $a \in \mathbb{R}$ as a constant polynomial, then: 
+  \[a>_{+\infty} 0 \iff a>0\]
+  That is, for constants, $>_{+\infty}$ coincides with $>$.
+  \end{itemize}
+  Soon we will study other possible orders in $\mathbb{R}[x]$. For now let us consider the following lemma:
+  \textbf{Lemma 6:} Let ($A,P$) be an ordered commutative integral domain. Then $K = \text{Frac} (A) $ is an ordered field ($K,Q)$ where the set $Q$ of positive elements is defined as:
+  \[Q = \left \{ \frac{a}{b} \in K : ab \in P\right \}\]
+  \begin{proof}[\textbf{Proof}] It is necessary to verify that: 
+    \begin{enumerate}[i.]
+      \item $Q+Q\subseteq Q$
+      \item $Q \cdot Q \subseteq Q$
+      \item $Q \cap -Q = \{0\}$
+      \item $Q \cup -Q = K$
+  \end{enumerate}
+     \begin{enumerate}[i)]
+      \item Let $\frac{a}{b} , \frac {c}{d} \in Q $ Recall that $\frac{a}{b} + \frac {c}{d} =
+      \frac{ad+bc}{bd}$. Then we have to see that:
+      \[bd(ad+bc) = abd^2 + b^2cd \in P\]
+     But $ab\in P$ and $cd \in P$, and since every square is positive, we obtain that $Q$ is closed under addition.
+       \item  Let $\frac{a}{b} , \frac{c}{d} \in Q $ Then it is trivial that $\frac{ac}{bd} \in Q$, since $abcd \in P$
+       \item Clearly $ 0 \in Q$, since $0 = \frac{0}{1} = -\frac{0}{1}$. If $\frac{a}{b} \in Q \cap -Q$, then $ab \in P$ and $ab \in -P$. Then $ab = 0 \Rightarrow a=0$.
+       \item Clearly $Q \cup -Q \subseteq K$. If $\frac{a}{b} \in K$, then consider $ab\in 
+       A$. Now: 
+        \[ab\in P  \text{ or } ab \in -P\]
+        That is: 
+       \[\Rightarrow  \frac{a}{b} \in Q \text{ or } \frac{a}{b} \in -Q\]
+
+        \end{enumerate}
+  
+  \end{proof}
+    \noindent
+ \textbf{Example 7:}
+ \begin{enumerate}
+    \item Let us return to the order $>_{+\infty}$ that was defined previously in $\mathbb{R}[x]$. Now we can extend it to the field of rational fractions in one variable:
+ \[\mathbb{R}(x) = \left\{ \frac{p(x)}{q(x)} : p(x), q(x) \in \mathbb{R}[x], q(x) \neq 0 \right\}\]
+ Then consider the order extension given by lemma 6:
+ \begin{align*}
+  \frac{p(x)}{q(x)} \geq_{+\infty} 0  & \iff p(x)q(x) \geq_{+\infty} 0
+  \end{align*}
+  Observe that the leading coefficient of $p(x)q(x)$ is the product of the leading coefficients of $p$ and $q$, therefore the sign of the expression $\frac{p(x)}{q(x)}$ depends on the sign of the fraction $ {a_n}/{b_m} $, where $a_n$ and $b_m$ are the leading coefficients of $p(x)$ and $q(x)$, respectively. Furthermore, it continues to hold that $x >_{+\infty} r $ for any real $r$, since the order in the field of fractions is an `extension' of the order of the polynomial ring. More precisely, when the expressions have denominator $1$, their order coincides with that defined previously in the ring.
+  \item Consider now the transformation $ x \mapsto -x$ together with the order $>_{+\infty}$. We will define the \textbf{order at minus infinity} (``$>_{-\infty}$''), in $\mathbb{R}(x)$ in the following way: 
+  \[\frac{p(x)}{q(x)} \geq_{-\infty} 0   \iff \frac{p(-x)}{q(-x)} \geq_{+\infty} 0\]
+  Note that the expression $ p(-x) $ changes the coefficients $a_{2n-1}$ of sign. In particular it can be appreciated that: 
+  \begin{align*}
+  p(x) \>_{-\infty} 0 &\iff p(-x) >_{+\infty} 0 \\
+  &\iff \begin{cases} 
+  a_n > 0, & \text{if $n$ is odd} \\
+  a_n < 0, & \text{if $n$ is even}
+  \end{cases}
+  \end{align*} 
+  \pagebreak
+  \pagebreak \\ Observe that:
+  \begin{itemize}
+  \item $x^2 + 1 \geq_{-\infty} 0$
+  \item $x + 1 \leq_{-\infty} 0$
+  \item $-x^2 + 1 \leq_{-\infty} 0$
+  \item $-x + 1 \geq_{-\infty} 0$
+  \item $ x  \leq_{-\infty} r , \quad \forall r\in \mathbb{R}$
+  \item $ x^2 \geq_{-\infty} r, \quad \forall r \in \mathbb{R}$
+  \end{itemize}
+  In this order we have that $x$ corresponds to a \textbf{negative infinity}, while $x^2$ corresponds to an infinity.
+  \item Now consider the transformation $ x \mapsto \frac{1}{x} $, again together with the order $\geq_{+\infty}$. We will define the \textbf{order at $0^+$} (``$ >_{0^+}$'') in $\mathbb{R}(x)$ by means of:
+  \[\frac{p(x)}{q(x)} \geq_{0^+} 0   \iff \frac{p(\frac{1}{x})}{q(\frac{1}{x})} \geq_{+\infty} 0\]
+  To study this order in more detail, observe that if we take 
+  \begin{equation*}
+  p(x) = a_n x^n + a_{n-1}x^{n-1} + \cdots + a_k x^k
+  \end{equation*}
+  with $a_n \neq 0$ and $a_k \neq 0$, we have that:  
+  \begin{align*}
+  p(x) >_{0^+} 0 &\iff p(\frac{1}{x}) >_{+\infty} 0 \\
+  & \iff a_n \frac{1}{x^n} + \cdots + a_k \frac{1}{x^k}  >_{+\infty} 0 \\
+  & \iff \frac{a_n + a_{n-1}x + \cdots + a_k x^{n-k}}{x^n}  >_{+\infty} 0 \\
+  & \iff a_n + a_{n-1} x^{n-1} + \cdots + a_k x^{n-k}  >_{+\infty} 0 \\
+  &\text{ since we already know that $x^n  >_{+\infty} 0$ } \\
+  & \iff a_k > 0.
+  \end{align*}
+    That is, the order at $0^+$ depends on the last non-zero coefficient. Observe that under this order we have the following:
+    \begin{align*}
+    &x >_{0^+} 0 \\
+    &x-r <_{0^+} 0  \quad \quad \forall r>0
+    \end{align*}
+    That is, for all $r>0$ we have that: 
+    \begin{equation*}
+    0 <_{0^+} x <_{0^+} r
+    \end{equation*}
+    We see that in this order we have an element closer to $0$ than any real number. We call these elements \textbf{infinitesimals}.
+    \item Another possibility is considering the transformation $ x \mapsto \frac{1}{x} $, and we define \textbf{the order at $0^-$} ``($>_{0^-}$)'' in $\mathbb{R}(x)$ as: 
+    \begin{equation*}
+    \frac{p(x)}{q(x)} \geq_{0^-} 0   \iff \frac{p(-\frac{1}{x})}{q(-\frac{1}{x})} \geq_{+\infty} 0
+    \end{equation*}
+    Analogously to the order at $-\infty$, it can be seen that: 
+    \begin{align*}
+  p(x) >_{0^-} 0 &\iff p(-x) >_{0^+} \\
+  &\iff \begin{cases} 
+  a_k > 0, & \text{if $k$ is odd} \\
+  a_k < 0, & \text{if $k$ is even}
+  \end{cases}
+  \end{align*}
+  Where $a_k$ is the coefficient that accompanies the lowest power of $x$. In this order we see that:
+  \begin{itemize}
+  \item $x <_{0^-} 0$
+  \item $x >_{0^-} r \quad \forall r<0$
+  \end{itemize}
+  Then: 
+  \begin{equation*}
+  r <_{0^-} x <_{0^-} 0 \quad \quad  \forall r<0
+  \end{equation*}
+  We observe that $x$ is a \textbf{negative infinitesimal}.
+  \item \textbf{Exercise: }The reader is invited to generalize these orders, and formulate, given $a \in \mathbb{R} $, the orders  $>_{a^+}$ and  $>_{a^-}$, such that one has that the element $x$ represents a quantity \textbf{infinitesimally larger} than $a$ (in the first case), and a quantity \textbf{infinitesimally smaller} than $a$ in the second.  
+ \end{enumerate}
+ The previous examples represent a very interesting view into the possible extensions of a total order in a field, allowing to order the field of rational polynomial expressions over said field. This tool is even useful when formalizing the concepts of infinities and infinitesimals, which are widely used in non-standard analysis.
+ \section{ Formally Real Fields}
+ In this section we will study the following question: What conditions must a field $K$ meet, so that a total order can be defined in it (equivalently, a set of positive elements), that satisfies the axioms of ordered fields?
+  \textbf{Definition 8:} Let $K$ be a field. Then:
+  \begin{enumerate}[a)]
+  \item We say that $K$ is \textbf{formally real} (or just real) (or orderable), if it admits at least one total order, compatible with the field structure (O.F.1 and O.F.2).
+  \item Let $X \subseteq K$. We say that X is \textbf{formally positive} if there exists an order $P$ of $K$ such that $X\subseteq P$. 
+  \end{enumerate}
+
+  \textbf{Lemma 9:} Let $K$ be any field. Then $K$ is formally real if and only if $\{0,1\}$ is formally positive.
+  \begin{proof}[\textbf{Proof}] \quad \\
+  $\Leftarrow \quad$ Trivial. Follows from the definitions.\\
+  $\Rightarrow \quad$ Let $P \subseteq K$ be an order, then we already have that $ 0 \in P$. We only have to show that $1 \in P$. Suppose not. Then $-1\in P \Rightarrow 1={(-1)}^2 \in P$, which is contradictory.
+  \end{proof}
+  \noindent
+  Thanks to this lemma we can then say that, given any order in a field $K$, the set $\{0,1\}$ is positive. In particular $1>0$ in any ordered field.
+    \textbf{Proposition 10:} If $K$ is a formally real field, then $ \operatorname{char} K = 0$. Since otherwise, if $ \operatorname{char} K = p$, since $1>0$, then one has the impossible inequality: 
+    \begin{equation*}
+    0 < \overbrace{1+1+\cdots+1}^{\text{$p$ times}}= 0
+    \end{equation*}
+    \par
+    Given a field $K$ and for $F\subseteq K$ a multiplicatively closed subset ($F\cdot F \subseteq F$), and such that $\{0,1\} \in F$. We will define the following set, which will be of much help in the following results:
+    \begin{equation*}
+    \Sigma FK^2 \coloneqq \left\{ \sum_{i=1}^{n} a_ix_i^2\quad :   a_i \in F,  x_i \in K,  n \in \mathbb{N}, \text{with } i = 1, \ldots, n \right\}
+    \end{equation*}
+  Which corresponds to the sums of elements of $F$ multiplied by squares of $K$.
+  \textbf{Theorem 11:} Let $K$ be such that $ \operatorname{char} K \neq 2$, and let $ F \subseteq K$ such that $F\cdot F \subseteq F$, and $\{0,1\} \in F$. Then the following conditions are equivalent.
+  \begin{enumerate}[1)]
+  \item $F$ is formally positive
+  \item $\Sigma FK^2 \subsetneq K$
+  \item $-F \cap \Sigma FK^2 = \{0\}$
+  \item[ {3'}.] $ -1 \notin \Sigma FK^2$
+  \item If given $a_1, a_2, \ldots, a_n \in F \setminus\{0\}$, there exist $x_1, x_2, \ldots, x_n \in K$, such that $\sum_{i=1}^{n} a_ix_i^2 = 0$, then $x_1 = x_2 = \cdots = x_n = 0$.
+ \item There exists $S\subseteq K$ such that:
+ \begin{enumerate}[i)]
+ \item $F\subseteq S$
+ \item $K^2 \subseteq S$
+ \item $S + S \subset S$
+ \item $S \cdot S  \subseteq S$
+ \item $S \cap -S = \{0\}$
+ \end{enumerate}
+ That is, at least one partial order can be defined in $K$ that makes the elements of $F$ positive (and the squares).
+  \end{enumerate}
+  \noindent
+  \begin{proof}[\textbf{Proof}] It can be easily observed that $ 3') \Rightarrow 2) $ and that $ 3) \Rightarrow 3')$. We will prove $1) \Rightarrow 2) \Rightarrow 3)\Rightarrow 4)\Rightarrow 5)\Rightarrow 1) $.
+  \begin{itemize}
+  \item 1) $\Rightarrow$ 2): Take $ F\subseteq P $, since $K^2 \subseteq P$, it follows that $\Sigma FK^2 \subseteq P$, since sum and product of positives is positive. Then we have that $\Sigma FK^2 \subseteq P \subsetneq K$, since $-1$ is never positive. Therefore $\Sigma FK^2 \subsetneq K$.
+  \item $\neg 3) \Rightarrow \neg 2)$: Suppose there exists $ a \in F$ non-zero, such that $-a \in \Sigma FK^2$. Then we will see that $\Sigma FK^2 = K$. Let $ y \in K$. Since $2a \neq 0$, let us call:
+
+  \begin{align*}
+   &x = \frac{y-a}{2a} \\
+   \Rightarrow
+  y &= 2ax + a \\
+   &= a{(x+1)}^2 - ax^2
+  \end{align*}
+  Then $y \in \Sigma FK^2$. Therefore $\Sigma FK^2 = K$ and we obtain the negation of 2).
+  \item $\neg 4) \Rightarrow \neg 3):$ By contraposition, let $a_1,a_2, \cdots, a_n \in F \setminus\{0\}$, and $x_1,x_2, \cdots, x_n \in K $ not all zero, such that $\sum_{i=1}^{n} a_ix_i^2 = 0 $. Let us assume, without loss of generality, that $x_1 \neq 0$. Then:
+  $$ -a_1 = \sum_{i=2}^{n} a_i\left(\frac{x_i}{x_1}\right)^2 \in \Sigma FK^2$$
+  Then it follows that $-a_1 \in -F\cap \Sigma FK^2$, where $a_1$ is non-zero. We have negated 3).
+  \item 4) $\Rightarrow$ 5): We will see that the order we need is $\Sigma FK^2$. Let $ S =\Sigma FK^2$. Clearly $F \subseteq S$ and also $K^2 \subseteq S$. It is also easy to see that $ S + S\subseteq S$ and that $S \cdot S \subseteq S$. It would only be necessary to see that $S \cap -S = \{0\}$, in particular we only need the inclusion $ \subseteq$.\\
+  Let $y \in S\cap -S$. Then:
+  \begin{align*}
+   &y =  \sum_{i=1}^{n} a_ix_i^2 \quad ; \quad -y = \sum_{j=1}^{m}b_jz_j^2 \quad \text{with $m,n \in \mathbb{N}$} \\
+  &\Rightarrow \sum_{i=1}^{n} a_ix_i^2 + \sum_{j=1}^{m}b_jz_j^2 = 0 \\
+  &\Rightarrow x_i,z_j = 0 
+  \end{align*}
+  \item 5) $\Rightarrow$ 1): Let $\mathcal{F}$ be the family of subsets $S \subseteq K$ that verify properties i), ii), iii) and iv) of the hypothesis (5). Then we have that $\mathcal{F}$ is not empty, since $S \in  \mathcal{F}$. We verify partially order $\mathcal{F}$ by inclusion, and then we see that if $(S_i)_{i \in I}$ is a chain of elements in $\mathcal{F}$, then $\bigcup_{i\in I} S_i$ is in $\mathcal{F}$ (every chain is bounded above). Then we see that the family $\mathcal{F}$ is a partially ordered set, where every chain has an upper bound. By Zorn's lemma, there exists an element $Q\in \mathcal{F}$ such that is maximal. Since $Q \subseteq K$ is in $\mathcal{F}$, then it satisfies i), ii), iii), iv). It only remains to verify that $Q$ is a total order, that is: $Q\cup -Q = K$ \par
+  Let $x \in K$ such that $x \notin Q$, then we must see that $-x \in Q$. Consider the set $Q' = Q-xQ = \{c-xd \quad  c,d \in Q \}. $ Since $0 \in Q$, then $Q \subseteq Q'$, and therefore $F \subseteq Q'$ and $K^2 \subseteq Q'$. It is simple to see that $Q' + Q'\subseteq Q'$ and $ Q' \cdot Q' \subseteq Q'$. Let us see now that $Q' \cap -Q' = \{0\}$. For this, let $y \in Q' \cap -Q'$. Then $ y = c_1 - xd_1$ and $ -y = c_2-xd_2$, with $c_1,c_2,d_1,d_2 \in Q$. That is, $ (c_1+c_2) - x(d_1+d_2) = 0$, and then $c_1+c_2 = x (d_1 + d_2)$. Suppose now that $d_1 + d_2 \neq 0$, then:
+  $$ x = \frac{c_1 + c_2}{d_1+d_2} = \frac{(c_1+c_2)(d_1+d_2)}{(d_1+d_2)^2}$$
+  Then $x$ is a product between a square and an element in $Q$, therefore $x \in Q$ (since $Q$ contains $K^2$ and is multiplicatively closed). But this is a contradiction! Then it must be that $d_1+d_2 = 0$ and $c_1+c_2 = 0$. Then $d_1 = -d_2$, that is $d_1$ is positive and negative, and therefore $d_1 = d_2 = 0$. Analogously we have that $c_1 = c_2 = 0$. Then $y = 0$. Then $Q'$ satisfies hypothesis 5), that is $Q' \in \mathcal{F}$, but since $ Q \subseteq Q'$, and by the maximality of $Q$, we have that $ Q = Q'$, therefore $-x \in Q' = Q$. Then $Q$ is the total order we were looking for.
+  \end{itemize}
+  \end{proof}
+  \noindent
+  This theorem is a very useful tool to determine if a given set in a field is positive in some order. More specifically, apply the previous theorem in a field $K$, taking $F = \{0,1\}$. Recall that $K$ is formally real if and only if $\{0,1\}$ is formally positive.
+  \textbf{Corollary 12: } Let $K$ be a field with characteristic distinct from 2. Then the following conditions are equivalent:
+  \begin{enumerate}[i)]
+  \item $K$ is formally real.
+  \item If $\sum_{i=1}^{n} x_i^2 = 0$, then $x_1 = x_2 = \cdots = x_n = 0$, for all $x_i \in K$, for all $n \in \mathbb{N}$.
+  \item $-1 \notin \Sigma K^2$
+  
+  \end{enumerate}
+  \begin{proof}[\textbf{Proof}] Apply Theorem $11$ , with $F = \{0,1\}$. Observe that $\Sigma FK^2 = \Sigma K^2$.
+  \end{proof}  
+  \noindent
+  \textbf{Corollary 13: } $\mathbb{C}$ is not formally real. That is $\mathbb{C}$ cannot be ordered.
+\begin{proof}[\textbf{Proof}] Observe that $-1 = i^2 \in \mathbb{C}^2$
+\end{proof}
+\noindent
+\textbf{Corollary 14: } Let ($K,P$) be an ordered field and $L|K$ a field extension. Then the following are equivalent:
+\begin{enumerate}
+\item $L$ has an order that extends that of $K$. (That is, if an element is positive in $K$, it is also positive in $L$).
+\item $\Sigma PL^2 \subsetneq L$
+\item $(-P)\cap \Sigma PL^2 = \{0\}. $
+\item[3'.] $-1 \notin \Sigma PL^2$
+\item $\sum_{i=1}^{n} a_ix_i = 0 \Rightarrow x_i = 0 , \quad i=1,..,n$
+\end{enumerate}
+\begin{proof}[\textbf{Proof}] Apply Theorem 11 to $P = F$ , and to $K=L$. Note that the order $P$ of $K$ is multiplicativamente closed, and contains $\{0,1\}$.
+\end{proof}
+It can even be applied more generally: 
+\textbf{Corollary 15: } Let $K$ be a real field. Let $L|K$ be an extension and $F \subseteq K$ a formally positive part. Then the following assertions are equivalent:
+\begin{enumerate}
+\item Every order of $K$ that contains $K$ extends to an order of $L$.
+\item For every order $P$ of $K$, such that $F\subseteq P$, it holds that $\Sigma PL^2 \subsetneq L$.
+\item For every order $P$ of $K$, such that $F\subseteq P$, if $\sum_{i=1}^{n} a_ix_i = 0 \Rightarrow x_i = 0, i =1,...,n$, with $a_i \in P^*$ and $x_i \in L$.
+\item For every order $P$ of $K$, such that $F\subseteq P$, it is satisfied that $(-P)\cap \Sigma PL^2 = \{0\}$
+\end{enumerate}
+Below, we will give a characterization of the ``smallest" possible order that can be defined in a real field.\\ 
+\textbf{Proposition 16: } Let $K$ be a real field and $a\in K$. Then $a\in P$ for every order $P$ if and only if $a \in \Sigma K^2$. That is: 
+$$ \Sigma K^2 = \bigcap \{P : P \text { order in } K\}$$
+\begin{proof}[\textbf{Proof}] \quad \\
+$\Leftarrow \quad$ If $a \in \Sigma K^2$, then take any order $P$ of $K$, as $K^2 \subseteq P \Rightarrow a\in P$. \\
+$\Rightarrow \quad$ Let $a\notin \Sigma K^2$. We need an order $P$ of $K$ such that $-a \in P$ (that is that $a$ is negative). Consider the set $ F = \langle 0,1,-a \rangle$
+$$ F  = \{0,1,-a,a^2,-a^3,a^4,-a^5,...\}$$
+It would suffice then to see that $F$ is formally positive. By theorem $11$, this is the same as seeing that there exists a partial order $S$ where $F$ is positive. Then let us take $S = \Sigma FK^2$. Clearly $S +S \subseteq S$ , $ S \cdot S \subseteq S$ , $F \in S$, $K^2 \in S$. We only need to see that $S\cap -S = \{0\}$. If $y \in S\cap -S$, then 
+$$y =  \sum_{i=1}^{n} a_ix_i^2 \quad ; \quad -y = \sum_{j=1}^{m}b_jz_j^2$$
+With $a_i , b_i \in F$. Then, due to the form of the elements of $F$ it can be seen that $y$ can be written in the form:
+$$ y = c_1 - ad_1 = -(c_2 - ad_2)$$
+Where $c_1,c_2,d_1,d_2 \in \Sigma K^2$. Solving for $a$ and assuming that $d_1 +d_2 \neq 0$, we have that: 
+$$ a = \frac{(c_1+c_2)(d_1+d_2)}{(d_1+d_2)^2} $$
+Which indicates that $a \in \Sigma K^2$. This is not possible. Then it must be that $d_1 + d_2 = 0$. Then $d_1 = d_2 = 0 \Rightarrow c_1 = c_2 = 0$. Therefore $ y = 0$, which is what was sought. \pagebreak
+\end{proof}
+\noindent \quad
+\textbf{Corollary 17:  } Let $K$ be a real field. The following conditions are equivalent: 
+\begin{enumerate}[i)]
+\item $K$ has only one order.
+\item $\Sigma K^2$ is an order of $K$.
+\item $\Sigma K^2 \cap -\Sigma K^2  = \{0\}$ and $ \Sigma K^2 \cup -\Sigma K^2 = K$
+\end{enumerate}
+\begin{proof}[\textbf{Proof}] \quad \\
+1)\ $\Rightarrow$  3): Let $P$ be said order. Then $ \Sigma K^2 = \bigcap P = P.$ Since $P$ satisfies $ P\cap -P = \{0\}$ and $P \cup -P = K$, then we immediately obtain 3).\\
+3)\ $\Rightarrow$  2): Obviously $\Sigma K^2 + \Sigma K^2 \subseteq \Sigma K^2$, and $(\Sigma K^2)(\Sigma K^2) \subseteq \Sigma K^2$. Adding hypothesis 3), then we have sufficient conditions to be able to induce the order $ >_{\Sigma K^2}$ \\ 
+2)\ $\Rightarrow$  1): Let $P$ be any order of $K$. We know that $\Sigma K^2 \subseteq P$. Then by lemma 2, then $ \Sigma K^2  = P$. Then $K$ only has the order $ \Sigma K^2$
+
+\end{proof}
+The previous lemma is very interesting, because it tells us that if the squares of $K$ allow it to be ordered, then the order consisting precisely of the squares of $K$ is the only one compatible with the field structure. This will allow us to conclude that $\mathbb{R}$ only has one order (the usual one), since all positive elements of $\mathbb{R}$ are precisely squares.
+\par
+By way of comment: throughout this section we have seen some results about the necessary conditions for a field to be real. Possibly the most important of all is the fact that, given a field $K$, if $-1$ is a finite sum of squares, then it is not possible to order $K$. In other words, it is not possible to define an order where sums of squares are less than 0.
+\section{Algebraic extensions to order extensions}
+In this section we will examine briefly what happens with the order of a real field, when it is extended finitely, and algebraically \par
+Consider $E|K$ a field extension and $ \alpha \in E$ an element algebraic over $K$. Take $p(x)$ its irreducible polynomial over $K$. We know that:
+$$ K(\alpha) \cong \frac{K[x]}{\langle p(x) \rangle}$$
+\textbf{Note: } Recall that $\langle p(x) \rangle = p(x)K[x]$ \\
+\textbf{Theorem 18:  } Let ($K,P$) be an ordered field, and $p(x) \in K[x]$ an irreducible polynomial over K. Then the order $P$ of $K$ extends to the field $L = \frac{K[x]}{\langle p(x) \rangle}$, if $p$ changes sign in ($K,P$). That is, there exist $a,b \in K$ such that $p(a)p(b) <_P 0$ 
+\begin{proof}[\textbf{Proof}] Let $n = \operatorname{deg} p.$ We will use strong induction on $n$.\par
+If $ n = 1 \Rightarrow p(x) = x- \alpha$, with $\alpha \in K$, root of $p(x)$. Then, we have that $L \cong K(\alpha) = K $. The order extends trivially. ($P_L = P_K$) \par
+Now we will assume the validity of the result, for polynomial of degree $m < n$. By a previous corollary, the order of $P$ extends to $L$ if and only if $-1 \notin \Sigma PL^2$. Suppose that $-1 \in \Sigma PL^2$. Then: 
+$$ -1 = \sum_{i=1}^{n} a_1\left(\frac{q_i(x)}{\langle p(x) \rangle}\right)^2 $$
+Where the expression ${q_i(x)}/{\langle p(x) \rangle}$ must be understood as the remainder of the Euclidean division of $q_i(x)$ and $p(x)$. We will denote this as $(q_i(x))_{\text{mod $p$}}$ for convenience. \\
+Resuming:
+$$ -1 = \sum_{i=1}^{n} a_i(q_i(x))^2_{\text{mod $p$}}$$
+See that $\operatorname{deg}q_i \leq n-1$. Then it follows that:
+\begin{align*}
+&\Rightarrow 1+ \sum_{i=1}^{n} a_i(q_i(x))_{\text{mod $p$}}^2 = 0 \\
+& \Rightarrow \left(1+ \sum_{i=1}^{n} a_iq_i^2(x)\right)_{\text{mod $p$}} = 0 \\
+& \Rightarrow 1+  \sum_{i=1}^{n} a_iq_i^2(x) = p(x)h(x) \text{ , for $h \in K[x]$}
+\end{align*}
+Observe that the left side of the last equality, is positive (upon evaluating at any $x$). That is: 
+$$ \forall x \in K , p(x)h(x) >_P 0$$
+Since $p$ changes sign, by hypothesis, then $h$ must also do so, since otherwise $p(x)h(x)$ would not remain positive for all $x$. Note that, it can be assumed without loss of generality that $h(x)$ is irreducible. Since if it were not, factor it into irreducible factors, and choose any that changes sign (at least one of them must do so). Observe that:
+$$ \operatorname{deg} p +\operatorname{deg} h = \operatorname{deg}\left(1 +  \sum_{i=1}^{n} a_iq_i^2(x)\right)
+\leq \operatorname{max} \{\operatorname{deg} q_i^2\}_{i=1,...,n}$$
+That is:
+\begin{align*}
+n + \operatorname{deg} h &\leq 2\operatorname{max} \{\operatorname{deg}\ q_i\}_{i = 1,...,n}\\
+&\leq 2(n-1)\\
+\Rightarrow \operatorname{deg} h &\leq n-2
+\end{align*}
+Now, since $1+  \sum_{i=1}^{n} a_iq_i^2(x)$ is a multiple of $h(x)$, it is satisfied that: 
+$$ 1+  \sum_{i=1}^{n} a_iq_i^2(x) \in \langle h(x) \rangle $$
+That is that
+$$ \left(1+  \sum_{i=1}^{n} a_iq_i^2(x)\right)_{\text{mod $p$}} = 1+ \sum_{i=1}^{n} a_i(q_i^2(x))_{\text{mod $p$}} = 0$$
+Then now, let $L' = \frac{K[x]}{\langle h(x) \rangle}$. Then we see that $L'$ extends $K$, and that $$\lbrack L':K\rbrack \leq  \operatorname{deg} h \leq n-2$$
+But we have that:
+$$ -1 =  \sum_{i=1}^{n} a_i (q_i^2(x))_{\text{mod $h$}} \in \Sigma P(L')^2$$
+That is, that $P$ cannot be extended to $L'$. This is a contradiction to the strong induction hypothesis. Then it was not correct to assume that $-1 \in \Sigma PL^2$. Therefore $-1 \notin \Sigma PL^2$, and by Theorem 11, the order can be extended.
+\end{proof}
+\noindent
+\textbf{Example 19:  } Let ($K,P$) and $a\in K\setminus K^2$. Then $P$ extends to an order of $K(\sqrt{a})$ if and only if $ a \in P$. That is, only positive elements have a square root.
+\begin{proof}[\textbf{Proof}] \quad \\
+$\Leftarrow \quad$ Since $K(\sqrt{a}) \cong \frac{K[a]}{\langle x^2 - a \rangle}$, it suffices to see that $x^2- a$ changes sign. See that $f(0) = -a <_P 0$. Also $f(a+1) = a^2 + a +1 >_p 0$, since $a^2 +1 \in \Sigma K^2 \subseteq P$, and $a \in P$. \\
+$ \Rightarrow \quad$ Let $P'$ be an order of $K(\sqrt{a})$, such that $P \subseteq P'$. If $a\notin P$, then $-a \in P'$ But $ a = (\sqrt{a})^2 \in P'$. Therefore $a=0$. Which is a contradiction, since it was assumed from the beginning that $a\notin K^2$. 
+\end{proof}
+\noindent
+\pagebreak
+\section{References}
+\begin{enumerate}[$\lbrack1\rbrack$]
+
+\item Jorge I Guier. 
+\textit{Teoría de Galois (MA-660)}.
+[\textit{Course Notes}]. 
+Universidad de Costa Rica, 2017
+ \item Serge Lang.
+ \textit{Algebra}
+ [\textit{Third Edition}].
+ Addison-Wesley, Reading Massachusetts, 1993
+\item Paul Ribemboim. 
+\textit{L'arithmetique des corps}.
+ Hermann, Paris. 1972.
+
+
+ \end{enumerate}
+\end{document}
