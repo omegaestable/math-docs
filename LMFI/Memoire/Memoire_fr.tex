@@ -1,0 +1,752 @@
+%% Preprint, November 25th, 2015 by RAZR
+%% Last modified: March 21st, 2018 by RAZR.
+
+\documentclass[a4paper,12pt,twoside]{article}
+\date{today}
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,fancyhdr,lastpage,nccfoots,caption}
+\usepackage{hyperref}
+\usepackage{graphicx}
+ \usepackage{setspace}
+\hypersetup{
+    pdfstartview={FitH},
+    pdftitle={Imaginaires dans les paires de corps algébriquement clos},
+    pdfauthor={Ignacio Padilla},
+    pdfsubject={Théorie des modèles},
+    pdfkeywords={},
+    pdfnewwindow=true,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=red,
+    urlcolor=blue
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[all]{xy}
+\usepackage{array}
+\usepackage{graphicx,color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumerate}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+
+\def\forkindep{\mathrel{\raise0.2ex\hbox{\ooalign{\hidewidth$\vert$\hidewidth\cr\raise-0.9ex\hbox{$\smile$}}}}}
+
+\DeclareMathOperator{\Cb}{Cb} 
+\DeclareMathOperator{\Aut}{Aut} 
+\DeclareMathOperator{\cb}{cb}  
+\DeclareMathOperator{\tp}{tp}
+\DeclareMathOperator{\acl}{acl}
+\DeclareMathOperator{\dcl}{dcl}
+\DeclareMathOperator{\eq}{eq}
+
+\newcommand{\la}{\lambda}
+\newcommand{\Om}{\varOmega}
+\newcommand{\sg}{\sigma}
+\addto\captionsfrench{%
+\renewcommand{\abstractname}{Résumé}
+\renewcommand{\refname}{Références}
+}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\NN}{\mathcal N}
+
+\theoremstyle{plain}
+\newtheorem{Th}{Théorème}[section]
+\newtheorem*{nonum-Th}{Théorème}
+\newtheorem{Prop}[Th]{Proposition}
+\newtheorem{Lem}[Th]{Lemme}
+\newtheorem{Cor}[Th]{Corollaire}  
+\newtheorem{Fact}[Th]{Fait}
+\newtheorem*{nonCor}{Corollaire}
+
+\theoremstyle{definition}
+\newtheorem{Def}[Th]{Définition} 
+\newtheorem*{nonDef}{Définition}
+
+\newtheorem{Remark}[Th]{Remarque}
+\newtheorem*{clearstyl}{ \ }
+
+\numberwithin{equation}{section}
+
+\newcommand*{\QEDA}{\hfill\ensuremath{\boxminus}}
+\DeclareRobustCommand{\QEDA}{\ifmmode
+  \else \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill \fi
+  \quad\hbox{\qedasymbol}}
+\newcommand{\qedasymbol}{$\boxminus$}
+
+\newcommand{\hideqed}{\renewcommand{\qed}{}}
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+                        {-3.5ex \@plus -1ex \@minus -.2ex}%
+                        {2.3ex \@plus.2ex}%
+                        {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+                        {-3.25ex \@plus -1ex \@minus -.2ex}%
+                        {1.5ex \@plus .2ex}%
+                        {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+                        {-3.25ex \@plus -1ex \@minus -.2ex}%
+                        {1.5ex \@plus .2ex}%
+                        {\normalfont\normalsize\itshape}}
+\renewcommand{\@dotsep}{200}
+\makeatother
+
+\setstretch{1.40}
+\begin{document}
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\pagenumbering{gobble}
+\begin{center}
+    \includegraphics[scale=.5]{logo.png}
+
+    \vspace*{\fill}
+
+    \huge \MakeUppercase{Imaginaires dans les Paires de Corps Algébriquement Clos}
+
+    \vspace{5mm}
+
+    \Large Juan Ignacio \textsc{Padilla Barrientos}
+
+    \vspace*{\fill}
+    \vspace*{\fill}
+
+    Directrice de mémoire: Zoé CHATZIDAKIS
+
+    \vspace*{\fill}
+
+    \large Master Logique et Fondements de l'Informatique
+
+    Septembre 2021
+    \vspace{15mm}
+    \\
+    \includegraphics[scale=.35]{enslogo.jpg}
+    \vspace*{\fill}
+    \vspace*{\fill}
+
+\end{center}
+\clearpage
+\pagenumbering{arabic}
+
+\vfill
+
+\end{titlepage}
+\thispagestyle{empty}
+
+\section*{Résumé}
+Considérons la théorie $T$ des corps algébriquement clos d'une caractéristique donnée $p$, dans le langage $L = \{ 0,1,+,-, \cdot \}$. Étendons $L$ à un langage $L_P$ en ajoutant un prédicat $P$, qui est interprété dans un modèle $M \models T$ comme une sous-structure élémentaire propre. Puisque $T$ a l'élimination des quantificateurs, ces paires peuvent être axiomatisées en exprimant $P \models T$, et $\exists x \ \neg P(x)$, obtenant une théorie $T_P$ de paires élémentaires $P \prec M$. 
+L'objectif principal est d'ajouter des sortes au langage $L_P$, afin d'obtenir l'\textit{élimination faible des imaginaires}. Keisler dans [5] a prouvé que $T_P$ est complète, et dans [2], Buechler a montré que $T_P$ est une théorie $\omega$-stable, de rang de Morley $\omega$. Ce travail est largement basé sur [9], par Anand Pillay.\\
+
+\tableofcontents
+\newpage
+
+
+\section{Préliminaires sur la Théorie de la Stabilité}
+\noindent Soit $T$ une théorie complète sur un langage $L$. Si $M\models T$, et $A \subseteq M$, nous notons l'espace des $n$-types avec paramètres dans $A$ par $S_n(A)$, et posons $S(A) = \cup_{i < \omega} S_n(A)$. Rappelons qu'une théorie est $\kappa$-stable si pour tout $M \models T$ et tout $A \subseteq M$, si $|A|\leq \kappa$, alors $|S_1(A)| \leq \kappa$, et nous disons que $T$ est stable si elle est $\kappa$-stable pour un certain cardinal $\kappa$. Nous utiliserons une caractérisation équivalente de la stabilité, donnée par la définissabilité des types.
+\Def Soit $M \models T$, et $A,B$ des sous-ensembles de $M$. Un type $p(x) \in S_n(A)$ est \textit{définissable} sur $B$ si pour toute $L$-formule $\varphi(x,y)$ il existe une $L(B)$-formule $\psi(y)$ telle que pour tout $a \in A^{|y|}$, $\varphi(x,a) \in p$ si et seulement si $M \models \psi(a)$. La formule $\psi(y)$ sera écrite comme $d_p(\varphi)(y)$, et l'ensemble des $d_p( \varphi)(y)$, avec $\varphi(x,y)$ parcourant les $L$-formules, est appelé un \textit{schéma de définition} pour $p$.
+
+
+
+
+\noindent {La proposition suivante est le Corollaire 8.3.2 de [13].}
+
+\Prop La théorie $T$ est stable si et seulement si tous les types sont définissables. \vspace{0.5cm}
+
+
+\noindent \emph{Dans toute la suite de cette section, nous supposons que $T$ est une théorie complète, $\omega$-stable arbitraire. Nous travaillerons à l'intérieur d'un modèle saturé $M$ de $T$, et les types sur $M$ seront appelés \textit{types globaux}. Nous procédons en énonçant quelques définitions et résultats sur les bases canoniques et la bifurcation (forking) dans ce contexte stable.}
+
+\Def Soit $E(x_1,\dots,x_n,y_1,\dots,y_n)$ une $L$-formule qui définit une relation d'équivalence sur $M^n$. Par \textit{éléments réels}, nous entendons les tuples dans $M^n$, tandis que les classes d'équivalence d'éléments réels modulo $E$ seront appelées \textit{éléments imaginaires.}
+\vspace{0.5cm}
+
+\Def Soit $X \subseteq M$ un ensemble définissable. Un tuple $c \subset M$ est appelé un \textit{paramètre canonique} (ou code) de $X$ si $c$ est fixé par exactement les mêmes automorphismes de $M$ qui fixent $X$ ensemblistement.
+
+
+\noindent Il est possible d'étendre $T$ à une nouvelle théorie $T^{\eq}$ (dans un nouveau langage $L^{\eq}$), dans laquelle tout ensemble définissable possède un code. Soit $(E_i)_{i \in I}$, une énumération de toute relation d'équivalence $\varnothing$-définissable sur les $n_i$-tuples. Pour définir $L^{\eq}$, ajoutons à $L$ une nouvelle sorte $S_i$ pour chaque $i$, qui doit être interprétée comme $M^{n_i}/E_i$. Considérons la structure multi-sortée $M^{\eq} = (M , M^{n_i}/E_i)_{i \in I}$, et définissons pour tout $i$ la projection naturelle $\pi_i : M^{n_i} \mapsto M^{n_i}/E_i$ qui envoie $a$ sur $a/E_i$. La théorie de $M^{\eq}$ sera notée $T^{\eq}$. Par le Corollaire 8.4.6 de [13], $T^{\eq}$ a l'\textit{élimination des imaginaires:} tout imaginaire est interdéfinissable avec un tuple réel. Il existe aussi trois notions liées qui seront utilisées tout au long de ce travail.
+\Def \
+\begin{enumerate}[i)]
+\item $T$ a l'\textit{élimination des imaginaires finis} si pour tout $n$, tout ensemble fini de $n$-tuples possède un paramètre canonique.
+\item $T$ a l'\textit{élimination faible des imaginaires}, si pour tout imaginaire $e$ il existe un tuple réel $d$ tel que $e \in \dcl^{\eq}(c)$ et $d \in \acl^{\eq}(e)$.
+\item $T$ a l'\textit{élimination géométrique des imaginaires}, si pour tout imaginaire $e$ il existe un tuple réel $d$ tel que $e \in \acl^{\eq}(c)$ et $d \in \acl^{\eq}(e)$.
+
+\end{enumerate}
+\noindent Nous procédons maintenant avec un survol de la bifurcation dans le contexte \textbf{$\omega$-stable}. Pour un ensemble définissable $X \subseteq M$, nous notons par $RM(X)$ son rang de Morley, et $DM(X)$ son degré de Morley. Rappelons que les théories $\omega$-stables sont \textit{totalement transcendantes}: tout ensemble définissable a un rang de Morley. Ce rang peut aussi être défini pour les types: si $p \in S_n(A)$, alors $RM(p)$ est le rang de Morley minimal d'une formule dans $p$, et $DM(p)$ est le degré de Morley minimal d'une formule dans $p$ ayant le rang de Morley $RM(p)$.
+
+\Def \textbf{(Bifurcation)} Supposons $A\subseteq B \subseteq M$, $p \in S_n(A)$, $q \in S_n(B)$, et $p \subseteq q$. Si \linebreak $RM(p) = RM(q)$, alors $q$ est une extension \textit{non bifurquante} de $p$ à $B$. Sinon, si \linebreak $RM(p) < RM(q)$, nous disons que $q$ \textit{bifurque sur} $A$. Nous disons que $p \in S_n(A)$ est \textit{stationnaire} si pour tout $B\supseteq A$, il existe une unique extension non bifurquante de $p$ à $B$, ou de façon équivalente si $DM(p) = 1$.
+
+\noindent \textbf{Notation: } Si $p \in S(A)$ et $C \subseteq A$, nous notons la restriction de $p$ à $S(C)$ par $p \restriction C$. Si $p$ est stationnaire et $A \subseteq B$, nous notons l'unique extension non bifurquante de $p$ à $S(B)$ par $p|B$.
+
+\Def Soit $A\subseteq M$, $p \in S(A)$ un type stationnaire. Une \textit{base canonique} de $p$, notée $\Cb(p)$, est un tuple $e \subseteq M^{\eq}$ tel que pour tout $\sigma \in \operatorname{Aut}(M)$, $\sigma(p) = p$ si et seulement si $\sigma(e) = e$ (ce tuple est unique à interdéfinissabilité près). Si $p$ n'est pas stationnaire, considérons l'ensemble fini $\mathcal P$ des extensions non bifurquantes de $p$ à $M$, et définissons $\cb(p)$ comme un code pour l'ensemble $\{ \Cb(q) , q \in \mathcal P \}$; alors tout automorphisme de $M$ fixe $\cb(p)$ si et seulement s'il permute $\mathcal P$ (voir Fait 1.8 \textit{(i)}).\\ 
+
+\noindent Ce qui suit est un résumé des propriétés des bases canoniques que nous utiliserons, elles peuvent être trouvées comme Proposition 2.20 et Remarques 2.26, 3.19 au Chapitre 1 de [8].
+\pagebreak
+\Fact Soit $A\subseteq M$, $p \in S(A)$. Alors
+\begin{enumerate}[(i)]
+\item (Conjugaison) L'ensemble des automorphismes de $M$ qui fixent $A$ point par point agit transitivement sur $\mathcal P$.
+\item $\cb(p) \subseteq \dcl^{\eq}(A)$.
+\item Pour tout $B \subseteq A$, $p$ ne bifurque pas sur $B$ si et seulement si $\cb(p) \subseteq \acl^{\eq} (B)$.
+\item Si $p$ est stationnaire, pour tout $B \subseteq A$, $p$ ne bifurque pas sur $B$ et $p \restriction B$ est stationnaire si et seulement si $\Cb(p) \subseteq \dcl^{\eq} (B)$.
+\item Si $p$ est stationnaire, et $(a_i , i < \omega)$ est une suite telle que pour tout $i$, $a_i$ réalise $p|A \cup \{a_j , j <i \}$, alors $\Cb(p) \subseteq \dcl^{\eq}(a_0 \dots , a_n)$ pour un certain $n$.
+\end{enumerate}
+\Lem Soit $e$ un imaginaire dans $M$ et soit $a$ un tuple fini de réels tel \linebreak que $e = f(a)$ pour une certaine fonction $f$ $\varnothing$-définissable. Alors $e = \cb(\tp(a/e))$. De plus, si $e' = \Cb(\tp(a/\acl^{\eq}(e)))$, alors $e' \in \acl^{\eq}(e)$ et $e \in \dcl^{\eq}(e')$.
+\begin{proof}
+Soit $p = \tp(a/e)$ et $p' = \tp(a /\acl^{\eq} (e))$. Pour voir pourquoi $e = \cb(\tp(a/e))$, considérons la relation d'équivalence $E(x,y)$ donnée par $f(x) = f(y)$; alors $e$ est un code pour la classe de $a$. Soit $\mathcal{P}$ comme dans la Définition 1.7. Puisque $\mathcal{P}$ est fini, et $e'$ est la base canonique d'un élément de $\mathcal{P}$, il s'ensuit que $e' \in \acl^{\eq}(e)$. Maintenant, supposons $\sigma(e') = e'$ pour un certain automorphisme de $M^{\eq}$; alors $\sigma p' = p'$, donc les deux formules $f(x) = e$ et $f(x) = \sigma(e)$ appartiennent à $p'$, ce qui implique $\sigma(e) = e$, d'où $e \in \dcl^{\eq}(e')$.
+\end{proof}
+
+\Lem Soit $e$ un imaginaire dans $M$ et soit $a$ un tuple fini de réels tel \linebreak que $e = f(a)$ pour une certaine fonction $f$ $\varnothing$-définissable. Il existe $a' \in M^{\eq}$ tel que $e \in \dcl^{\eq}(a')$ et $\tp(a'/e)$ est stationnaire.
+\begin{proof}
+Soit $p = \tp(a/e)$ et soient $p_1,\dots,p_n$ ses extensions non bifurquantes à $\acl^{\eq}(e)$. Soient $a_1,\dots,a_n \in M$ tels que $a_i$ réalise $p_i|\{a_1,\dots,a_{i-1},a_{i+1},\dots,a_n \}$. Soit $a'$ un code de cet ensemble de réalisations. Alors comme $a \in \acl^{\eq}(a')$, il existe une formule $\varphi(x,a')$ isolant $\tp(a/a')$; donc $M \models \forall x \varphi(x,a') \rightarrow f(x) = e$, car $f$ est $\varnothing$-définissable, donc $e \in \dcl^{\eq}(a')$. De plus, tout automorphisme de $M$ qui fixe $e$ permute $\{ p_1, \dots , p_n \}$, donc il fixe $\tp(a'/e)$.
+\end{proof}
+
+\Def \textbf{(Indépendance)} Soient $A,B,C \subseteq M$. Nous disons que $A$ est \textit{indépendant} de $B$ sur $C$, noté
+$$A \forkindep_C B,$$
+si pour tout tuple fini $a$ de $A$, $\tp(a/BC)$ ne bifurque pas sur $C$.
+
+\noindent Ce qui suit est un résumé des propriétés de la relation d'indépendance dans le contexte $\omega$-stable. Elles se trouvent comme Théorème 8.5.5 de [13], et Lemmes 6.3.16 à 6.3.21 de [7].
+
+\Fact Soient $A,B,C,D \subseteq M$. L'indépendance par bifurcation a les propriétés suivantes. 
+\begin{enumerate}
+\item (Monotonie) Si $A \forkindep_C B$ et $B' \subseteq B$, alors $A \forkindep_C B'$.
+\item (Transitivité) $A \forkindep_C BD$ si et seulement si $A \forkindep_C B$ et $A \forkindep_{C,B} D$.
+\item (Existence) Tout $p \in S(A)$ possède une extension non bifurquante à tout ensemble contenant $A$.
+\item (Symétrie) Si $A \forkindep_C B$, alors $B \forkindep_C A$.
+\item (Clôture algébrique) $A \forkindep_{C} \acl(A)$.
+\end{enumerate}
+
+\Def Soient $A,B \subseteq M$ et soit $p \in S(A)$ définissable sur $B$ par un schéma $d_p$. Ce schéma de définition est dit \textit{bon} (sur $B$) si l'ensemble
+$$\{ \varphi(x,m) \mid \ M \models d_p(\varphi)(m) , \   m \in M, \ \varphi(x,y)  \ \text{une $L$-formule} \}$$
+est un type global étendant $p$.
+
+\Lem Soit $p \in S(A)$. Alors $p$ est stationnaire si et seulement s'il possède une bonne définition sur $A$.
+\begin{proof}
+Si $p$ est stationnaire, soit $q$ son extension globale non bifurquante. Alors $q$ est définissable et invariant sous tous les automorphismes qui fixent $A$ ensemblistement, donc il est définissable sur $A$. Cela donne une bonne définition pour $p$. Réciproquement, supposons que $p$ a une bonne définition sur $A$. Il existe alors une extension globale non bifurquante $p' \in \mathcal P$, définissable sur $A$. Puisque tous les éléments de $\mathcal P$ sont conjugués sur $A$, et $p'$ est fixé par tout automorphisme qui fixe $A$ ensemblistement, il doit se faire que $\{ p'\} = \mathcal P$. Par conséquent, $p$ est stationnaire.
+\end{proof}
+
+\Lem Soit $a \in M$ un tuple et $A \subseteq M$. Supposons que $p = \tp(a/A)$ est stationnaire et soit $a' \in M$ un tuple tel que $a' \in \dcl(Aa)$. Alors $\tp(a'/A)$ est stationnaire.
+\begin{proof}
+Nous donnerons un bon schéma de définition sur $A$ pour $\tp(a'/A)$. Soit $\varphi(x,y)$ une $L$-formule et $m \in M$ tel que $M \models \varphi(a',m)$. Par stationnarité de $p$, il existe une $L(A)$-formule $d_p(\varphi)(y)$ telle que $\varphi(x,m) \in \tp(a/A)$ si et seulement si $M \models d_p(\varphi)(m)$. Par hypothèse, il existe une fonction $f$ $A$-définissable telle que $f(a)=a'$. Soit $\tilde\varphi(x,y) = \varphi(f(x),y)$,
+\begin{align*}
+M \models \varphi(a',m) &\iff M \models \varphi(f(a),m) \\
+&\iff M \models \tilde\varphi(a,m) \\
+&\iff M \models d_p(\tilde\varphi)(m).
+\end{align*} \end{proof}
+\Def Un type $p(x) \in S(A)$ est dit \textit{interne} à un type partiel $\Sigma(y)$ s'il existe: une réalisation $a$ de $p$, et $B \supseteq A$ indépendant de $a$ sur $A$, tel que $a \in \dcl ( B  d)$ pour un certain tuple fini $d$ de réalisations de $\Sigma$. S'il arrive au contraire que $a \in \acl ( B d)$, alors le type est dit \textit{presque interne} à $\Sigma$.
+\Lem Supposons que $\tp(a/A)$ est stationnaire et presque interne à un type partiel $\Sigma$. Alors il existe un imaginaire $a'$ tel que: $\tp(a'/A)$ est stationnaire et interne à $\Sigma$, $a' \in \dcl^{\eq}(Aa)$, et $a \in \acl^{\eq}(a')$. Un tel $a'$ peut être pris comme un code pour un ensemble fini de réalisations de $\tp(a/A)$.
+\begin{proof} 
+Par hypothèse, il existe $B \supseteq A$ indépendant de $a$ sur $A$ et un tuple $d$ de réalisations de $\Sigma$ tel que $a \in \acl(Bd)$. Nous pouvons remplacer $B$ par un tuple fini $b$ tel que $a \in \acl(Abd)$. Soit $q = \tp(b,d/Aa)$ et $c=\cb(q)$. Par le Fait 1.8 \textit{(ii)}, $c \in \dcl^{\eq} (Aa)$. Notons que $b \forkindep_{A} a$, donc $b \forkindep_A c$ et $\tp(c/A)$ est $\Sigma$-interne. Par définition de $c$, $bd \forkindep_{Ac} Aa$, mais $a \in \acl(Abd)$, donc $a \in \acl^{\eq}(Ac)$. 
+Si $a'$ désigne le code pour l'ensemble fini des conjugués de $a$ sur
+$Ac$, alors $$a'\in \dcl^{\eq}(Ac)\subseteq \dcl^{\eq}(Aa).$$ Parce que $\tp(c/A)$ est
+interne à $\Sigma$, il en va de même pour $\tp(a'/A)$. De plus, $\tp(a'/A)$ est stationnaire par le Lemme 1.15. Nous pouvons noter que $c \in \acl(Aa')$ aussi: si $a''$ est un conjugué quelconque de $a$ sur $Ac$, alors il réalise le même type sur $Ac$ que $a$.
+\end{proof}
+
+\Lem Soit $\Sigma$ un type partiel, et soit $p \in S(A)$ un type stationnaire, $\Sigma$-interne. Il existe une fonction partielle $A$-définissable $h(y_1,\dots,y_m,z_1,\dots,z_n)$ et une suite $b_1,\dots,b_m$ de réalisations de $p$, telles que pour toute réalisation $a$ de $p$, il existe une suite $c_1,\dots,c_n$ de réalisations de $\Sigma$, telle que $a = h(b_1,\dots,b_m,c_1,\dots,c_n)$.
+
+\begin{proof} 
+Soit $b$ réalisant $p$, $B \supseteq A$ indépendant de $b$ sur $A$, et $d$ un tuple de réalisations de $\Sigma$ tel que $b \in \dcl(Bd)$. 
+
+\noindent \textbf{Affirmation:} Pour tout $b'$ réalisant $p|Ab$, il existe une suite $d'$ de réalisations de $\Sigma$ telle que $b' = g(b,d')$, pour une certaine fonction définissable $g$. \\
+\noindent Soit $(b_i,d_i)_{i<\omega}$ une suite de Morley de $\tp(b,d/\acl^{\eq}(B))$. Par le Fait 1.8 \textit{(v)}, $\tp(b,d/M)$ est définissable sur $A \cup \{ b_i,d_i, i < \omega \}$. En particulier, pour $m$ assez grand, $$b \in \dcl(b_1,\dots,b_m,d_1,\dots,d_m,d,A),$$ de sorte que $\overline{d} = (d_1,\dots,d_m,d)$, $\overline{b} = (b_1,\dots,b_m)$ sont indépendants de $b$ sur $A$. Alors $b = g(\overline{b},\overline{d})$ pour une certaine fonction $g$ $A$-définissable. $_\blacksquare$
+
+ \noindent Maintenant soit $a$ une réalisation arbitraire de $p$, et soit $\bar{a} = (a_1,\dots,a_m)$ réalisant $\tp(\overline{b}/\acl(A))$ tel que $(a_1,\dots,a_m) \forkindep_A a\overline{b}$. Par l'affirmation, pour chaque $i \leq m$ il existe $\overline{c_i}$, un tuple de réalisations de $\Sigma$, tel que $a_i = g(\overline{b},\overline{c}_i)$. Puisque $\tp(a,\overline{a}/A) = \tp(b,\overline{b}/A)$,
+nous obtenons aussi que $a = g(\overline{a},\overline{c})$ pour un certain tuple $\overline{c}$ de réalisations de $\Sigma$. Il s'ensuit que $a= h(\overline{b},\overline{c},\overline{c}_1,\dots,\overline{c}_m)$ pour une fonction $h$ $A$-définissable. 
+\end{proof}
+\noindent \emph{Ce qui suit est le Lemme 7.2.12 de [13], qui est valable pour toutes les théories simples.}
+\Fact Pour tout $A \subseteq M$ il existe un certain $\lambda$ tel que pour toute suite $(a_i , i < \lambda )$ il existe une suite $(b_j , j < \omega)$ $A$-indiscernable telle que pour tout $j_1< \dots < j_n < \omega$ il existe une suite $i_1 < \dots < i_n < \lambda$ avec $\tp(a_{i_1},\dots,a_{i_n}/A) = \tp (b_{j_i},\dots,b_{j_n}/A)$. 
+
+
+\Lem Si $b \in \acl(aA)$, alors $RM(ab/A) = RM(a/A)$.
+\begin{proof}
+Il est clair que $RM(ab/A) \geq RM(a/A)$, puisque ce dernier type contient moins de formules. L'inégalité inverse se prouve par récurrence sur $\alpha = RM(a/A)$. Soit $d = DM(ab/Aa)$ son degré de Morley. Choisissons une $L(A)$-formule $\varphi(x,y) \in \tp(ab/A)$ telle que $RM( \exists y \varphi(x,y)) = \alpha$ et $\varphi(a',y)$ a au plus $d$ réalisations pour tout $a'$. Si $Y$ est l'ensemble défini par $\exists x \varphi(x,y)$, nous affirmons que $RM(Y) \leq \alpha$. Considérons une famille infinie de sous-ensembles définissables $Y_i \subseteq Y$ deux à deux disjoints. Soit $\psi_i(x) = \exists y ( \varphi(x,y) \land y \in Y_i)$. Notons que $d+1$ quelconques des $\psi_i(M)$ ont une intersection vide: si $M \models \bigwedge_{i=0}^d \psi_i(a')$, alors il existe $b_i \in Y_i$ pour $0 \leq i \leq d$ tels que $\models \varphi(a',b_i)$, ce qui contredit notre choix de $\varphi$. Par conséquent, un certain $\psi_i(x)$ a un rang de Morley $\beta < \alpha$. Soit $b' \in Y_i$, et choisissons $a'$ tel que $M \models \varphi(a',b')$. Alors $b'$ est algébrique sur $a'A$ et puisque $a'$ réalise $\psi_i(x)$, nous avons $RM(a'/A) \leq \beta$. Donc par hypothèse de récurrence, nous concluons $RM(a'b'/A) \leq \beta$, ce qui montre $RM (Y_i) \leq \beta$. Cela implique que $Y$ ne contient pas de famille infinie de sous-ensembles disjoints de rang de Morley $\geq \alpha$.
+\end{proof}
+
+\noindent \emph{La définition suivante provient de 10.2.8 de [13]}.
+
+\Def Soient $A,B \subseteq M$ des ensembles définissables et soit $f : B\to A$ une fonction définissable. Les fibres de $f$ ont un rang de Morley définissable si pour tout $B'$ définissable $B' \subseteq B$ et tout $k< \omega$, l'ensemble $\{ a \in A , \ RM(f^{-1}(a) \cap B') = k  \}$ est définissable.
+
+\Lem Soient $A,B \subseteq M$ des ensembles définissables et soit $f : B\to A$ une surjection définissable dont les fibres ont un rang de Morley définissable, et telle que pour tout $a \in A$, $RM(f^{-1}(a))=k$. Alors $RM(B) = RM(A)+k$.
+
+\begin{proof}
+Supposons que $A,B,f$ sont définissables sur un certain $S \subseteq M$. La preuve se fait par récurrence sur $RM(A)=m$, pour tout $k$. Nous pouvons aussi supposer que $DM(A)=1$: sinon, partitionnons $A = A_1 \cup \dots \cup A_d$ en un nombre fini de sous-ensembles définissables de rang $m$ disjoints, puis remplaçons $B,A$ par $f^{-1}(A_1),A_1$, respectivement. Si $m = 0$, alors $A$ est fini et 
+$$RM(B) = \max \{ RM(f^{-1}(a)) \}_{a \in A } = k.$$
+Si $m > 0$, alors écrivons $A = \cup_i A_i$ pour une famille infinie $(A_i)_i$ de sous-ensembles définissables $A_i \subseteq A$ deux à deux disjoints tels que $RM(A_i)=m-1$. Si $B_i = f^{-1}(A_i)$, alors $f\restriction B_i$ est une surjection définissable avec des fibres de rang $k$, donc par hypothèse de récurrence $RM(B_i)=RM(A_i)+k=m+k-1$, et puisque les $B_i$ sont aussi deux à deux disjoints, nous déduisons $RM(B) \geq m+k$. Pour l'inégalité inverse, soit maintenant $(B'_i)_{i < \omega}$ une famille infinie quelconque de sous-ensembles définissables $B'_i \subseteq B$ deux à deux disjoints; nous montrerons que $RM(B'_i) < m+k$ pour un certain $i$, par récurrence sur $k$. Si $k = 0$, $f$ est à fibres finies, donc pour tout $b \in B$, $b \in \acl(f(b))$ et $f(b) \in \dcl(b)$. Par le Lemme 1.20, 
+$$ RM(b/S) = RM(f(b),b/S) = RM(f(b)/S) \leq RM(A) =  m.$$
+Cela implique $RM(B) = \sup_{b \in B}( RM(b/S))  \leq m$.
+Supposons maintenant que la conclusion est vraie pour $m$ et pour tout $k'<k$. Soit $a \in A$, alors puisque $RM(f^{-1}(a)) = k$ et $f^{-1}(a) \supseteq \bigcup_i (f^{-1}(a) \cap B'_i) $, il doit exister un $j$ tel que $RM((f^{-1}(a) \cap B'_j) < k$. Considérons maintenant les ensembles définissables 
+$$A'_i = \{a \in A , \ RM(f^{-1}(a)\cap B'_i ) = k\}.$$ 
+Nous avons prouvé que $\cap_i A'_i = \varnothing$. Nous affirmons que pour un certain $i$, $RM(A'_i)< m$: sinon, comme $DM(A) = 1$, pour tout $N$, $\cap_{i\leq N} A'_i \neq \varnothing$, donc par compacité $\cap_i A'_i \neq \varnothing$, une contradiction, puisque le degré de Morley des fibres est borné. Maintenant, comme $$B'_i=(f^{-1}(A'_i)\cap B'_i) \cup (f^{-1}(A\setminus A'_i)\cap B'_i),$$ nous pouvons appliquer l'hypothèse de récurrence sur $m$ au premier terme pour voir que $RM(f^{-1}(A'_i)\cap B'_i) < m+k$. D'autre part, sur $A\setminus A'_i$, toutes les fibres ont un rang strictement inférieur à $k$. L'hypothèse de récurrence sur $k$ donne $RM(f^{-1}(A\setminus A'_i)\cap B'_i) < m+k$, ce qui conclut la preuve.
+\end{proof}
+
+\Lem Soit $P \subseteq M$ un ensemble définissable fortement minimal, et $\varphi(x_1,\dots,x_n,\bar{y}) $ une formule telle que $M \models \forall x_1,\dots,x_n ( \exists \bar{y} \  \varphi(x_1,\dots,x_n,\bar{y}) \rightarrow x_i \in P)$. L'ensemble suivant est définissable pour tout $k$, $$Y_{n,k} = \{ \bar{b} \in M , RM \varphi(x_1,\dots,x_n,\bar{b}) = k \}.$$
+\begin{proof}
+Soit $Y'_{n,k} =  \{ \bar{b} \in M , RM \varphi(x_1,\dots,x_n,\bar{b}) \geq k \}$. Nous prouverons la définissabilité de $Y'_{n,k}$, cela donne le résultat désiré puisque $Y_{n,k} = Y'_{n,k} \setminus Y'_{n,k+1}$.
+Nous procédons par récurrence sur $n$. Remarquons que $Y'_{1,1}$ est définissable puisque $RM(\varphi(x_1,\bar{b}))\geq 1$ si et seulement si $\exists^{\infty}x_1 \varphi(x_1,\bar{b})$, ce qui est à son tour équivalent (par forte minimalité de $P$) à $\exists^{\geq N}x_1 \varphi(x_1,\bar{b})$, pour un certain $N$. De plus, remarquons que $$Y_{n,0} = \{ \bar{b} \in M , \exists x_1, \dots, x_n \varphi(x_1,\dots,x_n,\bar{b}) \}$$ est définissable pour tout $n$. Soit maintenant $n>0$, nous travaillerons par récurrence sur $k>0$. Pour $\bar{b} \in P$, considérons la $\bar{b}$-formule $\phi_{\bar{b}}(x_0,\dots,x_{n-1})$ donnée par $\exists x_n \varphi(x_0,\dots,x_{n-1},x_n,\bar{b})$. Si \linebreak $RM(\phi_{\bar{b}}) \geq k$, alors $\bar{b} \in Y'_{n,k}$, et si $RM(\phi_{\bar{b}})  < k$, considérons plutôt la $L(\bar{b})$-formule $\psi_{\bar{b}}(x_0,\dots,x_{n-1})$ donnée par $\exists^{\infty} x_n \varphi(x_0,\dots,x_{n-1},x_n,\bar{b})$, alors puisque la dimension algébrique d'un tuple dans $P$ coïncide avec son rang de Morley, nous avons dans ce cas que $RM(\psi_{\bar{b}}) \geq k-1$ si et seulement si $\bar{b} \in Y'_{n,k}$. Nous avons montré que $\bar{b} \in Y'_{n,k}$ si et seulement si $RM(\phi_{\bar{b}}) \geq k$ ou $RM(\psi_{\bar{b}}) \geq k-1$. La première de ces deux conditions est définissable par notre hypothèse de récurrence sur $n$, tandis que la dernière est définissable par récurrence sur $k$, donc $Y'_{n,k}$ est aussi définissable. 
+\end{proof}
+\newpage
+\section{Groupes Stables}
+\emph{ Un groupe $\omega$-stable est une structure $\omega$-stable $(G,\cdot,1,\dots)$, où $(G,\cdot,1)$ est un groupe. Dans cette section nous présentons quelques concepts et outils de base utilisés dans l'étude des groupes $\omega$-stables. Pour plus de détails, voir [11] et le Chapitre 7 de [7]. Tout au long de cette section $G$ désignera un groupe infini, $\omega$-stable, définissable à l'intérieur d'un modèle saturé $M$ d'une théorie complète, $\omega$-stable $T$.}
+\Lem Il n'existe pas de chaîne strictement descendante infinie de sous-groupes définissables $G > G_1 > G_2 > \dots$
+\begin{proof}
+Pour tout sous-groupe définissable $H \leq G$, et tout $a \in G \setminus H$, la classe $aH \subseteq G$ est disjointe de $H$, et puisque $x \mapsto ax$ est une bijection définissable, alors $RM(H) = RM(aH)$. Si $G > G_1 > G_2 > \dots$ est une suite strictement décroissante, et si $[G_i : G_{i+1}]$ est infini, alors $RM(G_i) > RM(G_{i+1})$. Si $[G_i : G_{i+1}]$ est fini, alors $DM(G_i) > DM(G_{i+1})$, et cela implique l'existence d'une suite strictement décroissante par rapport à l'ordre lexicographique $RM(G) \times \omega$, donc, cette suite ne peut pas être infinie.
+\end{proof}
+\Lem Il existe un sous-groupe normal définissable $G^0 \leq G$ qui est contenu dans tout sous-groupe de $G$ d'indice fini. 
+\begin{proof}
+Soit $\mathcal H$ la famille des sous-groupes définissables de $G$ d'indice fini. Nous affirmons qu'il existe $H_1,\dots,H_n$ dans $\mathcal H$ tels que
+$$\bigcap_{H\in \mathcal H}H = H_1 \cap  \dots \cap H_n.$$
+Sinon, pour tout $m$ il existe $j_0,\dots,j_m$ tels que si $G_m = H_{j_0}\cap \dots \cap H_{j_m}$, alors $G_0 > G_1 > G_2 > ...$, contredisant le Lemme 2.1. Nous pouvons alors définir $G^0 =  H_1 \cap  \dots \cap H_n$. Si $h \in G$, puisque $x \mapsto hxh^{-1}$ est un automorphisme de groupe, nous avons que $hG^0h^{-1}$ est un sous-groupe définissable avec $[G:hG^0h^{-1}] = [G:G^0]$, donc $hG^0h^{-1}=G^0$ par minimalité.
+\end{proof}
+\Lem Soit $A\subseteq M$. Si $G$ est $A$-définissable, alors $G^0$ est $A$-définissable.
+\begin{proof}
+Par le Lemme 2.2, il existe une $L(A)$-formule $\varphi(x,y)$ et $g \in G$ tels que la formule $\varphi(x,g)$ définit $G^0$. Soit $n = [G:G^0]$, et considérons $$W = \{ b \in G , \ \varphi(x, b) \text{ définit un sous-groupe d'indice $n$ }\},$$ un ensemble $A$-définissable. Si $b \in W$ et $H =\varphi(G,b)$, alors $H\cap G^0$ est un sous-groupe d'indice fini de $G^0$, donc $H \supseteq  G^0$. Cependant, puisque $[G:H]=n$, nous avons $[H:G^0]=1$, d'où $H= G^0$. Nous pouvons alors définir $G^0$ comme $\{ g \in G , \exists b \ ( b  \in W \land  \varphi(g,b))\}$.
+\end{proof}
+\Def $G$ est \textit{connexe} si $G=G^0$.
+
+
+
+\Def Il existe une action de $G$ sur $S_1(G)$ donnée par $g \cdot p = \{ \varphi(x) , \ \varphi(gx) \in p\}.$ Le \textit{stabilisateur} de $p$ est le groupe
+$$\operatorname{Stab}(p) = \{g \in G , g \cdot p = p \}.$$
+
+\Lem $\operatorname{Stab}(p)$ est un sous-groupe définissable de $G$, pour tout $p \in S_1(G)$.
+\begin{proof}
+Pour $\varphi(x,y)$ une $L$-formule, soit $$\operatorname{Stab}_\varphi(p) = \{ g \in G \mid p_\varphi = g \cdot p_\varphi\},$$
+où $$p_\varphi = \{ \varphi(x,g) \mid g \in G , \varphi(x,g) \in p\} \cup  \{ \neg \varphi(x,g) \mid g \in G , \varphi(x,g) \not \in p\} .$$
+Un calcul simple montre que pour tout $\varphi$, $\operatorname{Stab}_\varphi(p) \leq G$. Par stabilité, il existe un schéma de définition pour $p$, disons $d_p$. Ainsi, 
+$$\operatorname{Stab}_\varphi(p) = \{g \in G | \ \forall h (d_p(\varphi)(h) \leftrightarrow d_p(\varphi)(hg))  \}.$$
+Notons que
+$\operatorname{Stab}(p) = \bigcap_{\varphi(x,y) \in L} \operatorname{Stab}_\varphi(p).$
+Par le Lemme 2.1, il existe $\varphi_1,\dots,\varphi_n \in L$ tels que $\operatorname{Stab}(p) = \operatorname{Stab}_{\varphi_1}(p)\cap \dots \cap \operatorname{Stab}{\varphi_n}(p)$, ce qui conclut la preuve.
+\end{proof}
+
+\Lem Soit $p \in S_1(G)$.
+\begin{enumerate}[(i)]
+\item $RM(\operatorname{Stab}(p)) \leq RM(p)$.
+\item $\operatorname{Stab}(p) \leq G^{0}$.
+\end{enumerate}
+\begin{proof}
+Soient $a,b \in M$ tels que $a$ réalise $p$, $b\in \operatorname{Stab}(p)$ satisfait $RM(\tp(b/G)) =$ $RM(\operatorname{Stab}(p))$, et $a \forkindep_G b$. Alors 
+$$RM(\tp(ba/G,a)) = RM(\tp(b/G,a))= RM(\tp(b/G))=RM(\operatorname{Stab}(p)).$$
+De plus, puisque $ba$ réalise $p$, nous avons $RM(\tp(ba/G,a)) \leq RM(\tp(ba/G)) = RM(p)$, prouvant \textit{(i)}. Soit maintenant $c \in \operatorname{Stab}(p)$, et soit $\varphi(x)$ définissant $G^0$ (possiblement avec des paramètres dans $M$). Soit $g \in G$ tel que $\varphi(g^{-1} x) \in p$, donc $\varphi(g^{-1} c  x) \in p$. Soit $G\preceq H$ et $h \in H$ réalisant $p$. Alors $g^{-1}ch \in H^0$ et $g^{-1} h \in H^0$. Ainsi $(g^{-1}h)^{-1}g^{-1} ch=h^{-1}ch \in H^0$, et puisque $H^0$ est normal, $c \in G^0$ par le Lemme 2.3.
+\end{proof}
+
+\Def Un type $p \in S_1(G)$ est \textit{générique} si $RM(p) = RM(G)$. Un élément $a \in G(M)$ est générique sur $A \subseteq G$ si $RM(\tp(a/A)) = RM(G)$.
+
+
+\Lem Un type $p \in S_1(G)$ est générique si et seulement si $[G:\operatorname{Stab}(p)]$ est fini.
+\begin{proof}
+Supposons que $p$ est générique. Remarquons que $\{ ap , \ a \in G\}$ est fini, puisqu'il n'y a qu'un nombre fini de types de rang de Morley maximal. Choisissons $b_1,\dots,b_n \in G$ tels que si $a \in G$, alors $ap = b_ip$ pour un certain $i \leq n$. Si $ap = b_ip$ alors $b_i^{-1}a \in \operatorname{Stab}(p)$ et $a \in b_i \operatorname{Stab}(p)$. Par conséquent, $[G:\operatorname{Stab}(p)] \leq n$. Supposons maintenant que $\operatorname{Stab}(p)$ a un indice fini, donc $RM(G) = RM(\operatorname{Stab}(p))$, mais $RM(\operatorname{Stab}(p)) \leq RM(p)$ par le Lemme 2.7, donc $p$ est générique.
+\end{proof}
+\Cor \
+\begin{enumerate}[(i)]
+
+\item Un type $p \in S_1(G)$ est générique si et seulement si $\operatorname{Stab}(p)= G^0$
+\item $G$ a un unique type générique si et seulement si $G$ est connexe.
+\end{enumerate}
+
+\begin{proof} \ 
+
+\begin{enumerate}[(i)]
+\item Par le Lemme 2.9, si $p$ est générique, $\operatorname{Stab}(p)$ a un indice fini, nous avons $G^0 \leq  \operatorname{Stab}(p)$. Par le Lemme 2.7 \textit{(ii)}, nous avons $G^0 \geq  \operatorname{Stab}(p)$. L'autre direction est claire par le Lemme 2.9, puisque $G^0$ a un indice fini.
+\item Soit $p$ l'unique type générique. Pour tout $a \in G$, $ap$ est générique, donc $ap = p$. Ainsi, $G = \operatorname{Stab}(p)=G^0$ par \textit{(i)}. Réciproquement, supposons $G=G^0$, et par contradiction, supposons que $p,q$ sont des types génériques distincts. Soient $a,b$ réalisant $p,q$ respectivement, avec \linebreak $b \in H \succeq G$ et soit $a'$ réalisant $p|H$. Alors, $\tp(a,b/G)=\tp(a',b/G)$, et $p|H$ est un générique de $H$. Par \textit{(i)}, $\operatorname{Stab}(p|H)=H^0=H$. Ainsi, $ba'$ réalise $p| H$. En particulier, $ba'$ réalise $p$, donc $ba$ réalise $p$. Si $a \in K \succeq G$, et $b'$ réalise $q|K$, un argument analogue montre que $ba$ réalise $q$. Cela contredit notre hypothèse, donc $G$ a un unique type générique.
+\end{enumerate}
+\end{proof}
+\section{Paires de Corps Algébriquement Clos}
+\emph{Tout au long de cette section, nous poserons $T=ACF_p$ pour $p$ premier ou $0$ (dans le langage usuel $L$), et nous considérons $L_P$, le langage obtenu en ajoutant un prédicat unaire $P$. Une paire élémentaire de modèles de $T$, $N \preceq M$, est considérée comme une $L_P$-structure en interprétant $P$ comme l'univers de la structure $N$, et les $L_P$-structures seront naturellement notées comme des paires $(M,P)$.}
+
+\Def Une \textit{belle paire} de modèles de $T$ est une paire élémentaire $N \preceq M$ telle que $N$ est $|T|^+$-saturée et $M$ est $|T|^+$-saturée sur $N$, ce qui signifie que $M$ réalise tout $L$-type sur $N \cup A$, où $A \subseteq M \setminus N$ est tel que $|A| < |T|^+$. La théorie $T_P$ des paires propres $P \prec M$ de modèles de $T$ a été montrée complète par Keisler dans [5].
+\Fact ([12]) Soit $(M,P)$ un modèle saturé de $T_P$.
+\begin{enumerate}[(i)]
+\item $(M,P)$ est une belle paire.
+\item $T_P$ est stable.
+\item Toute $L_P$-formule $\phi(x)$ est équivalente modulo $T_P$ à une combinaison booléenne de $L_P$-formules de la forme $\exists y P(y) \land \psi(y,x)$ où $\psi$ est une $L_P$-formule sans quantificateurs.
+\end{enumerate}
+\emph{Buechler dans [2] note que $T_P$ est en fait $\omega$-stable de rang de Morley $\omega$. Désormais $(M,P)$ sera un modèle saturé de $T_P$.} \\
+\noindent \emph{\textbf{Notation: } Si $A\subseteq M$, nous notons le corps engendré par $A$ par $\langle A \rangle$. Pour tous $A,B,C \subseteq M$, nous notons l'indépendance au sens de $L$ par $A \forkindep^L_C B$, et au sens de $L_P$ par $A \forkindep^{L_P}_C B$. Nous distinguerons aussi les $L$-types des $L_P$-types en utilisant $\tp_L$ et $\tp_{L_P}$ respectivement. Nous adoptons la même convention pour les opérateurs $\acl$ et $\dcl$.}
+
+\Lem Tout $C \subset P^n$ qui est $L_P$-définissable avec des paramètres de $M$, est $L$-définissable avec des paramètres de $P$. En particulier, $P$ est fortement minimal et stablement plongé (au sens de $L_P$). 
+\begin{proof}
+Soit $\varphi(x,m)$ avec $m \in M$ une $L_P$-formule définissant $C$. Notons que $P$ est algébriquement clos au sens de $L_P$. Par stabilité de $T_P$, $p(y) = \tp_{L_P}(m/P)$ est définissable sur $P$, donc nous avons que pour tout $a \in M$,
+\begin{align*}
+a \in C  \iff \varphi(a,y) \in p   \iff   M \models d\varphi(a),
+\end{align*}
+où $d\varphi(x)$ est une $L_P$-formule avec des paramètres dans $P$. Maintenant, par le Fait 3.2, $d\varphi(x)$ est équivalente à une combinaison booléenne de formules de la forme $\exists z P(z) \land \psi(x,z)$ où $\psi$ est une $L_P$-formule sans quantificateurs. Puisque $C \subseteq P^n$ et $$M \models \forall x \ d\varphi(x) \rightarrow P(x),$$ $C$ est $L$-définissable par une combinaison booléenne de formules de la forme $\exists z \psi'(x,z)$, où $\psi'$ est la $L$-formule obtenue de $\psi$ en remplaçant toute occurrence de $P(t)$ par $t=t$, pour tout terme $t$. 
+\end{proof}
+
+\Remark Par l'élimination des quantificateurs dans $T$, la formule $\exists z \psi'(x,z)$ est équivalente modulo $T$ à une $L$-formule sans quantificateurs $\theta(x)$. Remarquons aussi que l'ensemble $C$ ne dépend que de $m$, donc si $c$ est un $L_P$-code pour $C$, nous avons que $c \in \dcl_{L_P}^{\eq}(m)\cap P$.
+
+
+
+\Def Soit $a \in M$ un tuple (possiblement infini), définissons $\widehat{a}= (a,a^c)$, où $a^c = \Cb(\tp_L(a/P))$. Puisque $T$ est totalement transcendante et élimine les imaginaires, $a^c$ est dans la clôture définissable au sens de $L$ d'un tuple réel fini. Plus spécifiquement, $a^c$ peut être considéré, à interdéfinissabilité près, comme un tuple de générateurs pour le corps de définition du lieu algébrique de $a$ sur $P$ (c'est-à-dire: la variété associée à l'idéal premier des polynômes dans $P[X]$ qui s'annulent en $a$).
+
+\Lem Pour tous tuples $a \in M$, $\langle \widehat{a} \rangle$ est linéairement disjoint de $P$ sur $\langle a^c \rangle$.
+\begin{proof}
+Notons que $\langle \widehat{a} \rangle = \langle a^c \rangle (a)$. Soit $\{M_0(X),\dots,M_m(X)\}$ un ensemble de monômes tel que $\{M_0(a),\dots,M_m(a)\}$ est linéairement indépendant sur $\langle a^c \rangle$. Supposons qu'il existe une relation linéaire $\sum c_i M_i(a)=0$, où $c_i \in P$. Par définition de $a^c$ nous pouvons écrire
+$$\sum_{i=0}^mc_iM_i(X) = \sum_{j=0}^n b_j f_j(X),$$
+où $b_j\in \langle a^c \rangle$, $f_j(a) \in I := \{ f(X) \in  \langle a^c \rangle(X) , \ f(a) = 0\}$ pour tout $j$, et tel que $\{ f_0(X),\dots, f_n(X) \}$ est un ensemble linéairement indépendant de polynômes sur $\langle a^c \rangle$. Nous affirmons que $\{M_1,\dots,M_m,f_1, \dots,f_n\}$ est aussi linéairement indépendant sur $\langle a^c \rangle$: sinon, $\sum r_i M_i(X) + \sum s_j f_j(X)= 0$, pour certains $r_i,s_j \in \langle a^c \rangle$. Nous pouvons substituer $a$ à $X$ pour obtenir $\sum r_i M_i(a) = 0$, ce qui donne $r_i=0$ pour tout $i$, donc $\sum s_j f_j(X)= 0$ et $s_j = 0$ pour tout $j$. Comme ce sont des polynômes formels, ils restent linéairement indépendants sur $P$, donc $c_i= 0$ pour tout $i$. \pagebreak
+\end{proof}
+
+
+
+\Remark Pour tous tuples $a \in M$, $a^c \in \dcl_{L_P}(a)$.
+\begin{proof}
+Tout $L_P$-automorphisme laisse $P$ invariant, donc s'il fixe aussi $a$, il doit laisser $\tp_L(a/P)$ invariant, donc il doit fixer $a^c$. 
+\end{proof}
+
+\Lem Pour tous tuples $a,b \in M$, $\tp_{L_P}(a) = \tp_{L_P}(b)$ si et seulement si $\tp_L(\widehat{a})=\tp_L(\widehat{b})$.
+\begin{proof}
+S'il existe un $L_P$-automorphisme $\sigma$ de $M$ envoyant $a$ sur $b$, par la Remarque 3.7 nous avons $\sigma(a^c) = b^c$, donc $\tp_{L_P}(\widehat{a}) = \tp_{L_P}(\widehat{b})$. En restreignant le langage on obtient $\tp_{L}(\widehat{a})=\tp_{L}(\widehat{b})$. Réciproquement, supposons qu'il existe un $L$-isomorphisme partiel $\sigma$ envoyant $a$ sur $b$ et $a^c$ sur $b^c$. Puisque $\langle \widehat{a} \rangle$ et $P$ sont linéairement disjoints sur $\langle a^c \rangle$, et aussi $\langle \widehat{b} \rangle$ et $P$ sont l.d. sur $\langle b^c \rangle$, la restriction $\sigma \restriction{\langle \widehat{a} \rangle}$ peut être étendue à un $L$-isomorphisme $\sigma':P(a) \to P(b)$ tel que $\sigma'(P) = P$, en d'autres termes, à un $L_P$-isomorphisme, qui peut lui-même être étendu à un $L_P$-automorphisme de $M$ par saturation de $M$ sur $P$ (voir le Fait 3.2 \textit{(iii)}).
+\end{proof}
+
+
+\Lem Pour tous tuples $a \in M$,
+\begin{enumerate}[(i)]
+\item $a^c \subseteq P$.
+\item Si $b \in P$ est un tuple, $\widehat{ab}$ et $\widehat{a}b$ sont $L$-interdéfinissables.
+\item $\widehat{a}  {\forkindep}^{L_P}_{a^c} P$
+\end{enumerate}
+\begin{proof}
+Par élimination des imaginaires dans $T$, $a^c \in \acl^{\eq}_L(P)=P$, cela donne \textit{(i)}. Pour voir \textit{(ii)}, remarquons que $a \forkindep^L_{a^c} P$ implique $ab \forkindep^L_{a^c b} P$, et puisque $\tp_L(ab/a^cb)$ est stationnaire, nous obtenons $(ab)^c \subseteq \dcl_L(a^c b)$, donc $\widehat{ab} \in \dcl_L(\hat{a}b)$. Clairement $\widehat{a}b \subseteq \widehat{ab}$, donc l'autre direction suit. Pour \textit{(iii)}, soit $a^c \in B \subseteq P$, et choisissons une suite $L_P$-indiscernable sur $a^c$, $(B_i)_{i<\omega}$, telle que $B_0 = B$. Soit $p = \tp_L(\widehat{a}/B)$, et pour chaque $i$ soit $p_i$ l'image de $p$ sous un $L$-automorphisme qui fixe $a^c$ et envoie $B$ sur $B_i$. Comme $\widehat{a} \forkindep^L_{a^c} P$, $B_i \subseteq P$, et $\widehat{a} \forkindep^L_{a^c} B_i$ pour tout $i$, $\hat{a}$ réalise $\cup_i p_i$. Par le Lemme 3.8 et \textit{(ii)}, $\tp_{L}(\widehat{a}/P) \vdash \tp_{L_P}(\widehat{a}/P)$. Si nous posons $p' = \tp_{L_P}(\widehat{a}/B)$ et $p'_i$ l'image de $p'$ sous un $L_P$-automorphisme qui fixe $a^c$ et envoie $B$ sur $B_i$, nous avons prouvé la consistance de $\cup_i p'_i$. Donc, $\tp_{L_P}(\widehat{a}/B)$ ne bifurque pas sur $a^c$. Puisque $B$ a été choisi arbitrairement, le résultat suit.
+\end{proof}
+
+\Def Un sous-ensemble $A$ de $M$ est dit $P$-indépendant si $A \forkindep^L_{A \cap P} P$.
+
+\Remark \quad
+\begin{enumerate}[(i)]
+\item Pour tout $a\in M$, $\widehat{a}$ est $P$-indépendant.
+\item Tout sous-ensemble de $P$ est $P$-indépendant.
+
+\end{enumerate}
+\begin{proof}
+La première condition découle directement du Lemme 3.9 \textit{(i)}, \textit{(iii)}, et de la monotonie. La seconde affirmation est claire. 
+\end{proof}
+
+
+\Lem Soient $A\subseteq B,C \subseteq M$ avec $C = Ac$, où $c \in M$ est un tuple fini. Les conditions suivantes sont équivalentes:
+\begin{enumerate}[(i)]
+\item $C \forkindep^{L_P}_A B$
+\item $C\forkindep^L_{ AP} BP$, et
+ $C^c \forkindep_{A^c}^L B^c$.
+\item $C\forkindep^L_{ AP} BP$, et
+ $\widehat{C} \forkindep_{\widehat{A}}^L \widehat{B}$.
+
+\end{enumerate}
+
+\begin{proof} \ \newline
+\textit{(i) }implique\textit{ (ii)}: Par la Remarque 3.7, nous pouvons supposer $B = \widehat{B}$. Pour la première partie, supposons par contradiction que $\tp_L(c/BP)$ bifurque sur $AP$. Soit $(B_i)_{i <  \lambda}$ une suite de réalisations de $\tp_L(B / AP)$ telle que $B_i \forkindep^L_{AP} (B_j)_{j<i}$ et $B_0 = B$; notons qu'en particulier, comme $\widehat{B_i} = B_i$, pour tout $i$, nous obtenons $\tp_{L_P}(B_i) = \tp_{L_P}(B)$ par le Lemme 3.9. Nous pouvons choisir $\lambda$ assez grand pour appliquer le Fait 1.19, ce qui donne une suite $L_P$-indiscernable sur $AP$, $(B'_i)_{i < \omega}$, telle que $\tp_{L_P}(B'_i/AP ) = \tp_{L_P}(B/AP )$ pour tout $i$.
+Soit $p = \tp_{L_P}(c/B)$ et soit $p_i$ sa copie sur $B'_i$; alors par \textit{(i)}, $\cup_{i<\omega} p_i$ peut être réalisé par un certain $c'$. Nous avons que pour tout $i$, $c' \not\forkindep^L_{AP} B'_iP$: cela contredit l'$\omega$-stabilité de $T$, puisque $(B'_i)_{i<\omega}$ est aussi $L$-indépendante sur $AP$. Pour prouver la dernière partie de \textit{(ii)}, nous appliquons les propriétés de la bifurcation: par le Lemme 3.9 \textit{(iii)} nous avons que $\widehat{A}  \forkindep^{L_P}_{A^c} P$, ce qui implique par symétrie et monotonie que $C^c \forkindep^{L_P}_{A^c} \widehat{A}$. De plus, la Remarque 3.7 donne
+ \begin{align*}
+ C \forkindep^{L_P}_A B &\Rightarrow CC^c  \forkindep^{L_P}_{AA^c} BB^c  \\
+ &\Rightarrow C^c  \forkindep^{L_P}_{\widehat{A}} B^c, \ \text{par monotonie.}
+ \end{align*}
+ En appliquant la transitivité, $C^c \forkindep^{L_P}_{A^c} B^c$. Comme ces trois ensembles sont tous dans $P$, nous obtenons en fait l'indépendance désirée au sens de $L$. 
+
+\noindent \textit{(ii)} implique \textit{(iii)}:   
+Nous prouverons $AC^c \forkindep^L_{\widehat{A}}\widehat{B}$ et $\widehat{C} \forkindep^L_{AC^c} \widehat{B}$, puis \textit{(iii)} suivra par transitivité et parce que $A^c \subseteq C^c$. Pour obtenir la première relation, partons de $\widehat{B} \forkindep^L_{B^c} P$ et utilisons $C^c \subseteq P$ pour obtenir $\widehat{B} \forkindep_{B^c} C^c$. En combinant cela avec notre hypothèse $C^c \forkindep^L_{A^c} B^c$, nous obtenons $C^c \forkindep^L_{A^c}\widehat{B}$, ce qui implique $AC^c \forkindep^L_{\widehat{A}}\widehat{B}$ puisque $A^c \subseteq \hat{A} \subseteq \hat{B}$. Pour la seconde relation, partons de $\widehat{C} \forkindep_{C^c} P$ et $A \subseteq C$ pour obtenir $\widehat{C} \forkindep^L_{AC^c} AP$ (I). Maintenant, l'hypothèse $C \forkindep^L_{AP}BP$ donne \linebreak $\widehat{C}\forkindep^L_{AP}\widehat{B}$ (II), puisque $B^c,C^c \subseteq P$. En combinant (I) et (II) on obtient $\widehat{C} \forkindep^L_{AC^c} \widehat{B}$. \pagebreak
+
+\noindent \textit{(iii)} implique \textit{(i)}: \\
+\noindent{\textbf{Affirmation:} \textit{(iii)} implique que $\widehat{Ac}\widehat{B}$ est $P$-indépendant.}\\
+\noindent $\widehat{Ac}\widehat{B}$ est $P$-indépendant équivaut à dire que si $t_C$, $t_B$ sont des bases de transcendance pour $\widehat{Ac},\widehat{B}$ sur $\widehat{A}P = AP$ respectivement, alors $t_C \cup t_B$ reste algébriquement indépendant sur $AP$, ce qui équivaut à $C \forkindep^{L}_{AP}BP$.
+$_\blacksquare$ \\
+\noindent Soit $(\widehat{B}_i)_i$ une suite $L_P$-indiscernable sur $\widehat{A}$ avec $\widehat{B_0} = \widehat{B}$. Par hypothèse $C^c \forkindep^L_
+{\widehat{A}} \widehat{B}$, donc nous pouvons supposer que $(\widehat{B}_i)_i$ est aussi $L$-indiscernable sur $\widehat{A}C^c$. Soit $p = \tp_L(\widehat{c} / \widehat{B}C^c)$, et soit $p_i$ ses copies sur $\widehat{B_i}C^c$. Par la première condition de \textit{(iii)}, nous pouvons réaliser $\cup_i p_i$ par un certain $\widehat{C'}$ qui est $L$-indépendant de $P$ sur $\cup_i \widehat{B_i}C^c$. Par le Lemme 3.8 et par l'affirmation, il s'ensuit que $\tp_{L_P}(\widehat{C}'\widehat{B_i}C^c) = \tp_{L_P}(\widehat{C}\widehat{B_i}C^c)$,
+donc $p$ ne $L_P$-bifurque pas sur $\widehat{A}$. Par conséquent, $\widehat{C} \forkindep^{L_P}_{\widehat{A}} \widehat{B}$, et \textit{(i)} suit de la Remarque 3.7.
+\end{proof}
+\Lem Soit $a \in M$, alors 
+\begin{enumerate}[i)]
+\item $\acl_{L_P}(a)  = \acl_L (\widehat{a}).$
+\item$\dcl_{L_P}(a) = \dcl_L (\widehat{a}).$
+\end{enumerate}
+\begin{proof}
+Dans les deux cas, l'inclusion $\supseteq$ suit de la Remarque 3.7.
+\begin{enumerate}[i)]
+\item
+
+D'abord nous montrons que $\acl_{L_P}(a) \cap P = \acl_L (a^c)$. Soit
+$b \in \acl_{L_P}(a) \cap P$, alors puisque $a {\forkindep}^L_{a^c} P$, nous obtenons $\widehat{a}{\forkindep}^L_{a^c} b$. Supposons $b \notin \acl_L(a^c)$, donc $b \notin \acl_L(\widehat{a})$. Alors, dans $P$, il existe une infinité de $(b_i , i < \omega)$ tels que $\tp_L(\widehat{a}b_i)=\tp_L(\widehat{a}b)$. Par le Lemme 3.9 \textit{(ii)}, $\tp_L(\widehat{ab_i})=\tp_L(\widehat{ab})$. Par le Lemme 3.8, ces $b_i$ sont aussi $L_P$-conjugués sur $\widehat{a}$, une contradiction. Considérons maintenant $b' \in M\setminus P$ tel que $b' \in \acl_{L_P}(a)$ mais $b' \notin \acl_L(\widehat{a})$. Alors
+ $$(b'\widehat{a})^c \in \dcl_{L_P}(b'\widehat{a})\cap P  \subseteq \acl_{L_P}(\widehat{a})\cap P = \acl_{L}(a^c),$$
+ce qui implique par le Fait 1.8 \textit{(iii)} que $b'\widehat{a} \forkindep^L_{a^c} P$, donc $b' \forkindep^L_{\widehat{a}} P$. Par hypothèse il existe une infinité de $L$-conjugués de $b'$ sur $\widehat{a}$. Puisque $M$ est saturé sur $P$, il existe une infinité de réalisations de $\tp_{L}(b'/\widehat{a}P)$. Cela implique qu'il existe une infinité de réalisations de $\tp_{L_P}(b'/\widehat{a})$, une contradiction.
+\item La preuve est similaire. D'abord, nous montrons que $\dcl_{L_P}(a) \cap P = \dcl_L (a^c)$, donc soit \linebreak $b \in \dcl_{L_P}(a) \cap P$. Alors, par \textit{(i)}, $b \in \acl_{L}(a^c)$. Supposons $b \notin \dcl_L(\widehat{a})$, alors il existe $b' \in P$ distinct de $b$ tel que $\tp_{L}(b'  \widehat{a} ) = \tp_{L}(b \widehat{a} )$, et en appliquant le Lemme 3.9 \textit{(ii)} et le Lemme 3.8 on obtient $\tp_{L_P} (b'\widehat{a}) = \tp_{L_P}(b\widehat{a})$, une contradiction. Considérons maintenant $b' \in M \setminus P$, $b' \in \dcl_{L_P}(a)$, mais supposons $b' \notin \dcl_{L}(\widehat{a})$. Alors 
+
+ $$(b'\widehat{a})^c \in \dcl_{L_P}(b'\widehat{a})\cap P  \subseteq \dcl_{L_P}(\widehat{a})\cap P = \dcl_{L}(a^c),$$
+
+donc $\langle \widehat{a} \rangle (b')$ et $P$ sont linéairement disjoints sur $\langle \widehat{a} \rangle$. Par hypothèse il existe au moins deux $L$-conjugués de $b$ sur $\widehat{a}$, qui sont aussi des $L_P$-conjugués sur $\widehat{a}$ par le Lemme 3.8, une contradiction.  
+\end{enumerate}
+\end{proof}
+\Cor Si $A \subseteq M$ est tel que $A = \widehat{A}$, alors $\acl_{L_P}(A) = \acl_{L}(A)$ et $\dcl_{L_P}(A) = \dcl_{L}(A)$. En particulier $P$ est algébriquement clos au sens de $L_P$.
+\Def \quad 
+\begin{enumerate}[i)]
+\item Considérons pour tout $n>1$, le prédicat $l_n(x_1,\dots,x_n)$, qui affirme que $x_1,\dots,x_n$ sont linéairement indépendants sur $E$, c'est-à-dire,
+$$l_n(x_1,\dots,x_n) \leftrightarrow \forall e_1,\dots,e_n \left(\bigwedge_i P(e_i) \land \sum_i e_ix_i = 0  \rightarrow \bigwedge_i e_i = 0\right).$$
+\item Considérons pour tout $n>1$ et pour tout $i \in \{ 1,\dots, n \}$, la fonction $(n+1)$-aire $f_{n,i}(y,x_1,\dots,x_n)$ qui donne la $i$-ème coordonnée de $y$ écrit comme combinaison linéaire de $x_1,\dots,x_n$. Plus spécifiquement, si $l_n(x_1,\dots,x_n) \land \neg l_n(y,x_1,\dots,x_n) $, alors
+\begin{align*}
+z= f_{n,i}(y,x_1,\dots,x_n) \leftrightarrow 
+ \exists z_1, \dots , z_n \left( z = z_i \land y = \sum_j z_jx_j \land \bigwedge P(z_j) \right), \end{align*}
+ sinon, si la condition n'est pas satisfaite, définissons $f_{n,i}(y,x_1,\dots,x_n) = 0$. 
+\item Définissons le langage $L_P^{l,f}$ comme le langage obtenu en ajoutant à $L_P$ les symboles de prédicats $l_n$ et $f_{n,i}$, pour tout $n>1$ et $i \in \{1,\dots,n \}$. Remarquons que dans ce langage, $P(x)$ peut être défini par la formule $\neg l_n (1,x)$.
+\end{enumerate}
+Le résultat suivant est le Corollaire 15 de [3]:
+
+\Fact Soit $N \subseteq M$ un modèle de $T_P$, alors l'inclusion est élémentaire ssi $N$ est une $L_P^{l,f}$-sous-structure ssi $N$ est $P$-indépendant. \newpage
+
+\Cor Soit $A \subseteq M$. Soit $C$ le corps engendré par $A$ et les $f_{n,i}(A)$ pour tous $n>1$ et $i \leq n$. Alors $\widehat{A} \subseteq C$, et par conséquent
+\begin{enumerate}[i)]
+\item $\acl_{L_P}(A)= \acl_L(C). $
+\item $\dcl_{L_P}(A)= \dcl_L(C) .$
+\end{enumerate}
+\begin{proof} 
+ Par le théorème 7, \S 2, Ch 3. de [6], le corps de définition du lieu de $A$ sur $P$ est engendré par $\{ f_{n,i} (M_0,M_1,\dots,M_n) , n < \omega , i \leq n   \}$, où le tuple $(M_0,M_1,\dots,M_n)$ parcourt l'ensemble des monômes formés par les éléments de $A$. Par conséquent, $A^c \subseteq C$. De là, nous obtenons à la fois $\acl_{L}(\widehat{A}) \subseteq \acl_L(C)$ et $\dcl_{L}(\widehat{A}) \subseteq \dcl_L(C)$, tandis que l'inclusion inverse suit de la définissabilité des $f_{n,i}$. Le résultat désiré est obtenu en invoquant le Lemme 3.13.
+\end{proof}
+
+\Lem Soient $a,b,c \in M$, $p_1 = \tp_{L_P}(a /bc)$, $p_2 = \tp_{L_P}(b/c)$. Si $p_1,p_2$ sont stationnaires, alors $p_3 = \tp_{L_P} (a/c)$ est stationnaire.
+\begin{proof}
+ Par stabilité de $T_P$ et par hypothèse, il existe des bons schémas de définition $dp_1$ sur $bc$ et $dp_2$ sur $c$. Nous voulons trouver une bonne définition pour $p_3$, c'est-à-dire une qui définit un type global, cela impliquerait la stationnarité par le Lemme 1.14. Soit $\varphi(x,y)$ une $L_P$-formule et soit $m \in M$ tel que $M \models \varphi(a,m)$. Il existe une formule $dp_1 (\varphi) (y,z,w)$ telle que $M \models dp_1 (\varphi) (m,b,c)$. De plus, il existe alors une formule $dp_2(dp_1(\varphi ))(y , w)$ telle que $M \models dp_2(dp_1 (\varphi )) (m , c)$. Le résultat suit.
+\end{proof}
+
+\noindent \emph{\textbf{Remarque:}  $T_P$ élimine les imaginaires finis. }
+\begin{proof} Soit $A= \{a_1, \dots, a_k \} \subseteq M^n$, où $a_i = (a_{i,1},\dots,a_{i,n})$. Considérons le polynôme suivant
+$$p(X,Y_0,\dots,Y_{n-1}) = \prod_{i=1}^k \left(X - \sum_{j =1}^n a_{i,j}Y_j \right),$$
+Si $\sigma$ est un $L_P$-automorphisme, alors comme c'est en particulier un $L$-isomorphisme, nous avons que $\sigma p(X,Y_0,\dots,Y_{n-1}) = \prod_{i=1}^k \left(X - \sum_{j =1}^n \sigma(a_{i,j})Y_j \right)$. En notant que $M[X,Y_0,\dots,Y_{n-1}]$ est un anneau factoriel, nous déduisons $\sigma p = p$ si et seulement si $\sigma A = A$. Le tuple consistant en les coefficients de $p$ est un paramètre canonique pour $A$. \pagebreak
+\end{proof}
+
+\Lem Soit $M_0$ une sous-structure élémentaire de $(M,P)$, et soit $a \in M$ tel que $a = \widehat{a}$. Définissons $d = \Cb ( \tp_{L}(a/\acl_{L}(M_0  P))$, $e' = \Cb (\tp_{L_P}(d/M_0))$, et \linebreak $e = \Cb(\tp_{L_P}(a/M_0))$. Alors $e'$ et $e$ sont $L_P$-interdéfinissables. 
+
+\begin{proof} Notons que par définition de $e,e'$ et parce que $M_0 \preceq M$, $\tp_{L_P}(a/e)$ et $\tp_{L_P}(d/e')$ sont stationnaires. \\
+
+\noindent \textbf{Affirmation I: }
+\begin{enumerate}[(i)]
+\item $a \forkindep^{L_P}_{d} M_0P.$
+\item $d \in \acl_{L_P}(aM_0).$
+\end{enumerate}
+(i): Par le Lemme 3.12, il suffit de prouver $\widehat{ad} \forkindep^L_{ \widehat{d}} \widehat{M_0P}$. Remarquons que puisque $(M_0P)^c\subseteq P$, nous avons $M_0P = \widehat{M_0P}$, puis par définition de $d$, $a \forkindep^L_{d} M_0P$ et puisque $d^c \in P$, la monotonie donne $a\widehat{d} \forkindep^L_{\widehat{d}} \widehat{M_0P}$. Il suffit maintenant de prouver $(ad)^c = d^c$, ce qui impliquerait $\widehat{ad} = a\widehat{d}$. Par définition de $d$, $\langle ad \rangle$ est linéairement disjoint (l.d.) de $\acl_L(M_0P)$ sur $\langle d \rangle$, donc $\langle ad \rangle$ et $P(d)$ sont l.d. sur $\langle d \rangle$. Puisque $\langle d \rangle$ est l.d de $P$ sur $\langle d^c \rangle$, il s'ensuit que $\langle ad \rangle$ et $P$ sont l.d sur $\langle d^c \rangle$, donc $(ad)^c = d^c$. \newline 
+\noindent (ii): Puisque $aM_0 \forkindep^L_{(aM_0)^c} P$, alors $a \forkindep^L_{M_0(aM_0)^c} M_0P$. Par le Fait 1.8 \textit{(iii)} et la Remarque 3.7, il s'ensuit que $$d \in \acl_L(M_0(aM_0)^c) \subseteq \acl_{L_P}(M_0(aM_0)^c) \subseteq \acl_{L_P}(aM_0). _\blacksquare$$
+
+
+\noindent\textbf{Affirmation II: }$d \in \dcl_{L_P}(a,e).$ \newline
+Soit $\sigma$ un $L_P$-automorphisme qui fixe $a,e$, et soit $M_0' = \sigma(M_0)$. Choisissons une réalisation $M_0''$ de $\tp_{
+L_P}(M_0/a,e)$ indépendamment de $M_0 \cup M_0'$ sur $a,e$. En utilisant $a \forkindep^{L_P}_e M_0$ et $e \in M_0\cap M_0' \cap M_0'',$ nous obtenons les relations suivantes
+$$a \forkindep^{L_P}_{M_0} M_0M_0'' , \  a \forkindep^{L_P}_{M_0''} M_0M_0'' , \ a \forkindep^{L_P}_{M_0'} M_0'M_0'', \  a \forkindep^{L_P}_{M_0''} M_0'M_0''.$$
+En appliquant le Lemme 3.12 on obtient
+$$a \forkindep^L_{PM_0} PM_0M_0'' , \  a \forkindep^L_{PM_0''} PM_0M_0'' , \ a \forkindep^L_{PM_0''} PM_0'M_0'', \  a \forkindep^L_{PM_0'} PM_0'M_0''.$$
+Puisque $\tp_L(a/\acl_L(M_0P))$ est stationnaire, cela se traduit en termes de bases canoniques par $$ d = \Cb ( \tp_L(a /\acl_L(M_0P))) = \Cb ( \tp_L(a /\acl_L(M_0''P))) = \Cb ( \tp_L(a / \acl_L(M_0'P))),$$ donc $\sigma(d) =d$, donc l'affirmation est prouvée.  $_\blacksquare$
+
+\noindent Par définition de $e$, $a \forkindep^{L_P}_e M_0$. Comme $\tp_{L_P}(a/e)$ est stationnaire, $e \in M_0$, et $d \in \dcl_{L_P}(a,e)$, nous concluons que $\tp_{L_P}(d/e)$ est stationnaire par le Lemme 1.15. Par conséquent, $e' \in \dcl_{L_P}(e)$.\\
+\noindent \textbf{Affirmation III: } $a \forkindep^{L_P}_{e'} M_0$. Par conséquent, $e \in \acl_{L_P}(e')$. \\
+\noindent Par l'Affirmation I, 
+\begin{align*}
+a \forkindep^{L_P}_d M_0P &\Rightarrow a \forkindep^{L_P}_d M_0d \\
+& \Rightarrow a \forkindep^{L_P}_{de'} M_0 \quad \text{ car $e' \in \dcl_{L_P}(M_0) = M_0$.}
+\end{align*}
+Par définition de $e'$ nous avons $de' \forkindep^{L_P}_{e'} M_0$. En appliquant la transitivité on obtient l'affirmation. $_\blacksquare$
+
+\noindent Pour prouver $e \in \dcl_{L_P}(e')$, nous montrerons la stationnarité de $\tp_{L_P}(a/e')$ et appliquerons le Fait 1.8 \textit{(iv)}. Par définition de $e'$, $\tp_{L_P}(d/e')$ est stationnaire, puis par le Lemme 3.18, il suffirait de prouver que $\tp_{L_P}(a/de')$ est stationnaire. Cependant, l'Affirmation I implique $a \forkindep^{L_P}_d e'$, donc il suffit de prouver que $p = \tp_{L_P}(a/d)$ est stationnaire. Soit $N$ une $L_P$-sous-structure élémentaire de $M$ contenant $d$, et supposons que $p \subseteq p_1,p_2$ sont des extensions non bifurquantes de $p$ à $N$. Soient $a_1,a_2$ des réalisations de $p_1,p_2$ respectivement. Par le Lemme 3.12, $a_i \forkindep^L_{dP} NP$. Puisque $\tp_{L_P}(a_i/d)= \tp_{L_P}(a/d)$ pour $i=1,2$, et $a \forkindep^{L}_d  dP$ (par définition de $d$ et monotonie), nous obtenons que pour $i=1,2$, $\ a_i \forkindep^L_d NP$. Cela implique à son tour $Na_i \forkindep^L_N P$, puisque $d \in N$.
+Puisque $N=\widehat{N}$, par la Remarque 3.11 \textit{(ii)}, $N \forkindep^L_{P \cap N} P$. En appliquant la transitivité on obtient $N a_i \forkindep^L_{N\cap P} P$, donc $N(a_i)$ et $NP$ sont linéairement disjoints sur $N$. Cela implique $\widehat{N(a_i)} = N(a_i)$. Puisque $\tp_L(a/d)$ est stationnaire, $\tp_L(a_1 N) = \tp_L(a_2N)$. Nous pouvons alors appliquer le Lemme 3.8 pour obtenir que $\tp_{L_P}(a_1 N) = \tp_{L_P}(a_2N)$.
+\end{proof}
+
+\Lem Soit $a \in M$, $A \subseteq M$. Si $A = \widehat{A}$ et $\tp_{L_P}(a/A)$ est stationnaire, alors $\tp_{L}(a/A)$ est stationnaire.
+\begin{proof}
+Supposons par contradiction que $\tp_{L}(a/A)$ n'est pas stationnaire et soit $k = \langle A \rangle$. L'extension $k(a)|k$ n'est pas primaire: il existe un certain $\alpha \in k(a)$ tel que $\alpha \in \acl_L(k) \setminus \dcl_L(k)$. Notons aussi que $\widehat{k} = k$. Par le Corollaire 3.14, $\alpha \in \acl_{L_P}(k) \setminus \dcl_{L_P}(k)$, contredisant la stationnarité de $\tp_L(a/A)$.
+\end{proof}
+
+
+\Lem Supposons $d \in M$ tel que $d = \widehat{d}$, et soit $e \in \dcl^{\eq}_{L_P}(d)$ un imaginaire tel que $\tp_{L_P}(d/e)$ est stationnaire. Soit $d' \models \tp_{L_P}(d/e)$ avec $d \forkindep^{L_P}_e d'$. Soit $B_1' = \dcl^{\eq}_{L_P}(e)\cap M$ et $B_1=\acl^{\eq}_{L_P}(e)\cap M$. Alors $\langle d \rangle$ et $\langle d' \rangle$ sont linéairement disjoints sur $B_1'$, en particulier $d \forkindep^L_{B_1}d'$. 
+\begin{proof} Nous notons $p(x) = \tp_{L_P}(d/e)$, \\
+\noindent \textbf{Affirmation: } Soit $d'' \models p|\{d,d'\} $, alors $d \forkindep^L_{d'} d''  d'$ et $d \forkindep^L_{d''} d'' d'.$ \\
+Par définition de $d''$, nous avons $d \forkindep^{L_P}_{d'} d''d'$, et par hypothèse $d \forkindep^{L_P}_e d'$. De plus, $e \in \dcl_{L_P}(d'') \cap \dcl_{L_P}(d')$, donc les deux relations $d\forkindep^{L_P}_{d''} d', \quad d\forkindep^{L_P}_{d'} d''$ sont vraies. À partir de la première relation, nous voyons que $dd'' \forkindep^{L_P}_{d''} d'd''$, et par le Lemme 3.11, $\widehat{dd''} \forkindep^{L}_{\widehat{d''}} \widehat{d'd''}$. Puisque $d,d'$ et $d''$ sont indépendants sur $e$, et e est définissable sur
+chacun de $d,d',d''$, la stationnarité de $\tp_{L_P}(d/e)$ implique celle de $\tp_{L_P}(d/d''), \tp_{L_P}(d/d')$. Il s'ensuit par 3.20 que $\tp_L(d/d''), \tp_L(d/d')$ sont stationnaires. Alors, comme $\widehat{d''} = d''$, nous obtenons $d \forkindep^L_{d''} d'' d'$, donc, le corps de définition du lieu de $d$ sur $\langle d'' d' \rangle$ est contenu dans $\langle d'' \rangle$. L'autre partie de l'affirmation s'obtient de manière similaire, en utilisant que $\widehat{d'} = d'$ au lieu de cela, ce qui donne que le corps de définition du lieu de $d$ sur $\langle d'' d' \rangle$ est contenu dans $\langle d' \rangle$. $_\blacksquare$ \newline
+Nous obtenons donc $$\Cb(\tp_L(d/d'))=\Cb(\tp_L(d/d''))\subset \dcl_L(d')\cap \dcl_L(d'').$$
+Mais $d'$ et $d''$ sont indépendants sur $e$, $\dcl_{L_P}(d')=\dcl_L(d')$, et
+$\dcl_{L_P}(d'')=\dcl_L(d'')$, donc $\Cb(\tp_L(d/d')) \subseteq \dcl_{L_P}^{eq}(e)\cap M= B_1'.$
+\end{proof}
+
+\Lem Soit $e \in (M,P)^{\eq}$, et $B_0 = \acl^{\eq}_{L_P}(e) \cap P$. Alors pour tout $c \in P$, $\tp_{L_P}(c /B_0 e)$ est finiment satisfaisable dans $B_0$.
+\begin{proof} Soit $a \in M$ tel que $e = f(a)$ pour une certaine fonction définissable. Puisque $\widehat{aP} = \widehat{a}P$, par le Lemme 3.8 $\tp_{L_P}(a/a^c) \vdash \tp_{L_P}(a/P)$. Nous prouverons que $\tp_{L_P}(a/P)$ est stationnaire, cela impliquerait par le Lemme 1.15 que $\tp_{L_P}(e/P)$ est stationnaire. Supposons que non, donc nous pouvons trouver $b_1,\dots,b_n \in M$ et des formules $\varphi(x,b_i)$, qui distinguent entre les extensions non bifurquantes de $\tp_{L_P}(a/a^c)$ à $M$. En d'autres termes, elles définissent une partition de l'ensemble des réalisations de $\tp_{L_P}(a/a^c)$.
+Par saturation de $M$ sur $P$, nous pouvons supposer $$a\forkindep^{L_P}_{a^c}b_1,\dots,b_n,P.$$ Si $a'$ est une autre réalisation de $\tp_{L_P}(a/a^c)$, telle que $a' \forkindep^{L_P}_{a^c} b_1,\dots,b_n,P$, alors il existe un automorphisme de $M$ qui fixe $\acl_{L_P}(P,b_1,\dots,b_n)$ et envoie $a$ sur $a'$. Cela implique $\tp_{L_P}(a'/P) = \tp_{L_P}(a/P)$.
+
+\noindent Définissons $e^c = \Cb(\tp_{L_P}(e/P))$. Notons que $$e^c \in \dcl^{\eq}_{L_P}(e) \cap \dcl^{\eq}_{L_P}(P)= \dcl^{\eq}_{L_P}(e)  \cap P.$$ 
+Par définition de $e^c$ nous avons $e \forkindep^{L_P}_{\acl_L(e^c)} P$, et la preuve du Lemme 3.13 montre que $\acl_L(e^c)=B_0$. Donc, $\tp_{L_P}(e/P)$ est stationnaire et est une extension non bifurquante de $\tp_{L_P}(e/B_0)$. Cela implique la définissabilité de $\tp_{L_P}(e/P)$ sur $B_0$. Ainsi, pour toute $L^{\eq}_P$-formule $\psi(x,y)$ avec des paramètres dans $B_0$, il existe une formule $d\psi(y)$ avec des paramètres dans $B_0$ telle que pour tout $c \in P$, $M \models \psi(e,c)$ ssi $M \models d\psi(c)$. Par le Lemme 3.3, nous pouvons supposer que $d\psi(y)$ est une $L$-formule. Puisque nous avons aussi que $B_0 \prec P$ au sens de $L$, nous avons que pour tout $c \in P$, si $P\models \psi(e,c)$ alors $P\models d\psi(c)$, ce qui implique qu'il existe $b \in B_0$ tel que $P\models d\psi(b)$, et donc $M \models \psi(e,b)$.
+\end{proof}
+
+\section{Élimination Faible des Imaginaires}
+\emph{Tout au long de cette section nous maintiendrons notre notation et nos conventions de la Section 3. Nous posons $T= ACF_p$, et $T_P$ la théorie des belles paires de modèles de $T$. Nous avons que $(M,P) \models T_P$ est saturé.}
+
+\Def Soit $G$ un groupe algébrique et $X$ une variété algébrique tous deux définis sur $k \subseteq M$. Une action $k$-rationnelle est une action de groupe $\alpha:G \times X \to X$ telle que pour tout $g \in G$, l'application $\alpha(g, \cdot):X \to X$ est une application $k$-rationnelle.
+
+\Def Une action de groupe définissable est un triplet $((G, \cdot), X , \alpha)$, où $(G,\cdot)$ est un groupe définissable, $X\subseteq M$ un ensemble définissable et $\alpha: G \times X \to X$ une action de groupe dont le graphe est définissable. Si l'action est \textit{transitive} sur $X$, c'est-à-dire, pour tous $a,b \in X$ il existe $g \in G$ tel que $\alpha(g,a) = b$, le triplet est appelé un \textit{espace homogène définissable}. De plus, si l'action est \textit{strictement transitive (ou régulière)}, c'est-à-dire, $\alpha(g,x) = x$ ssi $g = e$, il sera appelé un \textit{espace homogène principal définissable} (ou EHP). \\
+
+
+\noindent {Nous abuserons de la notation et noterons $\alpha(g,a)$ comme $g \cdot a$.} Dans notre contexte, comme $T=ACF_p$, nous obtenons le fait suivant du Théorème 7.4.14 de [7].
+\Fact Si $G \subseteq M^n$ est un groupe $L$-définissable, alors $G$ est définissablement isomorphe à un groupe algébrique. \\
+
+
+
+
+\Prop Soit $e \in (M,P)^{\eq}$. Alors il existe: un groupe algébrique connexe $G$, une variété irréductible $V$ sur $P$, et une action rationnelle de $G$ sur $V$, définissable sur $P$, tels que
+\begin{enumerate}[(i)]
+\item L'action de $G(P)$ sur $V(M)$ est génériquement libre: si $a \in V(M)$ est un point générique de $V$ sur $P$, et $g \in G(P)$ n'est pas l'identité, alors $g \cdot a \neq a$.
+\item Pour un certain $a  \in V(M)$ générique sur $P$, si $r$ est un paramètre canonique pour l'orbite $X = \{ g\cdot a \ , \ g \in G(P) \}$, alors $e \in \dcl_{L_P}(r)$ et $r \in \acl_{L_P}(e)$.
+\end{enumerate}
+
+\noindent \emph{La preuve de la Proposition 4.4 nécessitera quelques résultats.}
+
+\Lem Soit $e \in (M,P)^{\eq}$. Il existe $d' \in M$ tel que $\tp_{L_P}(d' / e)$ est stationnaire et $P$-interne, et de plus $e \in \dcl_{L_P}^{\eq}(d')$.
+
+\begin{proof}
+Soit $a \in M$ tel que $a=\hat{a}$ et $e = f(a)$ pour une certaine fonction $\varnothing$-interprétable. Par le Lemme 1.10 nous pouvons supposer que $\tp_{L_P}(a/e)$ est stationnaire, donc $e = \Cb(\tp_{L_P}(a/{M_0}))$, où ${M_0}$ est une $L_P$-sous-structure élémentaire quelconque de $M$ telle que $e \in {M_0}^{\eq}$ et $a \forkindep^{L_P}_e M_0$. Soit $d = \Cb(\tp_L(a/\acl_L({M_0}P))$. Par le Lemme 3.19, $e=\Cb(\tp_{L_P}(d/M_0))$, donc $d \forkindep^{L_P}_{e} {M_0}$. Puisque $M_0 \preceq M$, $\tp_{L_P}(d/M_0)$ est stationnaire, $\tp_{L_P}(d/e)$ est stationnaire et presque $P$-interne. En remplaçant $d$ par un nombre fini de réalisations indépendantes de $\tp_{L_P}(d/e)$, par le Fait 1.8 \textit{(v)}, nous pouvons supposer sans perte de généralité que $e \in \dcl^{\eq} (d)$, ou que $e = g(d)$ pour une certaine fonction définissable $g$. Par le Lemme 1.17, il existe $d' \in \dcl_{L_P}(d)$, un code pour un ensemble fini de réalisations de $\tp_{L_P}(d/e)$, tel que $d \in \acl_{L_P}(d')$ et $\tp_{L_P}(d'/e)$ est stationnaire et $P$-interne. Alors comme $d \in \acl_{L_P}^{\eq}(d')$, il existe une formule $\varphi(x,d')$ isolant $\tp_{L_P}(d/d')$; donc $M \models \forall x \varphi(x,d') \rightarrow g(x) = e$, donc $e \in \dcl^{\eq}(d')$.
+\end{proof}
+
+\Lem Il existe un tuple $d \in M$, une fonction $L_P$-définissable $f$ (sur $\varnothing$), une $L_P(e)$-formule $\psi(x)$, et une fonction $L_P(e)$-définissable $h$ tels que
+\begin{enumerate}[(i)]
+\item $f(d) = e.$
+\item $\psi(x) \in \tp_{L_P}(d/e).$
+\item $M \models \forall x, x' (\psi(x) \land \psi(x') \rightarrow \exists c ( P(c) \land h(x,c) = x')$.
+\end{enumerate}
+\begin{proof}
+Soit $d'$ comme dans le Lemme 4.5. Alors $p = \tp_{L_P}(d'/e)$ est stationnaire, $P$-interne, et $e = \Cb(p)$. Par le Lemme 1.18, il existe un tuple $d$ consistant en un nombre fini de réalisations de $p$, et une fonction $g$ $e$-définissable telle que pour toute réalisation $d''$ de $p$, il existe un tuple $c_{d''} \in P$ tel que $d'' = g(d,c_{d''})$. Clairement $e \in \dcl_{L_P}^{\eq}(d)$, donc nous pouvons trouver une fonction $f$ $L_P$-définissable telle que \textit{(i)} est satisfait. Si $d_1,d_2$ réalisent $\tp_{L_P}(d/e)$, alors il existe une fonction $h$ $e$-définissable et un tuple $c \in P$ tels que $d_1 = h(d_2,c)$. En appliquant la compacité on obtient une $L_P$-formule $\psi \in \tp_{L_P}(d/e)$ telle que pour tous deux $d_1,d_2$ satisfaisant $\psi$, il existe $c\in P$ tel que $h(d_1,c)=d_2$, ce qui prouve directement \textit{(ii)} et \textit{(iii)}. Notons que $\tp_{L_P}(d/e)$ reste $P$-interne.
+\end{proof}
+\pagebreak
+
+
+
+\Lem Dans le Lemme 4.6, $d$ peut être choisi tel que \textit{(i),(ii),(iii)} sont satisfaites, et $d \forkindep^{L_P}_e P$. 
+\begin{proof}
+Soit $\psi$ comme dans le Lemme 4.6. Soit $\chi(x,y)$ une $L_P(e)$-formule qui exprime la conjonction de $x^c = y$, $\psi(x)$ et $f(x) = e$. Considérons la $L_P(e)$-formule $\theta(y)$ donnée par $\exists x ( \chi(x,y))$. Puisque $M \models \theta(d^c)$, par le Lemme 3.22, il existe $d_0 \in \acl^{\eq}_{L_P}(e)\cap P$ tel que $M \models \theta(d_0)$. Par conséquent, il existe $d_1$ tel que $M \models \chi(d_1,d_0)$, donc $d_1 \forkindep^{L_P}_e P$. 
+\end{proof}
+\noindent \emph{\textbf{Notation: }Pour le reste de cette section, fixons $d$ comme dans le Lemme 4.7. Par la Remarque 3.7 $d^c \in \dcl_{L_P}(d)$, donc nous pouvons aussi supposer désormais que $d = \widehat{d}$, car toutes les propriétés des Lemmes 4.6, 4.7, et 4.8 restent vraies après avoir adjoint $d^c$ à $d$. Désormais, posons \begin{align*} 
+B&= \acl^{\eq}_{L_P}(e), \\ B_1 &= B\cap M, \\ B_0 &= B \cap P.
+\end{align*}}
+\Lem $\tp_{L_P}(d/B)$ est isolé.
+\begin{proof}
+Par stabilité de $Th(M^{\eq})$, il existe $M_1 \preceq M$, un modèle premier sur $Bd$ et $M_0 \preceq M_1$ un modèle premier sur $B$. \newline
+\noindent \textit{Affirmation: $B_0 =  M_0 \cap P =  M_1 \cap P$}: Il est clair que $B \subseteq M_0,M_1$, une inclusion suit. Réciproquement, si $a \in M_0 \cap P$, alors $\tp_{L_P}(a/B)$ est isolé, ce qui est une extension non bifurquante de $\tp_{L_P}(a/e)$, donc $\tp_{L_P}(a/e)$ est aussi isolé, et en appliquant le Lemme 3.22, il peut être réalisé par un certain $a' \in B_0$. En particulier, cela implique $a \in \acl_{L_P}(e)$. La preuve pour la seconde égalité est similaire, soit $a \in M_1 \cap P$, alors $\tp_{L_P}(a/Bd)$ est isolé. Rappelons que $d\forkindep^{L_P}_{e} P$, donc $\tp(a/Bd)$ ne bifurque pas sur $\tp_{L_P}(a/e)$, qui est alors isolé, et en appliquant le Lemme 3.22 on obtient le résultat. \newline
+\noindent Soit $\psi$ comme dans le Lemme 4.6, et choisissons $d' \in M_0$ tel que $M \models \psi(d')$. En appliquant le Lemme 4.6 \textit{(iii)} à l'intérieur du modèle $M_1$, il existe $c \in P \cap M_1 = B_0$ tel que $d \in \dcl_{L_P}(d',c) \subseteq M_0$, donc par définition d'un modèle premier, $\tp_{L_P}(d/B)$ est isolé. 
+\end{proof}
+
+\Lem Soit $X$ l'ensemble des réalisations de $\tp_{L_P}(d/B)$. Il existe: un groupe algébrique connexe $G$ défini sur $B_0$ et une action régulière $L_P(e)$-définissable de $G(P)$ sur $X$. De plus, si $r$ est un paramètre canonique pour l'EHP $(G(P),X)$, alors $e \in \dcl_{L_P}(r)$ et $r \in \acl_{L_P}(e)$.
+\begin{proof}
+Par le Lemme 4.8, $X$ est $L_P$-définissable sur $B$. Définissons $$C= \{c \in P ,\  \exists d'  ( d' \in X   \land h(d,c)=d') \},$$ qui est non vide par le Lemme 4.6 \textit{(iii)}, et $L(B_0)$-définissable par le Lemme 3.3. Considérons maintenant la relation d'équivalence $E$ dans $C$ définie par $M \models  E(c_1,c_2)$ si et seulement si $M \models h(d,c_1) = h(d,c_2)$. Dans $C/E$ nous pouvons définir une fonction $L_P(e)$-interprétable $h'(d,c/E)) = h(d,c)$. Par les Lemmes 4.7 et 4.8 $d \forkindep^{L_P}_B P$, donc tous les éléments de $X$ ont le même $L_P$-type sur $BP$. Puisque $E$ est contenu dans une puissance quelconque de $P$, il est $L(B_0)$-définissable, donc il ne dépend pas du choix de $d$. Cela implique que pour tous $c_1,c_2 \in C$ la valeur de $h(h(d,c_1),c_2)$ est définie, et en prenant les classes modulo $E$, il existe un unique $c_3/E$ tel que $h'(h'(d,c_1/E),c_2/E) = h'(d,c_3/E)$, nous définissons une opération binaire sur $C/E$ comme $(c_1/E) \cdot (c_2/E) = c_3/E$. Une fois encore par le Lemme 3.3, cette opération est $L(B_0)$-définissable. De plus, par la Remarque 3.4, nous pouvons supposer sans perte de généralité que $C/E$ contient des tuples réels. \newline
+\noindent \textbf{Affirmation:} $(C/E,\cdot)$ est un groupe $B_0$-définissable.\newline
+\noindent Soient $c_1,c_2,c_3 \in C/E$. Pour vérifier l'associativité, remarquons que
+$$h'(d,(c_1c_2)c_3) = h' ( h' (d,c_1c_2),c_3) = h'(h'(h'(d,c_1),c_2),c_3),$$
+de plus, puisque $h'(d,c_2c_3)$ $= h'(h'(d,c_2),c_3))$ et $\tp_{L_P}(h'(d,c_1)/BP)$ $= \tp_{L_P}(d/BP)$, nous obtenons
+$$h'(d,c_1(c_2c_3)) = h'(h'(d,c_1),c_2c_3) = h'(h'(h'(d,c_1),c_2),c_3)).$$
+Pour vérifier l'existence d'un élément neutre, par le Lemme 4.6 \textit{(iii)}, il existe $c' \in P$ tel que $h(d,c')=d$. Alors, pour tout $d' \in X$, $h'(d',c') = d'$, en particulier
+$$h'(d,c_1c') = h'(h'(d,c_1),c') = h'(d,c_1) \Rightarrow c_1c' = c_1.$$
+Pour vérifier l'existence d'inverses, remarquons que puisque $h(d,c_1) \in X$, il existe un $L_P$-automorphisme $\sigma$ fixant $BP$ point par point tel que $h(d,c_1) = \sigma(d)$, ce qui implique \linebreak $h'(\sigma^{-1}(d), c_1) = d$. Par le Lemme 4.6 \textit{(iii)}, il existe un unique $c_1'$ tel que $h'(d,c_1') = \sigma^{-1}(d)$, donc
+\begin{align*}
+h'(d,c_1'c_1) = h'(h'(d,c_1'),c_1) = h'(\sigma^{-1}(d), c_1) = d &= h'(d,c'), \\
+h'(d,c_1c_1') = h'(h'(d,c_1),c_1') = h'(\sigma(d), c_1') = d &= h'(d,c'),
+\end{align*}
+donc, $c_1c_1' =c_1'c_1= c'$. $_\blacksquare$ \newline
+\noindent Par l'affirmation précédente et par le Fait 4.3, $C/E$ est $B_0$-définissablement isomorphe à un certain groupe algébrique $G$ sur $B_0$. Nous pouvons alors induire une action $L(B_0)$-définissable de $G(P)$ sur $X$ en utilisant l'application $h'$: si $F:G \to C/E$ est un isomorphisme, alors pour $(g,d) \in G\times X$, définissons $g \cdot d = h'(d,F(g)).$ Par le Lemme 4.6 \textit{(iii)} et par définition de $E$, cette action est régulière. Comme $X$ est l'ensemble des réalisations d'un type stationnaire, $G(P)$ doit être connexe (en tant que groupe $L_P$-définissable), donc connexe en tant que groupe algébrique. Clairement, l'EHP $(G(P),X)$ est $L_P$-définissable sur $B$, cela implique que si $r$ est un paramètre canonique pour $(G(P),X)$, alors $r \in \acl_{L_P}(e)$. De plus, si $\sigma$ est un $L_P$-automorphisme fixant $r$, alors il permute les réalisations de $\tp_{L_P}(d/B)$, et par stationnarité de $\tp_{L_P}(d/e)$ nous avons $e = \Cb(\tp_{L_P}(d/B))$, donc $\sigma(e) = e$, donc $e \in \dcl_{L_P}(r)$, complétant la preuve.
+\end{proof}
+
+\noindent \emph{L'ensemble $X$ du Lemme 4.9 sera identifié avec une orbite générique de l'action de $G(P)$ sur une variété quelconque $V(M)$. Nous énonçons d'abord la Proposition 2.2 de [4].}
+
+\Lem Soit $G$ un groupe définissable connexe avec une action générique sur l'ensemble des réalisations $X_1$ d'un $L$-type stationnaire $q$, c'est-à-dire, pour tout $g \in G$ générique et pour $d$ réalisant $q|g$, $g \cdot d$ est défini et réalise $q$, et pour tous $g_1,g_2,d$ indépendants, $g_1\cdot(g_2\cdot d) = (g_1g_2)\cdot d$ quand l'action est définie. Il existe alors un ensemble type-définissable $Y$, un plongement définissable $X_1 \subseteq Y$, et une action définissable de $G$ sur $Y$, étendant l'action générique de $G$ sur $X_1$. De plus, pour tout $y \in Y$ il existe $g \in G$ et $d \models q$ tels que $y= g \cdot d$.
+\begin{proof}
+Considérons l'ensemble des paires $(g,d)$ avec $g \in G$, $d \models q$. Définissons une relation d'équivalence sur ces paires par: $(g,d) \sim (g',d') $ si pour tout $h \in G$ générique tel que $(hg)\cdot d = (hg')\cdot d'$. Soit $Y$ l'ensemble des classes, ses éléments sont notés $[g,d]$. Si $(hg_2) \cdot d = (hg_2')\cdot d'$ est vraie pour $h$ générique, alors, puisque $hg_1$ est aussi générique, il est aussi vrai que $(hg_1g_2) \cdot d = (hg_1g_2')\cdot d'$, donc nous pouvons définir une action de $G$ sur $Y$ par $g_1 \cdot [g_2,d] = [g_1g_2,d]$, et identifier chaque $d\models q$ avec $[1_G,d]$. Pour vérifier la dernière affirmation, soit $[g,d] \in Y$, et soit $h$ un générique de $G$, indépendant de $d$, alors $h[g,d] = [hg,d] = [1,hg \cdot d]$, donc $[g,d]=h^{-1}[1,hg\cdot d]$.
+\end{proof}
+
+\Lem Pour $X$ comme dans le Lemme 4.9 il existe une variété irréductible $Y$ définie sur $B_1$, et une action rationnelle transitive de $G$ sur $Y$, définie sur $B_1$, telle que $X \subseteq Y$, $d$ est un point générique de $Y$ sur $B_1$, et l'action de $G$ sur $Y$ se restreint à l'action donnée de $G(P)$ sur $X$.
+\begin{proof}
+Rappelons que pour $g \in G(P)$, $d \in X$, $g \cdot d$ est $e$-définissable, cela signifie $g \cdot d \in \dcl_{L_P}(g,d,e)$. Puisque $e \in \dcl_{L_P}(d)$, alors $g \cdot d \in \dcl_{L_P}(g,d) = \dcl_{L}(\widehat{g,d})$ par le Lemme 3.13. Mais $\dcl_L(\widehat{g,d}) = \dcl_L(g,d)$ par le Lemme 3.9 \textit{(ii)}. Par conséquent, $g \cdot d \in \dcl_L(g,d)$. \newline
+\noindent{\textbf{Affirmation: }} $d \forkindep^L_{B_0} g$. \newline
+\noindent Si $e^c = \Cb(\tp_{L_P}(e/P))$, alors $e \forkindep^{L_P}_{e^c} P$, et par le Lemme 4.7, $d^c \forkindep^{L_P}_e P$. En appliquant la transitivité on obtient $d^c \forkindep^{L_P}_{e^c} P$, et puisque tout est dans $P$, nous pouvons restreindre notre langage pour obtenir $d^c \forkindep^{L}_{e^c} P$. Par la preuve du Lemme 3.13, $B_0 = \acl_{L}(e^c)$, donc $d^c \forkindep^{L}_{B_0} P$ et par définition de $d^c$ nous avons $d \forkindep^L_{d^c} P$. L'affirmation suit car $g \in P$. $_\blacksquare$ \newline 
+
+
+
+\noindent Maintenant, en travaillant dans $L$, puisque $e \in \dcl_{L_P}(d) = \dcl_L(\widehat{d})$, $B_1 \in \acl_L(d)$, donc l'affirmation précédente donne $dB_1 \forkindep_{B_0} g$. Alors, si $g$ est générique sur $B_0$, alors il est générique sur $d B_1$. 
+L'action est génériquement régulière et transitive: étant donnés
+$d_1,d_2 \in X$ indépendants, il existe un unique $g \in G(P)$ tel que $g\cdot d_1=d_2$. Donc, en travaillant dans $L_P$, $RM(G)=RM(X)$, et si $g\in G$, $d\in X$ sont indépendants sur $e$, alors
+parce que l'action est définie sur $e$, nous avons que $g \in \dcl_L(g\cdot
+d,d)$, de sorte que nous devons avoir $RM(g\cdot d,d /e)= 2 RM(G)$, ce qui implique $g \cdot d \forkindep^{L_P}_e d$. Par le Lemme 3.21, $g \cdot d \forkindep^{L}_{B_1} d$.
+
+
+\noindent Nous avons une action définissable de $G(P)$ sur l'ensemble $L_P$-définissable $X$, et
+l'action est donnée par une application $G \times X \to X$ qui est $L(B_1)$-définissable dans $T$.
+En passant à la clôture de Zariski, nous obtenons une action générique du groupe algébrique
+$G(M)$ sur l'ensemble $X_1$ des éléments génériques (sur $B$) de la clôture de Zariski
+de $X$. Par le Lemme 4.10, il existe un $Y\supseteq X_1$ type-définissable (au sens de $L$, et sur $B_1$) tel que $G$ agit sur $Y$ d'une manière qui se restreint à l'action générique de $G$ sur $X_1$. De plus, pour tout $y \in Y$ il existe $g \in G$ et $d \in X_1$ tel que $y = g\cdot d$, donc l'action de $G$ sur $Y$ est transitive, alors $Y$ a un unique type générique par connexité de $G$, et ce doit être en effet $\tp_L(d/B_1)$. Cela prouve que $d$ est un générique de $Y$ sur $B_1$. Nous affirmons que $Y$ est aussi définissable: Soit $\varphi(x,y)$ une certaine $L(B_1)$-formule définissant $x \in G \cdot y$, et soit $E$ la relation d'équivalence donnée par $yEy'$ ssi $M \models \forall x \varphi(x,y) \leftrightarrow \varphi(x,y')$, par transitivité, pour tout $y \in Y$ nous avons $[y]_E = Y$, maintenant par type-définissabilité de $Y$ sur $B_1$, $Y$ est fixé par tout $\sigma \in \Aut(M/B_1)$, donc l'imaginaire $[y]_E$ est aussi fixé, ce qui implique que $[y]_E$ est $B_1$-définissable, donc $Y$ est $B_1$-définissable. Puisque $X \subseteq X_1 \subseteq Y$, et l'action de $G$ sur $Y$ se restreint à l'action générique sur $X_1$, alors elle se restreint à l'action de $G$ sur $X$ qui a été définie dans le Lemme 4.9. Finalement, par le Fait 4.3, $(G,Y,\cdot)$ est $B_1$-définissablement isomorphe à $(G',Y',\cdot')$, où $G'$ est un groupe algébrique, $Y'$ une variété irréductible, et $\cdot'$ est une action $B_1$-rationnelle.
+\end{proof}
+\noindent\textbf{\emph{Preuve de la Proposition 4.4}}
+\begin{proof}
+Pour $e \in M^{\eq}$, $d,G,Y$ comme dans le Lemme 4.11, choisissons un $b \in B_1$ fini tel que $(G,Y,\cdot)$ est définissable sur $b$. Réécrivons $Y$ comme $Y_b$. Par le Lemme 4.7, $d \forkindep^{L_P}_e P$, ensemble avec $e \forkindep^{L_P}_{B_0} P$ implique que $bd \forkindep^{L_P}_{B_0} P$ (rappelons $b \in \acl_{L_P}(e)$). Puisque $e \forkindep^{L_P}_{e^c} P$, et $(bd)^c \forkindep^{L_P}_e P$, en appliquant la transitivité on obtient $(bd)^c \forkindep^{L_P}_{e^c} P$, et puisque tout est dans $P$, nous pouvons restreindre notre langage pour obtenir $(bd)^c \forkindep^{L}_{e^c} P$. Par la preuve du Lemme 3.13, $B_0 = \acl_{L}(e^c)$, donc $(bd)^c \forkindep^{L}_{B_0} P$ et par définition de $(bd)^c$ nous avons $bd \forkindep^L_{(bd)^c} P$, en appliquant la transitivité une fois de plus on obtient $bd \forkindep^{L_P}_{B_0} P.$ Soient $V,Z$ les lieux de $bd$ et $b$ sur $B_0$, respectivement, et considérons la projection $f:V \to Z$ envoyant $bd$ sur $b$, puis notons que $f^{-1}(b) = Y_b$. Alors par compacité, il existe un sous-ensemble de Zariski ouvert $U$ dans $Z$, aussi défini sur $B_0$, tel que $G$ agit rationnellement dans $f^{-1}(U)$ et cette action restreinte à $Y_b$ coïncide avec celle définie dans le Lemme 4.9. Cela prouve \textit{(i)}, car tout $a \in V$ générique a le même $L$-type sur $B_1$ que $b d$, et l'action dans le Lemme 4.9 est régulière par construction. Puisque $f^{-1}(U)$ est toujours une variété, en réduisant $V$ nous pouvons sans perte de généralité poser $V= f^{-1}(U)$, et par $bd \forkindep^{L}_{B_0} P$, nous concluons que $bd$ est un point générique de $V$ sur $P$, donc \textit{(ii)} suit en appliquant le Lemme 4.9.
+\end{proof}
+\noindent\emph{Nous énonçons notre résultat principal, qui suivra de la Proposition 4.4.}
+\Cor Il existe un ensemble de sortes $\mathcal S \subseteq L^{\eq}$, tel que $T_P$ a l'élimination faible des imaginaires dans le langage obtenu en ajoutant $\mathcal S$ à $L$.
+\begin{proof}
+Soient $G,V$ comme dans la Proposition 4.4, et soit $c \in P$ engendrant un corps sur lequel $(G,V,\cdot)$ sont définis. Il existe une variété $Z$ définie sur le corps premier telle qu'il existe des variétés $\mathcal G, \mathcal V$, avec des applications régulières surjectives vers $Z$, et pour chaque $b \in Z$, la fibre $\mathcal{G}_b$ est un groupe algébrique qui agit sur $\mathcal V_b$, et de plus $\mathcal G_c = G$ et $\mathcal V_c = V$. Pour chaque $e \in M^{\eq}$, nous définissons une sorte $S_{(\mathcal G,\mathcal V, Z,e)}$ de la manière suivante: soit $W_e = \cup \{ \mathcal V_b , b \in Z(P)\}$, et définissons une relation d'équivalence sur $W$ comme $w_1 \sim w_2$ ssi pour un certain $b \in Z(P)$, $w_1,w_2 \in \mathcal V_b$ et il existe $g \in \mathcal G_b(P)$ tel que $w_1 = g \cdot w_2$. Nous interprétons les éléments de $S_{(\mathcal G,\mathcal V, Z,e)}$ comme les classes de $W$ modulo $\sim$, qui sont à leur tour des représentants de chaque orbite de l'action fibre par fibre de $\mathcal G$ sur $\mathcal V$. Par la Proposition 4.4, pour tout $e \in M^{eq}$, il existe $r \in S_{(\mathcal G,\mathcal V, Z,e)}$, tel que $e \in \dcl_{L_P}(r)$ et $r \in \acl_{L_P}(e)$.
+\end{proof} \newpage
+\begin{thebibliography}{3}
+
+\bibitem{beny1} 
+I. Ben-Yaacov, A. Pillay , E. Vassiliev ,  
+\emph{Lovely pairs of models, Annals of Pure and Applied Logic 122 (2003) 235-261.}
+
+
+\bibitem{buech} 
+S. Buechler  .
+\emph{Pseudoprojective strongly minimal sets are locally projective, Journal of Symbolic Logic 56 (1991) 1184-1194.}
+
+
+\bibitem{fran} 
+F. Delon  .
+\emph{Élimination des quantificateurs dans les paires de corps algébriquement clos. Confluentes Mathematici, Vol. 4, No. 2 (2012) 1250003 , 1-11.}
+
+\bibitem{Hrush}
+E. Hrushovski.
+\emph{Locally modular regular types, in J.T Baldwin (Ed.), Classification Theory, Lecture Notes in Mathematics, vol. 1292, Springer, 1987}.
+
+\bibitem{Keisler}
+H.J. Keisler.
+\emph{Complete theories of algebraically closed fields with distinguished subfields, Michigan Mathematics Journal. 11 (1964) 71-81}.
+
+\bibitem{Lang}
+S. Lang.
+\emph{ Introduction to Algebraic Geometry. Interscience (1958), 62.}
+
+
+\bibitem{mark}
+D. Marker,
+\emph{Introduction to Model Theory, Springer (2002), 273-277.}
+
+\bibitem{gst} 
+A. Pillay. 
+\emph{Geometric Stability Theory, Oxford University Press (1996).}
+
+
+\bibitem{anan} 
+A. Pillay. 
+\emph{Imaginaries in pairs of algebraically closed fields. Annals of Pure and Applied Logic 146 (2007) 13-20.}
+ 
+
+\bibitem{anan2} 
+A. Pillay, E. Vassiliev,
+\emph{Imaginaries in beautiful pairs. Illinois Journal of Mathematics 48 (2004) 759-768.}
+
+\bibitem{poiz}
+B. Poizat.
+\emph{Stable Groups, American Mathematical Society, Providence, RI (2001)}
+
+\bibitem{poz} 
+B. Poizat.
+\emph{Une théorie de Galois imaginaire, Journal of Symbolic Logic 48 (1983) 1151-1170}.
+
+\bibitem{TZ}
+K. Tent , M Ziegler.
+\emph{A course in Model Theory, Cambridge University Press (2012)}
+
+\end{thebibliography}
+
+\end{document}
