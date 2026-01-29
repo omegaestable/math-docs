@@ -1,6 +1,7 @@
 # Mathematical Research & Teaching Archive
 
-Welcome to my personal collection of mathematical documents, research, and teaching materials. This repository serves as a central archive for my academic work and explorations, ranging from undergraduate projects to master's thesis materials and miscellaneous notes accumulated throughout my teaching career.
+
+The contents of this repository are **multilanguage**, featuring documents in **LaTeX** and code implementations in **MATLAB**. Expect some Spanish and French too.
 
 ## 📂 Repository Structure
 
@@ -25,6 +26,8 @@ A collection of projects and papers from my undergraduate years, covering variou
     *   *Integrales no elementales* (Non-elementary Integrals)
     *   *Números Trascendentes* (Transcendental Numbers)
     *   *Zeros de L-funciones* (Zeros of L-functions)
+*   **Numerical Analysis**:
+    *   **MATLAB scripts**: Implementations of algorithms for Chaos theory, Differential Equations, Interpolation, and Matrix operations.
 
 ### 📚 [Books](Books/)
 Longer-form content, teaching notes, and book drafts.
