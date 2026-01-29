@@ -1,0 +1,335 @@
+\documentclass[a4paper, 11pt,spanish]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{spanish}
+\begin{document}
+
+\noindent
+\large\textbf{Universidad de Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize Escuela de Matemáticas \hfill Carné: B55272 \\
+MA-501 Análisis Numérico \hfill Prof. Juan Gabriel Calvo \\
+Tarea 2 \hfill \today
+
+\section*{Tarea 2}
+\subsection*{Problema 1.} (Evaluando polinomios) Considere un polinomio de grado $n$ escrito en la base usual
+$$ p(x) = \sum_{k=0}^{n}a_kx^k,$$
+y defina el vector de coeficientes
+$$\boldsymbol{a} = [a_0, \cdots, a_n]^T.$$
+Para un valor $x_0$ dado, deseamos evaluar $p(x_0)$. Para ello, consideramos $3$ métodos diferentes:
+\begin{itemize}
+\item[Alg. 1)] Mediante evaluación directa, calculamos cada término $a_kx^k$ y luego sumamos todos los términos.
+\item[Alg. 2)] Defina la sucesión $\{ b_k\}_{k=0}^n$ mediante la recursión hacia atraás
+\begin{align*}
+b_n &= a_n , \\
+b_k &= a_k + b_{k+1}x_0 \quad \text{para } k=n-1,n-2,\cdots,0.
+\end{align*}
+Entonces $p(x_0)=b_0$
+\item[Alg. 3)] Utilizar el comando \texttt{polyval()} de \texttt{MATLAB} para evaluar el polinomio.
+\end{itemize}
+
+\begin{enumerate}[(a)]
+\item Determine el número de operaciones (sumas y multiplicaciones) que se deben realizar en el Algoritmo $1$.
+Tenemos:
+\begin{align*}
+a_0 \quad  &\rightarrow \quad \text{$0$ operaciones.} \\ 
+a_1x \quad  &\rightarrow \quad \text{$1$ operación.} \\ 
+a_2x^2 \quad  &\rightarrow \quad \text{$2$ operaciones.} \\ 
+&\vdots \\
+a_nx^n \quad  &\rightarrow \quad \text{$n$ operaciones.} \\ 
+\end{align*}
+
+Entonces en total tenemos que efectuar $n(n+1)/2$ multiplicaciones. Al tomar en cuenta las $n$ sumas que hay que efectuar, se obtiene un total de $$\frac{n^2 + 3n}{2}$$
+operaciones.
+\item Determine el número de operaciones (sumas y multiplicaciones) que se deben realizar en el Algoritmo $2$.
+
+\justifying
+Observe que en cada iteración $b_k = a_k + b_{k+1}x_0$ se necesitan $2$ operaciones (salvo en la primera). Multiplicando por el número de iteraciones ($n$, pues de $0$ a $n-1$ hay $n$ números), se tiene que se necesitan $2n$ operaciones para calcular $b_0$.
+\item Para el Algoritmo $2$, demuestre que $p(x_0) = b_0$.
+
+Vamos a proceder por inducción sobre el grado de $p$. Para $n = 0$, la situación es trivial dado que si $p(x) = a_0$, la primera iteración $b_0 = a_0$ cumple que $p(x_0) = b_0$. Suponga la validez del resultado para polinomios de grado $n-1$ y sea $$p(x) = a_nx^n+a_{n-1}x^{n-1} + \cdots + a_0.$$
+Considere el polinomio $$q(x) = a_nx^{n-1} + a_{n-1}x^{n-2} + \dots + a_1.$$
+Aplicando la fórmula recursiva para $q(x)$
+\begin{align*}
+c_n &= a_n , \\
+c_k &= a_k + c_{k+1}x_0 \quad \text{para } k=n-1,n-2,\dots,1.
+\end{align*}
+Obtenemos por hipótesis de inducción que $c_1 = q(x_0)$.
+Ahora, tomando la recursión para $p(x)$,
+\begin{align*}
+b_n &= a_n , \\
+b_k &= a_k + b_{k+1}x_0 \quad \text{para } k=n-1,n-2,\dots,0.
+\end{align*}
+Vemos que $b_k = c_k$ para $k=1,\dots,n$, pues las recursiones coinciden. Falta ver qué sucede cuando $k=0$. Se tiene que 
+\begin{align*}
+b_0 &= a_0 + b_1x_0 \\
+&= a_0 + c_1x_0 \\
+&= a_0 + q(x_0)x_0 \\
+&= a_0 + x_0( a_nx_0^{n-1} + a_{n-1}x_0^{n-2} + \cdots + a_1)\\
+&= p(x_0).
+\end{align*}
+\item Compare el tiempo de ejecución de los Algoritmos $1$, $2$ y $3$ en \texttt{MATLAB}. Para ello, genere un vector con entradas aleatorias de una distribución uniforme en $(0,1)$ para los coeficientes mediante el comando $$\texttt{a=rand(n,1)}$$
+Utilice $n=10^8$, $x_0 = 0.1$ y compare los tiempos de ejecución.
+
+Usando \texttt{MATLAB}, al aplicar el algoritmo $1$ a un vector aleatorio de tamaño $10^8$, el cual genera un polinomio de grado $10^8 -1$, \textbf{se obtuvo un tiempo promedio de $\bf{11,6280274}$ segundos} (se efectuó la prueba $5$ veces).
+
+Para el caso del algoritmo 2, las operaciones tardaron \textbf{un promedio de $\bf{0,2776524}$ segundos} (en $5$ pruebas). Esto representa una enorme mejoría con respecto al algoritmo $1$, lo cual se puede deber a que el número de operaciones efectuadas es lineal con respecto a $n$, mientras que en el algoritmo $1$, es de orden cuadrático.
+
+Finalmente, para el algoritmo $3$, \textbf{tomó en promedio $\bf{1,2224204}$ segundos}( en $5$ pruebas igualmente). Pareciera que, en esta situación, el Algoritmo $2$ es el más rápido. Sin embargo, no se puede asumir esto en general, puesto que nuestros coeficientes son todos positivos y menores a $1$. Tal vez con otra naturaleza de coeficientes, se tengan resultados distintos.
+
+\textbf{Nota: } Al tener polinomios aleatorios, no se especifica el valor de $p(x_0)$, sin embargo, en el script adjunto se puede verificar que en efecto los valores coinciden para los $3$ algoritmos.
+\item Considere ahora $\texttt{a= ones(n,1)}$, $n=10^8$, $x_0 = 0,1$. ¿Cuál es el valor exacto de $p(x_0)$? Utilice el algoritmo $1$ y $2$ para obtener aproximaciones $\tilde{p}_1$ y $\tilde{p}_2$, respectivamente. ¿Cuántas cifras significativas son correctas para $\tilde{p}_1$ y $\tilde{p}_2$?
+
+Calculemos el valor exacto de $p(x_0)$.Tenemos 
+$$p(x) = \sum_{n=0}^{10^8-1} x^n.$$
+Entonces 
+$$p(0.1) = \sum_{n=0}^{10^8-1} \left(\frac{1}{10}\right)^n$$
+El cual se puede calcular usando la fórmula geométrica para obtener
+$$p(0,1) = \left( \frac{1-\left(\frac{1}{10}\right)^{10^8}}{1-\frac{1}{10}}\right) \\
+ = \frac{10^{10^8}-1}{9 \times 10^{10^8-1}}$$
+O más fácilmente podemos ver que
+\begin{align*}p(0,1) &= 1 + 0,1 +0,001 + \cdots + \underbrace{0,0\cdots01}_{\text{$10^{10^8}$ ceros}}\\ 
+&= \underbrace{1,1\cdots1}_{\text{$10^{10^8}$ unos}}
+\end{align*}
+El resultado del Algoritmo $1$ es $\tilde{p}_1 = 1.111111111111111$, por lo cual es exacto con $16$ cifras significativas. Mientras que el resultado de aplicar el Algoritmo $2$ es también $\tilde{p}_2 = 1.111111111111111$, el cual es exacto también con $16$ cifras significativas. Se concluye por lo tanto que ambos algoritmos tienen una alta exactitud. Por razones obvias, no es lógico esperar que \texttt{MATLAB} logre arrojar los $100$ millones de decimales que posee el valor exacto de $p(x_0)$, sin embargo las aproximaciones dadas por los algoritmos se acercan de manera decente.
+\end{enumerate}
+\subsection*{Problema 2.} Suponga ahora que realizamos un cambio de base y expresamos el polinomio en la base de los polinomios de Chebyshev,
+$$p(x) = \sum_{k=0}^{n}c_kT_k(x), \quad |x| \leq 1,$$
+Donde $T_k(x) = \cos(k \arccos x)$. En clase demostramos la relación de recurrencia
+$$T_{k+1}(x) = 2xT_k(x)-T_{k-1}(x)$$
+Deseamos calcular $p(x_0)$. Para ello, considere el siguiente algoritmo:
+\begin{itemize}
+\item[Alg 4)] Defina la sucesión $\{b_k(x_0)\}_{k=0}^{n+2}$ mediante la recurrencia hacia atrás
+\begin{align*}
+b_{n+2}(x_0)&=b_{n+1}(x_0) = 0, \\
+b_k(x_0)&=c_k + 2x_0b_{k+1}(x_0)-b_{k+2}(x_0), \label{eq:estrella} \tag{$\star$} \quad \text{para $k=n,n-1,\dots,1$}
+\end{align*}
+Se tiene entonces que el valor deseado es
+$$p(x_0)= T_0(x_0)c_0 + T_1(x_0)b_1(x_0)-T_0(x_0)b_2(x_0).$$
+\end{itemize}
+\begin{enumerate}[a)]
+\item Determine el número de operaciones que se deben realizar en el Algoritmo $4$.
+
+Tenemos en cada iteración $4$ operaciones. Al tener exactamente $n$ iteraciones, se tendrá un total de $4n$ operaciones.
+
+\item Verifique que la fórmula $\eqref{eq:estrella}$ es correcta.
+
+Note primero que $T_0(x) = 1,$ y $T_1(x) = x$. De manera similar, procedemos por inducción fuerte sobre $n$. Si $p(x) = c_0T_0= c_0$, entonces la recursión simplemente toma $b_2=b_1=0$ y $$ T_0(x_0)c_0 + T_1(x_0)b_1(x_0)-T_0(x_0)b_2(x_0) = c_0+x_0b_1-b_2= c_0 =p(x_0).$$
+Ahora asumamos el resultado para combinaciones lineales de los primeros $k$ polinomios de Chebyshev, con $k<n$. Sea $$p(x) = \sum_{k=0}^{n}c_kT_k(x),$$ y definimos su recursión:
+\begin{align*}
+b_{n+2}&=b_{n+1} = 0, \\
+b_k(x_0)&=c_k + 2x_0b_{k+1}-b_{k+2}
+\quad \text{para $k=n,n-1,\dots,1$}
+\end{align*}
+Considere ahora los polinomios
+$$q(x) = \sum_{k=0}^{n-1}c_{k+1}T_k(x) \quad \quad ; \quad \quad r(x) =  \sum_{k=0}^{n-2}c_{k+2}T_k(x) $$
+Para $q$, definimos la recurrencia 
+\begin{align*}
+d_{n+1}&=d_{n}= 0, \\
+d_k&=c_k+1 + 2x_0d_{k+1}-d_{k+2}
+\quad \text{para $k=n-1,\dots,1$}
+\end{align*}
+También definimos la recurrencia para $r$:
+\begin{align*}
+u_{n-1}&=u_{n}= 0, \\
+u_k&=c_k+2 + 2x_0u_{k+1}-u_{k+2}
+\quad \text{para $k=n-2,\dots,1$}
+\end{align*}
+Tenemos, por hipótesis de inducción, que
+$$q(x_0) = c_1 + x_0d_1 - d_2$$
+$$r(x_0) = c_2+x_0u_1-u_2$$
+Observe además que los primeros pasos de las recursiones para $p,q$ y $r$ coinciden. Más específicamente, $b_{k+1} = d_k$ para $k=1,\dots,n+1$ y $b_{k+2} = u_k$ para $k=1,\dots,n$. Esto nos permite observar que, volviendo a la recursión para $p$:
+\begin{align*}
+b_1 &= c_1 + 2x_0b_2 - b_3 \\
+&= c_1 + 2x_0d_1 - d_2 \\
+&= 2q(x_0)-c_1+d_2
+\end{align*}
+Y también que
+\begin{align*}
+b_2 &= c_2 + 2x_0b_3 - b_4 \\
+&= c_2 + 2x_0u_1 - u_2 \\
+&= r(x_0)+x_0u_1
+\end{align*}
+Tenemos finalmente que 
+\begin{alignat*}{2}
+&T_0(x_0)c_0 + T_1(x_0)b_1(x_0)-T_0(x_0)b_2(x_0) \\ &= c_0 + x_0b_1 - b_2 \\
+&= c_0 + 2x_0q(x_0)-c_1x_0+\cancel{x_0d_2} - r(x_0) - \cancel{x_0u_1} \quad \quad \text{pues $u_1 = d_2$}\\
+& = c_0 - c_1x_0 + 2x_0\sum_{k=0}^{n-1}c_{k+1}T_k(x_0) - \sum_{k=0}^{n-2}c_{k+2}T_k(x_0) \\
+& =c_0-c_1x_0+2x_0\sum_{k=1}^{n}c_{k}T_{k-1}(x_0) - \sum_{k=2}^{n}c_{k}T_{k-2}(x_0) \\
+& = c_0 - c_1x_0 + 2x_0c_1T_0(x_0) + \sum_{k=2}^{n}c_k(2x_0T_{k-1}(x_0)-T_{k-2}(x_0)) \\
+&= c_0+c_1x_0 + \sum_{k=2}^{n}c_kT_k(x_0) \\
+&= p(x_0).
+\end{alignat*}
+\item Escriba una función \texttt{y0=evalCheb(c,x0)} en \texttt{MATLAB} que calcule $y_0 = p(x_0)$ mediante la fórmula $\eqref{eq:estrella}$, donde la entrada es el vector de coeficientes $\bf{c}$ y el valor $x_0$.
+
+Se implementó la función \texttt{y0=evalCheb(c,x0)}, adjuntada en los archivos.
+\item Utilice \texttt{c=rand(n,1)}, con $n=10^8$, $x_0 = 0,1$ y compare el tiempo de ejecución con la pregunta ($1$d). Comente
+\justifying
+
+Al aplicar la función \texttt{y0=evalCheb(c,x0)}, a $5$ vectores aleatorios  de coeficientes entre $0$ y $1$, de tamaño $100$ millones, se obtuvo un \textbf{tiempo de evaluación promedio de} $\bf{0,3781628}$ \textbf{segundos}, el cual es sustancialmente más rápido que los algoritmos $1$ y $3$. Sin embargo, es ligeramente más lento que el algoritmo $2$. Todo esto se puede volver a justificar al echar un vistazo al número de operaciones que necesita cada uno de los algoritmos. Si recordamos que el $1$ era de orden cuadrático con respecto a $n$, no es una sorpresa que resulte el más lento, pues el $3$ y el $4$ son de orden lineal, siendo el $4$ un poco más lento, pues necesita el doble de operaciones que el $2$. Una vez más, al no saber exactamente qué operaciones usa \texttt{polyval()}, no es posible una discusión de este tipo, solo se puede decir que tiene un tiempo de evaluación intermedio con respecto a los demás.
+
+\item Considere el polinomio $p(x) = x^3-3x^2+1$. Exprese $p(x)$ como combinación lineal de polinomios de Chebyshev
+$$p(x) = c_0T_0(x) + c_1T_1(x) + c_2T_2(x) + c_3T_3(x)$$
+y verifique el comportamiento del Algoritmo $4$ para $x_0 = 1$.
+
+Tenemos que $T_0(x) = 1, T_1(x) = x, T_2(x) = 2x^2 - 1$ y $T_3(x) = 4x^3 - 3x$. Entonces basta con resolver el sistema de ecuaciones en $4$ variables $\alpha,\beta,\gamma,\delta$
+$$ x^3-3x^2+1 = \alpha(4x^3-3x) + \beta(2x^2-1) + \gamma x + \delta$$
+En donde fácilmente se ve que $\alpha = 1/4, \beta=-3/2, \gamma=3/4 
+$ y $ \delta=-1/2.$ Al aplicar el Algoritmo $4$ en la base de Chebyshev, se obtiene el resultado $p(1) = -1$, el cual verifica el funcionamiento del algoritmo numéricamente.
+\end{enumerate}
+\subsection*{Problema 3}
+(Integrando expansiones de Chebyshev) Con la notación del ejercicio anterior, considere el polinomio
+$$p_n(x) = \sum_{k=0}^{n}c_kT_k(x) , \quad \quad |x| \leq 1$$
+\begin{enumerate}[a)]
+\item Demuestre que para todo entero $n \in \mathbb N$,$n\neq 1$,
+$$\int_{-1}^{1} T_n(x)dx = \frac{1+ (-1)^n}{1-n^2}.$$
+Deduzca que 
+$$\int_{-1}^{1}p_n(x)dx = \sum_{\substack{k = 0\\ k \text{ par}}}\frac{2c_k}{1-k^2}$$
+\textbf{Solución: }Si $n=0$, el resultado es trivial, puesto que $T_0 = 1$. Para $n >1, $ considere $$T_{n+1}(x) = \cos((n+1)\arccos(x))$$
+Diferenciamos para obtener
+$$\frac{T'_{n+1}(x)}{n+1} = \frac{\sen((n+1)\arccos(x))}{\sqrt{1-x^2}}. $$
+De la misma forma para $T_{n-1}(x)$, se tiene
+$$\frac{T'_{n-1}(x)}{n-1} = \frac{\sen((n-1)\arccos(x))}{\sqrt{1-x^2}}.$$
+Sea ahora $\theta = \arccos(x)$. Al sustraer las expresiones anteriores, y aplicando algunas identidades trigonométricas, obtenemos
+\begin{align*}
+\frac{T'_{n+1}(x)}{n+1} - \frac{T'_{n-1}(x)}{n-1} &= \frac{\sin((n+1)\theta) - \sin((n-1)\theta)}{\sin(\theta)} \\
+&= \frac{2\cos(n\theta)\sin(\theta)}{\sin(\theta)}\\
+&= 2T_n(x).
+\end{align*}
+Integramos esta identidad
+$$\int_{-1}^{1}T_n(x) = \frac{1}{2}\int_{-1}^{1}\frac{T'_{n+1}(x)}{n+1} - \frac{T'_{n-1}(x)}{n-1}dx$$
+$$\int_{-1}^{1}T_n(x) = \frac{1}{2(n+1)}T_{n+1}(x)\bigg\rvert_{-1}^{1} - \frac{1}{2(n-1)}T_{n-1}(x)\bigg\rvert_{-1}^{1}$$
+Ahora, note que para todo $n$,
+$$T_n(1) = 1$$
+$$T_n(-1) = \cos(n\pi)=(-1)^n$$
+Por lo tanto
+\begin{align*}
+\int_{-1}^{1}T_n(x) &= \frac{1-(-1)^{n+1}}{2(n+1)}-\frac{1-(-1)^{n-1}}{2(n-1)} = \frac{1+(-1)^n}{1-n^2}
+\end{align*}
+Que es lo que se buscaba.\footnote{Los cálculos que se omitieron son sencillos.} Ahora, para $p_n(x) = \sum_{k=0}^{n}c_kT_k(x)$
+Simplemente se tiene que
+\begin{align*}
+\int_{-1}^{1}p_n(x)dx &= \sum_{k=0}^{n}c_k\int_{-1}^{1}T_k(x)dx \\
+&= \sum_{k=0}^{n}c_k\frac{1+(-1)^k}{1-k^2} \\
+&=\sum_{\substack{k=0 \\ k \text{ par}}}^n\frac{2c_k}{1-k^2}
+\end{align*}
+\item Programe una función \texttt{I = intCheb(c)}, cuya entrada es el vector de coeficientes 
+$$\bf{c} = [c_0, \dots, c_n]^T$$
+dados en ($3$), que calcule el valor $I$ de la integral ($4$).
+
+Se implementó la función \texttt{intCheb(c)}, la cual se adjunta en los archivos.
+\end{enumerate}
+\subsection*{Problema 4.}
+Dado $n \in \mathbb{N}$, considere los $n+1$ puntos de Chebyshev dados por
+$$x_j = \cos\left(\frac{j\pi}{n}\right)  \quad j=0,1,\dots,n.$$
+Dada una función $f$ es posible escribir el polinomio de interpolación de Lagrange con nodos $\{x_j\}_{j=0}^n$ en la base de polinomios de Chebyshev
+$$p_n(x) = \sum_{k=0}^nf(x_k)L_k(x) = \sum_{k=0}^nc_kT_k(x).$$
+Al conocer los valores $\{f(x_k)\}_{j=0}^n$ podemos calcular los coeficientes $c_k$ de manera eficiente mediante la inversa de la transformada discreta de Fourier, la cual se implementa con el comando \texttt{ifft} en \texttt{MATLAB}. La siguiente función recibe como entrada los valores $\{f(x_k)\}_{j=0}^n$ en un vector columna y retorna los coeficientes en un vector $\bf{c}$.
+\begin{flushleft}
+\begin{BVerbatim}
+function c= val2coef(values) 
+n=size(values,1); 
+% Mirror the values 
+tmp=[values(n:-1:2,:);values(1:n-1,:)]; 
+% apply ifft 
+c=real(ifft(tmp));
+%Truncate
+c=c(1:n,:);
+%Scale the interior coefficients
+c(2:n-1,:)=2*c(2:n-1,:);
+end
+\end{BVerbatim}
+\end{flushleft}
+\begin{enumerate}[a)]
+\item Implemente una función \texttt{[coef,nodos] = interpCheb(n,f)} que reciba el grado $n$ y la función $f$, que calcule los nodos de Chebyshev y los coeficientes $\{c_k\}$.
+
+Se implementó la función  \texttt{[coef,nodos] = interpCheb(n,f)}, adjuntada en los archivos.
+
+\item Para $f(x) = 1/(1+25x^2)$, $n=10$, calcule los coeficientes \texttt{c=interpCheb(n,f)}. Defina \texttt{xx = linspace(-1,1,1e3)} y utilice el comando \texttt{evalCheb} para evaluar $p_n$ en cada entrada de \texttt{xx}. Grafique $f$ y $p_n$ en un mismo gráfico, incluyendo los nodos de interpolación. Comente su resultado. ¿Ocurre el fenómeno de Runge?
+
+Al seguir las instrucciones, se obtiene la figura 1.
+\begin{figure}[h]
+\centering
+        \includegraphics[scale=0.7]{Grafica1.eps}
+\end{figure}
+
+\justifying
+Para $n=10$, la aproximación no es demasiado buena, pues se tiene cierto grado de fluctuación entre  los valores de $p_n(x)$ y $f(x)$. Podemos ver, sin embargo, que en los nodos de Chebyshev (los puntos negros), las curvas de hecho coinciden. Se concluye que para $n=10$, pareciera que el fenómeno de Runge \textbf{no ha desaparecido del todo.}
+\item Grafique $||f(\texttt{xx})-p_n(\texttt{xx})||_{\ell^\infty}$ en función de $n$ para $n \in \{2,\dots,20\}.$¿Qué velocidad de convergencia observa conforme $n$ aumenta?
+
+Al graficar el error, se obtiene la Gráfica 2:
+
+\begin{figure}[h]
+\centering
+        \includegraphics[scale=0.7]{Grafica2.eps}
+\end{figure}
+
+ Se observa que el error alterna, siendo ligeramente mayor para $n$ impar, esto podría deberse a la simetría de la función (al escoger nodos asimétricos, los valores de interpolación serán a su vez asimétricos). Sin embargo, independientemente de la fluctuación, el error disminuye conforme $n$ aumenta, con una velocidad que pareciera ser \textbf{superlineal}.
+\item Para $f(x) = 1/(1+25x^2) , n=10$ utilice la fórmula $3$a) para aproximar $\int_{-1}^{1}f(x)dx.$ Grafique el error absoluto en función de $n$ para $n \in \{2,\dots,20\}.$ ¿Qué velocidad de convergencia observa conforme $n$ aumenta?
+
+Al aplicar la función \texttt{intCheb} a $f$ con $n=10$, se obtiene que $$\int_{-1}^{1}f(x)dx \approx 0.573232153266308$$
+El cual se aproxima al valor exacto de $\frac{2}{5}\arctan{5} \approx 0.549360306778006344$ con $1$ decimal. Para diferentes $n$ tenemos la gráfica 3.
+
+\begin{figure}[h]
+\centering
+        \includegraphics[scale=0.5]{Grafica3.eps}
+\end{figure}
+
+En donde $I_n$ es la aproximación de la integral $I$, usando polinomios en base de Chebyshev, de dimensión $n$.
+
+Se puede observar que la velocidad de convergencia es casi perfectamente \textbf{lineal}, por lo cual la integración por coeficientes de Chebyshev parece una buena opción numérica.
+\item ¿Qué ventajas observa en interpolar en nodos de Chebyshev con expansiones en polinomios de Chebyshev para aproximar integrales?.
+\justifying
+
+La principal ventaja de interpolar usando los nodos de Chebyshev es el hecho de que el \textbf{fenómeno de Runge desaparece} para valores altos de $n$, esto elimina las fluctuaciones que puedan aparecer en los extremos del intervalo de interpolación, lo cual a su vez mejora la confiabilidad de la integral. Como una ventaja secundaria, se tiene la facilidad con la que se computan estas integrales. Al expresar el polinomio en la base de Chebyshev (lo cual no representa grandes dificultades computacionales, pues solo se trata de un cambio de base), se tiene que la integral del polinomio de interpolación viene dada por la fórmula $$\int_{-1}^{1}p_n(x)dx = \sum_{\substack{k = 0\\ k \text{ par}}}\frac{2c_k}{1-k^2}$$
+La cual es sencilla de calcular, pues solo involucra las coordenadas del polinomio en la base, y sumas, multiplicaciones, y divisiones. Se concluye por lo tanto que los polinomios de Chebyshev representan una útil herramienta en análisis numérico, tanto en interpolación como en integración de funciones suaves.
+\end{enumerate}
+\subsection*{Problema 5.}
+Construya la fórmula de cuadratura 
+$$\int_{a}^{b} f(x)w(x)dx \approx W_0f(a) + \sum_{k=1}^{n} W_kf(x_k),$$
+donde hemos fijado el nodo $x_0 = a$; esto es, calcule los pesos $\{W_k\}_{k=0}^n$ y nodos $\{x_k\}$ de manera que la fórmula anterior sea exacta para polinomios de grado a lo sumo $2n$. Sugerencia: Escriba 
+$$p_{2n}(x) = (x-a)q_{2n-1}(x) + r,$$
+con $r \in \mathbb{R}$.
+
+Siguiendo la sugerencia, vamos a asumir que $f$ es un polinomio de grado $2n$ (se podría interpretar como algún polinomio que la interpole). Note que, evaluando en $a$, tenemos inmediatamente que $r=p_{2n}(a)$.
+
+Considere el peso
+$$\tilde{w}(x) = (x-a)w(x).$$
+Podemos aplicar la cuadratura de Gauss a $q_{2n-1}(x)$ para tener
+$$\int_{a}^{b} \tilde{w}(x)q_{2n-1}(x)dx = \sum_{k=1}^n \tilde{W}_kq_{2n-1}(\tilde{x}_k)$$
+Donde $\{\tilde{x}_k\}_{k=1}^n$ son los nodos de la cuadratura de Gauss aplicada al peso $\tilde{w}$, y $\{\tilde{W}_k\}_{k=1}^n$ sus respectivos pesos.
+
+Como 
+$$p_{2n}(x) = (x-a)q_{2n-1}(x) + p_{2n}(a)$$
+Multiplicando por $w(x)$, e integrando se tiene
+\begin{align*}\int_{a}^{b}p_{2n}(x)w(x)dx &= \int_{a}^{b}\tilde{w}(x)q_{2n-1}(x)dx + \int_{a}^{b}p_{2n}(a)w(x)dx \\
+&= \sum_{k=1}^n\tilde{W}_kq_{2n-1}(\tilde{x}_k) + p_{2n}(a)\int_{a}^{b}w(x)dx
+\end{align*}
+Pero como $q_{2n-1}(\tilde{x}_k) = \frac{p_{2n}(\tilde{x}_k)-p_{2n}(a)}{\tilde{x}_k-a} $, tenemos
+\begin{align*}
+\int_{a}^{b}p_{2n}(x)w(x)dx &= \sum_{k=1}^n \tilde{W}_k\frac{p_{2n}(\tilde{x}_k)-p_{2n}(a)}{\tilde{x}_k-a} + p_{2n}(a)\int_{a}^{b}w(x)dx \\
+&=\sum_{k=1}^n\frac{\tilde{W}_k}{\tilde{x}_k-a}p_{2n}(\tilde{x}_k) - \sum_{k=1}^n\frac{\tilde{W}_kp_{2n}(a)}{\tilde{x}_k-a} + p_{2n}(a)\int_{a}^{b}w(x)dx
+\intertext{Por lo que podemos tomar}
+W_0 &= \int_{a}^{b}w(x)dx - \sum_{k=1}^n\frac{\tilde{W}_k}{\tilde{x}_k-a} \\
+W_k &= \frac{\tilde{W}_k}{\tilde{x}_k-a} \quad \text{para} \quad  1\leq k \leq n
+\end{align*}
+\justifying
+Y tomando $x_k = \tilde{x}_k , k=1,\dots,n$ se obtiene la cuadratura deseada.
+Observe que $W_k > 0$, pues $\tilde{W}_k > 0$. Para $k=0$, defina $P(x) = (b-x)\prod_{k=1}^n(x-x_k)^2$, la cuadratura que construímos inmediatamente arroja
+$$0<\int_{a}^{b}P(x)w(x)dx = W_0P(a)$$
+Por lo que $W_0 > 0$. Finalmente, al haber definido $n$ nodos y $n+1$ pesos, la fórmula será exacta para polinomios de grado a lo sumo $2n$. Esto no necesita demostración propiamente, puesto que esta cuadratura se construye a partir de la cuadratura de Gauss, la cual se demostró en clase.
+\end{document}
