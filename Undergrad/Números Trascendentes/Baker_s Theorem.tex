@@ -1,0 +1,407 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{amscd}        % Package used to produce simple commutative diagrams
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+%\setlength\parindent{0pt}
+
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\renewenvironment{proof}{\paragraph{\textbf{Proof: }}}{\hfill$\blacksquare$}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+
+%\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\bigcup}}
+%\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\bigcup}}
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+\renewcommand{\baselinestretch}{1}
+
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{question}[theorem]{claim}
+
+
+
+\newcommand{\cd}[4]{
+\begin{CD}
+#1    @>>>    #2\\
+@VVV    @VVV\\
+#3    @>>>    #4
+\end{CD}
+}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+
+
+\begin{document}
+
+\title{%
+  Transcendental Number Theory. Hilbert's Seventh Problem}
+
+\author{J. Ignacio Padilla Barrientos
+}
+
+
+
+\pagestyle{fancy}
+\fancyhead[]{}
+\lhead{MA-506 Analytic Number Theory}
+\rhead{Prof. Adrián Barquero Sánchez}
+\setlength{\headheight}{13pt}
+
+\address{School of Mathematics, University of Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{juan.padillabarrientos@ucr.ac.cr}
+\begin{abstract}
+  Transcendental number theory studies those numbers that are not a solution to any polynomial equation (with integer coefficients). The problem of proving that a number is transcendental has proven challenging throughout history. In 1900, David Hilbert presented a list of 23 problems, which would develop mathematics during the last century. The main objective of this work is to present the solution to problem number 7, given by Gelfond and Schneider, independently in 1934.
+
+  \noindent
+  \textit{Keywords:} algebraic, height, independent, irrational, transcendental. \\
+  \textit{Classification:} 11J81
+\end{abstract}
+\maketitle
+\section{Introduction: }
+
+The fundamental theorem of algebra tells us that any non-constant polynomial with integer coefficients (or equivalently rational) has roots in the complex numbers. An important question that arises is, in a way, a converse: Given a complex number $\alpha$, does there exist a polynomial $p(x) \in \mathbb{Z}[x]$ such that $p(\alpha)=0$? If such a polynomial does not exist, we say that this number is \textbf{transcendental} over $\mathbb{Q}$. Since we are not going to work over other fields, we will just say transcendental.
+
+More generally, a set of numbers $\{\alpha_1,\dots , \alpha_n \}$ is said to be \textbf{algebraically independent} (over $\mathbb{Q}$), if there is no non-zero polynomial in several variables $p \in \Q[x_1,\dots,x_n]$ such that $p(\alpha_1,\dots ,\alpha_n )=0$. Otherwise, we say that the set is \textbf{algebraically dependent}. Note that the concept of transcendence is simply a case of algebraic independence (for a set with $1$ element).
+An interesting question is: Do transcendental numbers exist? It is not easy to prove that a number is transcendental from the definition, as we would need to rule out all possible polynomials of all degrees. The first affirmative answer to this question was given by Liouville in 1840. Later, thanks to Cantor's ideas on cardinality, it was discovered that the vast majority of complex numbers are in fact transcendental.
+
+Other numbers have been proven transcendental, such as $\pi$ and $e$, however, in general, the study of transcendence is different for each number, or at least it was until 1900, at the International Congress of Mathematicians, Hilbert stated a list of 23 problems, one of which is related to the study of transcendental numbers. Hilbert's seventh problem states that if \textit{$\alpha,\beta$ are algebraic numbers, $\alpha \notin \{0,1\}$, and $\beta$ is irrational, then $\alpha^\beta$ is a transcendental number.}
+
+After some minor advances, in \cite{AG1934}, Gelfond proved problem 7. Schneider also independently reached the same conclusion. Both works were based on Siegel's ideas of multivariable complex calculus.
+
+Finally, as a stronger result (which was originally conjectured by Gelfond himself), Baker, in \cite{AB1966}, proved that given non-zero algebraic numbers $\alpha_1,\dots , \alpha_n $, if $ \log \alpha_1 , \dots , \log\alpha_n$ and $ 2\pi i$ are linearly independent over $\mathbb{Q}$, then $\log \alpha_1 , \dots , \log\alpha_n $ are linearly independent over $\overline{\Q}^{alg}$ (the set of all algebraic numbers over $\Q$). This result, along with other works in transcendence theory, earned Baker the Fields Medal in 1970.
+
+\section{Preliminaries}
+The first section of this work is based on \cite{KS2010} and \cite{EB2014}, which adequately summarize many necessary results. Some results were also adapted from \cite{AB1975}, which is a book by Baker himself, collecting many results in transcendental number theory.
+
+We will establish some preliminary results and definitions, which are of historical interest, and will also help us understand the later sections on the Gelfond and Baker theorems. The first result is very simple, and it was what allowed Liouville to find the first transcendental numbers.
+\begin{theorem}[Liouville]
+  If $p(x) \in \Z[x]$ is a polynomial of degree $n$, and $\alpha$ is an irrational root of $p$, then there exists a constant $c = c(\alpha) >0$ such that
+  $$\left| \alpha - \frac{a}{q}\right| \geq \frac{c(\alpha)}{q^n}$$
+  for any positive integers $a,q$.
+
+\end{theorem}
+\begin{proof}
+  The proof is simple. Assume without loss of generality that $p$ is irreducible (if it were not, then $\alpha$ annihilates a factor of $p$ of degree $k<n$, and then $1/q^k \geq 1/q^n$). By the mean value theorem,
+  $$p(\alpha) - p(a/q) = (\alpha - a/q)p'(\xi)$$
+  for some $\xi$ between $\alpha$ and $a/q$. But $p(\alpha)=0$, and $p(a/q)$ is a rational number with denominator $q^n$. Therefore
+  $$\frac{A}{q^n} \leq \left|\alpha - \frac{a}{q} \right| \sup_{[\alpha , a/q]} |p'(x)|, \quad    A\in \Z$$
+  Furthermore, if $\left|\alpha - \frac{a}{q} \right|>1$ the result is trivial, so we can assume that $a/q$ is at most distance $1$ from $\alpha$. Thus we obtain
+  $$\frac{A}{q^n} \leq \left|\alpha - \frac{a}{q} \right| \sup_{[\alpha -1,\alpha+1]} |p'(x)|,$$
+  which is what we sought.
+\end{proof}
+
+In summary, this theorem says that an algebraic number cannot be approximated \textit{too well} by rational numbers. According to \cite{KS2010}, Liouville used this to prove that the following number is transcendental
+$$\sum_{n=1}^{\infty} 10^{-n!},$$
+since if the opposite were assumed, it would be easy to contradict theorem 2.1. This result can be improved, changing the $n$ in the denominator to a $2+\varepsilon$, where $\varepsilon >0$.
+
+We will now present an important result, on which much of transcendence theory is based. The proof will be just a sketch, taken from \cite{AB1975}.
+\begin{theorem}[Hermite] $e$ is a transcendental number.
+\end{theorem}
+\begin{proof}
+  First, observe that if $f(x)$ is a real polynomial of degree $m$, and if
+  $$I(t) \coloneqq \int_0^{t} e^{t-u}f(u)du,$$
+  where $t\in \mathbb{C}$, and the integral is interpreted as a line integral over the segment joining $0$ and $t$, integrating by parts repeatedly, we obtain
+  \begin{align}I(t,f) = e^t \sum_{j=0}^{m} f^{(j)}(0) - \sum_{j=0}^m f^{(j)}(t),\end{align}
+  And therefore,
+  $$|I(t,f)| \leq \int_0^t|e^{t-u}f(u)|du \leq |t|e^{|t|}\hat{f}(|t|),
+  $$
+  where $\hat{f}(t)$ denotes the polynomial obtained by replacing the coefficients of $f$ by their absolute values.
+
+  Now we assume that $e$ is algebraic, so that for some integers $q_0 , \dots, q_n,$
+  \begin{align}q_0 + q_1e + \dots + q_ne^n = 0 \end{align}
+  Consider now the number
+  $$J \coloneqq q_0I(0,f) + q_1I(1,f) + \dots + q_nI(n,f),$$
+  where
+  $$f(x) = x^{p-1}(x-1)^p \cdots (x-n)^p,$$
+  with $p$ a large prime number. By (2.1) and (2.2), it is shown that
+  $$J=-\sum_{j=0}^m \sum_{k=0}^n q_k f^{(j)}(k),$$
+  for $m=(n+1)p -1$. Clearly $f^{(j)}(k) = 0$ if $j<p$ , $k>0$, or if $j<p-1$ , $k=0$, so for all $j,k$ distinct from $j=p-1$ , $k=0$, we will have that $f^{(j)}(k)$ is an integer divisible by $p!$. Furthermore,
+  $$f^{(p-1)}(0) = (p-1)! (-1)^{np}(n!)^p,$$
+  so, if $p>n$, $f^{(p-1)}(0)$ is an integer divisible by $(p-1)!$, but not by $p!$. It follows that if $p > |q_0|$, then $J$ is also a (non-zero) integer divisible by $(p-1)!$. Finally, with the trivial estimate $\tilde{f}(k) \leq (2n)^m$, together with our hypothesis yields
+  $$(p-1)! \leq |J| \leq |q_1|e\tilde{f}(1) + \dots + |q_n|ne^n \tilde{f}(n) \leq c^p.$$
+  for some $c$ not depending on $p$. These estimates are inconsistent if $p$ is taken too large, thus arriving at a contradiction.
+\end{proof}
+
+The proof of this result, although a bit technical, has important arguments, which are considered standard. In fact, using very similar ideas, one can prove
+\begin{theorem}[Lindemann] $\pi$ is a transcendental number
+\end{theorem}
+This theorem confirms the impossibility of squaring the circle, a classical problem of ancient Greece.
+
+Later, in 1882, Lindemann refined his arguments, and produced a sketch of a proof of the following result. Its rigorous proof is due to Weierstrass.
+\begin{theorem}[Lindemann-Weierstrass] For any distinct algebraic numbers $\alpha_1, \dots , \alpha_n$, and any algebraic numbers $\beta_1,\dots,\beta_n$ (non-zero), we have
+  $$\beta_1e^{\alpha_1} + \dots + \beta_ne^{\alpha_n} \neq 0$$
+\end{theorem}
+The proof is a direct generalization of the proof of theorem 2.2, however it is more elaborate.
+
+It is important that this powerful result immediately implies the transcendence of many numbers. Among them $e, \pi, e^{\alpha} , \sin(\alpha) , \cos(\alpha), \tan(\alpha), \log(\alpha)$ for non-zero algebraic $\alpha$ (and distinct from $1$ for the logarithm). Additionally, from this theorem it follows that if the $\alpha$'s are also linearly independent (over $\Q$), the $e^{\alpha}$'s are then algebraically independent (also over $\Q$). This theorem satisfactorily summarizes all the preliminaries of this section, and we can proceed to study the Gelfond-Schneider theorem.
+\section{The Gelfond-Schneider Theorem}
+In this section we will present a summary of Gelfond's original solution to Hilbert's 7th problem, which was published in \cite{AG1934} in a Soviet Union journal, so its notation is quite outdated. Furthermore, the original language of the article is French.
+
+\noindent First let's see the following equivalences:
+\begin{theorem}
+  The following assertions are equivalent
+  \begin{enumerate}[1)]
+    \item If $\alpha$ and $\beta$ are algebraic numbers with $\alpha \notin \{0,1\}$, and $\beta$ irrational, then $\alpha^\beta$ is transcendental (this is nothing but Hilbert's problem).
+    \item If $l$ and $\beta$ are complex numbers, with $l \neq 0$, and $\beta$ irrational, at least one of the following numbers is transcendental: $e^l, \beta, e^{\beta l}$.
+    \item If $\alpha,\beta$ are non-zero algebraic numbers, with\footnote{We will assume the principal branch of the logarithm, although one could work in any (fixed) branch.} $\log(\alpha)/\log(\beta)$ irrational, then $\log(\alpha)$ and $\log(\beta)$ are linearly independent over algebraic numbers. This is equivalent to (assuming $\beta \neq 1$) $\log(\alpha)/\log(\beta)$ being a transcendental number.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{itemize}
+    \item To see that 1) implies 2), take $\alpha = e^l$. Then clearly $\alpha^\beta = e^{l\beta}$ is transcendental.
+    \item To see that 2) implies 3), take $l=\log \beta$, $\beta' = \log(\alpha)/\log(\beta)$, immediately we see that $\beta'$ must be transcendental since neither $e^l$ nor $e^{l\beta}$ are.
+    \item To see that 3) implies 1), let $\alpha,\beta$ be as in 1). If $\beta' = \alpha ^\beta = e^{\beta \log \alpha}$ is algebraic, then we can use the contrapositive of 3), noting that $\log \beta'$ and $\log \alpha$ are \textit{l.d.} over algebraics, which implies that $\log \beta' / \log \alpha = \beta$ is rational, which proves a contraposition of 1).
+  \end{itemize}
+\end{proof}
+
+Gelfond focused mainly on proving 3) of the previous theorem, which equally solves the problem. To proceed with the proof, we will have once again that $\alpha \notin \{0,1\}$, and $\beta$ irrational. We will assume by contradiction that $\eta = \log(\alpha) / \log(\beta)$ is an algebraic irrational. Let $p_1,p_2,p_3$ be the algebraic degrees of $\alpha,\beta,\eta$, respectively. Furthermore let $\alpha_1,\dots,\alpha_{p_1}$ be the algebraic conjugates of $\alpha$ (in a sufficiently large extension), $\beta_1,\dots,\beta_{p_2}$ those of $\beta$, and $\eta_1,\dots,\eta_{p_3}$ those of $\eta$. We can also choose a number $c$ such that $c\alpha,c\beta$ and $c\gamma$ are algebraic integers (that their minimal polynomials are monic, and are in $\Z[x]$).
+
+We now define $\gamma$ as a sufficiently large real number that depends on $\alpha,\beta,\eta$ (and their conjugates). We then define $\lambda_1, \lambda_2, \lambda_3, \lambda_4, \lambda_5$ as follows
+\begin{align}
+  \lambda_1 & = 2 (\log 3) p_1p_2p_3.               \\
+  \lambda_2 & = (2\log \gamma + 4 \log c) p_1p_2p_3 \\
+  \lambda_3 & = 2p_1p_2p_3.                         \\
+  \lambda_4 & = \log(2\log \gamma).                 \\
+  \lambda_5 & = 2 \log \gamma.
+\end{align}
+Next we will introduce $8$ real constants
+$$q_1,\dots, q_8,$$
+along with $8$ inequalities (which are not important as we will not use them explicitly), such that if $x \in [q_i,q_{i+1}]$, $x$ must satisfy the $i$-th inequality, and if $x>q_8$, $x$ must satisfy the eighth inequality. In other words we are defining a kind of \textit{nodes and bounds}, which will describe an ideal function for us. These constants depend on nothing but $\alpha,\beta,\eta$ (and their conjugates).
+
+\pagebreak
+Finally, we define
+$$r_1 = \floor*{ \frac{q_0^2}{\log q_0 \log \log q_0}} , \quad  \quad \floor*{r_2 = \log^2 \log q_0 }, $$
+where
+$$q_0 = 1+ \max \{3^{3^5},q_1,\dots,q_8 \}$$
+We will exhaustively examine the function of a complex variable
+$$f(x) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl}\alpha^{kx} \beta^{lx}$$
+Where the numbers $C_{kl}$ are integers for $0\leq k,l \leq q_0$. Actually, the reason for defining so many constants is simply for the sake of effectiveness. That is, the original author wished to give an approximate value to the bounds we will need later. However, we are really only going to study $f(x)$, and we could have asked for $q_0$ to be sufficiently large from the beginning.
+\begin{lemma}
+  In the definition of $f(x)$, if the coefficients satisfy $|C_{k,l}| \leq 3^{q_0^2}$ and under the hypothesis that $\alpha,\beta,\eta$ are all algebraic. For any natural $s$, either the following inequality holds:
+  $$|f^{(s)}(t)| > e^{-(\lambda_1q_0^2 + \lambda_2q_0t + \lambda_3s\log q_0)}$$
+  or the following equality:
+  $$f^{(s)}(t) = 0$$
+\end{lemma}
+\begin{lemma}
+  Under the condition $   |C_{k,l}| \leq 3^{q_0^2}$, the non-zero coefficients of the function $f(x)$ can be chosen so that it holds
+  $$|f^{(s)}(t)| < e^{-\frac{q_0^2 \log q_0}{\log \log q_0}}, \quad 0 \leq s \leq r_1-1 , \quad 0 \leq t \leq r_2 - 1$$
+\end{lemma}
+\begin{lemma}
+  If $   |C_{k,l}| \leq 3^{q_0^2}$, then $f(x)$ satisfies the following inequality
+  $$|f(x)| < e^{2\log (3) q_0^2 + \lambda_5q_0|x|}$$
+  for any $x \in \C$.
+\end{lemma}
+The proofs of the lemmas are omitted for brevity. However, it is important to highlight that what the lemmas say is precisely that $f(x)$ is the ideal function we seek. We then have enough to prove the theorem
+\begin{theorem}[Gelfond-Schneider]
+  Let $\alpha$ and $\beta$ be algebraic numbers with $\alpha,\beta \notin \{0,1\}$. Then $\eta = \log(\alpha) / \log(\beta)$ is a rational or transcendental number.
+\end{theorem}
+\begin{proof}
+  The idea of the proof is not complicated, but the proof itself is, as it requires a series of refinements of upper bounds. Basically, we are going to look for the solving of the $C_{kl}$, demonstrating little by little that with our choice of initial constants, there exist too many values for which $f$ vanishes, which makes its coefficients all zero.
+  We assume once again by contradiction that $\eta$ is an algebraic irrational. By lemma 3.3, we can take a function
+  $$f(x) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl}\alpha^{kx}\beta^{kx}, \quad |C_{kl}| \leq 3^{q_0}$$
+  where the coefficients $C_{k,l}$ are non-zero integers satisfying that
+  $$|f^{(s)}(t)| < e^{-\frac{q_0^2 \log q_0}{\log \log q_0}}, \quad 0 \leq s \leq r_1-1 , \quad 0 \leq t \leq r_2 - 1$$
+
+  \pagebreak
+  We also know, by lemma 3.2, that we must have that, for all positive integers $s$ and $m$, either
+  $$|f^{(s)}(m)| > e^{-(\lambda_1q_0^2 + \lambda_2q_0m + \lambda_3s\log q_0)}$$
+  or
+  $$f^{(s)}(m) = 0.$$
+  Combining these last two inequalities, we have forced that
+  $$f^{(s)}(m) = 0, \quad 0 \leq s \leq r_1-1 , \quad 0\leq m \leq r_2-1$$
+  Then, the function $f(x)[x(x-1)\cdots(x-r_2+1)]^{-r_1}$ must be entire (holomorphic in all $\C$). From here it follows, thanks to the maximum modulus principle and lemma 3.4, the inequality
+  $$|f(x)[x(x-1)\cdots(x-r_2+1)]^{-r_1}| < e^{2 \log 8 + \lambda_6)q_0^2 - r_1r_2\log \frac{q_0}{2}}$$
+  for $|x| < q_0$. It is easy to deduce from here, that if now $|x| < \sqrt{q}$, then
+  $$|f(x)| < e^{(2 \log 3 + \lambda 5)q_0^2 - r_1r_2 \log \frac{q_0}{2} + \frac{2}{3}r_1r_2\log{2q_0}}$$
+  After simplifying a bit, and applying the inequalities that must hold in each interval $[q_i,q_{i+1}]$, we have
+  $$|f(x)| < e^{-\frac{1}{6}q_0^2 \log \log q_0}, \quad |x| \leq q^{2/3}$$
+  Now, since $f$ is holomorphic, for integer $m$, by Cauchy's integral formula
+  $$f^{(s)}(m) = \frac{s!}{2 \pi i} \int_{\gamma} \frac{f(x)}{(x-m)^{s+1}}dx, \quad 0 \leq m \leq \floor*{\sqrt{q_0}}$$
+  where $\gamma$ is a circle of radius $\sqrt{q_0}$ around the origin. This allows us to estimate the modulus of $|f^{(s)}(m)|$ inside this disk. We will have
+  $$|f^{(s)}(m)| < e^{-\frac{1}{12}q_0^2\log \log q_0}, \quad 0 \leq s \leq r_1 , \quad  0\leq m \leq \floor*{\sqrt{q_0}}.$$
+  Putting this result together with the inequality from lemma 3.2, we obtain this time that
+  $$f^{(s)}(m) = 0, \quad 0 \leq s \leq r_1-1 , \quad 0\leq m \leq \sqrt{q_0},$$
+  so we can conclude now that the function $f(x)[x(x-1)\cdots(x-\floor*{\sqrt{q_0}})]^{-r_1}$ is entire. Using the maximum modulus principle again, we reach the inequality
+  $$|f(x)[x(x-1)\cdots(x-\floor*{\sqrt{q_0}})]^{-r_1}|<e^{(2 \log 3 + \lambda_5)q_0^2 - r_1 \sqrt{q_0} \log \frac{q_0}{2}}$$
+  provided that $|x|< q_0$. Now, we see that if $|x| =2$, thanks to the properties of the $q_i's$, we obtain
+  $$|f(x)| < e^{-2q_0^{7/3}}$$
+  Using Cauchy's formula again and utilizing inequalities, we reach that
+  $$|f^{(s)}(0)| < e^{-q_0^{7/3}}, \quad 0 \leq s \leq 5q_0^2,$$
+  and finally it is obtained that
+  $$f^{(s)}(0) = 0\quad 0 \leq s \leq 5q_0^2,$$
+  which leads us to a system of homogeneous equations with $(q_0+1)$ variables $C_{kl}$. Namely
+  $$f^{(s)}(0) = \sum_{k=0}^{q_0}\sum_{l=0}^{q_0} C_{kl} (k\log\alpha + l \log \beta)^s = 0, \quad 0\leq s \leq (q_0+1)^2-1,$$
+  since $5q_0^2 > (q_0+1)^2$. The determinant of this system is of Vandermonde type, which makes it distinct from $0$, therefore the only possible solution is that $C_{kl}$ is $0$ for all $l$ and for all $k$. This is a contradiction, given that these coefficients were chosen non-zero from the start. Therefore, $\eta$ cannot be an algebraic irrational.
+\end{proof}
+\pagebreak
+\section{Baker's Theorem}
+The main result that Baker presents in \cite{AB1966} is a direct improvement of Gelfond's theorem. The idea is to generalize the algebraic independence of the logarithms of $2$ algebraic numbers, to the independence of the logarithms of $n$ algebraic numbers.
+
+We first define the \textbf{height} of an algebraic number, as the maximum of the absolute values of the coefficients of its minimal polynomial (in $\Z[x]$). We have then:
+
+\begin{theorem}[Baker]
+  Let $n\geq 2$, and let $\alpha_1,\dots,\alpha_n$ be algebraic numbers that are not $0$ nor $1$. If $\log \alpha_1, \dots , \log \alpha_n, 2\pi i$ are\footnote{Baker, unlike Gelfond, works in an arbitrary branch of the logarithm, hence the need for the independence of $2\pi i$.} \textit{l.i.} over $\Q$, $\kappa$ is an integer greater than $n+1$, and $d$ is any positive integer. We have that there exists an (effective) constant
+  $$C=C(n,\alpha_1,\dots,\alpha_n,\kappa,d)>0,$$
+  such that for any algebraic numbers $\beta_1,\dots,\beta_n$ (not all zero), with algebraic degrees at most $d$, we have
+  \begin{align}|\beta_1\log\alpha_1 + \dots + \beta_n \log \alpha_n| > Ce^{-(\log H)^{\kappa}},\end{align}
+  where $H$ denotes the maximum of the heights of the $\beta$'s.
+\end{theorem}
+Clearly, inequality 4.1 implies that the number on the right is not $0$, which allows us to deduce the following corollaries, of which the first is direct, and the second requires a proof, which is elementary, and is presented in \cite{AB1966}, p.215.
+\begin{corollary}
+  If $\alpha_1,\dots,\alpha_n$ are non-zero algebraic numbers, and $\log \alpha_1, \dots , \log \alpha_n, 2\pi i$ are \textit{l.i.} over $\Q$, then $\log \alpha_1, \dots , \log \alpha_n,$ are \textit{l.i.} over the field of algebraic numbers.
+\end{corollary}
+
+\begin{corollary}
+  If $\alpha_1,\dots,\alpha_n$ are algebraic numbers distinct from $1$, and $\beta_1,\dots,\beta_n$ are algebraic numbers \textit{l.i.} over $\Q$, then $\alpha_1^{\beta_1},\dots,\alpha_n^{\beta_n}$ is transcendental.
+\end{corollary}
+
+\noindent This corollary corresponds to the direct ``improvement'' to theorem 3.5.
+The applications of this theorem are extensive in number theory. This result has been used to solve important problems related to Diophantine equations in several variables (which are very difficult to solve), and has also been used in the study of the class number of quadratic fields.
+
+The proof method is a natural generalization to that used by Gelfond, which consisted of studying an auxiliary function, whose complex analytic properties allowed it to be bounded to the point of reaching a contradiction. The approach is similar, only that this time, the auxiliary function used possesses several complex variables. However, the successive bounding method is not sufficient in this case, and it was necessary to devise new techniques.
+
+\begin{proof}
+  The full proof is complicated, so a very simplified sketch of it will be made.
+
+  The author begins by showing that it suffices to prove the slightly weaker inequality than 4.1 for algebraic $\beta_1,\dots,\beta_{n-1}$,
+  $$|\beta_1\log\alpha_1 + \dots + \beta_{n-1} \log \alpha_{n-1}- \log \alpha_n| > e^{-(\log H)^{\kappa}}$$
+  where now $H$ ``absorbs'' the contribution of $C$.
+  We then proceed to state $4$ lemmas, which help the proof of the main result. We write for brevity
+  $$\zeta = \frac{1}{2} (1+\kappa /(n+1)) , \quad \varepsilon = (1-1/\zeta)/(2n).$$
+  \begin{lemma}
+    Let $M<N$ be positive integers, and let $u_{ij}$ (with $1\leq i \leq M$, $1\leq j \leq N$) be integers with absolute value less than some $U$. Then there exist integers $x_1,\dots,x_N$ not all zero, with absolute values at most $(NU)^{M(N-M)}$ such that
+    $$\sum_{j=1}^N u_{ij}x_j = 0 , \quad (1\leq i \leq M).$$
+  \end{lemma}
+  \begin{lemma}
+    There exist integers $p_{\lambda_1,\dots,\lambda_n}$ not all zero, with absolute value not greater than $e^{2hk}$ (where $h = \floor*{H}$), such that the function
+    $$\Phi(z_1,\dots,z_n) \coloneqq \sum_{\lambda_1 = 0}^L \cdots \sum_{\lambda_n=0}^L p_{\lambda_1,\dots,\lambda_n} \alpha_1^{\gamma_1z_1}\cdots \alpha_{n-1}^{\gamma_{n-1}z_{n-1}},$$
+    where $L=\floor{k^{1-\varepsilon}}$ and $\gamma_r = \lambda_r + \lambda_n\beta_r$ ($1\leq r < n$), satisfies
+    \begin{align}\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(l,l,\dots,l) \right| < e^{-\frac{1}{2}h\kappa},\end{align}
+    for all integers $l$ such that $1\leq l \leq h$ and all non-negative integers $m_1,\dots,m_{n-1}$ such that $m_1+\dots+m_{n-1} \leq k$.
+  \end{lemma}
+  \begin{lemma}
+    For any positive integers $m_1,\dots,m_{n-1}$ such that $m_1+\dots+m_{n-1} \leq k$, and for any complex number $z$, it holds
+    $$\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(z,z,\dots,z) \right| \leq e^{4hk}c_1^{L|z|}, \quad c_1 > 0.$$
+    Furthermore, for any integer $l$ with $0 < l \leq h^{\kappa - \zeta + \frac{1}{2} \varepsilon \zeta}$ it holds $4$.$2$ or the inequality
+    $$\left |\frac{\partial^{m_1+m_2+\dots + m_{n-1}}}{\partial z_1^{m_1} \cdots \partial z_{n-1}^{m_{n-1}}}\Phi(l,l,\dots,l) \right| > (e^{6hk}c_2^{Ll})^{-d^{2n-1}}$$
+  \end{lemma}
+  \begin{lemma}
+    Let $J$ be any integer satisfying $0 \leq J < \tau$, where
+    $$\tau = 2 \varepsilon ^{-1}((\kappa-1)\zeta^{-1}-1)+1.$$
+    Then inequality $4$.$2$ holds for all integers $l$ with $1\leq l \leq hk^{\frac{1}{2}\varepsilon J}$, and for any set of non-negative integers $m_1,\dots,m_{n-1}$ such that $m_1+\dots+m_{n-1} \leq k/2^J.$
+  \end{lemma}
+  As the reader may notice, the nature of the lemmas is highly technical, and their proofs are even more so. However, assuming these results, the proof that Baker presents is not long. The following function is now defined
+  $$\Psi(l) = \Phi(l,\dots,l),$$
+  and using all estimates, it is reached after some manipulations that
+  $$|\Psi(l)| < 2e^{-\frac{1}{2}h\kappa}$$
+  Then, we define, for integer $l$,
+  $$\omega(l) \coloneqq A^{Ll}\Psi(l),$$
+  where $A$ is an algebraic number that will depend on the conjugates of $\alpha$, whose degree will be at most $d^{2n-1}$. Using the last inequality, it is shown that for all $l$,
+  $$|\operatorname{Norm}(\omega)|<1.$$
+  This forces, thanks to the estimates by the lemmas, $\Psi(l)$ to be $0$, for $1\leq l \leq (L+1)^n$, which finally yields a system of homogeneous linear equations, whose determinant is of Vandermonde type, and therefore is non-zero, which will contradict the hypothesis of linear independence of the logarithms of the $\alpha$'s, thus proving the theorem.
+\end{proof}
+
+
+\newpage
+\section{Conclusion}
+The study of Hilbert's seventh problem led to an important development of number theory during the last century. This is a common occurrence in the process of solving difficult problems, and usually the most valuable thing obtained are the ideas that appear along the way, not so much the direct solution of the problem. We have then very powerful results, which allow us to prove the transcendence and algebraic independence of many sets of numbers.
+
+There remain however, many open questions. For example, no one knows if $\zeta(5)$ is transcendental (it is not even known if it is irrational). Another example is the algebraic independence of $\pi$ and $e$, which is an open problem. Therefore, we see that transcendental number theory is an opportunity for future research.
+\bibliographystyle{siam}
+\bibliography{Referencias}
+
+\end{document}

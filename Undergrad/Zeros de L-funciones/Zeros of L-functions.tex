@@ -1,0 +1,328 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amscd}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{ mathrsfs }
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\renewenvironment{proof}{\paragraph{\textbf{Proof: }}}{\hfill$\blacksquare$}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+\renewcommand{\baselinestretch}{1.1}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+\begin{document}
+
+\title{The Prime Number Theorem for Arithmetic Progressions. Preliminaries}
+
+\author{J. Ignacio Padilla Barrientos
+}
+
+
+\pagestyle{fancy}
+\fancyhead[]{}
+\lhead{MA-506 Analytic Number Theory}
+\rhead{Prof. Adrián Barquero Sánchez}
+\setlength{\headheight}{13pt}
+
+\address{School of Mathematics, University of Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{juan.padillabarrientos@ucr.ac.cr}
+\begin{abstract}
+    The following work corresponds to the first part of the 2nd partial exam of the course. The main objective corresponds to the exposition and summary of the results necessary for the proof of the prime number theorem in arithmetic progressions. Specifically, the analogous results corresponding to zero-free regions, number of zeros, and the function $\psi$ are presented, which were developed in the course for the function $\zeta$, and are presented for $L$-functions in general. These results correspond to sections $14,16,19$ of the book ``Multiplicative Number Theory'', by Harold Davenport.\\
+
+    \noindent
+    \textit{Keywords: character, non-trivial zero, $L$-function, parity, primitive} \\
+    \textit{Classification:} 11N05
+\end{abstract}
+\maketitle
+\section{Section 14. Zero-free regions for $L(s,\chi)$}
+This section is the direct analogue to section 13 of \cite{HD1974}, where it is shown that the Riemann Zeta function satisfies that there exists a positive constant $c$ such that $\zeta(s)$ has no zeros\footnote{Throughout the section we will denote the argument of complex variable functions as $s=\sigma + it$.} in the region
+$$\sigma \geq 1- \frac{c}{\log t},  \quad  t \geq 2.$$
+We will no longer consider the function $\zeta(s)$ but a function $L(s,\chi)$, where $\chi$ is a Dirichlet character modulo q. The main result of the section is the following
+\begin{theorem}
+    There exists a positive constant $c$ with the following property. If $\chi$ is a complex character modulo $q$, then $L(s,\chi)$ has no zeros in the region defined by
+    \[
+        \sigma \geq
+        \begin{cases}
+            1-\frac{c}{\log q|t|} \text{ if $t \geq 1$} \\
+            1-\frac{c}{\log q} \text{\quad if $t \leq 1$}
+        \end{cases},
+    \]
+    and if $\chi$ is a real character (non-principal), the only possible zero of $L(s,\chi)$ in this region is a simple real zero.
+\end{theorem}
+
+In our case, this time we will assume that $t\geq 0$. This is sufficient for our study of non-trivial zeros, since the zeros of $L(s,\chi)$ with negative imaginary part are precisely the conjugates of the zeros of $L(s,\bar{\chi})$ with positive imaginary part. The first analogous result is an expression for the logarithmic derivative of $L(s,\chi)$, which is obtained by differentiating the corresponding Euler product formula,
+$$-\frac{L'(s,\chi)}{L(s,\chi)} = \sum_{n=1}^{\infty} \Lambda(n)n^{-\sigma}\chi(n)e^{-it\log n},$$
+where, $\Lambda(n)$ is the Von Mangoldt function, defined a few sections back. The above formula holds for $\sigma > 1$. Separating the real and imaginary parts of this expression, and using trigonometric inequalities, we arrive at the inequality
+\begin{align}
+    3\left( - \frac{L'(\sigma,\chi_0)}{L(\sigma,\chi_0}\right) + 4\left(-\Re{\frac{L'(\sigma + it,\chi)}{L(\sigma+it,\chi)}} \right) + \left( -\Re{\frac{L'(\sigma + 2it, \chi^2)}{L(\sigma + 2it, \chi^2)}}\right) \geq 0.
+\end{align}
+Recall that $\chi_0$ is the principal character.
+
+To proceed with the proof, we will first assume that $\chi$ is a primitive complex character (its minimal period is $q$). In this case the proof is easily adapted from the proof for $\zeta(s)$, and it is obtained that
+$$ - \frac{L'(\sigma,\chi_0)}{L(\sigma,\chi_0)} = \sum_{1}^{\infty}\chi_0(n)\Lambda(n)n^{-\sigma} \leq -\frac{\zeta'(\sigma)}{\zeta(\sigma)} < \frac{1}{\sigma -1} + C,$$
+where $C$ is some positive constant (and will continue to be so throughout the work). For the other terms of inequality 1.1, we resort to properties of the function $\gamma$, and arrive at
+$$-\Re{\frac{L'(s,\chi)}{L(s,\chi)}}< C\mathscr{L} - \sum_{\rho} \Re{\frac{1}{s-\rho}},$$
+where $\mathscr{L} = \log q + \log(t+2)$.
+Then, if $t$ is taken as the imaginary part of some non-trivial zero $\rho = \beta + i\gamma$, the inequality is obtained
+$$-\Re{\frac{L'(\sigma + it,\chi)}{L(\sigma+it,\chi)}} < C\mathscr{L} - \frac{1}{\sigma - \beta},$$
+which also works for the other term (the one with $2it$). Combining these three estimates, we obtain
+\begin{align}\frac{4}{\sigma-\beta} < \frac{3}{\sigma-1} + C\mathscr{L}, \end{align}
+and employing algebraic manipulations, it can be shown that \textit{there exists a positive constant $c$ such that if $\chi$ is a complex character modulo $q$, then any zero $\rho=\beta + i\gamma$ of $L(s,\chi)$, satisfies:}
+$$\beta < 1-\frac{c}{\mathscr{L}}$$
+In this case, in the definition of $\mathscr{L}$ we take $t=|\gamma|$.
+
+The case when $\chi$ is a \textbf{real} and primitive character requires a little more analysis, as it is necessary to relate the function $L$ with $\zeta$ in a closer way. Using the following inequality,
+$$\left| \frac{L'(s,\chi_0)}{L(s,\chi_0)} - \frac{\zeta'(s)}{\zeta(s)} \right| \leq \log q,$$
+one can prove, using arguments similar to the complex case, the inequality similar to 1.2, for real characters.
+
+\begin{align}
+    \frac{4}{\sigma-\beta} < \frac{3}{\sigma-1} + \Re{\left(\frac{1}{\sigma-1+2it}\right)}+ C\mathscr{L} ,
+\end{align}
+from which, if we take a non-trivial zero $\rho =\beta + i\gamma$, setting $t=\gamma $ sufficiently large and choosing $\delta$ such that $\sigma = 1+ \frac{\delta}{\mathscr{L}}$, we arrive at the inequality
+$$\beta < 1- \frac{4-5c\delta}{16+5c\delta}\frac{\delta}{\mathscr{L}},$$
+\pagebreak
+
+and if we specifically assume that
+$|\gamma| \geq \frac{\delta}{\log q}$ the result for real characters is obtained:
+
+\textit{There exists a positive constant $c$ such that if $0<\delta < c$, and if $\chi$ is a real (non-principal) character modulo $q$, then any non-trivial zero $\rho = \beta+ i\gamma$ of $L(s,\chi)$ that satisfies $$|\gamma| \geq \frac{\delta}{\log q},$$
+    will satisfy that
+    \begin{align}\beta < 1- \frac{\delta}{5\mathscr{L}},\end{align}
+    where, $\mathscr{L} = \log q + \log(|\gamma| +2)$, and $\sigma = 1+ \frac{\delta}{\mathscr{L}}$}.
+
+A question that naturally arises is: What happens with the other zeros? That is, those whose imaginary part satisfies
+$$|t| < \frac{\delta}{\log q}.$$
+It is shown in the book that zeros of this type (if they exist), can ``disobey'' inequality 1.4. However, by assuming by contradiction the existence of more than one of these zeros, and after studying several possible cases (real and complex zeros), one arrives after certain technical manipulations (whose details do not matter at this moment), that this zero, if it exists, \textit{is unique, simple and real.}
+
+Combining these last results (those highlighted in \textit{italics}), and modifying the indeterminate constants, the main theorem is concluded.
+
+Subsequently, Landau determined that the probability (over $q$) that an $L$ function has this type of ``exceptional'' zeros, is very low. More specifically, he proved that \textit{if $\chi_1,\chi_2$ are real characters modulo $q_1,q_2$ (respectively), and the corresponding $L$-functions have real zeros $\beta_1,\beta_2$, then
+    $$\min{(\beta_1,\beta_2)} < 1 - \frac{c}{\log(q_1 q_2)},$$
+    that is, one of these two zeros is not ``exceptional''.}
+
+The proof of this result proceeds very similarly to the one used at the beginning of the section, but applying it to the (non-primitive) character $\chi_1\chi_2$ modulo $q_1q_2$. The fact that it is not primitive forces some modifications, however they are not so serious.
+
+An important deduction of this result establishes that \textit{of all non-primitive real characters modulo $q$, at most $1$ may possess an ``exceptional'' zero}.
+
+Another small \textbf{corollary} of this result is the fact that it is possible to choose a sequence of numbers $q_1,q_2,\dots$ of integers such that their associated $L$ functions have exceptional zeros. Namely, it suffices to choose $q_{j+1} > q_j^2$ for all $j$. This follows immediately from Landau's result, since
+$$1-\frac{c'}{\log q_j} < 1-\frac{c}{\log q_jq_{j+1}},$$
+for appropriate constants $c$ and $c'$.
+
+In the same line of work, Page proved a slightly stronger result with respect to these exceptional zeros. \textit{Given a real number $z \geq 3$, for some constant $c$, there exists at most one primitive real character $\chi$, modulo $q\leq z$, such that there exists a zero of $L(s,\chi)$ that satisfies
+    $$\beta > 1 - \frac{c}{\log z}.$$}
+This coincides with Landau's result, which states that $L$ series with exceptional zeros are unusual. The proof of this result is almost direct from Landau's, since if one assumes by contradiction the existence of $2$ characters, one arrives at an inequality of the type
+$$\beta > 1- \frac{c}{\log z} \geq 1 - \frac{2c}{\log(q_1q_2)}$$
+(in this case the constant $c$ is the same on both sides).
+This leads to a contradiction, since an incompatibility of the constants occurs (due to how they are chosen\footnote{Strictly speaking, throughout the section it should be necessary to number all constants, however this leads to $25$ different constants, and for simplicity all are denoted as $c$.}).
+
+Finally, it is possible, using the class number formula (which we did not manage to study due to time reasons), to arrive at a slightly weaker bound for the location of exceptional zeros, which states that these zeros are outside a slightly narrower strip, given by
+$$1-\frac{c}{\sqrt{q}\log^2q}.$$
+These last results were deepened to a great extent by Siegel, with a small disadvantage: although in this section many constants were indeterminate, the numerical value of all of them can be estimated\footnote{They are generally called \textit{effective constants}.}. However, in Siegel's works, there seems to be no hope of calculating some of the constants that arise. Siegel's theorems are developed in section $21$ of the book.
+\section{Section 15. The number $N(T, \chi)$}
+This section corresponds to section 15 of the book: The number $N(T)$ and is, naturally, the analogue for $L$ functions of the zero-counting function.
+
+The result that was proved in class says that if $N(T)$ represents the number of non-trivial zeros of $\zeta(s)$ in the rectangle $0<t \leq T$, the asymptotic formula is satisfied
+$$N(T) = \frac{T}{2 \pi}\log{\frac{T}{2 \pi} - \frac{T}{2\pi} + O(\log T)}.$$
+In our case, we are now going to consider a character modulo $q$, its associated $L$-series, and we are going to denote by $N(T, \chi)$, the number of zeros inside the rectangle
+$$0 < \sigma < 1 , \quad |t| < T. $$
+It will no longer suffice (as in the previous section), to study zeros with positive imaginary part, since we do not have the symmetry property that the zeros of $\zeta(s)$ possess. The main result of the section is the following
+\begin{theorem}
+    In the present context, if $T \geq 2$, then
+    $$\frac{1}{2}N(T,\chi) = \frac{T}{2\pi}\log{\frac{qT}{2\pi}} - \frac{T}{2\pi} + O(\log T + \log q).$$\end{theorem}
+The factor of $1/2$ can be easily simplified, however the book adds it to illustrate the effect of doubling the height of the rectangle.
+
+Apparently, the proof follows the same procedure as that of $N(T)$, and due to this the book omits most of the details. The key is, as in the previous section, to concentrate on $\xi(s,\chi)$, instead of $L(s,\chi)$, and observe the variation of the argument $\arg{\xi(s,\chi)}$ along the complex rectangle $R$, with vertices
+$$\frac{5}{2} - iT, \quad \frac{5}{2} + iT, \quad -\frac{3}{2} + iT, \quad -\frac{3}{2}-iT.$$
+Which is chosen differently from the previous section, since there is the possibility of a zero at $s=-1$, and we need to avoid zeros on our contour. It is also known that this rectangle contains at most one non-trivial zero of $L(s,\chi)$, either at $s=0$, or at $s=-1$ (depending on the parity of the character), and therefore, by the argument principle
+$$2\pi[N(T,\chi) + 1] = \Delta_R \arg(\xi(s,\chi)).$$
+It is shown, as in the other section, that the contribution in the integral of the left half of $R$ is equal to that of the right half, which is due to
+$$\arg \xi (\sigma + it, \chi) = \arg\overline{\xi(1-\sigma + it, \chi)}+c,$$
+where $c$ is a constant that does not depend on $s$. This follows from manipulations of the functional equation for $L$-series (Section 9).
+
+Starting now from the definition of $\xi$,
+$$\xi(s,\chi) = \left( \frac{q}{\pi}\right)^{\frac{1}{2}s+\frac{1}{2}\mathfrak{a}}\Gamma \left(\frac{1}{2}s ++\frac{1}{2}\mathfrak{a}  \right)L(s,\chi),$$
+where $\mathfrak{a}$ is $1$ or $0$, depending on the parity of the character. We can decompose it into parts and study the arguments of each of the factors separately. Using the theory of the previous section, it can be determined that
+\begin{align}
+    \Delta \arg \left( \frac{q}{\pi}\right)^{\frac{1}{2}s+\frac{1}{2}\mathfrak{a}} & = T \log\left( \frac{q}{\pi}\right),            \\
+    \Delta \arg \Gamma (\frac{1}{2}s+\frac{1}{2}\mathfrak{a})                      & = T \log \left( \frac{1}{2}T\right) - T + O(1),
+\end{align}
+and, if one manages to prove that
+\begin{align}\arg L \left( \frac{1}{2} + iT, \chi\right) = O(\log T + \log q),\end{align}
+the asymptotic formula would follow from the combination of this with 2.1 and 2.2. To prove the latter, a modification to a lemma from the previous section is presented
+\begin{lemma}
+    If $\rho = \beta + i\gamma$ runs through the non-trivial zeros of $L(s,\chi)$, where $\chi$ is a primitive character, then for any real number $t$,
+    \begin{align}
+        \sum_{\rho} \frac{1}{1 + (t-\gamma)^2} = O(\mathscr{L}),
+    \end{align}
+    where $\mathscr{L} = \log q(|t| +2 )$
+\end{lemma}
+
+\noindent Its proof is omitted in the book. From here it follows, in the same way as when we calculated $N(T)$, that if \textit{$t$ does not coincide with the imaginary part of a zero, and $-1\leq \sigma \leq 2$,}
+$$\frac{L'(s,\chi)}{L(s,\chi)} = \sideset{}{'}\sum_{\rho}\frac{1}{s-\rho} + O(\mathscr{L}),$$
+\textit{where the sum is limited over those $\rho$ that satisfy $|t-\gamma| < 1$.}
+And after dominating this last expression appropriately, and integrating, formula 2.3 is obtained.
+
+Finally, for \textbf{non-primitive} characters once again, a weaker result holds. Over the rectangle $R$ defined previously, we have
+$$N_R(T,\chi) = \frac{T}{\pi}\log\left(\frac{T}{2\pi} \right) + O(T \log q) .$$
+The above formula holds for $T \geq 2$.
+\section{Section 19. An explicit formula for $\psi(x, \chi)$}
+This third section corresponds to the adaptation of section 17 for $L$ functions. In fact, the approach is similar to that of the 2 previous sections. Starting from the argument for $\zeta$, which begins to branch and modify, according to difficulties that arise, whether parity, primitivity, or existence of exceptional zeros of the $L$ functions. For reference, the main result of section $17$ is the exact formula
+$$\psi_0(x) = x - \sum_{\rho} \frac{x^{\rho}}{\rho} - \frac{\zeta'(0)}{\zeta(0)} - \frac{1}{2} \log (1-x^{-2}),$$
+where $\psi_0 = \sum_{n\leq x} \Lambda(n)  \Lambda(x)/2$ and the sum is taken over the non-trivial zeros of $L(s,\chi)$, in a symmetric way (as for $\zeta(s)$). In our case, we will define the analogue for characters of the function $\psi$. We define
+$$\psi(x,\chi) = \sum_{n \leq x} \chi(n) \Lambda(n),$$
+and as in the previous section, it is modified slightly in case $x$ is a prime power, with the sole intention of smoothing the discontinuities at these points. This ``smoothed'' function is called $\psi_0(x,\chi)$ which is, essentially, $\psi(x,\chi)$. The main result of the section is, naturally, \textit{an explicit formula for $\psi_0(x,\chi)$, which will depend solely on the parity of the character.}
+\begin{theorem}
+    Let $\chi$ be a primitive character modulo $q$.
+    If $\chi(-1)=-1$, then
+    $$\psi_0(x,\chi) = -\sum_{\rho}\frac{x^\rho}{\rho} - \frac{L'(0,\chi)}{L(0,\chi)} + \sum_{m=1}^{\infty} \frac{x^{1-2m}}{2m-1}.$$
+    While if $\chi(-1)=1$
+    $$\psi_0(x,\chi) = -\sum_{\rho}\frac{x^\rho}{\rho} - \log x - b(\chi)  + \sum_{m=1}^{\infty} \frac{x^{-2m}}{2m},$$
+    where $b(\chi)$ is a constant that depends on the character in question.
+\end{theorem}
+The proof is in essence, very similar to that of the previous section, even arriving at proving a stronger asymptotic formula, which implies our formulas (as is proven for $\psi$). The idea of the proof is similar: by means of the use of integrals, lemma 2.2, and the functional equation
+$$L(1-s,\chi)= \varepsilon(\chi) 2^{1-s} \pi^{-s}q^{s-\frac{1}{2}}\cos \left(\frac{1}{2}\pi(s-\mathfrak{a}) \right) \Gamma(s)L(s,\overline{\chi})$$
+(where $|\varepsilon(\chi) | = 1$ and $\mathfrak{a} = 0$ or $1$), the result is reached
+\begin{align}
+    \psi_0(x,\chi) = -\sum_{|\gamma| < T} \frac{x^\rho}{\rho} - (1-\mathfrak{a})\log x - b(\chi) + \sum_{m=1}^{\infty} \frac{x^{\mathfrak{a}-2m}}{2m-\mathfrak{a}}+ R(x,T),
+\end{align}
+where\footnote{We adopt the book's notation, saying that $f(x) \ll g(x)$ when $ f(x) = O(g(x))$ when $x$ tends to some specific value.}
+$$|R(x,T)| \ll \frac{x}{T}\log^2 qxT + (\log x)\min\left( 1, \frac{x}{T \langle x \rangle}\right),$$
+and where $\langle x \rangle$ is defined as the distance between $x$ and the nearest prime power (distinct from $x$).
+
+\noindent
+This asymptotic formula corresponds to a finite version of those presented in the theorem, and to obtain both, it suffices to evaluate the value of $\mathfrak{a}$, and send $T \to \infty$.
+
+It turns out that for our final goal (studying the distribution of primes in arithmetic progressions), formula 3.1 is not very useful, since it contains a constant that depends on the character ($b(\chi)$), and furthermore, we do not have good control over the terms $\frac{x^\rho}{\rho}$, since the non-trivial zeros can be very close to $0$ or to $1$ (unlike those of $\zeta(s)$). Furthermore, from the previous section, we know that there is the possibility of an exceptional zero, and it is of interest that our formula isolates the behavior of that zero. Therefore it is necessary to work a little more on formula 3.1.
+
+\noindent After some simplifications and additional assumptions, it is possible to simplify formula 3.1 as follows\footnote{We will make no further distinction between $\psi$ and $\psi_0$, as it is not of interest}:
+\begin{align}\psi(x,\chi) & = - \sum_{|\gamma |< T} \frac{x^\rho}{\rho} - b(\chi) + R_1(x,T),
+             \intertext{where}
+                          & |R_1(x,T)| \ll xT^{-1}\log^2qx.
+\end{align}
+Then, using the expression of the logarithmic derivative of $L(s,\chi)$, studied in section 12, and bounding each of the terms, it is obtained that
+$$b(\chi) = O(1) - \sum_{\rho} \left(  \frac{1}{\rho} + \frac{1}{2-\rho}\right),$$
+This series can be estimated using lemma 2.2 to obtain
+$$b(\chi) = O(\log q) - \sum_{|\gamma| < 1}\frac{1}{\rho},$$
+to finally rewrite 3.2 as
+\begin{align}\psi(x,\chi) & = -\sum_{|\gamma| < T} \frac{x^{\rho}}{\rho} + \sum_{|\gamma| < 1}\frac{1}{\rho} + R_2(x,T),
+             \intertext{where once again, }
+                          & |R_1(x,T)| \ll xT^{-1}\log^2qx.
+\end{align}
+Next, we assume the existence of an ``exceptional'' zero, that is, a non-trivial zero $\beta+i\gamma$ of $L(s,\chi)$ that satisfies
+$$|\gamma| < 1 \quad ,  \quad \beta > 1-\frac{c}{\log q}.$$
+We know, thanks to the functional equation for $L$ functions, that this zero has a reflection about the critical line, that is, we will have another zero with real part $1-\beta$ (this calculation is not direct from the functional equation), which would also be exceptional, if we reflect the zero-free strip. Then, if we denote by $\Sigma'$ the sum over all non-trivial zeros, except these two zeros mentioned, we can write, after bounding some terms, a new more refined expression for 3.4.
+\begin{align}\psi(x,\chi) = -\frac{x^{\beta}}{\beta} - \sideset{}{'}\sum_{\rho} \frac{x^\rho}{\rho} + R_3(x,T)
+    \intertext{where}
+    |R_3(x,T)| \ll xT^{-1}\log^2 (qx) + x^{\frac{1}{4}}\log x.
+\end{align}
+It is important to remember that the term $-\frac{x^{\beta}}{\beta}$ can only appear if $\chi$ is a real character.
+
+Finally, the last improvement that can be made to formula 3.6, is to remove the hypothesis that $\chi$ is a primitive character. The formula in this case, does not suffer any alteration. We can then formulate the main result in its ``final'' version, which we will use in the proof of the prime number theorem for arithmetic progressions (section $20$).
+\begin{theorem}
+    If $\chi$ is a non-principal character modulo $q$, and $2 \leq T \leq x$, then
+    $$\psi(x,\chi) = -\frac{x^\beta}{\beta} -\sideset{}{'}\sum_{\rho} \frac{x^\rho}{\rho} +   R_3(x,T),$$
+    where
+    $$|R_3(x,T)| \ll xT^{-1}\log^2 (qx) + x^{\frac{1}{4}}\log x.$$
+    The term $-\frac{x^{\beta}}{\beta}$ must be omitted, unless $\chi$ is a real character, for which $L(s,\chi)$ has a non-trivial zero $\beta$ (which we know is unique and real) that satisfies
+    $$\beta > 1- \frac{c}{\log q},$$
+    where $c$ is some positive constant, and the sum $\Sigma'$ excludes $\beta$ and $1-\beta$ (if they exist). Furthermore, the term in the error $x^\frac{1}{4} \log x$ can be omitted if $\beta$ does not exist.
+\end{theorem}
+This theorem concludes the preliminaries we need to develop section 20 of the book, which will be done in full detail in part $2$ of the exam.
+\bibliographystyle{siam}
+\bibliography{Referencias.bib}
+\end{document}
