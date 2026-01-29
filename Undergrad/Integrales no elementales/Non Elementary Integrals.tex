@@ -1,0 +1,320 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage[utf8]{inputenc}
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{amscd}        % Package used to produce simple commutative diagrams
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+
+\usepackage{tikz-cd}
+%\setlength\parindent{0pt}
+
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{tikz}
+\usepackage{enumitem}
+\definecolor{mintgreen}{RGB}{152,255,152}
+\definecolor{pinksalmon}{RGB}{255,102,102}
+\definecolor{hueso}{RGB}{245,245,220}
+\definecolor{marfil}{RGB}{255,253,208}
+\definecolor{amarillo}{RGB}{255,255,0}
+\usetikzlibrary{decorations.markings,arrows}
+%\usetikzlibrary{er}
+\usetikzlibrary{decorations.pathreplacing}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[inner=1.0in,outer=1.0in,bottom=1.0in, top=1.0in]{geometry}
+
+
+\numberwithin{equation}{section}
+%\numberwithin{theorem}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+
+%\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\bigcup}}
+%\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\bigcup}}
+\newcommand{\disjoint}{\cdot\!\!\!\!\!\bigcup}
+
+%---------------------------------------
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+%-------------------------------------
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+\newcommand{\spec}[1]{\operatorname{Spec}\   #1}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gal}[1]{\operatorname{Gal}#1}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\Tr}[1]{\operatorname{Tr}#1}
+\newcommand{\Nr}[1]{\operatorname{N}#1}
+\newcommand{\e}{\varepsilon}
+\newcommand{\CM}{\mathcal{CM}}
+
+
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{question}[theorem]{claim}
+
+
+
+\newcommand{\cd}[4]{
+\begin{CD}
+#1    @>>>    #2\\
+@VVV    @VVV\\
+#3    @>>>    #4
+\end{CD}
+}
+
+
+\newcommand{\shortmod}{\ensuremath{\negthickspace \negthickspace \negthickspace \pmod}}
+
+
+
+
+
+\begin{document}
+
+\title{%
+Impossibility of integration in elementary terms. \\ Liouville's theorem.}
+                                        
+\author{J. Ignacio Padilla Barrientos}
+
+\date{}   
+
+\address{School of Mathematics, University of Costa Rica, San Jos\'e 11501, Costa Rica}
+
+\email{padillajignacio@gmail.com}
+
+\begin{abstract}
+In elementary calculus, it is usual to ask whether the antiderivative, or indefinite integral, of a function of one variable can be expressed explicitly as another ``simple'' or ``elementary'' function. Liouville demonstrated in general that the answer is no. In this work, we will explore the proof of Liouville's theorem, which takes elements from Differential Galois Theory and others from Complex Variables.
+\end{abstract}
+
+
+\maketitle
+
+
+\section{Introduction} 
+In different areas of mathematics, it is necessary to solve problems by means of integration. However, it is usual to encounter functions whose integral cannot be computed by means of the Fundamental Theorem of Calculus, as it seems impossible to find an antiderivative with the techniques of elementary calculus. An important example is the function
+$$ \Phi(x) = \frac{1}{\sqrt{2 \pi }} \int_{-\infty}^{x} e^{-\frac{t^2}{2}}dt ,$$
+which is widely used in probability, as it assigns the accumulated area under the Gaussian curve $ y = (1/\sqrt{2 \pi }) e^{-t^2  /2}$. For these applications, it is necessary to know that $\Phi(\infty) = 1$ (which is indeed true). However, the calculation of this result is not done by means of the FTC, but by methods of multivariable calculus, or by complex variable methods. Indeed, we will see that in general, $\Phi(a)$ cannot be calculated by means of the FTC, for any $a$, since this function does not possess a ``simple'' or ``elementary'' antiderivative. \par
+Another notable example, in number theory, has to do with the Prime Number Theorem, where $\pi(x) = \# \{ 1 \leq n \leq x \suchthat n \text{ is prime} \}$ is defined as the function that counts how many prime numbers there are before a real $x$. This function satisfies the asymptotic formula $\pi(x) \sim x/ \log(x)$ when $x \to \infty$. That is
+$$\lim_{x \to \infty} \frac{\pi(x) \log(x)}{x} = 1$$
+Where $\pi(x) = \# \{ 1 \leq n \leq x \suchthat n \text{ is prime} \}$ is the function that counts how many prime numbers there are before a real $x$. In 1838, Dirichlet conjectured a possible better asymptotic approximation for $\pi(x)$, which is given by:
+$\pi(x) \sim \operatorname{Li}(x)$ when $x \to \infty$, where:
+$$ \operatorname{Li}(x) = \int_{2}^{x} \frac{dt}{\log t}$$
+It is known as the \textit{offset logarithmic integral}, his conjecture today bears the name of the theorem, which was proven independently by Hadamard and Vallée Poussin in 1896. As in the previous case, the values of $\operatorname{Li}(x)$ cannot be calculated using the FTC. Note that by taking the change of variable $ u= \log t$ one has the alternative expression
+$$ \operatorname{Li}(x) = \int_{\log 2}^{\log x} \frac{e^u du}{u}.$$
+\par
+Returning to the discussion, the main question is the following: \emph{When can the antiderivative of a function be expressed explicitly, in closed form, and in finite terms, using only ``elementary'' functions?} \par
+It is important to formally define what we refer to as an \textit{``elementary''} function, which will be done later with full rigor, but for the moment, we will think of these functions as functions that are a finite combination of algebraic operations ($+$,$-$,$\times$,$\div$, $\sqrt[n]{\cdot}$) of polynomials, the exponential function, and the natural logarithm (exponentials and logarithms with base different from $e$ can be expressed in terms of the usual exponential and the natural logarithm). Such functions can be taken with complex arguments, therefore, expressions in terms of sines and cosines behave (by considering the function $f(z) = e^{iz}$). Combinations of these functions with any of their inverses are also allowed as elementary functions. Furthermore, the composition of elementary functions is also considered an elementary function. For example,
+$$f(x) = \frac{\arctan{(1+x+8^{\sqrt{1+x^2}}})}{\sqrt[3]{(1+\cos x)}(\log{(\frac{1}{x})})}$$
+is an elementary function (in its maximal domain). \par
+In 1835, Liouville in \cite{MR1578036} determined the impossibility of integration for certain functions, furthermore, he found a criterion to decide whether a given function possesses an elementary antiderivative or not. The modern version taken from \cite{MR0321914} and \cite{BC2005} of this result can be formulated and proven in a purely algebraic manner, by considering \textit{differential fields}, that is fields where a derivation operation is defined. \par
+An interesting observation constitutes that the approach taken to solve this problem is analogous to the one used in Galois Theory, to determine the solvability of polynomials by means of radicals, that is, finding the roots of a polynomial by means of combinations of $n$-th roots, and basic operations from its coefficients. We will see that in our context, instead of polynomials, \textit{differential equations} will be solved over a differential field, where the ``coefficients'' will be the elementary functions, and the ``algebraic'' elements will correspond to the solutions of these equations. Furthermore, we will see that analogously it is possible to find functions that are not solutions of a differential equation, just as it is possible to find transcendental numbers. The proof of the main result can be found in \cite{MR0321914}
+
+\section{Preliminaries}
+\subsection{$\C$-valued functions} \quad \par
+Although the purpose of the work is to study indefinite integrals of real functions, just as in the case of solving polynomials with rational coefficients, extending our work to $\C$ will be very advantageous. We will use $\C$-valued functions, that is, $f:\R \to \C$, such as $e^{ix}$. Thanks to this, it will be possible to express trigonometric functions (and their inverses) in terms of the exponential and the logarithm. Recall that this type of function can be expressed in the form $f(x) = u(x) + iv(x)$, where $u$ and $v$ are real functions, and that, furthermore, $f$ is continuous (or differentiable) if and only if $u$ and $v$ are. Likewise, the integration of $f$ is defined in terms of the integrals of $u$ and $v$. \par
+We say that a $\C$-valued function $f$ is \textbf{analytic} if its real and imaginary parts can be expressed locally as a convergent Taylor series. The property of regularity (being analytic) is preserved under algebraic operations, furthermore it is preserved under differentiation and integration. Even the inverse of an analytic function (at least locally) is also an analytic function, thanks to the inverse function theorem. Finally, the composition of analytic functions will be analytic, thanks to the chain rule.
+\\
+\textbf{Remark:} Using the fact that
+$$ \tan(z) = \frac{e^{iz} - e^{-iz}}{i(e^{iz} + e^{-iz})} , $$
+it is possible, by solving for variables, and noting that the complex logarithm is multivalued (like the inverse tangent), to arrive at the identity
+$$\tan^{-1}(z) = \frac{1}{2i}  \log{\left(\frac{z-i}{z+i}\right)}$$
+considering some appropriate branch of the complex logarithm. This result, together with the identities
+$$\cos^{-1}(x) = \tan^{-1} \left( \sqrt{\frac{1}{x^2} - 1} \right) \quad , \quad \sin^{-1}(x) = \tan^{-1} \left( \frac{1}{\sqrt{1-x^2}}\right)  \quad , \quad  \text{for }|x|<1 , $$ 
+make it possible to express all inverse trigonometric functions by means of logarithms. In other words, we have seen that it is possible to express trigonometric functions and their inverses, by extending the domain of our elementary functions to $\C$. \par
+Since we are going to integrate functions, it is important to omit their singularities, as the functions will not be defined there and that would make it impossible to find an antiderivative. More specifically, we will limit our work to the set of \textit{meromorphic} functions, defined in a certain interval $ I \subseteq \R$. These functions are those that are analytic in $I$, except for an at most countable amount of isolated points, which will be the \textit{poles} of the function. Intuitively, algebraic operations of meromorphic functions are done formally, that is ``ignoring'' the points where these are not defined. Having said this, the set of meromorphic functions on a fixed interval is a \textit{field}, in which we can define the derivation map $f \mapsto f'$, which satisfies the usual rules (chain, quotient, product). The field of meromorphic functions, together with the derivation operator is the context in which we will work, and in which Liouville's theorem applies.
+\section{Elements of Differential Algebra}
+\noindent The present section was adapted from \cite{MR0321914}.
+\begin{definition} A \textbf{differential field} is a field $k$ equipped with a derivation, that is, a function $(\cdot)':k \to k$ such that, for all $a,b \in k$
+\begin{enumerate}
+\item $(a+b)' = a' + b'$
+\item $(ab)' = a'b + ab'.$
+\end{enumerate}
+\end{definition}
+Immediate consequences of this are the properties: $(ab^{-1})'=(ab'-a'b)(b^{-1})^2$ for $b \neq 0 $, and $(a^n)' = na^{n-1}a'$. Furthermore, since $1' = (1^2)' = 1\cdot1' + 1\cdot1' = 1' + 1'$, then $1'=0$. We can now define the subfield of \textbf{constants} of F as the set of $c \in F$ such that $c'= 0$.
+\begin{definition} If $k$ is a differential field and $a,b \in k$, we say that $a$ is an \textbf{exponential} of $b$, or equivalently, that $b$ is a \textbf{logarithm} of $a$, if $b' = a'/a$. Note that this coincides with the differential properties of $e^x$ and $\log(x)$. We then have the logarithmic derivation identity
+$$\frac{(a_1^{p_1} \cdots a_n^{p_n})'}{(a_1^{p_1} \cdots a_n^{p_n})} = p_1\frac{a_1'}{a_1} + \cdots + p_n\frac{a_n'}{a_n}.$$ 
+\end{definition}
+The following result is important for the development of this work, it is proven in detail in \cite{MR0321914}
+\begin{theorem}
+Let $F$ be a differential field of characteristic $0$ and $K$ an algebraic extension of $F$. Then a derivation in $F$ can be extended to a derivation in $K$. Such extension is unique.
+\end{theorem}
+\begin{definition}
+Let $F$ be a differential field, we will say that a differential field $K$ is a \textbf{differential extension of $F$} if the derivation in $K$ extends the derivation in $F$.
+\end{definition}
+\begin{lemma} Let $F$ be a differential field, $t$ a transcendental element over $F$, and $F(t)$ a differential extension of $F$ that has the same subfield of constants. Then
+\begin{enumerate}
+\item If $t' \in F$, then for every non-constant polynomial $f(X) \in F[X]$, $(f(t))'$ is a polynomial in $t$ with coefficients in $F$. The degree of $(f(t))'$ will be the same as that of $f$, except if the leading coefficient of $f$ is a constant. In that case it will be one degree less.
+\item If $t'/t \in F$, then for every $a \in F$ and every non-zero integer $n$, we have that $(at^n)' = ht^n$, for some non-zero $h \in F$. Then for any non-constant polynomial $f(X) \in F[X]$, $(f(t))'$ is a polynomial with coefficients in $F$, of the same degree as $f$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Let us consider first the case $t' \in F$. Let $f(t) = a_nt^n+a_{n-1}t^{n-1}+\dots + a_0$, with $a_i \in F$ for $i = 1,2,...,n$ and $a_n \neq 0 $. Differentiating $f$ we have that
+$$(f(t))' = a'_nt^n + (na_nt'+a'_{n-1})t^{n-1} + \dots + (2a_2t' + a'_1)t + a_1t' +  a_0'.$$
+Then we see that indeed, $(f(t))' \in F[t]$. Observe that if $a_n$ is constant, its derivative is zero and the degree would be reduced by $1$. The degree cannot be reduced further, since if we assume that $a'_n = 0$ and that $na_nt' + a'_{n-1} = 0$ this would imply that $na_nt + a_{n-1}$ is a constant, and therefore $t \in F$, which is contradictory.
+
+Now, if $t'/t \in F$, let $a \in F$ distinct from $0$, and $n \in \mathbb N$ also distinct from $0$. Then
+$$ (at^n)' = a't^n + nat^{n-1}t' = \left(a' + na\frac{t'}{t}\right)t^n.$$
+Note that once again, $\left(a' + na\frac{t'}{t}\right) $ cannot be $0$, since this would imply that $at^n$ is constant and $t \in F$. Then this expression does not vanish. Applying this result to summands of monomials yields the result for polynomials.
+\end{proof}
+\begin{definition}
+Let $F$ be a differential field. We will say that an \textbf{elementary extension} of $F$ is a differential extension that is obtained by adjuting a finite number of elements that are algebraic, exponential, or logarithms. More precisely, it is an extension $F(t_1,...,t_N)$ where, for each $i$, the element $t_i$ is algebraic over $F(t_1,...,t_{i-1})$, or a logarithm (or an exponential) of some element of $F(t_1,...,t_{i-1})$. Each of the intermediate fields will be an elementary differential extension.
+
+\end{definition}
+The following theorem corresponds to a modern version of Liouville's work. Although the original proof from \cite{MR1578036} explores analytical concepts, the problem can be reformulated algebraically in a general way.
+\begin{theorem}[Liouville\footnote{The modern proof is due to Ostrowski, 1946, and was adapted from \cite{MR0321914}.}, 1835]
+Let $F$ be a differential field of characteristic $0$, and let $\alpha \in F$. If the equation $y' = \alpha$ has a solution in some elementary (differential) extension of $F$, whose subfield of constants coincides with that of $F$, then there exist constants $c_1, \dots, c_n \in F$, and elements $u_1, \dots , u_n , v \in F$ such that
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + v'$$
+\end{theorem}
+The converse of the theorem is not complicated to prove. That is, if $\alpha$ has an expression of this type in some elementary extension, then it possesses an integral in said extension.
+\begin{proof}
+By hypothesis, there exists a tower of differential extensions
+$$ F \subset F(t_1)\subset \cdots \subset F(t_1, \dots, t_N)  $$
+Sharing the same field of constants, and where each $t_i$ is algebraic, exponential, or logarithmic over the previous extension. Let $y \in F(t_1, \dots, t_N)$ such that $y' = \alpha$. We will apply induction on $N$. The case $N=0$ is trivial, since the expression for $\alpha$ is itself. Suppose that $N>0$ and that the result applies for $N-1$. Considering one step less in the tower
+$$  F(t_1)\subset \cdots \subset F(t_1, \dots, t_N)  $$
+we can apply the induction hypothesis and deduce that there exists an expression for $\alpha$ of the desired form, but with $u_1, \dots , u_n , v \in F(t_1),$ 
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + v'.$$
+From now on we denote $t_1 = t$. It only remains to find a similar expression for $\alpha$, with the elements we need in $F$.
+
+\textbf{Case 1:} Suppose first that $t$ is algebraic over $F$, in which case it is possible to find polynomials $U_1, \dots, U_n , V \in F[X]$ such that $U_i(t) = u_i$ for $i = 1, \dots, n$, and $V(t)  = v$. Consider now an extension of $F(t)$ containing all conjugates of $t$, and let us call them $\tau_1, \tau_2, \dots, \tau_s$ with $t = \tau_1$. Then we have the expressions $$\alpha = \sum_{i=1}^{n} c_i \frac{(U_i(\tau_j))'}{U_i(\tau_j)} + (V(\tau_j))'$$
+which are valid for $j=1,\dots,s$. Summing all these expressions and dividing by $s$ one arrives at
+$$\alpha = \sum_{i=1}^{n} \frac{c_i}{s}\frac{(U_i(\tau_1) \cdots U_i(\tau_s))'}{(U_i(\tau_1) \cdots U_i(\tau_s))} + \left(\frac{V(\tau_1) + \dots + V(\tau_s)}{s}\right)'$$
+where the logarithmic derivation rule was applied. Note that the expressions $U_i(\tau_1) \cdots U_i(\tau_s)$ and $V(\tau_1) + \dots + V(\tau_s)$ correspond to the norm and trace of $t$ over $F$. Therefore they take values in $F$. Then the previous expression has the desired form for $\alpha$.
+
+\textbf{Case 2:} Let us assume now that $t$ is exponential or logarithmic over $F$, and that furthermore, it is transcendental. Returning to the original expression, it can be written as
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i(t)}{u_i(t)} + (v(t))'$$
+with $u_1(t), \dots, u_n(t) , v(t) \in F(t)$. Now, factoring each $u_i(t)$ into monic irreducible factors (possibly factoring constants along the way), it is possible to rewrite the sum $\sum_{i=1}^{n} c_i u'_i(t)/u_i(t)$ so that all $u_i$ are distinct, monic, and irreducible. Furthermore without loss of generality, it is assumed that none of the $c_i$ is $0$. Now, taking the partial fraction decomposition of $v$, which expresses it as the sum of an element of $F[t]$ plus terms of the form $g(t)/f(t)^r$, where $f$ is irreducible and monic, $r$ is a positive integer, and $g$ has degree lower than that of $f$. To see that all these expressions always sum to $\alpha$, it is convenient to consider two cases.
+
+First assume that $t$ is the logarithm of some element of $F$. That is, $t' = a'/a$, for $a \in F$. Let $f(X)$ be a monic irreducible polynomial in $F[X]$. We know that $(f(t))'$ is also a polynomial with coefficients in $F$, of degree strictly less than that of $f$, and thus we see that $f(t) \nmid (f(t))'$. Then, applying this observation to the $u_i(t)$, we see that the fraction $(u_i(t))'/u_i(t)$ is expressed in canonical form. Now, if $g(t)/f(t)^r$ occurs in the partial fraction decomposition of $v$ (in the form discussed previously). Then $(v(t))'$ consists of several terms containing $f(t)$ in the denominator (at most raised to $r+1$). In particular we have the element $(g/(f^r)') = -rgf'/(f^{r+1})'$. Since $f(t)$ does not divide $g(t)(f(t))'$, we have that a term with denominator $(f(t))^{r+1}$ will appear in $(v(t))'$. All this tells us that $\alpha$ depends on $t$, since it is not possible to get rid of the denominator containing $f(t)$. Clearly $\alpha$ must not depend on $t$, therefore it is erroneous to assume that $f(t)$ appears as a denominator in $v(t)$, nor as one of the $u_i(t)$. Since $f(t)$ is arbitrary, in particular it applies to the $u_i(t)$, which were assumed monic irreducible. That is, it must be that $u_i(t) \in F$, and that $v$ has no denominators in its decomposition, that is, $v(t) \in F[t]$. But since $(v(t))' \in F$, thanks to lemma 3.5, we have that $v(t) = ct +d$, and therefore the expression for $\alpha$ is
+$$\alpha = \sum_{i=1}^{n} c_i \frac{u'_i}{u_i} + c\frac{a'}{a} + d'.$$
+Finally, consider the case where $t$ is the exponential of some element $b \in F$. That is, $t'/t = b$. Reapplying lemma 3.5, we see that $f(t) \nmid (f(t))'$. Repeating the previous reasoning, we conclude that $f$ cannot appear in the denominators of any of the summands of the original expression for $\alpha$ either. Therefore, $v(t)$ is of the form $\Sigma_j a_jt^j$, where $j \in \Z$ and the $u_i(t)$ are elements in $F$ that do not depend on $t$ (except for the possibility that some $u_i$ is the polynomial $t$). Since the expressions $(u_i(t))'/(u_i(t))$ are in $F$, solving from the original formula, we see once again that $(v(t))' \in F$, and therefore $v(t) \in F$ by the lemma. Finally, if each of the $u_i(t)$ are in $F$, then we have the desired expression. If that is not the case, then without loss of generality assume that $u_1(t) = t$, while the others are in $F$. We can then write
+$$\alpha = c_1\frac{t'}{t} +  \sum_{i=2}^{n} c_i \frac{u'_i}{u_i} + v' = \sum_{i=2}^{n} c_i \frac{u'_i}{u_i}  + (c_1b + v)'$$
+where $u_2,\dots,u_n, c_1b+v \in F$. This ends the proof.
+\end{proof}
+\section{Elementary Functions}
+We will return again to the context of interest, which is the field of meromorphic functions, with the usual derivative. This section is largely based on \cite{BC2005}.
+\begin{definition}
+If $f_1, \dots, f_n$ are meromorphic functions of a variable $x$, then $\C(f_1,...,f_n)$ denotes the field of meromorphic functions consisting of rational expressions in variables $x,f_1, \dots, f_n$. That is, functions of the form
+$$ h(x) = \frac{p(x,f_1,\dots,f_n)}{q(x,f_1,\dots,f_n)},$$
+where $p$ and $q$ are polynomials in $\C[X_0,X_1,\dots,X_n]$, and $q \neq 0$. Recall that it is possible that these expressions are not defined, thanks to the poles of the functions, however the domain can always be restricted. The expected definition of an elementary function is presented below.
+\end{definition}
+\begin{definition}
+A differential field $K$ of meromorphic functions is said to be \textbf{elementary} if it is an elementary extension of $\C(X)$ of the form $K = \C(f_1,\dots,f_n)$. A meromorphic function is \textbf{elementary} if it belongs to some elementary field of meromorphic functions.
+\end{definition}
+\begin{remark}
+Recall that when extending a differential field, it is possible to extend the derivation. This in particular tells us that elementary fields are closed under differentiation. Or in other words, \textit{the derivative of an elementary function is an elementary function.}
+\end{remark}
+\begin{remark}
+It is important to emphasize that not every field of the form $\C(f_1,\dots,f_n)$ is a differential field. For example $\C(\sin (x),\cos (x))$ is a differential field (in fact it is elementary, thanks to Euler's identities), but $\C(\sin (x))$ is not, since the derivative of $\sin(x)$ is not defined there. \end{remark}
+We now have one of the most important definitions of the work:
+\begin{definition}
+A meromorphic function $f$ can \textbf{be integrated in elementary terms} if $f=g'$, for some elementary function $g$. Observe that this implies that $f$ is elementary.
+\end{definition}
+We are then in a position to formulate Liouville's theorem in terms of elementary integrability of $\C$-valued functions. Note that in this case, all elementary extensions of the complex numbers share the same field of constants ($\C$ properly).
+\begin{theorem}[Liouville] Let $f$ be an elementary function, and let $K$ be an elementary field containing $f$. Then the function $f$ can be integrated in elementary terms if and only if there exist $c_1, \dots, c_n \in \C$, $g_1, \dots, g_n \in K$, and an element $h \in K$ such that
+$$ f = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+\end{theorem}
+Note that this is a simple reformulation of theorem 3.7. Recall also that the expressions $g'_j/g_j$ are logarithmic derivatives of the functions $g_j$.
+
+This theorem is a very strong tool for determining integrability, since it imposes very rigid conditions about what type of functions can be integrated in elementary terms. This theorem can be considered as a distant analogue to Galois' theorem on solvability of polynomials, which establishes that a polynomial can be resolved by radicals if and only if its Galois group is solvable.
+
+Before talking about examples it is important to emphasize an important point regarding these results, which is the importance of working over the complex numbers. If the results presented here were applied to the field of real numbers, Liouville's criterion would still be valid, but it does not work as expected. As an example, one can consider $f(x) = 1/(1+x^2)$. The antiderivative of this function is the inverse tangent, as any student of differential calculus will note. However, upon applying Liouville's criterion to this function, it is obtained that this function is not integrable in elementary terms over $\R$ (the reader can verify that it is impossible to write $f$ in the form required in the theorem). This is directly due to the fact that trigonometric functions are not exponential nor logarithmic over any elementary extension of $\R$.
+\section{Examples and Applications}
+
+The applications of Liouville's theorem are taken from \cite{RC2016} and \cite{BC2005}. We begin with a direct corollary of theorem 4.6
+\begin{corollary}
+Let $E$ be an elementary field, and let $g \in E$. Let $K(l)$ be an elementary extension of $E$, where $l$ is the exponential of $g$ (we can write it as $l=e^g$ since we are already working in $\C$). Let $f \in E$ be arbitrary. Then $fl=fe^g$ is integrable in elementary terms over some extension of $K$ if and only if there exists an element $a \in E$ such that $$f = a' + ag'$$
+or equivalently
+$$fe^g = (ae^g)'.$$
+\end{corollary}
+\begin{proof}
+Let us assume integrability, this guarantees the existence of $c_j \in \C$, and functions $g_j,h \in K$ such that
+$$ fl = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+Then, taking the right side as a function of $l$, and arguing similarly to the proof of Liouville's theorem (for the case $t$ transcendental and exponential), it is concluded that the monomial $l$ is the only monic irreducible factor that can appear in the partial fraction decomposition of $h$, besides being the only possible option for the $g_j(l)$ (except clearly being constants). Similarly to the proof of the theorem, one arrives at an expression for $fl$ of the form
+$$fl = c + \sum_{j=-t}^{t}k'_jl^j + g' \sum_{j=-t}^{t}jk_jl^j$$
+with coefficients $k_j \in E$ (recall that $l'/l = g'$). Then, comparing coefficients of equal power on each side of the equality, we have that $fl = k'_1 + k_1g'$, exactly what we are looking for. Finally, the converse is obvious, when sufficient hypotheses are met, then the antiderivative of $fe^g$ is given directly by $ae^g$.
+\end{proof}
+\begin{example}
+The function $f(x) = e^{-x^2}$ has no elementary primitive.
+
+Observe that we will work over the elementary field $K = \C(e^{-x^2})$. Then it suffices to show that there is no $a \in \C(x)$ such that $1=a'-2ax$. Suppose that $a = p/q$ is such a function, and without loss of generality, that $p$ and $q$ are coprime. Then
+\begin{align*}
+1=a'-2ax &\Rightarrow 1=\frac{qp'-q'p}{q^2} - 2\frac{px}{q} \\
+&\Rightarrow q^2 = qp'-q'p -2xqp \\
+&\Rightarrow q(q+2px-p') = -q'p \\
+&\Rightarrow q\mid q'p \\
+&\Rightarrow q\mid q' \\
+&\Rightarrow q' = 0.
+\end{align*}
+Then $q$ must be a constant. Then $a$ is a polynomial, and the expression $1=a'-2ax$ becomes absurd after a brief inspection of degrees. We have demonstrated that the values of Gaussian functions (like the error function $\operatorname{erf}(X)$) cannot be calculated by means of the fundamental theorem of calculus directly. This does not imply in any way that the linear differential equation $1=a'-2ax$ cannot be solved. Simply, it cannot be solved in elementary terms (we re-emphasize the analogy with insolvable polynomials).
+\end{example}
+\begin{example}
+A less concrete example deals with the family of elliptic integrals, which are integrals of the form $\int dx/\sqrt{P(x)}$, where $P(x)$ is a cubic or quartic polynomial. Such integrals arise in calculations of arc lengths along ellipses and similar curves. In general, if $P$ has degree greater than or equal to $3$, and has no repeated roots, the integral $\int dx/\sqrt{P(x)}$ is not an elementary function. Thanks to Liouville's theorem, it suffices to study the existence of complex coefficients $c_i$ and functions $g_j$ in $\C(\sqrt{P(x)})$ such that
+$$ \frac{1}{\sqrt{P(x)}} = \sum_{j=1}^{n}c_j\frac{g'_j}{g_j} + h'.$$
+Such impossibility is due to the theory of Riemann surfaces, which corresponds to advanced geometric results, so it will be omitted.
+\end{example}
+\begin{example}
+Returning to the example in the introduction, we saw that calculating the logarithmic integral is equivalent to calculating the integral
+$$ \operatorname{Li}(x) = \int_{\log 2}^{\log x} \frac{e^u du}{u}.$$
+However, applying corollary 5.1 to this function, we see that we need to find a rational function $a$ that solves the differential equation $1/x = a' + a$. The verification of the impossibility of this fact is left to the reader (it is argued similarly to example 5.2). So we have seen that a function so central in number theory evades the basic tools of calculus.
+
+In fact, employing corollary 5.1, and with the help of some changes of variable, it is possible to demonstrate that the following functions do not have an elementary primitive:
+\begin{itemize}
+\item $f(x) = e^{e^{x}}$
+\item $f(x) = 1/\log(x)$
+\item $f(x) = \log(\log(x))$ (here it is necessary to apply integration by parts).
+\end{itemize}
+\end{example}
+\section{Conclusion}
+The algebraic study of differential equations has yielded many fruits, and Liouville's theorem represents one of the first advances in this area. Later, in the 20th century, Risch developed an algorithm that is capable of calculating the antiderivative of a function, which is strongly based on the necessary expression given by the theorem.
+
+Additionally, in \cite{MR0028347}, a classification of the types of functions is given, according to the type of extension necessary to include it in a field. As in Galois theory, there are algebraic and transcendental functions, which correspond adequately to those functions that are solutions to polynomials with constant coefficients, and those that are not, respectively. Simple examples of algebraic functions are rational expressions, including polynomials. Examples of transcendental functions are: the exponential function, the logarithm, and the trigonometric ones. However, by means of differential extensions, it is possible to characterize these latter functions as solutions of differential equations, with elementary coefficients. There exists a third type of functions, which have no direct analogue in field theory, which were called hypertranscendental functions, which are not solution of any differential equation with elementary coefficients. Notable examples of hypertranscendental functions over $\C$ are the functions $\Gamma(s)$ and $\zeta(s)$.
+\bibliographystyle{siam}
+\bibliography{Referencias}
+
+
+
+\end{document}
