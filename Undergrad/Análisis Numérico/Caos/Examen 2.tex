@@ -1,0 +1,580 @@
+\documentclass[a4paper, 11pt,spanish]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{spanish}
+\begin{document}
+
+\noindent
+\large\textbf{Universidad de Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize Escuela de Matemáticas \hfill Carné: B55272 \\
+MA-501 Análisis Numérico \hfill Prof. Juan Gabriel Calvo \\
+Segundo Examen Parcial \hfill \today
+\justifying
+\section*{II Examen Parcial}
+\subsection*{Problema 1.}
+Considere una matriz $A\in \mathbb{C}^{m \times n}$. Demuestre que el conjunto de valores propios no nulos de $A^*A$ y el conjunto de valores propios no nulos de $AA^*$ es el mismo.¿Qué ocurre con los valores propios nulos?
+
+\textbf{Solución: } Sean $\lambda \neq 0$ y $\bm{v} \neq 0$ tales que $A^*A\bm{v}=\lambda \bm{v}$. Entonces $AA^*Av=\lambda A \bm{v}$. Como $\lambda \neq 0$ y $\bm{v} \neq 0$, entonces $A\bm{v} \neq 0$ (pues del contrario $A^*A\bm{v}=0$). Entonces $A\bm{v}$ es un vector propio de $AA^*$, y $\lambda$ es un valor propio de esta matriz. Por simetría se obtiene la otra inclusión.
+Ahora, si $\lambda =0$, Sabemos que $A^*A\in \mathbb{C}^{n\times n}$ y $AA^* \in \mathbb{C}^{m \times m}$ comparten los valores propios no nulos, si algún valor propio no es común, debe ser 0. Sin embargo, no es correcto asegurar que ambas matrices tendrán al menos un valor propio 0, por motivos de tamaño. Más específicamente, si asumimos $m>n$, y $n$ es el número de valores propios no nulos de $A^*A$ (y de $AA^*$), se verifica que $AA^*$ tiene valores propios nulos (pues debe tener $m$ valores propios en total), mientras que $A^*A$ no (pues tendrá rango completo). Por lo tanto en general si $\lambda=0$ \textbf{el resultado no vale}.
+\textbf{Nota: } Si $m=n$ entonces el resultado sí vale (por el teorema $5$.$16$).
+
+\subsection*{Problema 2.}
+Dado $\bm{v} \in \mathbb{R}^n$, considere el operador dado por
+$$F = I-2\frac{\bm{vv^*}}{\bm{v^*v}},$$
+donde $I\in \mathbb{R}^{n \times n}$ es la matriz identidad.
+\begin{enumerate}[a)]
+\item Demuestre que F es ortogonal
+
+\textbf{Solución: } Tenemos que 
+ $$F^T = I^T - 2\frac{\bm{vv}^*}{||\bm{v}||^2} = F$$
+ Entonces calculamos $F^TF$,
+ \begin{align*}
+ F^TF &= \left(I - 2\frac{\bm{vv}^*}{||\bm{v}||^2} \right)  \left(I - 2\frac{\bm{vv}^*}{||\bm{v}||^2} \right)  \\
+ &= I-2\frac{\bm{vv}^*}{||\bm{v}||^2}-2\frac{\bm{vv}^*}{||\bm{v}||^2}+4\frac{\bm{vv}^*\bm{vv^*}}{||\bm{v}||^4} \\
+ &=I-4\frac{\bm{vv}^*}{||\bm{v}||^2} + 4||\bm{v}||^2\frac{\bm{vv}^*}{||\bm{v}||^4} \\
+ &= I\\
+ \end{align*}
+Por lo que concluímos que $F$ es un operador ortogonal (y simétrico).
+
+\item Caracterice los valores y vectores propios de $F$.
+
+\textbf{Solución: }Primero, note que los valores propios de $F$ son reales, por (a). Suponga que $F\bm{x} = \lambda \bm{x}$. Entonces $||F\bm{x}||^2 = |\lambda|^2 ||\bm{x}||^2$. Ahora, como
+\begin{align*}
+||F\bm{x}||^2 &= \bm{x}^TF^TF\bm{x} \\
+&= \bm{x}^T\bm{x} \\
+&= ||\bm{x}||^2 
+\end{align*}
+Se debe cumplir que $|\lambda| = 1$. Por lo que los valores propios de $F$ deben ser $\pm 1$. 
+
+Ahora, para encontrar los vectores propios, es preciso recordar la definción geométrica de $F$. Sabemos que $F\bm{x}$ consiste en la reflexión de $\bm{x}$ sobre el hiperplano ortogonal a $\bm{v}$ (este hiperplano a saber, es $(\operatorname{Gen} \{\bm{v}\})^T$. Por lo tanto, si tomamos $\bm{x} \perp \bm{v}$, claramente se tendrá que 
+$$F\bm{x} = \bm{x} - 2\frac{\bm{v}}{||\bm{v}||^2}\bm{v}^*\bm{x} = \bm{x}$$
+(Recuerde que hay que considerar a $\bm{v}$ como un vector columna.)
+
+Por lo tanto, todos los vectores ortogonales a $\bm{v}$ son autovectores asociados a $1$. En particular, se pueden encontrar $n-1 = \dim((\operatorname{Gen} \{\bm{v}\})^T)$ autovectores l.i asociados a $1$.
+
+Por último, note que
+$$F\bm{v} = \bm{v} - 2\frac{\bm{v}}{||\bm{v}||^2}\bm{v^*v} = \bm{v}-2\bm{v}=-\bm{v}$$
+Por lo que $\bm{v}$ es el vector propio (l.i a los demás) asociado a -1.
+
+\item Determine los valores singulares de $F$.
+
+\textbf{Solución: } Los valores singulares de $F$ son las raíces cuadradas de los valores propios de $F^TF = I$, entonces son todos 1.
+
+\end{enumerate}
+\subsection*{Problema 3.}
+Demuestre que el factor de crecimiento de una matriz $A\in \mathbb{C}^{m \times m}$ (al utilizar pivoteo parcial) satisface $\rho \leq 2^{m-1}$.
+
+\textbf{Solución: } Vamos a usar inducción sobre el número de pasos del pivoteo parcial. Sea $U_k = (u^{(k)}_{ij})$ la matriz obtenida después de la $k-$ésima reducción (o sea, la matriz obtenida depués de pivotear y realizar operaciones de fila). Para $k=1$, tenemos que, gracias al pivoteo, 
+$$\left| \frac{a_{i1}}{a_{11}}\right| \leq 1  \quad \quad \text{para } i=1,\dots,m$$
+Entonces para $i\geq2 , j\geq1$, se tiene\footnote{Note que la primera fila de $U_1$ es la misma de $A$.}
+\begin{align*}
+ |u^{(1)}_{ij}| &\leq \left| \frac{a_{i1}}{a_{11} }a_{1j}\right| + |a_{ij}| \\ &\leq |a_{1j}| + |a_{ij}| \\
+&\leq 2 \max_{i,j}|a_{ij}|
+\end{align*}
+Por lo que
+$$\frac{ \max_{i,j}|u^{(1)}_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2$$
+Inductivamente, si se asume el resultado para la $k-$ésima reducción, es decir, para $k<m-1$
+$$\frac{ \max_{i,j}|u^{(k)}_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2^k$$
+Vemos que una vez más, gracias al pivoteo parcial, se tiene que para $i=k+1,\dots,m$,
+$$\left|\frac{u^{(k)}_{i,k+1}}{u^{(k)}_{k+1,k+1}}\right| \leq 1$$
+Entonces se tiene que, para $i\geq k+2 , j\geq k+1$,
+\begin{align*}
+ |u^{(k+1)}_{ij}| &\leq \left|\frac{u^{(k)}_{i,k+1}}{u^{(k)}_{k+1,k+1}}u^{(k)}_{kj}\right|+ |u^{(k)}_{ij}| \\ &\leq |u^{(k)}_{kj}|+|u^{(k)}_{ij}|\\
+&\leq 2 \max_{i,j}|u^{(k)}_{ij}| \\
+&\leq 2^{k+1}\max_{i,j}|a_{ij}|
+\end{align*}
+Lo cual implica el paso inductivo, porque las demás entradas de $U_{k+1}$ no fueron alteradas.
+
+\noindent Por lo tanto, al terminar la reducción (después de $m-1$ pasos, ya que la última fila no se puede pivotear), se obtiene el resultado tomando $U=U_{m-1}$
+$$ \rho(A) = \frac{ \max_{i,j}|u_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2^{m-1}.$$
+\subsection*{Problema 4.}
+Sean $A\in \mathbb{C}^{m \times m}$ y $\bm{x} \in \mathbb{C}^m$ dados. Considere el problema de mínimos cuadrados: Encontrar $\alpha \in \mathbb{C}$ tal que $|| \alpha \bm{x} - A\bm{x}||_2 \to \min{}$. Encuentre el valor de $\alpha$, en términos de $A$ y $\bm{x}$.
+
+\textbf{Solución: }
+\begin{align*}
+||\alpha \bm{x} - A\bm{x}||^2_2 &= (\bar{\alpha}\bm{x^*}-\bm{x^*A^*})(\alpha\bm{x}-A\bm{x}) \\
+&= |\alpha|^2 ||\bm{x}||^2_2 - \bar{\alpha}\bm{x^*}A\bm{x} - \alpha \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2 \\
+&=(u^2+v^2)||\bm{x}||^2_2- (u-vi)\bm{x^*}A\bm{x} - (u+vi) \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2 \\
+\end{align*}
+En donde escribimos $\alpha = u+vi$. Entonces vamos a optimizar las partes real e imaginarias por aparte. Defina
+$$f(u,v)=(u^2+v^2)||\bm{x}||^2_2- (u-vi)\bm{x^*}A\bm{x} - (u+vi) \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2$$
+Entonces
+$$\frac{\partial f}{\partial u}(u,v) = 2u||\bm{x}||^2_2-\bm{x^*}A\bm{x}-\bm{x}^*A^*\bm{x}$$
+$$\frac{\partial f}{\partial v}(u,v) = 2v||\bm{x}||^2_2+(\bm{x^*}A\bm{x}-\bm{x^*}A^*\bm{x
+})i$$
+Por lo que el punto crítico de $f$ (donde $\nabla f = 0$) viene dado por
+$$(u,v)= \left( \frac{\bm{x^*}(A^*+A)\bm{x}}{2||x||^2_2},  \frac{\bm{x^*}(A^*-A)\bm{x}}{2i||x||^2_2}\right)$$
+Es fácil ver que $(u,v)$ es un mínimo, pues $f_{uu} > 0$ y 
+$$H=f_{uu}f_{vv}-f^2_{uv} = ||\bm{x}||^4_2>0$$
+Por lo que 
+$$\alpha = \frac{\bm{x^*}(A^*+A)\bm{x}}{2||x||^2_2}+  \frac{\bm{x^*}(A^*-A)\bm{x}}{2i||x||^2_2}i = \frac{\bm{x^*}A^*\bm{x}}{||x||^2_2}$$
+Minimiza el valor $||\alpha x - Ax||_2$. (Note que minimizar el cuadrado de una función positiva equivale a minimizar la función).
+\subsection*{Problema 5.}
+Una ecuación diferencial que modela el movimiento de un péndulo simple con amortiguamiento corresponde a 
+$$\frac{d^2\theta}{dt^2} + \gamma\frac{d\theta}{dt}+\omega^2\sin{(\theta)} = 0,$$
+donde asumimos que $\gamma$ y $\omega$ son constantes (relacionadas con el amortiguamiento y la velocidad angular). Además, $\theta=\theta(t)$ representa la medida del ángulo del péndulo con respecto a la vertical en el tiempo $t >0$ (ver Figura 1). En este ejercicio tomaremos $\gamma = 0.1$, $\omega^2 = 5/4$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.30]{Figura1.PNG}
+\end{figure}
+\begin{enumerate}[a)]
+\item Considere las condiciones iniciales $\theta(0) = \pi/4$, $\theta'(0)=0$. Mediante el comando  \texttt{ode45} de \texttt{MATLAB}, grafique la solución $\theta$ en función de $t$, para $t \in [0,50]$. Grafique además la velocidad angular $\theta'$ en función de $\theta$. ¿Qué puede concluir del gráfico?.
+
+\textbf{Solución: } Para poder usar el comando de \texttt{MATLAB} primero hay que convertir el problema en un sistema de ecuaciones. Sea $\beta = \theta'$. Entonces tenemos el sistema
+\[
+\begin{cases}
+\theta' = \beta \\
+\beta' = -\gamma \beta - \omega^2 \sin(\theta)
+\end{cases}
+\]
+Con condición inicial $(\theta(0),\beta(0)) =( \pi/4 , 0)$
+Al implementar el comando \texttt{ode45} se obtiene la gráfica $1$. (Siguiente página). En la cual se puede observar que la amplitud de oscilamiento (la diferencia entre los valores máximos de $\theta$ en cada periodo) disminuye lentamente conforme $t$ avanza. Posiblemente en tiempo infinito el péndulo se detendrá.
+
+Además, en la gráfica $2$ se ilustra la velocidad en función de la posición. Se puede observar que en el punto de inicio (a la derecha) la velocidad es la inicial, y el oscilamiento comienza hacia la izquierda, la velocidad decrece (por convención, un desplazamiento a la izquierda se considera negativo). Una vez más, vemos que la magnitud de la velocidad disminuye continuamente, hasta posiblemente llegar a $0$ en el infinito.
+\pagebreak
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.50]{Grafica1.eps}
+
+        \includegraphics[scale=0.60]{Grafica2.eps}
+\end{figure}
+
+\pagebreak
+\item Repita el inciso (a) con condiciones iniciales $\theta(0) = \pi$, $\theta'(0) = -0.5$.
+
+\textbf{Solución: } Se repite, tomando el ángulo inicial más amplio, y con un empujón inicial. Se obtienen las gráficas $3$ y $4$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.46]{Grafica3.eps}
+
+        \includegraphics[scale=0.55]{Grafica4.eps}
+\end{figure}
+El esquema general es muy parecido, con la única diferencia siendo la perturbación inicial que se obtiene por el empujón, la cual se amortigua rápidamente. Pareciera que este modelo de péndulo es estable. \pagebreak
+
+\item Repita el inciso (a) con condiciones iniciales $\theta(0) = \pi$, $\theta'(0) = 0$. ¿Qué ocurre en este caso?¿Se puede decir que $(\theta,\theta') = (\pi,0)$ es un punto estable o inestable a partir del gráfico?
+
+\textbf{Solución: } Esta vez se obtienen las gráficas $5$ y $6$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.50]{Grafica5.eps}
+
+        \includegraphics[scale=0.45]{Grafica6.eps}
+\end{figure}
+Las cuales predicen que el péndulo se mantendrá estático durante algunos segundos, y luego resume su camino. Numéricamente, parece que el punto $(\theta,\theta') = (\pi,0)$ \textbf{no es estable}, puesto que la gráfica se aleja eventualmente del punto.
+\item Construya una función que grafique el movimiento físico del péndulo (tal como uno lo observaría), con entradas $t$,$\theta$ y la longitud $L$ de la cuerda. Grafique el movimiento del péndulo para los resultados obtenidos en la parte (a) y en la parte (c), tomando \quad \quad \quad\quad \quad \quad $L=1$.¿Tiene sentido físico el comportamiento del péndulo en cada caso?
+
+\textbf{Solución: } Se adjuntaron los scripts \texttt{Animacion\string_a.m} y \texttt{Animacion\string_c.m}, los cuales animan el movimiento del péndulo en ambos casos. Los scripts se deben correr manualmente.
+
+En el caso a), se puede ver que la trayectoria del péndulo es bastante fiel a lo que se esperaría en la vida real. Se ve donde el péndulo comienza a moverse desde el punto de mayor energía potencial, y su amplitud de oscilamiento disminuye poco a poco. Se conluye que sí es \textbf{fiel} a la vida real
+
+En el caso c), se puede observar que el péndulo comienza inmóvil durante un pequeño periodo, y luego resume su trayectoria esperada, lo cual podría suceder gracias a la más mínima perturbación. Sin embargo, si se asume que el cable es rígido, se podría argumentar que el péndulo debería estar en perfecto equilibrio sobre su eje, ya que el modelo no incluye perturbaciones (se cree que estas surgen numéricamente por la naturaleza del método). Alternativamente, se podría considerar que el cable no es rígido, y por lo tanto el modelo no tendría sentido alguno, pues la masa no puede quedarse flotando. Se concluye que, bajo algunos supuestos, el modelo es \textbf{fiel} a la vida real.
+
+\item Utilice el comando \texttt{quiver} para graficar el diagrama de fase de la ecuación diferencial. Grafique en el mismo gráfico $(\theta,\theta')$ para condiciones iniciales  $$(\theta,\theta') = \left(\frac{\pi}{4} , 2\right)$$  $$(\theta,\theta') = \left(\frac{\pi}{4} , \frac{5}{2}\right)$$
+Comente sus resultados. El comando \texttt{meshgrid} puede ser de utilidad.
+
+
+\textbf{Solución: se decidió omitir.}
+
+
+\end{enumerate}
+\subsection*{Problema 6.}
+Considere el sistema de ecuaciones diferenciales
+\[ \begin{cases}
+x'=\sigma(y-x) \\
+y'= x(\rho - z) - y \\
+z' = xy - \beta z \\
+\end{cases}
+\]
+donde $\sigma, \rho, \beta$ son constantes, $x=x(t)$, $y=y(t)$, $z=z(t)$. En este ejercicio, tomaremos $\sigma = 10$, $\rho = 28$ , $\beta = 8/3$.
+\begin{enumerate}[a)]
+\item Implemente una función en \texttt{MATLAB} que efectúe el Método de Newton para resolver la ecuación
+\[ \begin{cases}
+0= \sigma(y-x) \\
+0= z(\rho - z)-y \\
+0= xy - \beta z \\
+\end{cases}
+\]
+Aproxime con dicha función todos los puntos de equilibrio del sistema de ecuaciones diferenciales.
+
+\textbf{Solución: }Se implementó la función \texttt{NewtonMulti} en los archivos. Al aplicar el método para distintos valores iniciales en $[-21,21]^3$, se identificaron $3$ soluciones del sistema:
+\begin{align*}s_1 = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}\quad &; \quad s_2 = \begin{pmatrix} 8.485281374 \\ 8.485281374\\ 27 \end{pmatrix}  \quad ; \quad 
+s_3 = \begin{pmatrix} -8.485281374 \\ -8.485281374\\ 27 \end{pmatrix} \end{align*}
+
+\item Resuelva la ecuación con condiciones iniciales $(x(0),y(0),z(0))=(1,1,1)$ para $t \in [0,100]$, y denote esta solución por  $(x_1,y_1,z_1)$.
+
+\textbf{Solución: } Se resolvió usando el comando \texttt{ode45}
+
+\item Resuelva la ecuación con condiciones iniciales $(x(0),y(0),z(0))=(1,1,1.00001)$ para $ \quad \quad \quad t \in [0,100]$, y denote esta solución por  $(x_2,y_2,z_2)$.
+
+\textbf{Solución: } Se resolvió usando el comando \texttt{ode45}
+
+\item En un mismo gráfico (en tres dimensiones), plotee las trayectorieas $(x_i(t),y_i(t),z_i(t))), i \in \{1,2\}$ así como los puntos de equilibrio. Comente sus resultados. Sugerencia: utilice el comando \texttt{plot3}.
+
+\textbf{Solución: } Al graficar en $3$ dimensiones las trayectorias de las funciones con distintas condiciones iniciales, y los puntos de equilibrio, se obtiene la gráfica $7$, la cual se presenta desde $2$ perspectivas distintas.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.39]{Grafica7.eps}
+
+        \includegraphics[scale=0.39]{Grafica7_1.eps}
+\end{figure}
+\pagebreak
+A simple vista, las trayectorias no parecen estar demasiado alejadas, por lo que se podría decir a primera instancia que la solución \textbf{es estable} para estas condiciones. Sin embargo, la gráfica es demasiado complicada como para decirlo con seguridad, como se verá a continuación.
+
+\item Plotee la distancia 
+$$d(t) = \sqrt{(x_1(t) - x_2(t))^2 + (y_1(t) - y_2(t))^2 + (z_1(t) - z_2(t))^2}$$
+en función de $t$. Comente el comportamiento de la gráfica. Sugerencia: el comando \texttt{deval} puede ser de utilidad.
+
+\textbf{Solución: } Se graficó la distancia entre ambas trayectorias, en intervalos de tiempo de $t=0.1$s. Se obtiene la gráfica $8$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.39]{Grafica8.eps}
+\end{figure}
+
+De donde se puede deducir que en realidad, las trayectorias divergen bastante, llegando a estar hasta a $50$ unidades de distancia! Claramente, este problema de valores iniciales \textbf{no es estable}, aunque la trayectoria total de ambas soluciones pareciera ser la misma.
+\end{enumerate}
+
+
+\subsection*{Problema 7.}
+Dado $n$ entero positivo, sea $\mathbb{P}_n$ el espacio de polinomios de grado a lo sumo $n$ con coeficientes reales definidos en el intervalo $[-1,1]$. Defina el operador diferencial $\mathcal{L}:\mathbb{P}_n \to \mathbb{P}_n$ dado por
+$$\mathcal{L}P(x) = (1-x^2)\frac{d^2P(x)}{dx^2} - 2x\frac{dP(x)}{dx}.$$
+En este ejercicio deseamos aproximar los valores propios y funciones propias del operador diferencial. Al ser $\mathbb{P}_n$ un espacio de dimensión finita, es posible escribir la acción del operador $\mathcal{L}$ como una matriz $A \in \mathbb{R}^{n \times n}$ que actúa en los coeficientes de cada polinomio.
+\begin{enumerate}[a)]
+\item Escriba $p(x) = \sum_{k=0}^{n} b_kx^k$, donde $\bm{b} = [b_0,\dots,b_n]^T$ representa el vector de coeficientes. Determine la matriz $A$ tal que $\bm{c} = A\bm{b}$ da el vector con coeficientes de la imagen $ \quad \quad \quad \quad \mathcal{L}P(x)= \sum_{k=0}^{n} c_kx^k$.
+
+\textbf{Solución: } Note que $\mathcal{L}$ es un operador lineal, por lo que basta calcular su acción en la base del espacio para determinarlo completamente. Veamos que
+$$\mathcal{L}(1)=0$$
+$$\mathcal{L}(x)=-2x$$
+Y para $k\geq 2$,
+\begin{align*}
+\mathcal{L}(x^k)&=(1-x^2)(k^2-k)x^{k-2} - 2kx^k  \\
+&= (k^2-k)x^{k-2}-(k^2-k)x^k - 2kx^k \\
+&= (k^2-k)x^{k-2} - (k^2+k)x^k
+\end{align*}
+Por lo que la matriz de $\mathcal{L}$ será la matriz con columnas $A=(\bm{a}_1,\dots,\bm{a}_{n+1})$, en donde
+$$\bm{a}_{i} = \begin{cases}
+\bm{0} &\text{ si } i=1 \\
+(0,-2,0,\dots,0)^T &\text{ si } i=2\\
+((i-1)^2-i+1)\vec{\bm{e}}_{i-2} - ((i-1)^2 + i-1)\vec{\bm{e}}_i &\text{ si } i\geq 3
+\end{cases}$$
+Donde $\vec{\bm{e}}_i$ es el vector columna con todas las entradas $0$ excepto un $1$ en la $i$-ésima. Expandida en $\mathbb{P}_{n}$, tiene la forma
+$$A=\begin{pmatrix}
+0&0 & 2 & 0 & \dots & 0 \\
+0 & -2 & 0 & 6& \dots & 0 \\
+0 & 0 & -6 & 0 & \dots & 0 \\
+0&0&0&-12&\dots&0 \\
+\vdots &\vdots &\vdots &\vdots &\ddots &\vdots & \\
+0&0&0&0 &\dots & n^2-n \\
+0&0&0&0 &\dots &0 \\
+0&0&0&0 &\dots & -n^2-n\\
+\end{pmatrix}$$
+
+\item Fije $n=7$. Calcule la matriz $A$. Mediante el comando \texttt{[V,D] = eig(A)} aproxime los vectores y valores propios de $A$. Deduzca una fórmula para los valores propios, según los resultados encontrados. Grafique además las funciones propias obtenidas. Comente sus resultados.
+
+\textbf{Solución: } Tenemos que
+$$A=\begin{pmatrix}
+0&0&2&0&0&0&0&0 \\
+0&-2&0&6&0&0&0&0\\
+0&0&-6&0&12&0&0&0\\
+0&0&0&-12&0&20&0&0\\
+0&0&0&0&-20&0&30&0\\
+0&0&0&0&0&-30&0&42 \\
+0&0&0&0&0&0&-42&0\\
+0&0&0&0&0&0&0&56\\
+\end{pmatrix}$$
+Calculando numéricamente los autovectores y autovalores de $A$, se tiene que:
+$$A= VDV^{-1}$$
+Donde
+$$D=\begin{pmatrix}
+0&0&0&0&0&0&0&0\\
+0&-2&0&0&0&0&0&0 \\
+0&0&-6&0&0&0&0&0 \\
+0&0&0&-12&0&0&0&0\\
+0&0&0&0&-20&0&0&0\\
+0&0&0&0&0&-30&0&0 \\
+0&0&0&0&0&0&-42&0\\
+0&0&0&0&0&0&0&-56\\
+\end{pmatrix}$$
+$$V=\begin{pmatrix}
+1&0& -0.3162&0&0.0649&0&-0.0124&0\\
+0&1&0&-0.5145&0&0.1573&0&  0.0132\\
+0&0& 0.9487&0&-0.6494&0& 0.2596 &0\\
+0&0&0& 0.8575 &0&-0.7340 &0&0.1280\\
+0&0&0&0& 0.7577&0&-0.7787&0\\
+0&0&0&0&0&0.6606&0&  0.4352\\
+0&0&0&0&0&0&0.5710&0\\
+0&0&0&0&0&0&0&0.8911\\
+\end{pmatrix}$$
+Según los resultados obtenidos, parecería razonable asumir que los valores propios de $\mathcal{L}$ son $0$ y los números $-k^2-k$, para $k=1,\dots n-1$. En la gráfica $9$, se grafican las autofunciones de $\mathcal{L}$ en el intervalo [-1,1]
+
+\begin{figure}[h]
+
+ \center
+   \centerline{ \includegraphics[scale=0.42]{Grafica9.eps}}
+   \item
+\end{figure}
+En donde se pueden observar los polinomios asociados a su respectivo valor propio. Note que $p_0 = 1$ y $p_{-2}(x) = x$. Como observación, es importante ver que el polinomio asociado al valor propio $\lambda$ es la solución de la ecuación diferencial
+
+$$\lambda p(x) = (1-x^2)\frac{d^2P(x)}{dx^2} - 2x\frac{dP(x)}{dx},$$
+Con valores iniciales adecuados. Es decir, estos polinomios corresponden con \textbf{Polinomios de Legendre}, aunque posiblemente difieran en su norma.
+\end{enumerate}
+
+\pagebreak
+
+
+\subsection*{Problema 8.}
+(Splines cuadráticos) Considere un conjunto de $m+1$ puntos $\{(x_i,y_i)\}_{i=0}^{m}$, donde
+$$0=x_0 < x_1 < \dots < x_{m-1} < x_m = 1$$
+es una partición del intervalo $[0,1]$ (no necesariamente con puntos equidistantes). En particular asumiremos que $y_0 = y_m$ pues consideraremos funciones periódicas. Deseamos construir una función $s_2:\mathbb{R} \to \mathbb{R}$ tal que:
+\begin{itemize}
+\renewcommand{\labelitemi}{\scriptsize $\blacksquare$}
+\item $s_2$ es periódica con periodo $1$; esto es, $s_2(x+1) = s_2(x)$, $\forall x \in \mathbb{R}$.
+\item $s_2 \in C^1(\mathbb{R})$; esto es, $s_2$ tiene derivada continua.
+\item $s_2$ interpola los valores del conjunto de puntos; esto es, $s_2(x_i) = y_i$, $\forall i =0,1,\dots,m$.
+\item La restricción de $s_2$ a cada subintervalo $[x_i,x_{i+1}]$ ($i=0,1,\dots,m-1$) es un polinomio cuadrático.
+\end{itemize}
+Es claro que basta construir $s_2$ en el intervalo $[0,1]$, pues será periódica.
+\begin{enumerate}[a)]
+\item Escriba un sistema de ecuaciones que permita determinar $s_2:[0,1] \to \mathbb{R}$ (Sugerencia: puede seguir la construcción de los splines cúbicos naturales del capítulo $7$; en este caso defina $\sigma_i = s'_2(x_i), i=0,1,\dots,m$ y genere un sistema para encotnrar los $\sigma_i$. Otra idea es escribir la restricción de $s_2(x)$ en cada subintervalo $[x_i,x_{i+1}]$ de la forma $s_2(x) = \alpha_i + \sigma_i (x-x_i) + \beta_i(x-x_i)^2$. Recuerde además que $s_2$ debe ser periódica.)
+
+\textbf{Solución: } Sea $\sigma_i = s_2'(x_i)$ para $i=0,\dots,m$. Sabemos que la restricción de $s_2$ en $I_i = [x_{i-1}, x_i]$ es el interpolante lineal de los puntos $\sigma_i$. O sea que si $h_i = x_i-x_{i-1}$,
+$$s'_2(x) =\frac{x_i-x}{h_i}\sigma_{i-1} + \frac{x-x_{i-1}}{h_i}\sigma_i $$
+Para $i=1,\dots,m$. Integrando se obtiene que
+$$s_2(x) = \frac{(x-x_{i-1})^2}{2h_i}\sigma_i - \frac{(x_i-x)^2}{2h_i}\sigma_{i-1} + c_i$$
+Por continuidad de $s_2$, se tiene que
+$$y_{i-1} = s(x^+_{i-1}) = -\frac{h_i}{2}\sigma_{i-1}+c_i \Rightarrow c_i = \frac{h_i}{2}\sigma_{i-1} + y_{i-1}$$
+$$y_{i} = s(x^-_{i}) = \frac{h_i}{2}\sigma_{i}+c_i \Rightarrow c_i = -\frac{h_i}{2}\sigma_{i} + y_{i}$$
+Despejando los $\sigma$ se obtiene que, para $i=1,\dots,m$
+$$\sigma_i + \sigma_{i-1} = 2\frac{y_i-y_{i-1}}{h_i}$$
+Lo cual nos da todas las ecuaciones que necesitamos, excepto una. Para encontrar la última, debemos apelar a la periodicidad de la función, extendiendo $s_2$ a un punto más. Sean $x_{m+1} = 1+x_1 , y_{m+1} = y_1 , h_{m+1}=x_{m+1}-x_{m} = h_1$. Entonces, si $\sigma_{m+1} = s'(x_{m+1}) = \sigma_1$ y $c_{m+1} \in \mathbb{R}$, en $I_{m+1}$ se cumple
+$$s_2(x) = \frac{(x-x_{m})^2}{2h_{m+1}}\sigma_{m+1} - \frac{(x_{m+1}-x)^2}{2h_{m+1}}\sigma_m + c_{m+1}$$
+Y otra vez, por periodicidad, se tiene 
+$$y_{0} = s(x^+_{m}) = -\frac{h_{m+1}}{2}\sigma_{m}+c_{m+1} \Rightarrow c_{m+1} = \frac{h_1}{2}\sigma_{m} + y_{0}$$
+$$y_{1} = s(x^-_{m+1}) = \frac{h_{m+1}}{2}\sigma_{i}+c_{m+1} \Rightarrow c_{m+1} = -\frac{h_1}{2}\sigma_{1} + y_{1}$$
+Por lo que, despejando los $\sigma$, se tiene la última ecuación
+$$\sigma_m + \sigma_1 = 2\frac{y_1-y_0}{h_1}$$
+
+Por lo que nuestro sistema de ecuaciones será
+$$A \bm{ \sigma } = \bm{b} $$
+Donde
+$$A= \begin{pmatrix}
+1&1&0&0&\dots&0&0 \\
+0&1&1&0&\dots&0&0 \\
+0&0&1&1&\dots&0&0 \\
+\vdots&\vdots&\vdots&\vdots&\ddots&\vdots&\vdots \\
+0&0&0&0&\dots&1&1 \\
+0&1&0&0&\dots&0&1\\
+\end{pmatrix} \quad ; \quad \bm{b} = 
+2\begin{pmatrix}
+\frac{y_1-y_0}{h_1} \\
+\frac{y_2-y_1}{h_2} \\
+\vdots \\
+\frac{y_{m}-y_{m-1}}{h_m} \\
+\frac{y_1-y_0}{h_1} \\
+\end{pmatrix}$$
+\textbf{Nota: }Además hay que calcular los $c_i$'s, para resolver el problema completamente.
+\item Fije $m=15$ y tome $f(x) = \cos(2\pi x)$. Defina $\bm{x} = [x_0, \dots, x_m]^T$ utilizando valores aleatorios con la función \texttt{rand} y calcule $y_i=f(x_i) , \forall i=0,1,\dots,m.$ Construya $s_2$ para este conjunto de datos. Grafique $f$, $s_2$ y los puntos $\{(x_i,y_i) \}_{i=0}^{m}$ en un mismo gráfico. Grafique además el error absoluto $|f(x) - s_2(x)|$ y estime $||f-s_2||_{L^\infty([0,1])}$. 
+
+\textbf{Solución: } Se definió una partición aleatoria de $[0,1]$, y se aproximó la función $f(x) = \cos(2 \pi x)$ usando splines cuadráticos. Los resultados se presentan en la gráfica $10$.
+
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.50]{Grafica10.eps}
+   \item
+\end{figure}
+
+Se puede observar que los resultados no son óptimos, pues los puntos de interpolación no se ajustan correctamente a los de la función. En la gráfica 11 se puede apreciar más exactamente el error obtenido.
+
+\pagebreak
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.45]{Grafica11.eps}
+   \item
+\end{figure}
+ Se puede ver que el error es \textbf{grande e irregular}, en algunas partes es de hasta $$||f-s_2||_{L^\infty([0,1])} \approx 0.6$$ lo cual es demasiado, tomando en cuenta que la función se encuentra entre $0$ y $1$
+ La causa de este error se le atribuye a la \textbf{resolución del sistema de ecuaciones asociado}, ya que como se vio en capítulos anteriores, la interpolación suele ser sensible a la escogencia de los nodos, y se esperaría que una partición irregular produzca resultados erróneos, ya que, posiblemente, el sistema a resolver esté mal condicionado.
+\item Repita el ejercicio anterior para $\bm{x} = \texttt{linspace(0,1,m+1)}'$. Compare con los resultados del inciso anterior y comente sus resultados.
+
+\textbf{Solución: }Se repite el ejercicio, esta vez usando nodos equidistantes, y se obtienen las gráficas $12$ y $13$.
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.43]{Grafica12.eps}
+ \end{figure}
+ \pagebreak
+ \begin{figure}[h]
+  \includegraphics[scale=0.42]{Grafica13.eps}
+   
+\end{figure}
+
+Esta vez, el ajuste es bastante \textbf{bueno. }Incluso, el error es de casi la precisión de la máquina, por lo que se puede afirmar que la función fue \textbf{interpolada exitosamente}. En este caso, el error máximo fue de aproximadamente 
+$$||f-s_2||_{L^\infty([0,1])} \approx 6 \times 10^{-16}$$
+
+\item Uno puede aproximar $f'(x)$ mediante $s'_2(x)$. Utilizando $s_2$ tal como se calculó en el inciso anterior, escriba un programa que calcule $s'_2(x)$. Grafique $f'$ y $s'_2$ en el mismo gráfico. Grafique además el error absoluto $|f'(x)-s'_2(x)|$ y estime $||f'-s'_2||_{L^\infty([0,1])}$. Note que $s'_2$ es diferenciable a trozos. ¿Cómo podría aproximar $f'$ por una función $s$ de manera tal que $s''$ sea continua?
+
+\textbf{Solución: } Recuerde que $$s'_2(x) =\frac{x_i-x}{h_i}\sigma_{i-1} + \frac{x-x_{i-1}}{h_i}\sigma_i $$
+Entonces simplemente se escriben estas funciones en \texttt{MATLAB}.
+
+Al aproximar numéricamente usando $200$ puntos (manteniendo los $16$ nodos fijos), se obtiene la gráfica $14$, en la cual se puede observar visualmente que la derivada de nuestro polinomio se ajusta \textbf{muy bien} a la derivada de la función. Incluso se puede apreciar su diferenciabilidad a trozos (la línea roja).
+
+
+
+ \begin{figure}[h]
+ \center
+  \includegraphics[scale=0.44]{Grafica14.eps}
+\end{figure}
+En cuanto al error, se presenta en la gráfica $15$. Se puede observar que no se trata de un error demasiado grande, de no más de $1$ decimal de precisión. Curiosamente, el error es máximo en \textbf{aquellos puntos donde la derivada de $s_2$ no es continua}, lo cual tiene sentido, pues es aquí donde hay más perdida de información si se está deseando interpolar una función suave.
+
+Finalmente, con respecto a la última pregunta del inciso, si se deseara interpolar de manear que la $s''(x)$ sea continua, será necesario aumentar el grado del \textit{spline}, puesto que las condiciones adicionales de continuidad harán que el sistema esté sobredefinido, y podría no poseer solución.
+
+
+ \begin{figure}[h]
+ \center
+  \includegraphics[scale=0.40]{Grafica15.eps}
+\end{figure}
+\end{enumerate}
+
+
+\subsection*{Problema 9.}
+Considere una población donde deseamos estudiar la propagación de una enfermedad. En el modelo más sencillo, consideramos la población dividida en tres grupos: susceptibles, infectados y recuperados. Considere el sistema del modelo dado por
+\[
+\begin{cases}
+\frac{dS}{dt} = \Lambda-\mu S - \beta IS \\
+\frac{dI}{dt} = \beta IS -\gamma I -\mu I \\
+\frac{dR}{dt} = \gamma I - \mu R \\
+\end{cases}
+\]
+donde $S(t),I(t),R(t)$ representa el número de personas susceptibles, infectadas, recuperadas, en el tiempo $t$ (respectivamente). En este ejercicio considere $\Lambda = 15$ (nacimientos por unidad de tiempo), $\gamma = 1/35$ (tasa de recuperación), $\mu = 1/75$ (tasa de mortalidad).
+\begin{enumerate}[a)]
+\item Plotee (en un mismo gráfico) la solución $(S(t),I(t),R(t))$ para $\beta = 1/5500$, $t\in [0,365]$, para las condiciones iniciales $(999,1,0)$.
+
+\textbf{Solución: } Se resolvió el sistema utilizando el comando \texttt{ode45}, y se graficó el vector de soluciones en función del tiempo (gráfica 16).
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.57]{Grafica16.eps}
+   \item
+\end{figure}
+Como se puede observar en la gráfica 16, una persona infectada basta para aumentar el número de afectados hasta un máximo de casi $600$, en alrededor de $2$ meses, posterior a esto, la población de recuperados comienza a aumentar, hasta que los tres valores se estabilizan eventualmente. El número de infectados nunca parece descender a $0$ en este caso.
+\item Para cada valor de $\beta = 1./\texttt{linspace(25000,29000)}$, obtenga $I(3650)$. Grafique dichos valores en función de $R_0(\beta)=\frac{\Lambda \beta}{\mu (\mu + \gamma)}$ (el cual es llamado \textit{número básico de reproducción.}) ¿ Qué se puede deducir del gráfico?
+
+
+\textbf{Solución: }En la gráfica $17$ se ilustra el número de infectados después de $10$ años en función del número básico de reproducción.
+
+Según la gráfica, el número de infectados luego de $10$ años, $I(3650)$, aumenta \textbf{muy rápido} en función de $R_0(\beta)$, (el crecimiento parece ser exponencial), ya que con una variación pequeña de  $R_0(\beta)$ (de tan solo $0.2$) el número de infectados varía de prácticamente $0$, hasta casi $100$.
+\pagebreak
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.50]{Grafica17.eps}
+   \item
+\end{figure}
+
+Obsérvese además que si $R_0 < 1$, el número de infectados es casi $0$, es decir, la enfermedad ya no afecta a la población, sin embargo, cuando $R_0>1$, aún existe población infectada después de $10$ años.
+\item Obtenga los puntos de equilibrio del sistema. ¿Qué relación se debe cumplir para que el número de infectados tienda a cero?
+
+\textbf{Solución: } Resolvemos explícitamente el sistema
+
+\begin{align*}
+\begin{cases}
+0 = \Lambda-\mu S - \beta IS \\
+0 = \beta IS -\gamma I -\mu I \\
+0 = \gamma I - \mu R \\
+\end{cases} &\Rightarrow 
+\begin{cases}
+\Lambda = S(\mu + \beta I) \\
+I(\beta S - (\gamma + \mu)) = 0 \\
+\gamma I = \mu R \\
+\end{cases}
+\intertext{De donde se ve fácilmente que una solución es $(\Lambda / \mu , 0 , 0)$, ahora, si $I\neq 0$,}
+&\Rightarrow \begin{cases}
+\Lambda = S(\mu + \beta I) \\
+S= \frac{\gamma + \mu}{\beta} \\
+\gamma I = \mu R \\
+\end{cases}
+\\
+&\Rightarrow \begin{cases}
+S=\frac{\gamma + \mu}{\beta} \\
+I=  \frac{\Lambda}{\gamma + \mu} - \frac{\mu}{\beta} \\
+R= \frac{\gamma \Lambda}{\mu (\mu + \gamma)} - \frac{\gamma}{\beta}
+\end{cases}
+\end{align*}
+Por lo que las soluciones en términos de $\beta$ son
+\begin{align*}s_1 = \begin{pmatrix} 1125 \\ 0 \\ 0 \end{pmatrix}\quad &; \quad s_2 = \begin{pmatrix} \frac{22}{525\beta} \\ \frac{7875}{22} - \frac{1}{75 \beta}\\ \frac{16875}{22} - \frac{1}{35 \beta}\end{pmatrix}
+\end{align*}
+\end{enumerate}
+\textbf{Nota:} $s_1$ no depende de $\beta$.
+
+Después de correr pruebas con distintos valores de $\beta$, y observando el comportamiento de la gráfica $2$, se concluye que a largo plazo, para que el número de infectados $I$ tienda a $0$, \textbf{se necesita que $R_0(\beta) < 1$}
+\subsection*{Problema 10.}
+Considere el método de Runge-Kutta implícito de orden cuatro dado por la tabla 
+
+\begin{table}[h]
+\center
+\Large
+\begin{tabular}{
+>{\columncolor[HTML]{FFFFFF}}c |
+>{\columncolor[HTML]{FFFFFF}}c 
+>{\columncolor[HTML]{FFFFFF}}c }
+{\color[HTML]{000000} $\frac{1}{2}- \frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}$} & {\color[HTML]{000000} $\frac{1}{4}- \frac{\sqrt{3}}{6}$} \\
+{\color[HTML]{000000} $\frac{1}{2}+\frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}+ \frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}$} \\ \hline
+{\color[HTML]{000000} } & {\color[HTML]{000000} $\frac{1}{2}$} & {\color[HTML]{000000} $\frac{1}{2}$}
+\end{tabular}
+\end{table}
+
+\begin{enumerate}[a)]
+\justifying
+\item Escriba una función en \texttt{MATLAB} que implemente dicho algoritmo
+
+\textbf{Solución: } Se implementó la función \texttt{RK4imp.m}
+
+\item Compruebe el desempeño de su programa para resolver la ecuación diferencial $y'(t) = \log(t+0.01) + 1/(t-4), y(0)=0.8$ para $t \in [0,3$.$99]$. Determine un valor apropiado para $h$ y grafique el error correspondiente.
+
+\textbf{Solución: }Primero calculamos la solución general de la ecuación
+\begin{alignat*}{2}
+ y'=\log \left(1+\frac{1}{100} \right) + \frac{1}{t-4}& \\
+ \Rightarrow  y = \int \log \left(1+\frac{1}{100} \right) + \frac{1}{t-4} &dt \\
+ \Rightarrow y = \left( t + \frac{1}{100}\right)\log\left(t+\frac{1}{100}\right)-t-\frac{1}{100}&+\log|4-t|+C\\
+\end{alignat*}
+ Y despejando la condición inicial $y(0)=0.8$, se tiene que $C\approx -0.5302426593$.
+ 
+ Al aplicar la función \texttt{RK4imp.m}, y graficar los resultados y el error absoluto, se obtienen las gráficas $18$ y $19$.
+ \pagebreak
+ 
+  
+ \begin{figure}[t]
+ \center
+        \includegraphics[scale=0.38]{Grafica18.eps}
+         \includegraphics[scale=0.50]{Grafica19.eps}
+\end{figure}
+Como se vio en la Tarea $4$, visualmente, la gráfica de la solución numérica se asemeja bastante a la de la solución exacta. Además, al graficar el error, se confirma nuestra aserción. En efecto, la solución numérica se acerca fielmente a la solución exacta de la ecuación, con la salvedad de que el error se desestabiliza cerca de la singularidad (pues el tamaño de paso es fijo). En conclusión, se afirma que el método implícito produce \textbf{buenos resultados.}
+\end{enumerate}
+\end{document}
