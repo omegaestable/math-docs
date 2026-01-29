@@ -1,0 +1,331 @@
+\documentclass[a4paper, 11pt,spanish]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{spanish}
+\begin{document}
+
+\noindent
+\large\textbf{Universidad de Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize Escuela de Matemáticas \hfill Carné: B55272 \\
+MA-501 Análisis Numérico \hfill Prof. Juan Gabriel Calvo \\
+Tarea 3 \hfill \today
+
+\section*{Tarea 3}
+\subsection*{Problema 1.}
+\justifying
+(Matriz de Vandermonde) Considere el problema de interpolación de Lagrange dado por: Encontrar un polinomio $p$ de grado a lo sumo $n$ cuya gráfica incluya los puntos $\{(x_i,y_i)\}_{i=0}^n$ (el cual sabemos tiene solución única). En este ejercicio plantearemos y resolveremos este problema mediante un sistema de ecuaciones. Escriba 
+$$p(x) = \sum_{k=0}^{n} a_kx^k$$
+El problema de interpolar es equivalente a encontrar los coeficientes $\{a_k\}$ que satisfacen las $n+1$ ecuaciones 
+$$p(x_i) = \sum_{k=0}^{n}a_kx_i^k = y_i , \quad \forall i=0, \dots n,$$
+el cual se puede escribir matricialmente de la forma $A\bm{x} = \bm{b}$, donde
+$$ \bm{x} = \begin{bmatrix} a_0 \\ \vdots \\ a_n
+\end{bmatrix}  , \quad \bm{b} = \begin{bmatrix}
+y_0 \\ \vdots \\ y_n
+\end{bmatrix}$$ 
+y $A$ es la matriz de Vandermonde
+$$A = \begin{bmatrix}
+1 & x_0 & \dots & x_0^n \\ 
+1 & x_1 & \dots & x_1^n \\
+\vdots & \quad & \ddots & \vdots \\
+1 & x_n & \dots & x_n^n
+\end{bmatrix} \in \mathbb{R}^{(n+1) \times (n+1)}
+$$
+En este ejercicio utilizaremos nodos equidistantes en el intervalo $[-1,1]$, esto es,
+$$x_j = -1 + 2\frac{i}{n} \quad (i=0,\dots,n).$$
+\begin{enumerate}[a)]
+\item Demuestre que $A$ es invertible
+
+\textbf{Solución: } Considere
+$$A_n = \begin{vmatrix}
+1 &x_1 & x_1^2 & \dots & x_1^{n-2} & x_1^{n-1} \\
+1 &x_2 & x_2^2 & \dots & x_2^{n-2} & x_2^{n-1} \\
+1 &x_3 & x_3^2 & \dots & x_3^{n-2} & x_3^{n-1} \\
+\vdots & \vdots & \vdots &\ddots &\vdots & \vdots\\
+1 &x_{n-1} & x_{n-1}^2 & \dots & x_{n-1}^{n-2} & x_{n-1}^{n-1} \\
+1 &x_{n} & x_{n}^2 & \dots & x_{n}^{n-2} & x_{n}^{n-1} \\
+\end{vmatrix}$$
+Podemos considerar primero $A_n$ como función de $x_n$. En particular, $A_n(x_n)$ es un polinomio de grado $n-1$, pues expandiendo la última fila se tiene
+\begin{align*}
+A_n(x_n)= \begin{vmatrix}
+x_1 & x_1^2 & \dots & x_1^{n-2} & x_1^{n-1} \\
+x_2 & x_2^2 & \dots & x_2^{n-2} & x_2^{n-1} \\
+x_3 & x_3^2 & \dots & x_3^{n-2} & x_3^{n-1} \\
+ \vdots & \vdots &\ddots &\vdots & \vdots\\
+x_{n-1} & x_{n-1}^2 & \dots & x_{n-1}^{n-2} & x_{n-1}^{n-1}
+\end{vmatrix} &+x_n\begin{vmatrix}
+1  & x_1^2 & \dots & x_1^{n-2} & x_1^{n-1} \\
+1 & x_2^2 & \dots & x_2^{n-2} & x_2^{n-1} \\
+1 & x_3^2 & \dots & x_3^{n-2} & x_3^{n-1} \\
+\vdots &  \vdots &\ddots &\vdots & \vdots\\
+1  & x_{n-1}^2 & \dots & x_{n-1}^{n-2} & x_{n-1}^{n-1} \\
+\end{vmatrix} + \dots \\  
+&+x_n^{n-1} 
+ \begin{vmatrix}
+1&x_1 & x_1^2 & \dots & x_1^{n-2}  \\
+1&x_2 & x_2^2 & \dots & x_2^{n-2}  \\
+1&x_3 & x_3^2 & \dots & x_3^{n-2}  \\
+ \vdots & \vdots &\ddots  & \vdots\\
+1&x_{n-1} & x_{n-1}^2 & \dots & x_{n-1}^{n-2} 
+\end{vmatrix}\\ 
+\end{align*}
+Observe que si evaluamos $A_n(x)$ en cualquiera de $x_1,x_2,\dots,x_{n}$ se obtiene que todos los determinantes tendrán una fila repetida, por lo que $A_n(x_i) =0$ para $i=1,\dots,{n-1}$. Esto nos dice que 
+$$\det(A) = A_{n-1}(x_n-x_1)(x_n-x_2)\cdots(x_n-x_{n-1})$$
+Pues por la expansión anterior, el coeficiente principal es $A_{n-1}$. Podemos entonces repetir este argumento, considerando el polinomio $A_j(x_j)$ sucesivamente para $x_{n-1},\dots,x_1$, para obtener
+\begin{align*}
+\det(A) &= \prod_{1\leq i < n} (x_n-x_i)A_{n-1} \\
+&= \prod_{1\leq i < n} (x_n-x_i)\prod_{1\leq i < n-1}(x_{n-1}-x_i)A_{n-2} \\
+&=\cdots \\
+&=\prod_{1\leq i < j \leq n}(x_j-x_i) \neq 0
+\end{align*}
+Lo cual demuestra que $A$ es invertible
+\item Para $n=40$, construya la matriz $A$. Calcule el número de condición de $A$, su rango y su determinante. ¿Es la matriz invertible? Sugerencia: puede utilizar los comandos \texttt{vander, rank, det, cond} de \texttt{MATLAB}.
+
+\textbf{Solución: }
+Al generar la matriz $A$ para los nodos equidistantes $x_j$, con $n=40$, se obtiene numéricamente
+\begin{itemize}
+\item \textbf{Número de condición: } $3.4987\times 10^{17}$
+\item \textbf{Rango: } $36$
+\item \textbf{Determinante: } $-3.6836 \times 10^{-243}$
+\end{itemize}
+Numéricamente, la matriz de Vandermonde en este caso no será invertible.
+\item Para resolver el sistema de ecuaciones $A\bm{x} = \bm{b}$, basta ejecutar el comando $\bm{\tilde{x}} = \texttt{A \textbackslash b}$. Considere $f(x) = (1+25x^2)^{-1}$. Estime $||f(\texttt{xx}) - p(\texttt{xx})||_\infty$ donde $\text{xx} = \texttt{linspace(-1,1,1e3)}$
+
+\textbf{Solución: }Se consideró el polinomio con coeficientes $a_i=\{(A^{-1})b\}_{i+1} (i=0,\dots,40)$, el cual se evaluó numéricamente. Al calcular el error se obtuvo
+$$||f(\texttt{xx}) - p(\texttt{xx})||_\infty \approx 1.9270\times 10^5$$
+El cual es enorme. Resolver el problema de interpolación por medio de ``fuerza bruta'' va a resultar en pésimos resultados para matrices con número de condición alto.
+
+\item Calcule la descomposición en valores singulares de $A$ mediante el comando 
+
+$$\texttt{[U,S,V]} = \texttt{svd}(A).$$
+De esta manera,
+$$\tilde{x} = VS^{-1}U^{T}b.$$
+Estime nuevamente $||f(\texttt{xx})  -p(\texttt{xx})||_\infty$.¿Existe alguna mejora en la aproximación de la solución?. Plotee los valores singulares de $A$ en una escala semilogarítmica. Comente el comportamiento. ¿Cuál es el rango numérico de la matriz? Sugerencia: la función \texttt{diag} puede ser de utilidad.
+
+\textbf{Solución: }Esta vez se obtiene que
+$$||f(\texttt{xx})  -p(\texttt{xx})||_\infty\approx 7.2127\times10^3
+$$
+El cual es mejor, pero sigue siendo un error enorme. Los valores singulares de $A$ se presentan en la gráfica 1.
+
+\begin{figure}[h]
+        \includegraphics[scale=0.4]{Grafica1.eps}
+\end{figure}
+Se puede ver que los últimos valores se acercan a la precisión de la máquina. Además, el rango numérico de $S$ sigue siendo
+
+\textbf{Rango: } $36$.
+
+\item Considere una matriz con descomposición en valores singulares $A = USV^T$. La \textit{pseudoinversa} de $A$ se define como $$A^{+} = VS^{+}U^T$$ donde 
+$$S^+ =
+  \begin{bmatrix}
+    1/\sigma_1 & & &\\
+    & 1/\sigma_2 & & \\
+    & & \ddots & \\
+    & & & 1/\sigma_p
+  \end{bmatrix}$$
+  
+  es la matriz diagonal obtenida de invertir los valores singulares positivos de $S$. Defina un vector de tolerancias \texttt{tol = 10.\string^(-linspace(2,17))}Para cada entrada \texttt{j} de \texttt{tol}, defina $S_j$ como la matriz obtenida a partir de $S$, reemplazando los valores singulares menores que \texttt{tol(j)*}$\sigma_1$ por cero. Calcule
+ $$ \texttt{x\string_svd} = (VS_j^+U^T)b$$
+ y calcule la norma $||f(\texttt{xx}) - p(\texttt{xx})||_\infty$. Note que estamos aproximando la pseudoinversa con solamente algunos valores singulares de $A$. Grafique el error en la función del vector de tolerancias. Comente sus resultados y explique el comportamiento del gráfico.
+ 
+ \textbf{Solución: } Al aplicar la aproximación solamente usando algunos valores singulares de $A$, se obtiene el error en función de la tolerancia elegida, y se resume en la Gráfica $2$
+ 
+ \begin{figure}[h]
+        \includegraphics[scale=0.6]{Grafica2.eps}
+\end{figure}
+ 
+ Se puede observar que al disminuir la tolerancia, el error \textbf{crece rápidamente}. La razón de esto es la siguiente: al minimizar la tolerancia, se escogen más valores singulares, por lo que la pseudoinversa de la matriz $A$ se acerca numéricamente a la inversa de $A$. Sin embargo, como vimos, al calcular $A^{-1}$ numéricamente para resolver sistemas, los resultados tienen errores muy grandes. Por lo tanto, al minimizar la tolerancia demasiado, el error va a crecer. Entonces, en este caso, es mejor aproximar la solución utilizando menos valores singulares.
+ \textbf{Nota: } Los menores errores en la Gráfica $2$ valen aproximadamente $0.01$.
+ \item Para un valor de tolerancia que minimice el error del inciso anterior, plotee en un mismo gráfico $f(\texttt{xx})$,  $p(\texttt{xx})$ y  los nodos de interpolación. ¿Qué tan buena es la aproximación?
+ 
+\textbf{Solución: } El valor de tolerancia que minimiza el error del inciso anterior es $t\approx 0.0025
+$ (esto se calculó en el script adjunto). Al graficar $f$ y $p(\texttt{xx})$ con $1000$ nodos equidistantes se obtiene la Gráfica $3$
+
+ \begin{figure}[h]
+ \center
+        \includegraphics[scale=0.51]{Grafica3.eps}
+\end{figure}
+ 
+ Se observa que la aproximación no es muy buena, además, se presentan oscilaciones cerca de los extremos, por lo cual se concluye que este método presenta el fenómeno de Runge.
+ \item Ahora utilice \texttt{tol = 1e-5}. Plotee en un mismo gráfico $f(\texttt{xx})$, $p(\texttt{xx})$, y los nodos de interpolación. ¿Se observa el fenómeno de Runge? Explique el porqué.
+ 
+ \textbf{Solución: }Para la tolerancia especificada, se repite el inciso anterior, para obtener la Gráfica $4$.
+ 
+ 
+ \begin{figure}[h]
+ \center
+        \includegraphics[scale=0.51]{Grafica4.eps}
+\end{figure}
+ 
+ Si bien la aproximación parece ser mejor a simple vista, en este caso se presenta un mayor fenómeno de Runge, lo que aumenta el error $||f(\texttt{xx})  -p(\texttt{xx})||_\infty$. La razón de esto es que, una vez más, al disminuir la tolerancia, se escogen más valores singulares de $A$, y la aproximación final de $a_i$ presenta errores considerables, debido al número alto de condición. Según la norma infinito, esta aproximación es \textbf{peor} que la anterior.
+\end{enumerate}
+
+\pagebreak
+\subsection*{Problema 2.}
+(Compresión de imágenes) En este ejercicio utilizamos la descomposición en valores singulares para comprimir imágenes de una manera muy básica. Una imagen de dimensión $m \times n$ consiste de $mn$ pixeles (la resolución se refiere al número de pixeles utilizados). En una imagen a color, cada pixel contiene tres valores enteros $(r_p,g_p,b_p) \in [0,255]^3$, que corresponden a los componentes rojo, verde y azul. De esta forma, la imagen es guardad como una matriz de tamaño $m \times n \times 3$.
+\begin{enumerate}[a)]
+\item(Leyendo la imagen) Considere la imagen \texttt{\string`photo.bmp\string'}, suministrada. Para leer la imagen ejecute el comando \texttt{RGB=imread(\string`photo.jpg\string')} (\textit{image read}).¿Cuántos pixeles tiene la imagen guardada en \texttt{RGB}?¿Qué tipo de entradas tiene dicha matriz?. Sugerengia: imprima el comando \texttt{whos RGB} y comente el resultado.
+
+\textbf{Solución: } La matriz \texttt{RBG} se guardó como una matriz $3648\times2736\times3$, la cual almacena tipo de dato \texttt{uint8} lo cual corresponde con números enteros entre $0$ y $255$.
+
+\item (Convirtiendo la imagen a formato doble) Para poder utilizar la DVS, convierta la matriz \texttt{RGB} a formato doble mediante el comando \texttt{RGB =im2double(RGB)}.
+
+\textbf{Solución: }Se ejecutó la acción en el script \texttt{Ejercicio2.m}.
+
+\item (Comprimiendo la imagen) Calcule la descomposición en valores singulares de \texttt{RGB}$= USV^T$ (para cada matriz color rojo, verde y azul). Calcule la aproximación de rango $5$ dada por 
+$$A_5 = \sum_{i=1}^{5}\sigma_iu_iv_i^T$$
+En una misma ventana (utilizando el comando subplot) muestre la imagen original, la imagen guardada en $A_5$ y el error $|\texttt{RGB} - A_5|$. Comente sus resultados. Sugerencia: el comando \texttt{imshow(RGB)} muestra la imagen dada en \texttt{RGB}.
+
+\textbf{Solución: } Al ejecutar la aproximación $A5$, se obtienen las siguientes imágenes $1$.
+
+ \begin{figure}[h]
+ \center
+    \includegraphics[scale=0.4]{Imagen1.eps}
+\end{figure}
+
+
+\pagebreak 
+
+ \begin{figure}[h]
+ \center
+    \includegraphics[scale=0.4]{ErrorImagen.eps}
+\end{figure}
+
+La imagen producida por $A_5$ se puede ver muy distorsionada, aunque por lo menos preserva la la iluminación y coloración general, lo cual es bastante bueno para solo tomar $5$ valores singulares de $2736$.
+
+La imagen generada por el error captura los pixeles que $A_5$ no aproxima correctamente, la mayoría pertenece a regiones de la foto con muchos cambios de colores, algo que es difícil de capturar con pocas entradas numéricas.
+\item Para cada matriz \texttt{RGB(:,:,i)} determine el numero $r_i$ de valores singulares $\sigma_k$ tales que $\sigma_k > 0.01\sigma_1$ y tome $R_1 = \max{r_i}$. Para este valor de $R_1$ calcule la mejor aproximación $A_{R_1}$ de rango $R_1$ de la matriz \texttt{RGB}. Repita para $\sigma_k > 0.005\sigma_1$, denote este nuevo rango $R_2$ y la respectiva aproximación como $A_{R_2}$. Dibuje en una misma ventana ambas aproximaciones. Comente las diferencias entre ambas imágenes. Sugerencia: el comando \texttt{diag(S)} extrae los elementos de la diagonal de la matriz \texttt{S}.
+
+\textbf{Solución: }Se adjuntó el script que realiza las instrucciones en \texttt{MATLAB}. Se adjunta la comparación entre las imágenes generadas por $A_{R_1}$ y $A_{R_2}$ (página 8).
+ \begin{figure}[h]
+
+ \center
+   \centerline{ \includegraphics[scale=0.5]{Imagen2.eps}}
+   \item
+\end{figure}
+
+\justifying
+Se puede observar que ambas imágenes se asemejan a la foto original. Sin embargo, al agrandar la imagen ligeramente, se puede ver que $A_{R_1}$ pierde detalles finos, y se le ve pixeleada bajo aumento. Mientras tanto, $A_{R_2}$ preserva mayor cantidad de detalles, y solo se pixelea si se agranda mucho la imagen. La cantidad de valores singulares para $A_{R_1}$ y $A_{R_2}$ son $75$ y $172$, respectivamente. (Las imágenes se pueden ver mejor corriendo el script). \pagebreak
+\item Finalmente guarde la imagen $A_{R_2}$, como archivos
+\texttt{.bmp} y \texttt{.jpg} mediante el comando \texttt{imwrite(A\string_R2,\string`photo\string_comp.bmp\string')} y \texttt{imwrite(A\string_R2,\string`photo\string_comp.jpg\string')}. Compare el tamaño de estos dos archivos con el tamaño original de la foto inicial. (Note que el formato \texttt{.jpg} por defecto comprime la imagen y está optimizado para tal fin).
+
+\textbf{Solución: }Se generaron las imágenes en los formatos \texttt{.jpg} y \texttt{.bmp} (se adjuntan en los archivos). El tamaño original de la imagen era de $29 242 \operatorname {Kb}$. Se puede observar que el tamaño de la imagen en formato  \texttt{.bmp} es el mismo, de lo cual se concluye que este formato de imagen simplemente cuenta los pixeles (el tamaño de la matriz) que se usó, sin importar que esta tenga muchos ceros o sea de rango mucho menor al número de filas que ésta tenga. Mientras tanto, el tamaño de la imagen en formato  \texttt{.jpg} es de tan solo $989 \operatorname {Kb}$, un $3\%$ del tamaño original. Claramente si lo que se desea es eficiencia de memoria, el formato $\text{.jpg}$ es el indicado. 
+\end{enumerate}
+\pagebreak
+\subsection*{Problema 3.}
+(Estabilidad de la factorización QR) En las notas se discuten tres algoritmos para calcular la factorización QR de una matriz $A \in \mathbb{C}^{m \times n}$, los cuales presentamos a continuación:
+\begin{algorithm}
+\begin{algorithmic} 
+\STATE \textbf{Data: }Matriz $A \in \mathbb{C}^{m \times n}$
+\STATE \textbf{Result: } Matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$.
+\FOR{$j=1:n$}
+\item $\bm{v}_j = \bm{a}_j$; 
+\FOR{$i=1:j-1$}
+\item $r_{ij} =
+\bm{q}_i^*\bm{a}_j;$
+\item $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$;
+\ENDFOR
+\item $r_jj= ||\bm{v}_j||_2$;
+\item $\bm{q}_j = \bm{v}_j/r_{jj}$;
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\center \textbf{Algoritmo 1: }Ortogonalización de Gram-Schmidt (inestable).
+
+\begin{algorithm}[H]
+\begin{algorithmic}
+\STATE \textbf{Data: } Matriz $A \in \mathbb{C}^{m \times n}$
+\STATE \textbf{Result: }Matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$.
+\STATE $V=A$;
+\FOR{$j=1:n$}
+\item $r_{ii}=||\bm{v}_i||_2;$
+\item $\bm{q}_i=\bm{v}_i\string/r_{ii}$;
+\FOR{$j=i+1:n$}
+\item $r_{ij}=\bm{q}_i^*\bm{v}_j$;
+\item $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$;
+\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\center \textbf{Algoritmo 2: }Ortogonalización de Gram-Schmidt (estable).
+\begin{algorithm}[H]
+\begin{algorithmic}
+\STATE \textbf{Data: } Matriz $A \in \mathbb{C}^{m \times n}$
+\STATE \textbf{Result: }Matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$.
+\FOR{$j=1:n$}
+\item $\bm{x} = A_{j:m,j}$
+\item $\bm{v}_j=\operatorname{sign}(x_1)||\bm{x}||_2\bm{e}_1+\bm{x}$;
+\item $\bm{v}_j = \bm{v}_j\string\||\bm{v}_j||_2$ ;
+\item $A_{j:m,j:n}=A_{j:m,j:n}-2\bm{v}_j(\bm{v}_j^*A_{j:m,j:n});$
+\ENDFOR
+\STATE $R=A$;
+\STATE $Q=I$;
+\FOR{$j=n:-1:1$}
+\item $Q_{j:m,j:n}=Q_{j:m,j:n}-2\bm{v}_j(\bm{v}_j^*A_{j:m,j:n})$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\center 
+\textbf{Algoritmo 3: }Triangularización de Householder
+
+\justifying
+\begin{enumerate}[a)]
+\item Escriba tres funciones que calculen cada uno de los algoritmos.
+
+\textbf{Solución: }Se adjuntan las tres funciones \texttt{GS\string_inest,GS\string_est,Householder} en los archivos.
+
+\item Defina la  matriz $A$ mediante las siguientes líneas:
+\begin{verbatim}
+  m=80;
+  [U,~] = qr(randn(m));
+  [V,~] = qr(randn(m));
+  S=diag(2.^(-1:-1:-80));
+  A=U*S*V;
+\end{verbatim}
+
+\textbf{Solución: }Se definió la matriz en \texttt{MATLAB}
+
+\item Calcule la factorización $QR$ de $A$ utilizando los tres algoritmos mencionados. Para cada uno calcule $||A-QR||_2$ y $||Q'Q-I||_2$. Comente sus resultados.¿Cuál algoritmo es mejor?¿Compare sus resultados con el comando de \texttt{MATLAB} $[q,r]=\texttt{qr}(A)$
+
+\textbf{Solución: }Se resumen los resultados en la siguiente tabla
+\center Tabla 1. Error en uso de algoritmos para factorización $QR$
+\begin{table}[h]
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+{\color[HTML]{000000} \textbf{Algoritmo}} & {\color[HTML]{000000} \textbf{Error promedio $||A-QR||_2$}} & {\color[HTML]{000000} \textbf{Error promedio $||Q^*Q-I||_2$}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+{\color[HTML]{000000} Gram-Schmidt Inestable} & {\color[HTML]{000000} $6.6472 \times 10^{-17}$} & {\color[HTML]{000000} $52.012$} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+{\color[HTML]{000000} Gram-Schmidt Estable} & {\color[HTML]{000000} $6.61492 \times 10^{-17}$} & {\color[HTML]{000000} $0.99528$} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+{\color[HTML]{000000} Householder} & {\color[HTML]{000000} $1.61738 \times 10^{-16}$} & {\color[HTML]{000000} $1.90284 \times 10^{-15}$} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+{\color[HTML]{000000} \texttt{qr}} & {\color[HTML]{000000} $1.573642 \times 10^{-16}$} & {\color[HTML]{000000} $1.98785 \times 10^{-15}$} \\ \hline
+\end{tabular}
+\end{table}
+
+
+\textbf{Nota: } Para calcular el error promedio se corrió cada script $5$ veces.
+\justifying
+Puede observarse que el error promedio de la factorización es muy bajo en todos los casos, siendo ligeramente mejor para los métodos de Gram-Schmidt. Sin embargo, los primeros dos métodos no producen una matriz $Q$ del todo unitaria. La $Q$ obtenida del primer método está lejos de ser unitaria, mientras que la obtenida en el segundo método presenta un error aún considerable. Mientras tanto, el método de Householder y el método del software, presentan muy buenas aproximaciones de matrices unitarias. El código de \texttt{MATLAB} no permite examinar el comando \texttt{qr}, pero se presume que éste coincide con el de Householder. En resumen, el mejor método pareciera ser el de \textbf{Householder.}
+\end{enumerate}
+
+\end{document}
