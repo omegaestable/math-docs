@@ -1,0 +1,400 @@
+\chapter{Higher Order Equations}
+
+We have already studied several solution methods for first order differential equations (those where the highest order derivative is the first). In this section we will mainly study the solution of \textbf{linear} equations of order greater than or equal to 2. Recall that such ODEs have the form
+ \begin{equation}\label{eqn:6}
+    a_n(x)y^{(n)}(x) + a_{n-1}(x)y^{(n-1)}(x) + \dots + a_1(x)y'(x) + a_0(x)y(x) = f(x)
+  \end{equation}
+  where $a_n,a_{n+1},\dots,a_1,a_0,f$ are functions of a variable $x$, and also $a_n(x) \neq 0$, with $n \geq 2$. Recall also that if $f(x)=0$, we call equation \eqref{eqn:6} \textbf{homogeneous}. Finally, when $a_n,a_{n-1},\dots,a_1,a_0$ are constant functions, that is, numbers, we say that equation \eqref{eqn:6} has \textbf{constant coefficients.} First we present a theorem that generalizes the last one from section 5.
+  
+  \begin{teorema}{Existence and Uniqueness}{}
+    Consider the Cauchy problem
+  \begin{align*}
+\begin{cases}
+a_n(x)y^{(n)}(x) + a_{n-1}(x)y^{(n-1)}(x) + \dots + a_1(x)y'(x) + a_0(x)y(x) = f(x) \\
+y(x_0)=y_0 \\
+y'(x_0)=y_1 \\
+y''(x_0)=y_2 \\
+\vdots \\
+y^{(n-1)}(x_0)=y_{n-1}
+\end{cases}
+\end{align*}
+When all the functions $a_n,a_{n+1},\dots,a_1,a_0,f$ are continuous on some $A \subseteq \mathbb{R}$, then the Cauchy problem has a unique solution.
+  \end{teorema}
+  
+  \begin{ejemplo}
+   The problem $$\frac{y''}{x^2} - \sqrt{x}y = 0 \ , \ y(2)=1  \ , \ y'(3) = 0$$
+has a unique solution, as long as $x>0$, thanks to the fact that the coefficients $\dfrac{1}{x^2}$, and $-\sqrt{x}$ are continuous in this region. The application of the theorem is direct in this case.
+  \end{ejemplo}
+
+\begin{ejemplo}
+    Every Cauchy problem whose differential equation is linear with constant coefficients and homogeneous, that is of the form
+$$a_ny^{(n)} +a_{n-1}y^{(n-1)}+ \dots + a_1y' + a_0y = 0 \quad , \quad  a_i \in \mathbb{R} \text{ for } i=0,1,\dots,n$$has a unique solution, since obviously all constant functions are continuous.
+\end{ejemplo}
+
+The importance of existence and uniqueness theorems for differential equations is more theoretical than practical, since they are not really ways to calculate the solution of a given problem, but only tools to prove that a solution exists (which makes it worthwhile to try to find it in the first place).
+
+\section{Vector Spaces}
+We have seen that when we solve a first order differential equation, for example $y'=y$, its general solution is given by a \textit{family} of functions, in this case $y'=Ce^x$, where $C$ is any real number. For higher order equations, we will have a similar situation (the higher the order, the more parameters we need). To make this intuition mathematically precise, we need to return to the notion of a \textbf{vector space}. From now on, we will allow ourselves to use complex numbers ($\mathbb{C}$) when convenient. The use of complex numbers will allow us to solve even more differential equations.
+
+\begin{definicion}{Linear Combination}{}
+    If $f_1(x),\dots,f_n(x):\mathbb{R} \to \mathbb{R}$ are functions, then those functions of the form
+$$c_1f_1(x) + c_2f_2(x) + \dots + c_nf_n(x)$$
+for $c_i \in \mathbb{C}$, are called \textbf{linear combinations} of $f_1,\dots,f_n$. Note that linear combinations of a single function $g(x)$, are all of the form $\lambda g(x)$, with $\lambda \in \mathbb{C}$, that is, they are all \textbf{multiples} of $g(x)$.
+\end{definicion}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item The function $f(x)=x^2 + 3x + 1$ is a linear combination of the functions $x^2 ,x, 1$.
+        \item The function $e^{iz} = \cos(z) + i \sin(z)$ is a linear combination of $\sin(z)$ and $\cos(z)$.
+        \item The function $\cos(x)$ cannot be written as a multiple of $\sin(x)$.
+    \end{itemize}
+\end{ejemplo}
+
+The following theorem is known as the \textit{superposition principle} for homogeneous equations, and tells us that the solution set of a homogeneous linear ODE is indeed a vector space.
+
+\begin{teorema}{Superposition Principle}{}
+    If $y_1,y_2,\dots,y_k$ are solutions of a homogeneous linear ODE, then any linear combination of them is also a solution.
+\end{teorema}
+This basically tells us that adding solutions of a homogeneous linear ODE produces new solutions of the same equation.
+
+\begin{ejemplo}
+    The functions $y_1=x^2$ and $y_2 = x^2 \ln x$ are solutions of the homogeneous linear equation $x^3y''' - 2xy' + 4y = 0$. By the superposition principle, we have that the functions \linebreak $y_3= -x^2 + 5x^2 \ln(x)$ , $y_4 = \frac{2}{7}x^2 - \sqrt{3}x^2 \ln (x)$ are also solutions to the same equation. More generally, for any $C_1,C_2 \in \mathbb{C}$, the function
+$$y=C_1x^2 + C_2x^2 \ln(x)$$
+is a solution to the differential equation.
+\end{ejemplo}
+
+We see then that when dealing with a homogeneous linear ODE, regardless of the degree, its \textit{family} of solutions is actually a vector space. Recall that to describe a vector space, it suffices to describe a basis of it. We will then look for a basis of the solution space.
+
+\begin{definicion}{Linear Independence}{}
+    A set of functions $\{f_1(x),\dots,f_n(x) \}$ is said to be \textbf{linearly independent} if there are no constants $c_1 , c_2 , \dots , c_n \in \mathbb{C}$ \textbf{not all zero}, that make
+$$c_1f_1(x) + c_2f_2(x) + \dots + c_nf_n(x)=0$$
+for all $x \in \mathbb{R}$.
+\end{definicion}
+
+Verifying whether a set of functions is l.i. can be complicated, especially if we have many functions. For this, we borrow a resource from linear algebra, the determinant.
+
+\begin{definicion}{Wronskian}{}
+    The \textbf{Wronskian} of the functions $f_1(x),\dots,f_n(x)$ is defined by the formula
+$$W(f_1(x),\dots,f_n(x))(x) = \det \begin{pmatrix}
+f_1(x) & f_2(x) & \dots & f_n(x) \\
+f'_1(x) & f'_2(x) & \dots & f'_n(x) \\
+\vdots & \vdots & \ddots & \vdots\\
+f_1^{(n-1)}(x) & f_2^{(n-1)}(x) & \dots & f_n^{(n-1)}(x)
+ \end{pmatrix}$$
+\end{definicion}
+
+ \begin{teorema}{}{}
+    If $f_1,\dots,f_n$ are functions that are \textbf{l.d.}, then, for all $x \in \mathbb{R}$, $$W(f_1(x),f_2(x),\dots,f_n(x))(x)=0.$$ That is, the Wronskian of the functions is the constant $0$.
+ \end{teorema}
+ 
+ We can also see the same theorem written in another form:
+ 
+ \begin{teorema}{}{}
+    If $f_1,\dots,f_n$ are functions, and there exists some $x$ such that $$W(f_1(x),\dots,f_n(x))(x)\neq0,$$ then the functions are \textbf{l.i}. That is, when the Wronskian is not the constant 0, the functions will be l.i.
+ \end{teorema}
+ 
+ \begin{ejemplo}
+     Let us prove again that the functions $x,x^2$ are l.i. Note that
+ $$W(x,x^2)(x) = \det \begin{pmatrix*}
+ x & x^2 \\
+ 1 & 2x
+ \end{pmatrix*} = (x)(2x)-(1)(x^2)=x^2.$$
+ Since the Wronskian is not the constant 0, we conclude thanks to the theorem that $x$ and $x^2$ are l.i. The proof is easier than before.
+ \end{ejemplo}
+
+\begin{teorema}{}{}
+    The family of solutions of a homogeneous linear ODE of order $n$, that is, of the form
+  \begin{equation}\label{eqn:7}
+ a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)} + \dots + a_1(x)y' + a_0(x)y =0
+  \end{equation}
+ is a vector space of dimension $n$. In other words, there exist $n$ linearly independent functions $y_1,\dots,y_n$ that satisfy that, for any other solution $y$, there exist (unique) scalars $c_1,c_2, \dots , c_n \in \mathbb{C}$ such that for all $x$,
+ $$y(x) = c_1y_1(x)+ \dots + c_ny_n(x).$$
+ Said in a third way, the solution set of a homogeneous linear ODE of order $n$, has a \textit{basis} with $n$ elements.
+\end{teorema}
+
+The previous theorem simply tells us that if we are trying to solve a homogeneous linear ODE of order $n$, and we already have $n$ solutions that are l.i., then we already have the general solution.
+
+\section{Homogeneous Differential Equations with Constant Coefficients}
+In this subsection we are going to solve equations of the form
+ \begin{equation}\label{eqn:8}
+    a_n y^{(n)} + a_{n-1}y^{(n-1)} + \dots + a_1y' + a_0y = 0
+  \end{equation}
+  where the $a_i$ are all real numbers. To solve this equation, we are going to construct a new equation, called the \textbf{characteristic equation}, which is not an ODE, but a classical polynomial equation. This is obtained by changing in \eqref{eqn:8} the $y^{(k)}$ by $m^k$ for all $k \in \{0,1,\dots,n \}$. That is, the characteristic equation is
+ \begin{equation}\label{eqn:9}
+    a_n m^n + a_{n-1}m^{n-1} + \dots + a_1m + a_0 = 0.
+  \end{equation}
+  The roots of this equation are $n$ complex numbers (since every polynomial of degree $n$ has exactly $n$ roots in $\mathbb{C}$). Suppose that $\alpha_1,\dots,\alpha_n$ are the roots of \eqref{eqn:9}. Then it is possible to show that the functions $y_i(x) = e^{\alpha_ix}$ are solutions of equation \eqref{eqn:8}. From them we can then directly construct the general solution of equation \eqref{eqn:8}.
+  
+  \textbf{Case 1:} If all $\alpha_1,\dots,\alpha_n$ are real and distinct, then the general solution is
+  $$y(x) = C_1e^{\alpha_1 x} +  C_2e^{\alpha_2 x} + \dots +  C_{n-1}e^{\alpha_{n-1} x} +  C_ne^{\alpha_n x}.$$
+  This is because if all the roots are distinct, all the $y_i = e^{\alpha_ix}$ are l.i, and since there are exactly $n$, they are a basis of the solution space.
+  
+  \textbf{Case 2: }If among the $\alpha_1,\dots,\alpha_n$ there are some repeated (whether real or complex), then we must count their \textbf{multiplicities} (that is, how many times each one appears repeated). Then for example, if the root $\alpha_1$ has a multiplicity of $k$, this root is associated with the solution
+  $$y_{\alpha_1}(x) = C_0e^{\alpha_1x} +C_1xe^{\alpha_1x} +C_2x^2e^{\alpha_1x} + \dots C_{k_1}x^{k-1}e^{\alpha_1x}.$$
+  That is, to obtain the solution associated with a root repeated $k$ times, we sum starting from $e^{\alpha_1 x}$, adding $xe^{\alpha_1 x}$, and so on until reaching the power $k-1$ in $x$.
+  Repeating this for each \textbf{distinct} solution of the characteristic equation, we have that the general solution is
+  $$y(x) = y_{\alpha_1}(x) + \dots + y_{\alpha_n}(x)$$
+
+\textbf{Case 3: }When any of the roots is a complex number (not real), of the form $\alpha+\beta i$, we know that $\alpha - \beta i$ (its complex conjugate) is also a root of \eqref{eqn:9}. This tells us that the functions $e^{\alpha + \beta i}$ and $e^{\alpha - \beta i}$ are both solutions of \eqref{eqn:8}. Applying the superposition principle and some complex number identities, we can summarize the solution associated with both roots $\alpha+\beta i$ and $\alpha-\beta i$, as a real-argument function, given by
+$$y_{\alpha + \beta i} = e^{\alpha x}(c_1 \cos(\beta x) + c_2 \sin(\beta x)) \quad \text{with } c_1,c_2 \in \mathbb{C}.$$
+
+\begin{ejemplo}
+    The equation $$y'' - 3y' - 10y = 0$$
+is a homogeneous linear ODE with constant coefficients. So we can apply this method. Its characteristic equation is
+$$m^2 - 3m -10 = 0.$$
+By inspection or the general formula, we can see that the roots of this equation are $m_1 = -2$ and $m_2 = 5$. Since they are distinct real solutions, we can apply case 1 of the method and simply say that the general solution is
+$$y(x) = C_1 e^{-2x} + C_2 e^{5x}.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    The equation
+$$y'' +10y' +25y=0$$
+has characteristic equation
+$$m^2 + 10m + 25 = 0.$$
+which factors as
+$$(m+5)^2 = 0.$$
+This tells us that the root $m_1 = -5$ has \textbf{multiplicity 2}, so we must apply case 2 of the method. The solution associated with $m_1 = -5$ is
+$y_{m_1}= C_1 e^{-5x} + C_2 x e^{-5x}$,
+and since there are no more roots, the general solution is given by
+$$y(x) = y_{m_1} =  C_1 e^{-5x} + C_2 x e^{-5x}.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Find the general solution of each of the following ODEs.
+    \begin{enumerate}
+    \item $y''+4y'-y=0$.
+    \item $y''' -3y''+3y'-3y = 0$
+    \item $y''+5y=4y'$.
+    \item $16 \dfrac{d^4y}{dx^4}+24\dfrac{d^2y}{dx^2} + 9y=0$.
+    \item $u^{(5)} + 5u^{(4)}-2u^{(3)}-10u''+u'+5u=0$.
+    \end{enumerate}
+\end{ejercicios}
+
+\begin{ejercicios}
+    Solve the following initial value problems.
+    \begin{enumerate}
+    \item $8x''(t) - 2x'(t) -15x(t) = 0$ with the conditions $y(0)=y'(0)=1$ .
+    \item $y^{(6)}-2y^{(5)}-2y^{(4)}+2y^{(3)}+y''+4y'+4y=0$, with the condition \newline $y(0) = y'(0)=\dots = y^{(5)}(0)=0$.
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Differential Operators}
+We are going to introduce a new way to denote the derivative of a function. We define the \textit{differential operator }$D$ as the function
+$$D(f(x))=f'(x).$$
+Thus, we have $D(x^3)=3x^2$, and $D(\sin(x))=\cos(x)$ for example. We denote $Df$ instead of $D(f(x))$ for convenience. Note that higher order derivatives can also be expressed with this operator
+$$D^2y = D(D(y))=D(y')=y'' \ , \ \text{and in general } \ D^ny=y^{(n)}.$$
+Furthermore, we can form polynomial expressions using this operator.
+Any linear ODE can be rewritten using the differential operator $D$. For example, the equation
+$$y''+5y'+6y=5x$$
+becomes
+$$(D^2+5D+6)y=5x.$$
+To solve non-homogeneous equations, we are going to define differential annihilators.
+
+\begin{definicion}{Differential Annihilator}{}
+    A \textit{differential annihilator} of a function $f$ is a polynomial in $D$, called $H(D)$, that satisfies
+$$H(D)f=0.$$
+\end{definicion}
+
+For example, $D-1$ is an annihilator of $e^x$, $D^2+1$ is an annihilator of $\sin(x)$.
+Below is a list of the annihilators we will need most often.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Function $f$}                                                                    & \multicolumn{1}{c|}{\textbf{Differential Annihilator}} \\ \hline
+$a_nx^n + \dots + a_1x + a_0$                                                           & $D^{n+1}$                                          \\ \hline
+$Ae^{\alpha x}$                                                                         & $D-\alpha$                                         \\ \hline
+$Ax^ne^{\alpha x}$                                                                      & ($D-\alpha)^{n+1}$                                     \\ \hline
+$A \cos(\omega x) + B \sin(\omega x)$                                                   & $D^2 + \omega^2$                                   \\ \hline
+$A \cosh(\omega x) + B\sinh(\omega x)$                          & $D^2-\omega^2$                                     \\ \hline
+$P_n(x)\cos(\omega x) + Q_m(x) \sin(\omega x)$ & $(D^2 + \omega^2)^{N+1} \, \ N=\max{n,m}$   \\ \hline
+$e^{\alpha x}(P_n(x)\cos(\omega x) + Q_m(x) \sin(\omega x))$ & $((D-\alpha)^2 + w^2)^{N+1} \ , \ N=\max{n,m}$
+\\ \hline
+\end{tabular}
+\end{center}
+
+\section{Non-homogeneous Linear ODEs}
+We are going to consider equations of the form
+ \begin{equation}\label{eqn:10}
+   a_ny^{(n)} + \dots + a_1y' + a_0 = f(x)
+  \end{equation}
+Where $a_i \in \mathbb{R}$ and $f(x) \neq 0$. This equation can be seen as
+$$(a_nD^n + \dots + a_1D + a_0)y = f(x)$$
+To solve this equation we must find a differential annihilator $H$ of $f(x)$. Once found, we multiply the entire equation by $H$, to obtain
+$$H(a_nD^n + \dots + a_1D + a_0)y = Hf(x)=0.$$
+which is a homogeneous linear equation. Once this is done, we must compare the general solution $y_h$ of this homogeneous equation with the \textbf{complementary solution} $y_c$ of
+$$(a_nD^n + \dots + a_1D + a_0)y = 0$$
+that is, of the original equation without the term $f$. This comparison will allow us to find a particular solution $y_p$ of equation \eqref{eqn:10}. The general solution is finally given by
+$$y = y_c + y_p.$$
+
+\begin{ejemplo}
+    Find the general solution of the equation
+$$y'' - 2y + y = x.$$
+The first thing we must do is solve the equation as if it were homogeneous, to find $y_c$. We already know how to solve this equation, so
+$$y_c = C_1e^x + C_2xe^x.$$
+Now, we rewrite the equation in terms of the operator $D$, to obtain
+$$(D^2 - 2D + 1)y = (D-1)^2y =  x,$$
+since the annihilator of $x$ is $D^2$, we apply it to the equation on both sides.
+$$D^2(D-1)^2 y = 0.$$
+We also know how to solve this equation (we simply solve the characteristic equation $m^2 (m-1)^2 = 0$. This tells us that
+$$y_h = C_3 + C_4x + C_5e^x + C_6xe^x.$$
+To obtain $y_p$ we must eliminate the terms \textit{similar} to those of $y_c$, in the solution $y_h$, that is, the terms that are equal except for parameters. In this case, the similar terms are $e^x$ and $xe^x$, so, eliminating them, we look for a particular solution of the form
+$$y_p = C_3 + C_4x.$$
+Since we are looking for a \textit{particular} solution, we must find the values of $C_3$ and $C_4$, for this we simply differentiate our candidate, and substitute it into the original equation.
+\begin{alignat*}{2}
+&&(C_3 + C_4x)'' - 2(C_3+C_4x)' + (C_3 + C_4x) &= x \\
+\Rightarrow&& -2C_4 + C_3 + C_4x &= x\\
+\end{alignat*}
+Comparing coefficients on each side, we deduce that $C_4=1$, and therefore $C_3=2$. This implies that $y_p = 2+x$. Finally, the general solution of the equation is
+$$y = y_c + y_p = C_1e^x + C_2xe^x + 2 + x.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Find the general solution of the following differential equations.
+    \begin{enumerate}
+    \item $y'' + 3y' + 2y = 4x^2$.
+    \item $y'' - 5y' + 6y = e^{-3x} + \sin(2x)$.
+    \item $y'''+y'' = e^x \sin(x)$
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Method of Undetermined Coefficients}
+Once again, we are interested in solving equations of the form \eqref{eqn:10}. We will use the same technique of finding the complementary solution $y_c$, and from it a particular solution $y_p$, from which it follows that the general solution is $y=y_c + y_p$. However, to find $y_p$, we will use a new method, which consists of a kind of \textit{guess} we make based on the form that $f(x)$ has.
+
+\textbf{Note: }This method only works when the term $f(x)$ of equation \eqref{eqn:10} is a polynomial, a sine or cosine, an exponential, or any sum and/or product of these.
+
+\begin{ejemplo}
+    Find the general solution of
+$$y''+4y-2y = 2x^2 - 3x + 6$$
+using undetermined coefficients.
+We start just as with the annihilator method, solving the equation without the term $f(x)$,
+$$y''+4y'-2y = 0,$$
+whose solution is
+$$y_c = C_1 e^{-(2+\sqrt{6})x}+ C_2 e^{(-2+\sqrt{6})x}.$$
+Now, since the function $f(x)$ is a polynomial of degree 2, the method consists of \textbf{assuming} that the particular solution must also be a polynomial of degree 2:
+$$y_p = Ax^2 + Bx+ C,$$
+from which we only need to solve for $A,B,C$. Differentiating our candidate, we obtain
+\begin{alignat*}{2}
+&& y_p''+4y_p' - 2y_p &= 2x^2 - 3x + 6\\  \Rightarrow && (Ax^2 + Bx+ C)'' + 4(Ax^2 + Bx+ C)' - 2(Ax^2 + Bx+ C) &= 2x^2 - 3x + 6 \\
+\Rightarrow && 2A+8Ax+4B - 2Ax^2 - 2Bx - 2C &=2x^2 - 3x + 6
+ \end{alignat*}
+ Comparing the coefficients of each polynomial, we must solve the system
+ $$\begin{cases}
+ -2A=2 \\
+ 8A-2B=-3\\
+ 2A+4B-2C=6\\
+ \end{cases}.$$
+ The solution is $A=-1$, $B=-\frac{5}{2}$, $C=-9$. This tells us that
+ $$y_p = -x^2 - \frac{5}{2}x - 9$$
+ so finally the general solution is
+ $$y=y_c+y_p = C_1 e^{-(2+\sqrt{6})x}+ C_2 e^{(-2+\sqrt{6})x}+-x^2 - \frac{5}{2}x - 9. $$
+\end{ejemplo}
+
+\begin{ejercicio}
+Complete the following table.
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{$f(x)$}             & \textbf{Form of $y_p$} \\ \hline
+$1$ (or any constant) & A                       \\ \hline
+$5x+5$                      & A$x$+B                    \\ \hline
+$3x^2-2$                    &                         \\ \hline
+$x^4 - 2x$                  &                         \\ \hline
+$\sin(4x)$                  &                         \\ \hline
+$\cos(x)+1$                 &                         \\ \hline
+$e^{5x}$                    &                         \\ \hline
+$9xe^{5x}$                  &                         \\ \hline
+$x^2 \sin(3x)$              &                         \\ \hline
+$e^{3x}\sin(4x)$            &                         \\ \hline
+$5x^2 + x \sin(4x)$         &                         \\ \hline
+$xe^x\sin(x)$               &                         \\ \hline
+\end{tabular}
+\end{center}
+\end{ejercicio}
+
+\subsection{Method of Variation of Parameters}
+In this subsection we are interested in solving second order equations, of the form
+ \begin{equation}\label{eqn:11}
+   y'' + p(x)y' + q(x)y = f(x)
+  \end{equation}
+Where $f(x) \neq 0$ and is also not in the appropriate form to apply annihilators or undetermined coefficients. The inspiration for this method comes from the solution of the homogeneous. Suppose for a moment that the equation is homogeneous, that is, $f(x)=0$. Then there exist two functions, $y_1(x)$ and $y_2(x)$, that are l.i. and that make the homogeneous solution
+$$y_c=C_1y_1(x) + C_2y_2(x)$$
+where $C_1,C_2$ are scalars. The idea of this method is not to consider $C_1,C_2$ as numbers but as \textbf{functions} of $x$. This will help us find the particular solution which will have the form
+$$y_p = C_1(x)y_1(x) + C_2(x)y_2(x).$$
+
+\begin{teorema}{Variation of Parameters}{}
+    Consider the differential equation \eqref{eqn:11}, with fundamental system of solutions $\{y_1,y_2\}$. The general solution of the equation is given by
+$$y(x)=Ay_1(x) + By_2(x) + C_1(x)y_1(x) + C_2(x)y_2(x)$$
+where $A,B \in \mathbb{C}$, and
+$$C_1(x) = \int \frac{-y_2(x)f(x)}{W(y_1,y_2)(x)}dx \quad , \quad C_2(x) = \int \frac{y_1(x)f(x)}{W(y_1,y_2)(x)}dx.$$
+\end{teorema}
+
+\begin{ejemplo}
+    Consider the equation
+$$y'' - 2y' + y = e^x \ln(x).$$
+We begin as always, since it has constant coefficients, it is easy to calculate the complementary solution
+$$y_c = Ae^x + Bxe^x$$
+from which we are only interested in taking the fundamental system:
+$$y_1 = e^x  \ ; \ y_2 = xe^x.$$
+We can calculate the Wronskian at once
+$$W(e^x,xe^x)(x) = \det \begin{pmatrix*}
+e^x & xe^x \\
+e^x & (x+1)e^x\\
+\end{pmatrix*} = e^{2x}.$$
+Now, we can apply variation of parameters, using the formulas for $C_1$ and $C_2$.
+\begin{align*}
+C_1 &=  \int \frac{-y_2(x)f(x)}{W(y_1,y_2)(x)}dx = \int \frac{-xe^x e^x \ln(x)}{e^{2x}}dx = \int -x\ln( x )dx = \frac{x^2(1-2\ln(x))}{4} \\
+\vspace{8pt}
+C_2 &=\int \frac{y_1(x)f(x)}{W(y_1,y_2)(x)}dx = \int \frac{e^x e^x \ln(x) }{e^{2x}} = \int \ln(x)dx ) =  x \ln(x) - x
+\end{align*}
+Both integrals are calculated using integration by parts. Also, we omit the constants of integration since in case of adding them, they would be redundant with the final parameters $A$ and $B$. Thanks to the theorem, we quickly find the general solution to the equation
+$$y=y_c + y_p = Ae^x + Bxe^x + \left(\frac{x^2(1-2\ln(x))}{4} \right)e^x + (x\ln(x) - x)xe^x$$
+which, after grouping a bit, becomes
+$$y= Ae^x + Bxe^x - \frac{3}{4}x^2e^x + \frac{1}{2}x^2 \ln(x)e^x.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Solve the following differential equations and initial value problems, using the method of variation of parameters.
+    \begin{enumerate}
+    \item $y''-2y' + y = \dfrac{e^x}{1+x^2}$.
+    \item $y'' - y = \frac{1}{x}$. \textit{Note: }if non-elementary integrals appear, you can leave them in integral form.
+    \item $x''(t) + 3x'(t) + 2x(t) = \sin(e^{-t}).$
+    \item $y'' + y = \cot(x)$, under the condition $y(\pi/4)= y'(\pi/4)=0$.
+    \item $x^2y'' - xy' + y = \dfrac{x}{1+\ln^2(x)}$ with the conditions $y(1) = y(e) =0$, knowing that a particular solution is $y=x$. \textit{Hint: } This equation does not have constant coefficients, to find the other l.i. solution you can use Abel's formula.
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Cauchy-Euler Equation}
+To conclude the topic of higher order ODEs, we will study the solution method for \textit{Cauchy-Euler} equations, which have the form
+
+ \begin{equation}\label{eqn:120}
+  a_nx^ny^{(n)} + a_{n-1}x^{n-1}y^{(n-1)} + \dots + a_1xy' + a_0y=0.
+  \end{equation}
+Where $a_0,a_1,\dots,a_n$ are constants. That is, these equations have variable coefficients, but these coefficients have a pattern, since the coefficient accompanying the $k$-th derivative of $y$ is simply $x^k$.
+To solve this type of equation, we must apply the substitution $x=e^u$, where $\frac{dx}{du}=x$, which converts the equation into one with constant coefficients, which must be solved by one of the other methods we have studied.
+
+\begin{ejemplo}
+    Consider the second order equation
+$$x^2y'' +bxy' + cy = 0.$$
+Taking the substitution $x=e^u$ (or equivalently $ u= \ln(x)$), we must now calculate the first two derivatives of $y$ with respect to $u$. We must use the chain rule,
+$$\frac{dy}{du} = \frac{dy}{dx}\frac{dx}{du}=x\frac{dy}{dx} = xy',$$
+and differentiating again with respect to $u$ (we must apply the product rule, and the chain rule again),
+$$\frac{d^2y}{du^2}=\frac{dx}{du}\frac{dy}{dx} + x \frac{d^2y}{dx^2}\frac{dx}{du} = xy' + x^2y''.$$
+Using these two equalities, we can solve for $y''$ and $y'$, to obtain
+\begin{align*}
+y' &= \frac{1}{x} \frac{dy}{du} \\
+y'' &= \frac{1}{x^2} \left(\frac{d^2y}{du^2} -  \frac{dy}{du} \right)
+\end{align*}
+After substituting and simplifying, this converts our equation into
+$$\frac{d^2y}{du^2} + (b-1) \frac{dy}{du}+ cy=0$$
+which is a linear ODE with constant coefficients. Note that this substitution and the manipulations to the differentials will always be the same, regardless of which equation we have (as long as it is second order).
+\end{ejemplo}
+
+\begin{ejercicio}
+\begin{itemize}
+\item $x^2y'' - 3xy' + 3y = 2x^4e^x$.
+\item $3x^2y'' - xy' + 2y = 0$.
+\item $x^3y'' - 4x^2y' + 6xy = \ln(x^{x^4})$.
+\item $x^3y''' +5x^2y'' + 7xy' + 8y = 0$.
+\end{itemize}
+\end{ejercicio}

@@ -1,0 +1,353 @@
+\chapter{The Laplace Transform}
+
+In this section we will study the Laplace Transform (LT), a very powerful tool that will allow us to solve differential equations much more easily.
+
+\begin{definicion}{Laplace Transform}{}
+Let $f:[0,\infty) \to \mathbb{R}$ be a piecewise continuous function. We define its \textbf{Laplace transform} as the improper integral
+\begin{equation}\label{eqn:16}
+\mathcal{L}\{f\}(s) = \int_0^{\infty} f(t)e^{-st}dt
+\end{equation}
+for all $s$ where the integral converges.
+\end{definicion}
+
+Let us emphasize the nature of the Laplace transform: it receives a function $f(t)$ and returns another function of a different (and new) variable $s$. Normally, for notation purposes, we denote the transform $\mathcal{L}\{f\}(s)$ simply as $F(s)$.
+
+\begin{ejemplo}
+    \textbf{The transform of $f(t)=t$.}
+Let us calculate $F(s)$:
+$$F(s) = \int_0^\infty te^{-st}dt = \left[-\frac{1}{s} te^{-st}\right]_0^\infty + \int_0^\infty \frac{1}{s}e^{-st}dt = \frac{1}{s^2}$$
+by integration by parts, useful whenever $s >0$.
+We then have that $F(s) = s^{-2}$, that is, $\mathcal{L}\{t\}(s) = \frac{1}{s^2}$.
+\end{ejemplo}
+
+\begin{ejemplo}
+    \textbf{The transform of $f(t) = e^{at}$}.
+\begin{align*}
+\mathcal{L}\{e^{at}\}(s) &= \int_0^\infty e^{at}e^{-st}dt = \int_0^\infty e^{(a-s)t}dt = \frac{1}{a-s}\left[e^{(a-s)t}\right]_0^\infty
+\end{align*}
+In this case, when evaluating at $\infty$, the limit is the function $e^{(a-s)t}$, which only vanishes when $a-s<0$. Therefore, when $s>a$, we have
+$$\frac{1}{a-s}(0-1) = \frac{1}{s-a}.$$
+We then have that $\mathcal{L}\{e^{at}\}(s) = \frac{1}{s-a}$.
+\end{ejemplo}
+
+A table with many of the Laplace transforms we need is given below:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{$f(t)$} &\textbf{$\mathcal{L}\{f\}(s)$} \\
+\hline
+$1$ & $\frac{1}{s}$ \\ \hline
+$t^n$ & $\frac{n!}{s^{n+1}}$\\ \hline
+$e^{at}$ & $\frac{1}{s-a}$ \\ \hline
+$\sin(kt)$ & $\frac{k}{s^2+k^2}$ \\ \hline
+$\cos(kt)$ & $\frac{s}{s^2+k^2}$ \\ \hline
+$\sinh(kt)$ & $\frac{k}{s^2-k^2}$ \\ \hline
+$\cosh(kt)$ & $\frac{s}{s^2-k^2}$ \\ \hline
+$t^ne^{at}$ & $\frac{n!}{(s-a)^{n+1}}$\\ \hline
+$e^{at}\sin(kt)$ & $\frac{k}{(s-a)^2+k^2}$\\ \hline
+$e^{at}\cos(kt)$ & $\frac{s-a}{(s-a)^2+k^2}$\\ \hline
+$t\sin(kt)$ & $\frac{2ks}{(s^2+k^2)^2}$\\ \hline
+$t\cos(kt)$ & $\frac{s^2-k^2}{(s^2+k^2)^2}$\\ \hline
+\end{tabular}
+\end{center}
+
+\section{Properties}
+
+The Laplace transform is linear:
+$$\mathcal{L}\{af+bg\}=a\mathcal{L}\{f\}+b\mathcal{L}\{g\}.$$
+With this property alone, we can already calculate several more transforms:
+
+\begin{ejemplo}
+    The transform $\mathcal{L}\{5e^{3t}\}$ is, by linearity,
+$$\mathcal{L}\{5e^{3t}\} = 5\mathcal{L}\{e^{3t}\}=\frac{5}{s-3}.$$
+The transform $\mathcal{L}\{4t^3+ 3\sin(2t)\}$ is, by linearity,
+$$\mathcal{L}\{4t^3+ 3\sin(2t)\}=4 \frac{3!}{s^4}+ 3\frac{2}{s^2+4}= \frac{24}{s^4}+\frac{6}{s^2+4}.$$
+\end{ejemplo}
+
+The following theorem summarizes most of the important properties of the Laplace Transform. We will assume that $F(s) = \mathcal{L}\{f(t)\}(s)$.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Identity} & \textbf{Result} \\
+\hline
+Translation in $s$ & $\mathcal{L}\{e^{at}f(t)\} = F(s-a)$ \\
+\hline
+Derivative of F  & $\mathcal{L}\{t^nf(t)\} = (-1)^nF^{(n)}(s)$ \\
+\hline
+Transform of the derivative & $\mathcal{L}\{f'(t)\} = sF(s) - f(0)$ \\
+\hline
+Transform of the $n$-th derivative & $\mathcal{L}\{f^{(n)}(t)\} = s^nF(s) - s^{n-1}f(0) - \dots - f^{(n-1)}(0)$ \\
+\hline
+Transform of the integral & $\mathcal{L}\Big\{\int_0^t f(\tau) d\tau \Big\}(s) = \frac{F(s)}{s}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The properties related to the transform of derivatives are the most important. They will be the key to converting differential equations into algebraic equations, which we can solve.
+
+\section{Special Functions}
+In this section we are going to study the properties of some special functions that we have not yet used in the course.
+
+\subsection{The Heaviside Function}
+The \textbf{unit step function}, or Heaviside step function, is defined as
+$$\mathcal{U}(t) = \begin{cases}
+0 & t<0 \\
+1 & t \geq 0
+\end{cases}$$
+This function will help us define other functions by cases.
+
+A translated version of this step function is $\mathcal{U}(t-a) = \begin{cases}
+0 & t<a \\
+1 & t \geq a
+\end{cases}$
+
+\begin{ejemplo}
+    The function $f(t) = \begin{cases}
+g(t) & t<a \\
+h(t) & t \geq a
+\end{cases}$ can be rewritten as $ f(t) = g(t) + (h(t)-g(t))\mathcal{U}(t-a).$
+\end{ejemplo}
+
+In fact, a function of three or more cases can also be written using the function $\mathcal{U}$, simply by adding more copies of $\mathcal{U}$.
+
+\begin{ejemplo}
+    The function $f(t) = \begin{cases}
+2 & 0\leq t<4 \\
+-1 & 4 \leq t<6 \\
+3 & t \geq 6
+\end{cases}$ can be rewritten as $ f(t) = 2 -3\mathcal{U}(t-4)+ 4\mathcal{U}(t-6).$
+\end{ejemplo}
+
+The Laplace transform of $\mathcal{U}(t-a)$ is $\boxed{\mathcal{L}\{\mathcal{U}(t-a)\}(s) = \frac{e^{-as}}{s}}$. Furthermore, just as $e^{at}$ is a factor that allows us to transform our function with respect to $s$, the factor $\mathcal{U}$ allows us to transform the argument of the function. That is to say,
+$$\mathcal{L}\{f(t-a)\mathcal{U}(t-a)\}(s) = e^{-as}F(s).$$
+This property helps us calculate the transform of piecewise functions.
+
+\begin{ejemplo}
+    We can calculate the Laplace transform of $f(t) = \begin{cases}
+0 & t<2\pi \\
+\cos t & t \geq 2\pi
+\end{cases}$ as follows:
+
+$$\mathcal{L}\{f(t)\}(s) = \mathcal{L}\{\cos (t-2\pi)\mathcal{U}(t-2\pi)\}(s) = e^{-2\pi s}\mathcal{L}\{\cos(t)\}(s) = \frac{se^{-2\pi s}}{s^2+1}.$$
+\end{ejemplo}
+
+\subsection{The Dirac Delta}
+The next function we will study will help us model instantaneous phenomena, for example, an explosion, or an electric shock.
+
+\begin{definicion}{Dirac Delta $\delta$}{}
+The \textbf{Dirac delta} $\delta(t)$ is a function whose value is
+$$\delta(t) = \begin{cases}
+\infty & : t=0 \\
+0 & : t \neq 0
+\end{cases}$$
+and furthermore (magically?) $\int_{-\infty}^{\infty} \delta(t)dt = 1$. Actually, the function is an idealization of a \textit{distribution}, which would explain this last property. However rigorously, the Dirac delta is a generalized function. For a more formal definition, we would need to study measure theory.
+\end{definicion}
+
+This function also has a translation $\delta(t-t_0)$. Let us now calculate its Laplace transform.
+$$\mathcal{L}\{\delta(t-t_0)\} = \int_0^\infty \delta(t-t_0)e^{-st}dt.$$
+Using the property that the only non-zero value of $\delta(t-t_0)$ occurs at $t=t_0$, we can see that this integral reduces to $e^{-st_0}$, that is
+$$\boxed{\mathcal{L}\{\delta(t-t_0)\} = e^{-st_0}.}$$
+Particularly, $\mathcal{L}\{\delta(t)\} = 1.$
+
+\subsection{The Gamma Function}
+We also introduce the Gamma function, since it helps us with the Laplace transform.
+
+\begin{definicion}{Gamma Function $\Gamma$}{}
+The \textbf{Gamma function} is defined as the integral
+$$\Gamma(n) = \int_0^\infty t^{n-1}e^{-t}dt \quad , \quad n>0.$$
+\end{definicion}
+
+Functions defined as integrals are sometimes called \textit{special functions}. Particularly, the Gamma function allows us to generalize the factorial $n!$ to any real number $n$: $\Gamma(n+1) = n!$. It also follows that $\Gamma(n+1) = n \cdot \Gamma(n)$ for all $n>0$.
+
+With the Gamma function, we can generalize the identity $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}$ for any $n>0$ (not necessarily an integer):
+$$\mathcal{L}\{t^n\}(s) = \frac{\Gamma(n+1)}{s^{n+1}} \text{ for all } n > 0.$$
+
+\section{Convolution}
+The convolution is a binary operation on functions, similar in some sense to a kind of product. However, we will be interested in how this operation interacts with the Laplace transform.
+
+\begin{definicion}{Convolution}{}
+Let $f,g$ be piecewise continuous functions in $[0,\infty)$. The \textbf{convolution} of $f$ and $g$ is defined as
+$$(f*g)(t) = \int_0^t f(\tau)g(t-\tau)d\tau.$$
+\end{definicion}
+
+\begin{teorema}{Convolution Theorem}{}
+If $\mathcal{L}\{f\} = F$ and $\mathcal{L}\{g\} = G$, then
+$$\mathcal{L}\{f*g\}(s) = F(s)G(s).$$
+\end{teorema}
+
+\begin{ejemplo}
+    Since the transforms of $t$ and $\sin(t)$ are $\frac{1}{s^2}$ and $\frac{1}{s^2+1}$ respectively, it must hold that
+$\mathcal{L}\{t * \sin(t)\}(s) = \frac{1}{s^2(s^2+1)}.$
+\end{ejemplo}
+
+\section{Inverse Transform}
+To be able to use the Laplace transform, we also need its inverse, that is, to calculate from a function $F(s)$ a function $f(t)$.
+
+\begin{definicion}{Inverse Laplace Transform}{}
+Let $F(s)$ be the Laplace transform of some function $f(t)$. We denote the inverse transform as
+$\mathcal{L}^{-1}\{F\}(t) = f(t).$
+\end{definicion}
+
+In principle, to calculate the inverse Laplace, we need to be able to resolve a function $F(s)$ as an expression of known transforms. For this we make extensive use of the technique of \textbf{partial fractions,} which we already know from the integration lesson.
+
+\begin{ejemplo}
+    Calculate $\mathcal{L}^{-1}\left\{\frac{1}{s^2-9}\right\}$..
+
+First, let us decompose into partial fractions. Note that $(s-3)(s+3) = s^2-9$, so we have
+$$\frac{1}{s^2-9} = \frac{A}{s+3}+\frac{B}{s-3}$$
+for some constants $A,B$. From here we deduce that $A = -1/6$ and $B=1/6$, so
+$$\mathcal{L}^{-1}\left\{\frac{1}{s^2-9}\right\} = \mathcal{L}^{-1}\left\{\frac{-1/6}{s+3}\right\}+\mathcal{L}^{-1}\left\{\frac{1/6}{s-3}\right\} = \frac{1}{6}e^{3t} - \frac{1}{6}e^{-3t}.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Calculate $\mathcal{L}^{-1}\left\{\frac{s}{(s-4)(s^2+4s+5)}\right\}$.
+
+This is a case with a non-factorable quadratic denominator. In this case, the partial fraction decomposition has the form
+$$\frac{s}{(s-4)(s^2+4s+5)}= \frac{A}{s-4}+\frac{Bs+C}{s^2+4s+5}$$
+from where the constants can be deduced as $A=4/37$, $B=-4/37$ and $C = -6/37$. The inverse Laplace transform in this case is a bit more complicated, since we must use the technique of completing the square to evaluate the inverse of $\frac{Bs+C}{s^2+4s+5}$, since
+$$\frac{Bs+C}{s^2+4s+5} = \frac{Bs+C}{(s+2)^2 + 1}.$$
+We leave the details to the reader, the answer is
+$$\mathcal{L}^{-1}\left\{\frac{s}{(s-4)(s^2+4s+5)}\right\} = \frac{4}{37}e^{4t} + \frac{1}{37}e^{-2t}(2\sin(t)-4\cos(t)).$$
+\end{ejemplo}
+
+\section{Solving Differential Equations}
+We are now in a position to give the method for solving initial value problems using the Laplace Transform.
+
+\begin{enumerate}
+    \item Apply the LT to both sides of the equation, using the identity
+    $$\mathcal{L}\{f^{(n)}\}(s) = s^n\mathcal{L}\{f\}-s^{n-1}f(0)-s^{n-2}f'(0)- \dots - f^{(n-1)}(0).$$
+    \item Substitute the initial values and isolate the transform $\mathcal{L}\{f\}$.
+    \item Use the inverse LT to find the solution $f$.
+\end{enumerate}
+
+\begin{ejemplo}
+    Solve the problem $\begin{cases}
+y'' - 4y' + 4y = t^3 e^{2t}
+ \\
+y(0) = 0 \\
+y'(0) = 0
+\end{cases}$
+
+Applying the LT to both sides:
+$$\mathcal{L}\{y'' - 4y' + 4y\} = \mathcal{L}\{t^3e^{2t}\}$$
+$$\implies (s^2Y-sy(0)-y'(0)) - 4(sY - y(0)) + 4Y = \frac{6}{(s-2)^4}$$
+where $Y=\mathcal{L}\{y\}$. Substituting the initial conditions (which are 0) and isolating $Y$:
+$$s^2Y-4sY+4Y=\frac{6}{(s-2)^4}$$
+$$\implies Y=\frac{6}{(s-2)^4(s^2-4s+4)}= \frac{6}{(s-2)^6}$$
+So we must invert the transform, which thanks to the table gives us
+$$\mathcal{L}^{-1}\left\{\frac{6}{(s-2)^6}\right\} = \frac{1}{20}t^5e^{2t}.$$
+The solution to the problem is $y(t)= \frac{t^5}{20}e^{2t}$.
+\end{ejemplo}
+
+\begin{ejercicios}
+    Solve the following differential equations using Laplace transforms.
+    \begin{enumerate}
+    \item $\begin{cases}
+y'' - 6y = 0\\
+y(0) = 1 \\
+y'(0) = -1
+\end{cases}$
+\item  $\begin{cases}
+y - y'' = 1\\
+y(0) = 0 \\
+y'(0) = 0
+\end{cases}$
+\item  $\begin{cases}
+y'' + 4y' + 3y  = 1 - \mathcal{U}(t-2)- \mathcal{U}(t-4)+\mathcal{U}(t-6)\\
+y(0) = 0 \\
+y'(0) = 0
+\end{cases}$
+\item The ODE
+$y'' + y = \delta(t - 2\pi)$ with $y(0) = 1$ and $y'(0) = 0$.
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Integral and Integro-differential Equations}
+A somewhat more exotic application of the Laplace transform is to solve differential equations where both derivatives and integrals of the unknown function appear.
+
+\begin{definicion}{Integro-differential Equation}{}
+An \textbf{integro-differential} equation for a function $y$ is an equation where both derivatives and integrals of the function appear, for example
+$$y' + 6y + 9\int_0^t ydt = 1$$
+is an integro-differential equation. An \textbf{integral equation} is an equation of this type, where only integrals of the function appear. For example
+$$f(t) = 3t^2 - e^{-t} - \int_0^t f(\tau) e^{t-\tau}d\tau.$$
+is an integral equation.
+\end{definicion}
+
+\begin{ejemplo}
+    Solve the problem
+$$\begin{cases}
+y' + 6y + 9\int_0^t ydt = 1 \\
+y(0) = 0
+\end{cases}$$
+Recall that the LT of the integral is $\mathcal{L}\{\int_0^t ydt\} = \frac{Y}{s}$.
+
+When applying the LT, we have
+$$sY - y(0) + 6Y + \frac{9Y}{s} = \frac{1}{s}$$
+$$\implies sY + 6Y + \frac{9Y}{s}=\frac{1}{s}$$
+Multiplying by $s$ and isolating $Y$:
+$$s^2Y + 6sY + 9Y = 1 \implies Y(s^2+6s+9) = 1 \implies Y = \frac{1}{(s+3)^2}$$
+Inverting, we have $y(t) = te^{-3t}$ which is the solution to the problem.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Solve the integral equation
+$$f(t) = 3t^2 - e^{-t} - \int_0^t f(\tau) e^{t-\tau}d\tau.$$
+First observe that under the integral we have a convolution: $\int_0^t f(\tau)e^{t-\tau}d\tau = (f*e^{-t})(t)$.
+So we can apply the LT directly
+$$F = \frac{6}{s^3}-\frac{1}{s+1} - \frac{F}{s+1}$$
+Multiplying by $(s+1)$:
+$$F(s+1) = \frac{6(s+1)}{s^3} - 1 - F$$
+$$\implies F(s+2) = \frac{6s+6}{s^3} - 1 = \frac{6s+6-s^3}{s^3}$$
+$$\implies F = \frac{6s+6-s^3}{s^3(s+2)}$$
+The partial fraction decomposition is $F = -\frac{7}{4(s+2)} + \frac{1}{4s} + \frac{3}{s^2}-\frac{3}{s^3}$
+so the solution to the integral equation is $f(t) = -\frac{7}{4}e^{-2t} + \frac{1}{4} + 3t - \frac{3}{2}t^2$.
+\end{ejemplo}
+
+\section{Systems of ODEs}
+To conclude the course, we are going to study an alternative method to solve systems of differential equations, which uses the Laplace transform.
+
+\begin{ejemplo}
+    Solve the system
+$$\begin{cases}
+x' = -x + y \\
+y'= 2x \\
+x(0) = 0 \\
+y(0) = 1
+\end{cases}$$
+Applying the LT to each equation, and substituting the initial values, we have (denoting $X=\mathcal{L}\{x\}$, $Y=\mathcal{L}\{y\}$):
+$$\begin{cases}
+sX = -X+Y \\
+sY -1 = 2X
+\end{cases}$$
+This is a \textbf{linear} system of equations in $X$ and $Y$. We must solve it to find the values of the transforms.
+
+From the first equation: $(s+1)X=Y$. Substituting into the second: $s(s+1)X - 1 = 2X \implies X(s^2+s-2) = 1$.
+From where $X= \frac{1}{(s+2)(s-1)}$. We can then also calculate $Y= (s+1)X = \frac{s+1}{(s+2)(s-1)}$.
+
+Using partial fractions, we can now invert the transforms.
+\begin{align*}
+    x(t) = \mathcal{L}^{-1}\left\{\frac{1}{(s+2)(s-1)}\right\} = \mathcal{L}^{-1}\left\{\frac{-1/3}{s+2}+\frac{1/3}{s-1}\right\} = \frac{1}{3}(-e^{-2t}+e^t) \\
+y(t) = \mathcal{L}^{-1}\left\{\frac{s+1}{(s+2)(s-1)}\right\} = \mathcal{L}^{-1}\left\{\frac{-1/3}{s+2}+\frac{2/3}{s-1}\right\} = \frac{1}{3}(-e^{-2t}+2e^t)
+\end{align*}
+So the solution to the system is
+$$\mathbf{X}(t) = \frac{1}{3}\begin{pmatrix}
+-e^{-2t}+e^t \\ -e^{-2t}+2e^t
+\end{pmatrix}.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Solve the following systems using the Laplace transform.
+    \begin{enumerate}
+    \item $\begin{cases}
+    \dot{x} = 2y + e^t \\
+    \dot{y} = 8x -t \\
+    x(0) = y(0) = 0
+    \end{cases}.$
+    \item $\begin{cases}
+    \dot{x} = 4x - 2y \\
+    \dot{y} = 3x - y \\
+    x(0) = 1, \ y(0) = -1
+    \end{cases}.$
+    \end{enumerate}
+\end{ejercicios}

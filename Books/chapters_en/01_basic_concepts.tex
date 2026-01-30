@@ -1,0 +1,677 @@
+\chapter{Foundations}
+
+\section{Introduction}
+Welcome to the differential equations course! As an introduction, I will share some general details and observations about the course. All of the following information will be detailed in the student letter. Our main objective in this course will be to develop the mathematical skills necessary to solve differential equations.
+
+The formal prerequisites for this course are MA-1002 Calculus II and MA-1004 Linear Algebra.
+
+\section{A Brief Review}
+\subsection{Derivatives}
+We will work primarily with differentiable functions $f:\mathbb{R} \to \mathbb{R}$, that is, real-valued functions of a single variable whose derivatives (first, second, third, ...) exist. The first fundamental concept we must remember is:
+$$\text{What is a derivative?}$$
+Throughout mathematics courses, we have learned several ways to understand the derivative of a function. More specifically, if $f(x)$ is a function, we can give at least 3 interpretations of what $f'(x)$ means, which we also denote $\frac{df}{dx}$:
+\begin{enumerate}
+    \item $f'(x) = \lim_{x \to a} \frac{f(x)-f(a)}{x-a}$. Our original definition of a derivative is in the form of a limit. However, this definition does not give us much geometric or physical meaning of the function $f$.
+    \item $f'(x)$ represents the \textbf{slope} of the tangent line to the graph of $f$ at the point $x$. For example, we know that the tangent line to the parabola $f(x) = 1-x^2$ at the point $x=0$ is given by the line $y=1$, which has slope $0$. Indeed, $f'(x) = -2x$, so $f'(0) = 0$.
+    \item $f'(x)$ also tells us in some sense \textbf{how fast $f(x)$ grows} as we move from left to right along the $x$-axis. For example: we know intuitively that the function $f(x)=e^x$ grows faster than the function $g(x) = x+2$ when $x>0$. This is evident by computing $f'(x)=e^x$ and $g'(x)=1$. Since $f'(x)$ is greater than 1 (whenever $x>0$), we can conclude that $f(x)$ grows faster than $g(x)$. Note that $f$ grows faster than $g$, but this does not imply that $f(x) > g(x)$ for all $x$, since for example $f(1)= e \approx 2.7$, while $g(1) = 3$.
+\end{enumerate}
+We must always keep these 3 concepts in mind, especially when solving application problems.
+
+\begin{center}
+    In simple words, the derivative of a function $f(x)$ tells us \textbf{how $f(x)$ changes} when $x$ changes.
+\end{center}
+
+The main motivation for studying differential equations is that even if we do not know the value of some function $f(x)$, knowing how it changes (i.e., knowing its derivative) is enough to deduce quite a bit of information. Let us see this with an example:
+
+\begin{ejemplo}
+    \textbf{There is 1 bacterium in a jar. We know that every minute, the bacteria in the jar double. So, how many bacteria will there be after $m$ minutes?}
+    
+    In this example, we are asked to find the function $f(m)$ that takes as input the minutes that have passed and returns how many bacteria are in the jar. We only have as information the fact that each minute, whatever the quantity $f(m)$, the next minute there will be double, that is:
+    $$f(m+1) = 2f(m)$$
+    Knowing that at minute $0$ there is 1 bacterium, it is not difficult to deduce that the function that describes this situation is precisely
+    $$f(m) = 2^m.$$
+\end{ejemplo}
+
+We have been able to deduce the exact value of $f$ just by knowing how it changes (although we have not explicitly used its derivative). However, we have used an additional piece of information, namely, the \textbf{initial quantity} of bacteria. Let us think about what would happen if at minute 0, instead of 1 bacterium, there were 2 bacteria. Then the solution to the problem would be
+$$f(m) = 2^{m+1}.$$
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item How many bacteria are there at minute $m$ if we start with some number $n$ of bacteria?
+    \end{enumerate}
+\end{ejercicios}
+
+The idea we should keep in mind is that, in general, the only ingredients we need to solve this type of problem (which are essentially differential equations) are:
+\begin{itemize}
+    \item How our function $f$ changes.
+    \item Where our function $f$ starts.
+\end{itemize}
+We can even think of it this way: If we know that a train leaves at a certain time, and we know its speed, we can easily calculate its position at any moment.
+
+Throughout the course, knowledge of how to calculate derivatives and their properties will be absolutely necessary. As a summary, I will include some of the most common derivatives and some important properties. If you as a student feel that you do not master (or do not remember) some of these topics, I recommend reviewing them, as they will be used every day.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    $f(x)$                & $f'(x)$ \\ \hline
+    $C$                   &     $0$    \\ \hline
+    $x$                   &      $1$   \\ \hline
+    $x^n \quad (n \neq 0) $ &     $nx^{n-1}$    \\ \hline
+    $e^x$                 &     $e^x$    \\ \hline
+    $a^x \quad (a \in \mathbb{R})$                       &    $a^x \ln(a)$     \\ \hline
+       $\ln(x)$                   &   $\frac{1}{x}$      \\ \hline
+               $\log_a(x)$           &   $\frac{1}{x \ln(a)}$       \\ \hline
+            $\sin(x)$              &     $\cos(x)$    \\ \hline
+            $\cos(x)$             &   $-\sin(x)$      \\ \hline
+            $\tan(x)$              &    $\sec^2(x)$     \\ \hline
+                $\sqrt{x}$          &     $\frac{1}{2\sqrt{x}}$     \\ \hline
+                $\sqrt[n]{x}$          &  $\frac{1}{n\sqrt[n]{x^{n-1}}}$       \\ \hline
+                $\sec(x)$          &       $\sec(x)\tan(x)$    \\ \hline
+                $\csc(x)$          &     $-\csc(x)\cot(x)$    \\ \hline
+                $\cot(x)$          &   $-\csc^2(x)$      \\ \hline
+                $\arcsin(x)$          &    $\frac{1}{\sqrt{1-x^2}}$       \\ \hline
+                $\arccos(x)$           &   $-\frac{1}{\sqrt{1-x^2}}$      \\ \hline
+                  $\arctan(x)$         &   $\frac{1}{1+x^2}$      \\ \hline
+    \end{tabular}
+\end{table}
+
+Let $f,g$ be differentiable functions and $C \in \mathbb{R}$. Then:
+\begin{itemize}
+    \item \textbf{Linearity: } $(Cf(x) + g(x))' = Cf'(x) + g'(x)$.
+    \item \textbf{Product rule: } $(f(x)g(x))' = f'(x)g(x) + f(x)g'(x)$.
+    \item \textbf{Chain rule: } $(f(g(x)))' = f'(g(x))g'(x)$.  
+\end{itemize}
+
+\subsection{Integrals}
+Just like the concept of differentiation, integration will be of great use throughout the course. Similarly, if we have a function $f(x)$, we can summarize the concept of the integral (or antiderivative) of $f(x)$ in 2 ways:
+\begin{itemize}
+    \item $\int f(x)dx$ is a \textbf{function} whose derivative is exactly $f(x)$. This concept is known as the indefinite integral.
+    \item $\int_a^b f(x)dx$ is a \textbf{number}, which corresponds to the area under the graph of $f$, starting to measure from $x=a$ and ending at $x=b$. We call this concept the definite integral.
+\end{itemize}
+Integration will be tool \#1 in solving differential equations. Therefore, it is essential that we master all the integration methods we have learned since the first calculus course.
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Review all integration methods.
+    \end{enumerate}
+\end{ejercicios}
+
+As with derivatives, I will give a very brief summary of some indefinite integrals, along with basic integration techniques.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    $f(x)$                       & $\int f(x)dx$                                                                  \\ \hline
+    $1$                          & $x+C$                                                                    \\ \hline
+    $A$                          & $Ax+C$                                                                    \\ \hline
+    $x^n \quad n \neq -1 $       & $\frac{x^{n+1}}{n+1}+ C$                                                    \\ \hline
+    $\frac{1}{x}$                & $\ln(x) + C$                                                             \\ \hline
+    $\sin(x)$                    & $-\cos(x)+C$                                                             \\ \hline
+    $\cos(x)$                    & $\sin(x) + C$                                                            \\ \hline
+    $\tan(x)$                    & $-\ln(\cos(x))+C$                                                        \\ \hline
+    $\cot(x)$                    & $\ln(\sin(x)) + C$                                                       \\ \hline
+    $\sec(x)$                    & $\ln(\sec(x) + \tan(x))+C$  \\ \hline
+    $\csc(x)$                    & $-\ln(\csc(x) + \cot(x))+C$ \\ \hline
+    $e^x$                        & $e^x + C$                                                                \\ \hline
+    $a^x$                        & $\frac{a^x}{\ln(a)} + C$                                                 \\ \hline
+    $\frac{1}{\sqrt{a^2 - x^2}}$ & $\arcsin(\frac{x}{a}) + C$                                               \\ \hline
+    $\frac{1}{a^2 + x^2}$        & $\frac{1}{a}\arctan(\frac{x}{a}) + C$                                    \\ \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Linearity: } If $f,g$ are integrable functions, and $C \in \mathbb{R}$ then
+$$\int Cf(x)+g(x) dx  = C \int f(x)dx + \int g(x)dx.$$
+
+\subsection{Integration Methods}
+Below is a summary of the various integration methods. Once again, for understanding the course, it is essential that the student \textbf{master all the methods well}. I recommend solving each of the integrals used as examples.
+
+\subsubsection{Substitution}
+This works when we need to solve an integral of the type
+$$\int f(u(t))u'(t)dt.$$
+That is, when within the integral, we find an expression whose derivative is also within the integral (in this case $u$). For example, to solve the integral
+$$\int  \frac{\ln(t)}{t}dt$$
+the substitution $u= \ln(t)$ is very helpful.
+
+\subsubsection{Integration by Parts}
+This helps when we need to integrate a product of functions of the form $u(x)v'(x)$, using the identity:
+$$\int u(x) v'(x) dx = u(x)v(x) - \int v(x) u'(x) dx + C$$
+Or written more simply:
+$$\int u dv = uv- \int vdu$$
+When facing an integration by parts, the correct choice of $u$ and $v$ is fundamental. A good rule for choosing them is that $u$ should be easy to differentiate and $v$ should be easy to integrate. For example, to evaluate the integral
+$$\int xe^{2x} dx$$
+by parts, one can take $u=x$ and $dv=e^{2x}$.
+
+\subsubsection{Partial Fractions}
+This method allows us to evaluate integrals of the type
+$$\int \frac{P(x)}{Q(x)}dx$$
+where $P(x)$ and $Q(x)$ are polynomials. This method has many variants, but the general steps are the same:
+\begin{itemize}
+    \item \textbf{Step 0: } If the degree of $P$ is greater than the degree of $Q$, then it is necessary to perform polynomial division. Otherwise, proceed to step 1.
+    \item \textbf{Step 1: } Factor $Q(x)$, either using inspection, completing the square, or synthetic division.
+    \item \textbf{Step 2: } Use the factorization obtained in step 1 to decompose the fraction to be integrated into a sum of simpler fractions to integrate, usually fractions whose denominator is a polynomial of degree 1 or 2. Remember that it is necessary to solve for the numerators of said fractions, as they appear as unknowns when performing the decomposition.
+    \item \textbf{Step 3: } Integrate each fraction separately, using the other known techniques.
+\end{itemize}
+For example, to solve
+$$\int \frac{1}{x^2 -16}$$
+we can apply the decomposition
+$$\frac{1}{x^2 -16} = \frac{1}{(x+4)(x-4)} = \frac{A}{x+4} + \frac{B}{x-4}.$$
+Or to solve
+$$\int \frac{1}{x(x^2 + 2x + 5)}$$
+we can use a variant:
+$$\frac{1}{x(x^2 + 2x + 5)} = \frac{A}{x} + \frac{Bx+C}{x^2 + 2x + 5}$$
+since the discriminant of the quadratic factor in the denominator is negative.
+
+Throughout the course we will encounter many integrals of this type, so it will be helpful to review all the variants of this method.
+
+\subsubsection{Trigonometric Substitution}
+This type of substitution will be useful mainly in 3 cases:
+\begin{itemize}
+    \item For integrals of the form $\int \sqrt{b^2 - x^2}$, use the substitution $x=b\sin(\theta)$.
+    \item For integrals of the form $\int \sqrt{b^2 + x^2}$, use the substitution $x=b\tan(\theta)$.
+    \item For integrals of the form $\int \sqrt{x^2 - b^2}$, use the substitution $x=b\sec(\theta)$.
+\end{itemize}
+We perform this review prior to starting the course, because solving differential equations extensively includes solving integrals, so it is very important that we have no problem when integrating functions, as this is not the objective of the course. Later we will revisit more integration methods, but I consider that those presented in this lesson are a good foundation to start the course.
+
+\section{Basic Concepts of Differential Equations}
+In this section we will define the concept of a differential equation, and we will also give some definitions that will help us identify the different types of differential equations. The ability to correctly identify the type of equation we are facing is the first step in solving it. First we must answer the question:
+$$\textbf{What is a differential equation?}$$
+Just like the classical equations we studied in school, in differential equations we will be trying to isolate or find the value of an unknown (or several). The main difference is that in classical equations, the value to be found, or \textbf{solution}, is a number, while in differential equations, it is a function. An example:
+\begin{itemize}
+    \item \textbf{Classical equation: } $x^2 + 2x + 1 = 0$ has as solution $x=-1$, a \textbf{real number}.
+    \item \textbf{Differential equation: } We are asked to find a function $y(x)$ that satisfies the equation $y' = y$. One solution is $y(x) = e^x$, a \textbf{function}.
+\end{itemize}
+
+More specifically,
+
+\begin{definicion}{Differential Equation}{}
+    A \textbf{differential equation} is an equation where the following may appear:
+    \begin{itemize}
+        \item Independent variables, ($x$,$t$, ...)
+        \item Dependent variables, which will be the unknowns to be solved. They are usually denoted by $y$, but we must always remember that it depends on $x$, so it is actually $y(x)$.
+        \item Derivative (or derivatives) of the dependent variable: $y', y'', y'''$, etc.
+    \end{itemize}
+\end{definicion}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $y' = e^x$
+        \item $y' + y'' = \cos(x)$
+        \item $x^2y'' + xy + 1=0$
+        \item $ (y')^2 + \cfrac{1}{2 \sin(x)} = \sqrt{xy}$
+        \item $\cfrac{dy}{dx} + \cfrac{d^2y}{dx^2} = y \cos(x)$.
+    \end{itemize}
+\end{ejemplo}
+
+As mentioned earlier, it is convention that $y$ is a function of $x$, although we could have equations where the independent variable is $t$, and the dependent one is $x$, or other cases, for example
+\begin{itemize}
+    \item $x' = t$
+    \item $\cfrac{dx}{dt} + \cfrac{d^2x}{dt^2} = x \cos(t)$.
+    \item $z'(v) = z(v) + v^2$
+\end{itemize}
+are all differential equations. Little by little we will study methods to solve them.
+
+\subsection{Classification}
+The study of differential equations is very broad, and there are many ways to classify and study them. We begin with the first definition:
+
+\begin{definicion}{Ordinary Differential Equation (ODE)}{}
+    An \textbf{ordinary} differential equation (ODE) is one where the solution is a function of \textbf{one variable.} For example:
+    $$y'x = 1$$
+    Is an ODE with solution $y(x)= \ln(x)$.
+\end{definicion}
+
+\begin{definicion}{Partial Differential Equation (PDE)}{}
+    A \textbf{partial} differential equation (PDE) is one where the solution is a function of \textbf{several variables.} In this case, partial derivatives of the function to be solved also appear. For example:
+    $$\frac{\partial f}{\partial x} + \frac{\partial f}{\partial y} = 0$$
+    has as solution the function of two variables $f(x,y)=x-y$.
+\end{definicion}
+
+During this course, we will focus mainly on the study of ODEs. In the last two weeks we will give some methods to solve the most basic PDEs. Therefore, we can momentarily forget about partial differential equations and work only with ODEs.
+
+A more formal definition of an ordinary differential equation is the following.
+
+\begin{definicion}{ODE (Formal)}{}
+    An ODE is an equation of the form
+    $$F(x,y,y', \dots, y^{(n)})=0$$
+    Where $F:\mathbb{R}^{n+1} \to \mathbb{R}$ is a function.
+\end{definicion}
+
+The previous definition simply summarizes more concisely the concept of a differential equation: an expression where we have: variables ($x$), functions of said variables ($y$), and their respective derivatives ($y',y'', \dots$).
+
+Next, we will give two definitions that will help us identify the different types of ODEs. In a way, they will serve to classify equations by their difficulty.
+
+\begin{definicion}{Order}{}
+    The \textbf{order} of an ODE is the order of the highest derivative that appears in said equation.
+\end{definicion}
+
+\begin{definicion}{Degree}{}
+    The \textbf{degree} of an ODE is the exponent to which the highest order derivative is raised.
+\end{definicion}
+
+We must not confuse these definitions! The order is about how many times we have differentiated the unknown function, while the degree is simply the exponent to which the highest derivative is raised.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $xy' = yx^2$ has order 1 and degree 1.
+        \item $(1+y')^3 = x$ has order 1 and degree 3.
+        \item $(y'')^3 + (y')^7 = 1+ \ln(x)$ has order 2 and degree 3.
+        \item $y^{(9)} + y^{(8)}+ \dots + y'+y = 0$ has order 9 and degree 1
+    \end{itemize}
+\end{ejemplo}
+
+\textbf{NOTE:} When our equation has radicals, it is necessary to eliminate them to know its degree, for example
+$$\sqrt{\frac{dy}{dx}} = y+x$$
+Should be rewritten as
+$$\frac{dy}{dx} = (y+x)^2.$$
+From which we deduce that it is an ODE of order 1 and degree 1.
+
+Some ODEs are presented in \textbf{differential form}:
+$$M(x,y)dx + N(x,y)dy = 0$$
+which may seem unfamiliar. This is simply a rewriting of an ordinary ODE. Let us see an example, the equation
+$$(y-x)dx + 4xdy=0$$
+can be transformed into
+$$\frac{dy}{dx} = \frac{x-y}{4x}$$
+by a simple rearrangement. Note that to perform this rearrangement, it was necessary to move the quantity $dx$ to divide. The formal justification of this fact will not concern us in this course.
+
+Next we will define the concept of a linear equation, which will be extensively studied, as they are among the simplest to solve.
+
+\begin{definicion}{Linear Differential Equation}{}
+    A \textbf{linear} ordinary differential equation is an ODE of the form
+    $$a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)}+ \dots + a_1(x)y' + a_0(x)y = g(x)$$
+    where $g(x) , a_1(x),a_2(x), \dots , a_n(x)$ are functions that \textbf{only depend on $x$} (they can even be constant functions).
+\end{definicion}
+
+Another way to identify if a differential equation is linear is the following:
+\begin{enumerate}
+    \item The unknown $y$ and all its derivatives appear with exponent $1$. That is, all linear ODEs have degree 1.
+    \item The unknown $y$ and all its derivatives appear multiplied \textbf{only} by functions of the variable $x$ (or constants).
+\end{enumerate}
+In a linear ODE, the functions $a_i(x)$ are called \textbf{coefficients}.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $\cos(x) y^{(3)} + e^x y'' - \frac{y'}{x} + y = \tan(x)$ is a linear ODE of order 3
+        \item $y^{(5)} = y$ is a linear ODE of order 5. Note that all coefficients are constants, many of which are 0.
+    \end{itemize}
+\end{ejemplo}
+
+Note that linear ODEs have a slight resemblance to polynomials, since in general, a polynomial has the form
+$$p(t) = a_nt^n + a_{n-1}t^{n-1} + \dots + a_1t +a_0$$
+Only in this case, the coefficients are real numbers, not functions, and the variable $t$ represents a number, not a function as in the case of ODEs.
+
+\textbf{Types of linear equations: } There are two types of linear ODEs, which are very easy to identify, but the solution methods for each are different.
+Let $$a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)}+ \dots + a_1(x)y' + a_0(x)y = g(x)$$ be a linear ODE. If $g(x)=0$, we say it is a \textbf{homogeneous} equation, otherwise (if $g(x) \neq 0$), it would be \textbf{non-homogeneous}.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item The equation $x^4y^{(4)} + y'' + xy = 0$ is linear, homogeneous, of order 4.
+        \item The equation $y'' + \sin(x) y = x$ is linear non-homogeneous, of order 2.
+    \end{itemize}
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item For each of the following ODEs, determine the degree, the order, and if it is linear, specify whether it is homogeneous or not.
+    \begin{itemize}
+        \item $v'(t) + \dfrac{v(t)}{5} = \dfrac{t}{5}$
+        \item $\dfrac{dT}{dt} = 9(200-T)$
+        \item $\dfrac{dy}{dx} = \dfrac{-x \pm \sqrt{x^2+y^2}}{y}$
+        \item $y'' - (1-y^2)y' + y = 0$
+        \item $yy'y''y'''=x$
+        \item $y^{(50)} = 1$
+    \end{itemize}
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Solutions of an ODE}
+\begin{definicion}{Solution}{}
+    Let
+    \begin{equation}\label{eqn:def_sol}
+        F\left(x,y,y',\dots,y^{(n)}\right)=0
+    \end{equation}
+    be an ordinary differential equation. A \textbf{solution} of \eqref{eqn:def_sol} is a function $f(x)$ that satisfies
+    $$F\left(x,f(x),f'(x),\dots,f^{(n)}(x)\right)=0.$$
+\end{definicion}
+
+This definition may seem a bit redundant, but let us look at it more closely. Let us return to the example of classical equations. If we have, for example, to solve the equation
+$$t^4 = 81$$
+We are looking for a real number, which when substituted in place of $t$, makes the equality true. It is easy to see that $3$ is a solution, since
+$$3^4 = 81.$$
+In the case of ODEs the situation is similar, let us see an example. We have the equation
+\begin{equation}\label{eqn:ej2}
+   y'=x \sqrt{y}
+\end{equation}
+The proposed solution is $y=\dfrac{x^4}{16}$. To verify that our candidate works, we must substitute it into the equation. Note that unlike the previous example, we need to differentiate $y$ to be able to substitute, otherwise we will have an error.
+
+Note that
+$$y'=\frac{x^3}{4}$$
+So when substituting into \eqref{eqn:ej2} it should hold that
+$$\frac{x^3}{4} \stackrel{?}{=} x \sqrt{\frac{x^4}{16}}$$
+which becomes evident after removing the root from the right side. It is clear then that the function $y(x) = \frac{x^4}{16}$ is a solution of equation \eqref{eqn:ej2}.
+
+Let us see another example:
+\begin{equation}\label{eqn:ej3}
+   y''-2y'+y=0.
+\end{equation}
+We propose the solution $y=xe^x$. To verify our solution we need to differentiate 2 times. Let us see that
+\begin{align*}
+y'&=e^x(1+x) \\
+y''&= e^x(2+x)
+\end{align*}
+When substituting into \eqref{eqn:ej3}, we must verify if
+\begin{alignat*}{2}
+&&(2+x)e^x - 2(1+x)e^x + xe^x  &\stackrel{?}{=} 0 \\
+\iff&&  2e^x+xe^x-2e^x-2xe^x + xe^x &\stackrel{?}{=}0\\
+\iff&& 0 &\stackrel{?}{=} 0 
+\end{alignat*}
+Which holds. So the function $y(x)=xe^x$ is a solution of \eqref{eqn:ej3}. Note also that it is very easy to verify that the function $y(x) = 0$ is also a solution.
+
+In mathematics it is not only important to find solutions, it is common to ask ourselves: Are there more solutions? How can we find all the solutions to my problem? The study of differential equations is no exception: a differential equation can have:
+\begin{itemize}
+    \item A unique solution, for example the equation $(y')^2 + y^2 = 0$ has as its unique solution $y=0$.
+    \item Infinitely many solutions, for example the equation $y'=y$ has as solutions \linebreak $y=e^x, 2e^x, 3e^x, -e^x$ and in general $Ce^x$ where $C$ is any real number.
+    \item Zero solutions, for example, the equation $(y')^2 = -x^2-1$ has no solutions that are real functions.
+\end{itemize}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item For each of the following equations, verify whether the proposed function is a solution or not.
+    \begin{enumerate}
+        \item  $y(x) = x^2 + C$, for the equation $y'=x$
+        \item $y(x)=x^2 + Cx$, for the equation $x \displaystyle  \left (\frac{dy}{dx} \right) = x^2 + y$.
+        \item $y=A\sin(5x) + B\cos(5x)$, for the equation $y'' + 25y = 0$
+        \item $y(t)=8t^5 + 3t^2 + 5$, for the equation $\displaystyle \frac{d^2y}{dt^2} - 6 = 160t^3$.
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+We can also ask the inverse question, that is, given a function $y(x)$, is it possible to find some ODE for which $y(x)$ is a solution?
+
+\begin{ejemplo}
+    Find a differential equation whose solution is $y= \sin(x)$.
+    
+    \textbf{Solution: } Since we must find a differential equation, the idea is to calculate the derivatives of our function, and look for some relationship between them and the function. Observe that $y'= \cos(x)$ and $y''(x)= -\sin(x)$. From this information we see that the second derivative of $y$ is precisely $-y$. That is, $y$ is a solution to the equation
+    $$y''=-y.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Find a differential equation whose solution is $y= e^{2x}$.
+    
+    \textbf{Solution: } Observe that $y'= 2e^{2x}$. We see immediately that a possible equation would be
+    $$y'=2y.$$
+    NOTE: this process can be done in many different ways, and there may be many correct answers, for example, the equation $y'''- 8y = 0$ also has as solution $y=e^{2x}$.
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item For each of the following functions, find a differential equation for which they are a solution.
+    \begin{enumerate}
+        \item $y=C_1e^x + C_2e^{-x}$
+        \item $y=\tan(4x+c)$
+        \item $y=(x-C_1)^2 + y^2 + C_2^2 $
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Types of Solutions}
+As we mentioned before, an ODE can have zero, one, or infinitely many solutions. We will classify them as follows:
+
+\begin{itemize}
+    \item \textbf{General solution: } Describes simultaneously a family of solutions that only differ from each other by a parameter. In other words, the general solution gives us the form of each possible solution. For example
+    \begin{itemize}
+        \item The simple equation $y'=1$ has as general solution $y=x+C$, where $C \in \mathbb{R}$. That is, any value that $C$ takes generates a different solution.
+        \item The general solution of the equation $x''(t) + 16x(t)=0$ is the function \linebreak $x(t) = A \cos(4t) + B \sin(4t)$. In this case we have 2 parameters, $A$ and $B$.
+    \end{itemize}
+    \textbf{In general, the number of parameters that appear in the general solution corresponds to the order of the differential equation.}
+    \item \textbf{Particular solution: } It is simply a particular case of the general solution, where we give a concrete value to the parameters of the solution (we can even give them the value $0$). For example
+    \begin{itemize}
+        \item A particular solution of $y'=1$ is $y=x+20$.
+        \item The functions $ \cos(4t)$, $5\sin(4t)$ and $ 2\cos(4t)+ 9\sin(4t)$ are all particular solutions of the equation $x''(t) + 16x(t)=0$ .
+    \end{itemize}
+    \item \textbf{Singular solution: } These are solutions that cannot be obtained from the general solution. That is, no matter what value we give to the parameters, we cannot produce said solution. For example: the ODE $(y')^2= 4y$ has as general solution \linebreak $y = (x+C)^2$. All solutions we will obtain by choosing values of $C$ will be parabolas. However, the student can verify that the function $y = 0$ is also a solution of the equation, which does not obey the form dictated by the general solution. It is a singular solution.
+    \textit{Not all differential equations have singular solutions.}
+\end{itemize}
+
+When a solution (whether general, particular, or singular) can be expressed \textbf{only in terms of the dependent variable}, we say it is an \textbf{explicit} solution. Otherwise, when we cannot isolate the criterion of our solution, we say it is an \textbf{implicit solution.}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item A particular explicit solution of the equation $xy' + y = 0$ would be $y(x) = 1/x$. Note that we can express the criterion of $y$ explicitly as a function of $x$.
+        \item Consider the equation $\dfrac{dy}{dx} = -\dfrac{x}{y}$. Let us see that an implicit solution is given by $x^2 + y^2 = 25$ (an expression in which it is not possible to isolate $y$, since we would have two possible isolations $y = \pm \sqrt{25-x^2}$). To verify that our curve is indeed a solution, we must resort to \textbf{implicit differentiation}. Observe that
+        \begin{alignat*}{2}
+        && x^2 + y^2 &= 25 \\
+        \Rightarrow&& 2x + 2yy' &= 0\\
+        \Rightarrow&& y' = -\frac{2x}{2y} &= -\frac{x}{y}
+        \end{alignat*}
+    \end{itemize}
+\end{ejemplo}
+
+Another way to define a solution to an ODE is piecewise. For example, consider the equation
+$$xy'-4y = 0$$
+whose general solution is $y=cx^4$. We can then define the solution
+$$y(x) = \begin{cases} x^4 \text{    \quad if $x>0$} \\ -x^4 \text{ \ if $x \leq 0$}
+\end{cases}$$
+by choosing $c=1$ on the positive axis and $c=-1$ on the negative axis.
+
+\section{Initial Value Problems}
+Suppose we want to solve the equation
+$$y' = y.$$
+The general solution of this equation is $y(x)=Ce^x$. Here we are actually talking about infinitely many solutions, one for each value of $C$. Now, we can ask ourselves the following question: Which of all those solutions satisfies $y(0) = 5$? If we know that the solution must have the form $Ce^x$, we only need to verify if $Ce^0 = 5$. Therefore, we obtain that when $C=5$, the particular solution $y=5e^x$ solves our problem.
+
+This type of problem is known as \textbf{initial value problems} (or Cauchy problems). Initial value problems are frequently applied in modeling real-life phenomena, as they have a specific solution, not a family of infinitely many solutions. Here is where we return to what was mentioned in section 2: a differential equation can have many solutions, but once we specify its initial value, we obtain a concrete solution, instead of an infinite family. The formal definition of this situation is presented.
+
+\begin{definicion}{Initial Value Problem}{}
+    An initial value problem is a system of the type
+    \begin{align*}
+    \begin{cases}
+    F(x,y,y',\dots,y^{(n)})&=0 \\
+    y(x_0)&=y_0 \\
+    y'(x_1)&=y_1 \\
+    y''(x_2)&=y_2 \\
+    &\vdots \\
+    y^{(n-1)}(x_{n-1})&=y_{n-1}
+    \end{cases}
+    \end{align*}
+    where $x_0,x_1,\dots,x_{n-1},y_0,y_1,\dots,y_{n-1}$ are real numbers. When all the $x_i$'s are equal, we call it a \textbf{Cauchy problem}.
+\end{definicion}
+
+In its general form, an initial value problem, in addition to including a differential equation, includes information about all the derivatives of the function. This information will help us give concrete values to each parameter in the general solution. Let us explain this with several examples:
+
+\begin{ejemplo}
+    Consider the problem
+    \begin{align*}
+    \begin{cases}
+    y' + y &= x \\
+    y(0)&=1\\
+    \end{cases}
+    \end{align*}
+    The general solution of the equation is $y(x) = Ce^{-x} +x - 1$. Now, to ensure that $y(0)=1$ we must choose an appropriate value for the parameter $C$. We need
+    \begin{alignat*}{2}
+    &&Ce^0 + 0 -1 &= 1 \\
+    \Rightarrow && C-1&=1 \\
+    \Rightarrow && C&=2
+    \end{alignat*}
+    Therefore, the solution of our initial value problem is $y(x) = 2e^{-x} +x- 1$.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Consider the problem
+    \begin{align*}
+    \begin{cases}
+    y'' + 2y' + y &= 0 \\
+    y(0)&=1 \\
+    y'(0) &= 0\\
+    \end{cases}
+    \end{align*}
+    The general solution of the equation is $y(x) = C_1e^{-x} +C_2xe^{-x}$, it has 2 parameters since it is a second order equation. Now, to ensure that $y(0)=1$ and $y'(0)=0$ we must solve for both parameters. First, since $y(0)=1$, that implies
+    \begin{alignat*}{2}
+    &&C_1e^0 + C_2 0 e^0 &= 1 \\
+    \Rightarrow&& C_1 &=1
+    \end{alignat*}
+    Now, we calculate $y'(x) = -e^{-x} + C_2e^{-x}(1-x)$ (where we already used that $C_1=1$). Now, since $y'(0)=0$, that implies
+    \begin{alignat*}{2}
+    &&-e^0 + C_2e^0(1-0) &= 0 \\
+    \Rightarrow&& -1+C_2 &=0 \\
+    \Rightarrow&& C_2 &=1 \\
+    \end{alignat*}
+    So finally, the solution to our problem is
+    $y(x)=e^{-x} + xe^{-x}.$
+    Note that this last problem is a Cauchy problem, since both $y$ and $y'$ appear evaluated at $x=0$ in the initial conditions.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Consider the problem
+    \begin{align*}
+    \begin{cases}
+    y''  + 9y &= 0 \\
+    y\left(\frac{\pi}{12}\right)&=0 \\
+    y'\left(\frac{\pi}{9}\right)&=1\\
+    \end{cases}
+    \end{align*}
+    The general solution is $y= A \sin(3x) + B \cos(3x)$, once again we have 2 parameters. Let us calculate at once $y'(x) = 3A\cos(3x) - 3B \sin(3x)$. Note that this problem is an initial value problem, but not a Cauchy problem, since the initial conditions are evaluated at different points ($\pi/12$ and $\pi/9$). First, since $y\left(\frac{\pi}{12}\right)=0$, we obtain that
+    $$A\sin\left(\frac{3\pi}{12}\right) + B\cos\left(\frac{3\pi}{12}\right) = A \frac{\sqrt{2}}{2}+B \frac{\sqrt{2}}{2}=0$$
+    while with the other condition $y'\left(\frac{\pi}{9}\right)=1$ we obtain that
+    $$3A\cos\left(\frac{3\pi}{9}\right) - 3B\sin\left(\frac{3\pi}{9}\right) = A \frac{3}{2}-B \frac{3\sqrt{3}}{2}=1$$
+    To solve for $A$ and $B$, we must then solve a system of equations:
+    $$\begin{cases}
+    A \frac{\sqrt{2}}{2}+B \frac{\sqrt{2}}{2}=0 \\
+    A \frac{3}{2}-B \frac{3\sqrt{3}}{2}=1
+    \end{cases}$$
+    which should not represent any difficulty for the student. The solution is
+    $$A= \frac{2}{3+3\sqrt{3}} \quad ; \quad B= -\frac{2}{3+3\sqrt{3}}$$
+    so the solution to the problem is
+    $$y(x) = \frac{2}{3+3\sqrt{3}}( \sin(3x) - \cos(3x)).$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Several initial value problems are presented, with their respective general solutions. Find the value of the parameters in each case, to solve the problem.
+    \begin{enumerate}
+        \item $\begin{cases}y'-2y = 3x  \\ y(0)=1
+        \end{cases}$, with general solution $y=Ce^{2x} - \dfrac{3x}{2} + \dfrac{3}{4}$.
+        \item $\begin{cases}y'' - 6y' + 5y = 0  \\ y(0)=1 \\ y'(0)=0
+        \end{cases}$, with general solution $y=C_1e^x + C_2e^{5x}$.
+        \item $\begin{cases}y'' +25y = 0  \\ y\left(\frac{\pi}{15}\right)=1 \\ y'\left(\frac{\pi}{20}\right)=0
+        \end{cases}$, with general solution $y= A\sin(5x) + B\cos(5x)$.
+        \item $\begin{cases}y'''=8  \\ y(0)=1 \\ y'(1)=0 \\ y''(0)=0
+        \end{cases}$, with general solution $y=\dfrac{4x^3}{3} + Ax^2 + Bx + C$.
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+We conclude this section with an important theorem, which tells us when an initial value problem has a unique solution.
+
+\begin{teorema}{Existence and Uniqueness}{}
+    Let
+    $$\begin{cases}
+    y'=F(x,y) \\
+    y(x_0)=y_0
+    \end{cases}$$
+    be a Cauchy problem. If the function $F$ and all its partial derivatives are continuous, then there exists a unique solution for said problem.
+\end{teorema}
+
+This theorem is very easy to apply:
+
+\begin{ejemplo}
+    For the problem
+    $$\begin{cases}
+    y'= y+x \sin(y) \\
+    y(x_0)=y_0
+    \end{cases}$$
+    We have $F(x,y)=y+x\sin(y)$, which is clearly a continuous function. Let us also see that
+    $$\frac{\partial F}{\partial x} = \sin(y)$$
+    and also
+    $$\frac{\partial F}{\partial y} = 1+x\cos(y).$$
+    Both partial derivatives of $F$ are continuous, so, although we do not know how to solve the system, we can assure thanks to the theorem that there is a unique solution.
+\end{ejemplo}
+
+\section{Direction Fields and Isoclines}
+Our last section before starting in earnest with solution methods corresponds to a more geometric interpretation of differential equations. Consider for example the differential equation
+$$f'(x)=f(x)$$
+Geometrically, the previous equation tells us that for every point $x$, the slope of the tangent line to the curve of $f(x)$ is precisely $f(x)$. That is, it is not necessary to solve the equation to have an idea of what its graph looks like. Unfortunately, since we do not have initial conditions, we will not obtain a single curve, but many.
+
+Visually, these curves coincide with the general solution of the equation: $f(x) = Ce^x$, a family of exponential functions. Although at the beginning of the problem we did not have the solution, by drawing many tangent segments, we can get an idea of what the solution curve looks like, this is the main idea behind the concept of direction fields.
+
+\begin{definicion}{Direction Field}{}
+    Let
+    $$
+    y'=F(x,y) \\
+    $$
+    be a differential equation. A \textbf{direction field} (or slope field) is a family of tangent lines, each passing through each point $(a,b)$ of the domain of $F(x,y)$, that is, they are \textbf{all possible tangent lines of all particular solutions}. An \textbf{isocline} is a curve of the form $F(x,y)=C$, where $C$ is a constant.
+\end{definicion}
+
+Geometrically, to obtain an isocline of an equation, we first take any constant $C$, and in the direction field, we look for all the points where the slope is precisely $C$. The collection of these points is an isocline of the equation. Obviously, there are infinitely many isoclines (one for each $C$).
+
+\begin{ejemplo}
+    Consider the differential equation
+    $$y' = -\frac{x}{y}$$
+    To calculate its direction field, we simply take many points in the plane $(x_0 , y_0)$ and calculate the slope that the tangent curve to the solution passing through said point $(x_0,y_0)$ would have using the formula $-x_0 / y_0 $. The more points we calculate, the better resolution we will have of the field. A table with some values is attached:
+    
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{$x_0$} & \textbf{$y_0$} & \textbf{slope $= -\frac{x_0}{y_0}$} \\ \hline
+    1              & 1              & -1                                      \\ \hline
+    -1             & 1              & 1                                       \\ \hline
+    1              & -1             & 1                                       \\ \hline
+    -1             & -1             & -1                                      \\ \hline
+    0              & 1              & 0 (horizontal)                          \\ \hline
+    1              & 0              & $\infty$ (vertical)                     \\ \hline
+    \end{tabular}
+    \end{center}
+    
+    We also see that, without having solved the equation, the graphs of the solutions appear to be circles! Indeed, as seen in a previous example, the general solution of this equation is given implicitly by the equation
+    $$x^2 + y^2 = K.$$
+    By changing the value of K, different solutions (different circles) are obtained.
+    
+    Now, remember that the isoclines of an equation are given by the family $F(x,y)=C$. For this specific case, the family of isoclines is
+    $$-\frac{x}{y}=C.$$
+    That is, the family of isoclines are all the lines that pass through the origin.
+    
+    Geometrically, returning to the image, we could ask ourselves: In the direction field, which points have \textbf{horizontal} slope (i.e., slope $C=0$)? Thanks to the image, it is easy to observe that only those points that are on the $y$ axis satisfy this. Equivalently, given our family of isoclines, we look for those points whose slope is $C=0$, that is, that satisfy the equation
+    $$-\frac{x}{y}= 0.$$
+    So $x=0$ (the $y$ axis) are all the points we are looking for. Similarly, if now $C=1$, the isocline of points with slope $1$ is precisely the line $y=-x$.
+     \textbf{Note: } Isoclines are NOT solutions of the differential equation.
+\end{ejemplo}
+
+\begin{ejemplo}
+    The equation
+    $$y' = e^{-x^2}$$
+    cannot be solved in terms of elementary functions (although it does have a solution, namely \linebreak $y(x) = \int_0^x e^{-t^2}dt$). However, using the direction field, we can get a visual idea of what its general solution looks like.
+    
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{$x_0$} & \textbf{$y_0$} & \textbf{slope $= e^{-x_0^2}$} \\ \hline
+    -1              & 0              & $e^{-1} \approx 0.368$ \\ \hline
+    0             & 0              & 1                                      \\ \hline
+    1              &  0            & $e^{-1} \approx 0.368$                                       \\ \hline
+    0             & 1             & 1                                      \\ \hline
+    0             & -1             & 1                                      \\ \hline
+    \end{tabular}
+    \end{center} 
+    
+    Furthermore, the family of isoclines is given by $e^{-x^2}=C$, from which we obtain
+    $$x=\sqrt{-\ln{C}}.$$
+    That is, all isoclines are vertical lines.
+    In this image it is very easy to see that on the isoclines, all the small line segments that pass through have the \textbf{same inclination}. Hence the name.
+\end{ejemplo}
+
+\begin{definicion}{Integral Curve}{}
+    An \textbf{integral curve} (or solution curve) is simply the graph of a particular solution of a differential equation.
+\end{definicion}
+
+\begin{ejemplo}
+    Consider the differential equation
+    $$yy' = \cos(x)$$
+    whose solution is given implicitly by $y^2 = 2(C+\sin(x)).$
+\end{ejemplo}
+
+In summary, we can say that the \textbf{direction field} is an idea of what all the solutions of a given differential equation look like (it is visualized as a set of line segments, which give an idea of each of the solutions). \textbf{Isoclines} are curves whose points have the same slope assigned. Finally, \textbf{integral curves} are the graphs of the particular solutions to the equation.
+
+Now that we have all the basic concepts of ODEs, we can present the different methods for solving differential equations. That is, we are going to answer the question:
+
+\begin{center}
+    \textbf{Given a differential equation, how can we find its general solution?}
+\end{center}

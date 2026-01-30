@@ -1,0 +1,483 @@
+\chapter{Systems of Differential Equations}
+
+So far, we have been studying differential equations that involve a single unknown function $y(x)$. However, in practice (in physics, biology, chemistry, etc.), it is common to encounter problems where several quantities depend on each other, and their rates of change are interrelated.
+A system of first-order linear differential equations has the form
+\begin{align*}
+x_1'(t) &= a_{11}(t)x_1(t) + \dots + a_{1n}(t)x_n(t) + f_1(t) \\
+x_2'(t) &= a_{21}(t)x_1(t) + \dots + a_{2n}(t)x_n(t) + f_2(t) \\
+\vdots \\ 
+x_n'(t) &= a_{n1}(t)x_1(t) + \dots + a_{nn}(t)x_n(t) + f_n(t)
+\end{align*}
+Where $x_1, \dots ,x_n$ are the unknown functions, and $a_{ij}(t)$ and $f_i(t)$ are given functions. This system can be written much more conveniently using matrix notation. If we define 
+$$X(t) = \begin{pmatrix} x_1(t) \\ \vdots \\ x_n(t) \end{pmatrix} \ , \ A(t) = \begin{pmatrix} a_{11}(t) & \dots & a_{1n}(t) \\ \vdots & \ddots & \vdots \\ a_{n1}(t) & \dots & a_{nn}(t) \end{pmatrix} \ , \ F(t) = \begin{pmatrix} f_1(t) \\ \vdots \\ f_n(t) \end{pmatrix}$$
+then the system can be viewed as
+\begin{equation} \label{eqn:14}
+X'(t) = A(t)X(t) + F(t).
+\end{equation}
+When $F(t) = \mathbf{0}$, we say the system is \textbf{homogeneous}.
+
+\begin{teorema}{Existence and Uniqueness}{}
+    If the entries of the matrix $A(t)$ and the vector $F(t)$ are continuous functions on an interval $I$, then for any $t_0 \in I$ and any initial vector $X_0 \in \mathbb{R}^n$, there exists a \textbf{unique} solution to the initial value problem
+$$\begin{cases}
+X'(t) = A(t)X(t) + F(t) \\
+X(t_0) = X_0
+\end{cases}$$
+defined on the entire interval $I$.
+\end{teorema}
+This theorem is analogous to the one we had for first and higher order equations.
+
+\begin{teorema}{}{}
+    The solution set of a homogeneous linear system ($F=\mathbf{0}$) is a vector space of dimension $n$.
+    This means that there exist $n$ linearly independent (vector) solutions, $X_1, \dots , X_n$, such that any other solution can be written as
+$$X(t) = c_1X_1(t) + \dots + c_nX_n(t).$$
+\end{teorema}
+That is, to solve a homogeneous system, it suffices to find $n$ linearly independent solutions.
+
+\begin{definicion}{Wronskian}{}
+    Given $n$ solutions $X_1, \dots, X_n$, we define their Wronskian as the determinant of the matrix formed by placing the column vectors side by side.
+$$W(X_1, \dots , X_n)(t) = \det( X_1  \dots  X_n ).$$
+\end{definicion}
+
+As in previous sections, if $X_1, \dots, X_n$ are solutions of a homogeneous system, then their Wronskian is either always zero (if they are l.d.) or never zero (if they are l.i.).
+
+\begin{ejemplo}
+    Consider the homogeneous linear system
+$$ X' = \begin{pmatrix} 1 & 3 \\ 5 & 3 \end{pmatrix} X.$$
+It can be verified that the vectors 
+$$X_1(t) = \begin{pmatrix} 1 \\ -1 \end{pmatrix}e^{-2t} \quad \text{and} \quad X_2(t) = \begin{pmatrix} 3 \\ 5 \end{pmatrix}e^{6t}$$
+are both solutions of the system. Furthermore, their Wronskian is
+$$W(X_1,X_2)(t)= \det \begin{pmatrix} e^{-2t} & 3e^{6t} \\ -e^{-2t} & 5e^{6t} \end{pmatrix} = 5e^{4t} - (-3e^{4t}) = 8e^{4t} \neq 0$$
+so they are l.i. This means that $\{X_1,X_2\}$ is a \textbf{fundamental set of solutions}, and the general solution is
+$$X(t) = C_1\begin{pmatrix} 1 \\ -1 \end{pmatrix}e^{-2t} + C_2 \begin{pmatrix} 3 \\ 5 \end{pmatrix}e^{6t}.$$
+\end{ejemplo}
+
+\begin{ejercicios} 
+    Verify in each case that the given functions are solutions of the system, calculate their Wronskian and write the general solution.
+    \begin{enumerate}
+    \item $X' = \begin{pmatrix}  1 & -1 \\ 1 & 3\end{pmatrix} X \ , \ X_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}e^{2t} \ , \ X_2 =  \begin{pmatrix} 1+t \\ -t \end{pmatrix}e^{2t}$
+    \item $X' = \begin{pmatrix}  2 & 1 & 2\\ 3 & 0 & 6 \\ -4 & -2 & -3\end{pmatrix} X \ , \ X_1 = \begin{pmatrix} -1 \\ 3 \\ 0 \end{pmatrix}e^{-t} \ , \ X_2 =  \begin{pmatrix} -2 \\ 0 \\ 3 \end{pmatrix}e^{-t} \ , \ X_3 =  \begin{pmatrix} 1 \\ 3 \\ -2 \end{pmatrix}e^{2t}$
+    \end{enumerate}
+\end{ejercicios}
+
+\begin{ejercicios}
+    Write the following systems in matrix form.
+    \begin{enumerate}
+    \item $\begin{cases} x'(t) = 4x -5y\\ y'(t) = -4x + 9y 
+\end{cases}$
+\item 
+$\begin{cases} x' = 1 +x +y +z\\ y'= 3y + 5z - 2y + t^2\\ z'= z + x + e^{\sin t}
+\end{cases}$
+\item $\begin{cases} x' = \ln t x - 2\cos(t)y + 1/t\\ y' = tx + ty + t^2
+\end{cases}$
+    \end{enumerate}
+\end{ejercicios}
+
+
+\section{Substitution Method}
+Some of the simplest systems can be solved simply by integrating and substituting the result of one equation into another.
+\begin{ejemplo}
+    The system
+$$\begin{cases}
+x'(t) = 1+y^2(t) \\
+y'(t) = \sec^2(t) \end{cases}$$
+is not linear, so our theorems do not apply. However, we can integrate the second equation with respect to $t$ (since it does not depend on $x(t)$) to obtain 
+$$y(t) = \tan(t),$$
+and substituting this into the first equation, we see that
+$$x'(t) = 1+\tan^2(t) = \sec^2(t)$$
+Which implies that 
+$x(t) = \int \sec^2(t)dt = \tan(t)$, so a solution of the system is given by
+$$\begin{pmatrix} x(t) \\ y(t) \end{pmatrix} = \begin{pmatrix} \tan(t) \\ \tan(t) \end{pmatrix}. $$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Consider now the system
+$$\begin{cases}
+x' = y \\
+y' = x
+\end{cases}$$
+which is linear and is in normal form. Differentiating the second equation, we can see that
+$$y'' = x' = y,$$
+but we already know that the general solution of the equation $y'' = y$ is
+$$y = C_1e^t + C_2e^{-t}.$$
+Finally, since $x = y'$, we have the general solution
+$$\begin{pmatrix} x(t) \\ y(t) \end{pmatrix} = C_1\begin{pmatrix} e^t \\ e^t \end{pmatrix} + C_2\begin{pmatrix} e^{-t} \\ -e^{-t} \end{pmatrix} . $$
+These first examples are simple, we will not often encounter systems that can be solved in this way. However, they serve to illustrate that the same techniques we have developed for ordinary equations can work to solve systems of equations, when used with a certain degree of ingenuity.
+\end{ejemplo}
+
+\section{Gaussian Elimination}
+The Gaussian elimination method that we learned in linear algebra also works for linear systems. We can see an example for a $2\times2$ system.
+
+\begin{ejemplo}
+    The system with independent variable $t$:
+$$
+\begin{cases}
+x' = -9y \\
+y' = -4x
+\end{cases}
+$$
+We can use differential operator notation to convert this system into
+$$
+\begin{cases}
+Dx + 9y = 0 \\
+4x+ Dy = 0 \\
+\end{cases}
+$$
+The elimination method is analogous to the one studied in linear algebra. First, we multiply the first equation by $D$ and the second by $-9$ to obtain
+$$
+\begin{cases}
+D^2x + 9Dy = 0 \\
+-36x+ -9Dy = 0 \\
+\end{cases}
+$$
+From here, we can add both equations, eliminating the variable $y$, and leaving a second order equation with variable $x(t)$,
+$$D^2x - 36x = 0.$$
+We already know how to calculate the solution of this equation,
+$$x(t) = C_1e^{6t} + C_2e^{-6t}.$$
+Next we have two options: first, substitute this function into the second equation and integrate (we must be careful since new integration constants will appear), the second option is to repeat the elimination process, this time for $x$. We will prefer the second option: multiplying the first equation now by $4$ and the second by $-D$, we arrive at
+$$
+\begin{cases}
+4Dx + 36y = 0 \\
+-4Dx+ -D^2y = 0 \\
+\end{cases}
+$$
+Then, adding both equations we arrive at
+$$(36-D^2)y = 0,$$
+whose solution is
+$$y(t) = C_3e^{6t} + C_4e^{-6t}.$$
+Note that the solution is almost identical to the equation for $x(t)$, however the parameters must be new since it is nevertheless another equation. We see then that we have found $x(t)$ and $y(t)$, however, we have not arrived at the general solution, since we have $4$ parameters, and the theorems we studied in the previous section tell us that we can only have $2$. This means we must solve for $C_3$ and $C_4$ in terms of the other two (actually we can solve for any two of the $C_i$'s in terms of the other two). We can do this in several ways. For example, we can differentiate $x$ to obtain
+$$x'(t) = 6C_1e^{6t} - 6C_2e^{-6t},$$
+and since the first equation tells us that $x'$ must equal $-9y$, we simply compare the resulting expressions
+$$6C_1e^{6t} - 6C_2e^{-6t} =-9C_3e^{6t} -9 C_4e^{-6t} $$
+From here we can deduce that, comparing coefficients on each side, that
+$C_3 = -2/3 C_1$ and that $C_4 = 2/3 C_2$. So we can see that 
+$$y(t) = -\frac{2}{3}C_1e^{6t} + \frac{2}{3}C_2e^{-6t}.$$
+The other way to do this solving is similar, but using the second equation of the system, both approaches will yield the same result. Finally, we express the general solution in vector form,
+$$\begin{pmatrix} x(t) \\ y(t) \end{pmatrix} = C_1\begin{pmatrix} e^{6t}  \\ -\frac{2}{3}e^{6t} \end{pmatrix} + C_2\begin{pmatrix}  e^{-6t} \\ \frac{2}{3} e^{-6t} \end{pmatrix}.$$
+\end{ejemplo}
+
+We can also apply this method to solve non-homogeneous systems.
+
+\begin{ejemplo}
+    Consider the initial value problem $$
+\begin{cases}
+x' = x + y + e^t\\
+y' -x = 2y\\
+x(0) = 1\\
+y(0) = 0\\
+\end{cases}
+$$
+Which can be written using differential operator notation as
+$$
+\begin{cases}
+(D-1)x - y = e^t\\
+-x + (D-2)y = 0\\
+\end{cases}
+$$
+First, we apply elimination to eliminate $y$, this is equivalent to multiplying the first equation by $(D-2)$ and the second by $1$. After adding, we obtain
+$$(D-1)(D-2)x  - x = (D-2)e^t$$
+which simplifies to
+$$(D^2 - 3D + 1)x = -e^t.$$
+This equation can be solved using annihilators or undetermined coefficients, its solution is
+$$x(t) = C_1 e^{(3 - \sqrt{5}) \frac{t}{2}} + C_2 e^{(3 + \sqrt{5}) \frac{t}{2}}- e^t.$$
+Next, to eliminate $y$, we multiply the first equation by $1$ and the second by $(D-1)$ to obtain, after adding, that
+$$(D-1)(D-2)y - y = e^t \Rightarrow (D^2 -3D +1)y = e^t,$$ so, again
+$$y(t) = C_3 e^{(3 - \sqrt{5}) \frac{t}{2}} + C_4 e^{(3 + \sqrt{5}) \frac{t}{2}}- e^t.$$
+We must then solve for $C_3$ and $C_4$ in terms of $C_1$ and $C_2$. Let us now denote $\alpha = \frac{3-\sqrt{5}}{2}$ and $\beta = \frac{3+\sqrt{5}}{2}$. Differentiating, we see that
+$$x'(t) = \alpha C_1 e^{\alpha t} + \beta C_2 e^{\beta t} - e^t$$
+and since it must hold that $x' = x+y+e^t$, it must then hold that
+$$ \alpha C_1 e^{\alpha t} + \beta C_2 e^{\beta t}-e^t = e^{\alpha t} (C_1+ C_3) + e^{\beta t}(C_2 + C_4) - e^t$$
+so, comparing terms and solving the resulting system, we obtain that
+\begin{align*}C_3 &= C_1(\alpha -1 ) = \frac{1-\sqrt{5}}{2}C_1 \\
+C_4 &= C_2(\beta -1) = \frac{1+\sqrt{5}}{2}C_2
+\end{align*}
+So the general solution of the system is
+\begin{align*}
+x(t) &=  C_1 e^{(3 - \sqrt{5}) \frac{t}{2}} + C_2 e^{(3 + \sqrt{5}) \frac{t}{2}}- e^t \\
+y(t) &= \frac{1-\sqrt{5}}{2}C_1 e^{(3 - \sqrt{5}) \frac{t}{2}} + \frac{1+\sqrt{5}}{2}C_2 e^{(3 + \sqrt{5}) \frac{t}{2}}- e^t
+\end{align*}
+Finally, since $x(0) =1$ and $y(0) = 0$, we have that
+$$\begin{cases}
+C_1 + C_2 - 1 = 1 \\
+\frac{1-\sqrt{5}}{2}C_1 + \frac{1+\sqrt{5}}{2}C_2 - 1 = 0
+\end{cases}$$
+from which we obtain that $C_1 = -\frac{1}{\sqrt{5}}$, and that $C_2 = \frac{1}{\sqrt{5}}$. Finally, we have the solution of the initial value problem:
+$$\begin{pmatrix} x(t) \\ y(t) \end{pmatrix} = \begin{pmatrix} -\frac{1}{\sqrt{5}}e^{(3 - \sqrt{5}) \frac{t}{2}} \\ \frac{\sqrt{5}-1}{10}e^{(3 - \sqrt{5}) \frac{t}{2}}  \end{pmatrix} + \begin{pmatrix} \frac{1}{\sqrt{5}}e^{(3 + \sqrt{5}) \frac{t}{2}} \\ \frac{\sqrt{5}+1}{10}e^{(3 + \sqrt{5}) \frac{t}{2}}  \end{pmatrix} - \begin{pmatrix} e^t \\ e^t \end{pmatrix}$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Find the general solution of the following systems:
+    \begin{enumerate}
+    \item
+$
+\begin{cases}
+x' = 2y \\
+y' = x-y
+\end{cases}
+$
+\item
+$
+\begin{cases}
+3x' + 2y' = x-y \\
+x'-y' = x+2y
+\end{cases}
+$
+\item 
+$
+\begin{cases}
+x' = x+2y + e^{-t} \\
+y' = 3y
+\end{cases}
+$
+\item 
+$
+\begin{cases}
+x'' + x' +y = e^t \\
+x'+y' = 1
+\end{cases}
+$
+    \end{enumerate}
+\end{ejercicios}
+
+\begin{ejercicios}
+    Solve the following initial value problems
+    \begin{enumerate}
+    \item
+$
+X' = \begin{pmatrix}  8 & -1 \\ 4 & 12\end{pmatrix}X
+$, with condition $X\begin{pmatrix}  0 \\0\end{pmatrix} = \begin{pmatrix}  1 \\0\end{pmatrix}
+$
+\item 
+$
+X' = \begin{pmatrix}  1 & 2 \\ 3 & -4\end{pmatrix}X
+$, with condition $X\begin{pmatrix}  1 \\0\end{pmatrix} = \begin{pmatrix}  0 \\0\end{pmatrix}
+$
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Solution by Eigenvalues}
+Recall that if $A$ is an $n\times n$ matrix, we say that a number $\lambda \in \mathbb{C}$ is an \textbf{eigenvalue} (or characteristic value) of $A$, if there exists some vector $v \neq 0$ such that $Av = \lambda v$ ($v$ is called the \textbf{eigenvector} associated with $\lambda$).\\ Consider now the system of equations
+\begin{equation}\label{eqn:15}
+X'(t) = AX(t),
+\end{equation}
+where $A$ is a matrix with constant entries ($A$ does not have functions as entries). Let $\lambda$ be an eigenvalue of $A$, with $\mathbf{v}$ its associated eigenvector. Then it holds that the function $$X(t) = \begin{pmatrix} e^{\lambda t}v_1  \\ e^{\lambda t}v_2   \\ \vdots \\ e^{\lambda t}v_n \end{pmatrix} = e^{\lambda t} \mathbf{v}$$ is a solution of system \eqref{eqn:15}, since
+$$X'(t) = \begin{pmatrix} \lambda e^{\lambda t}v_1  \\ \lambda e^{\lambda t}v_2   \\ \vdots \\ \lambda e^{\lambda t}v_n \end{pmatrix} = \lambda e^{\lambda t}\mathbf{v}, $$
+while 
+$$AX(t) = Ae^{\lambda t}\mathbf{v} = e^{\lambda t} A\mathbf{v} = e^{\lambda t} \lambda \mathbf{v} = \lambda  e^{\lambda t} \mathbf{v}. $$
+Note that $Ae^{\lambda t}\mathbf{v} = e^{\lambda t} A\mathbf{v}$, since $e^{\lambda t}$ is a scalar. In summary, to solve system \eqref{eqn:15}, we only need to find the eigenvalues and eigenvectors of the matrix $A$. In general, four things can happen, which we exemplify below.
+
+\begin{ejemplo} \label{ex:eigenval_real}
+    \textbf{Case 1: Distinct real eigenvalues.} Consider the system of equations
+$$\begin{cases}
+x' = 3x - 2y \\
+y' = -3x + 2y
+\end{cases}$$
+We could apply elimination to solve it, but we are going to calculate the eigenvalues of the system matrix
+$$A = \begin{pmatrix} 3 & -2 \\ -3 & 2 \end{pmatrix}.$$
+Using the \textit{characteristic polynomial} of matrix $A$, we see that
+$$det(A-xI) = \det \begin{pmatrix} 3-x & -2 \\ -3 & 2-x \end{pmatrix} = (3-x)(2-x) - 6 = x^2 - 5x.$$
+This tells us that the eigenvalues are the roots of this polynomial, that is, $0$ and $5$. We must then calculate an eigenvector associated with each one, first we solve the system $(A-5I)v = 0$,
+$$\begin{pmatrix} -2 & -2 \\ -3 & -3 \end{pmatrix} \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}.$$
+This system has infinitely many solutions, but we only need one, and any vector where $a = -b$ will suffice, for example $v_1 = (1,-1)^t$. We now solve the system $(A-0I)v = 0$,
+$$\begin{pmatrix} 3 & -2 \\ -3 & 2 \end{pmatrix} \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}.$$
+For this case we need some vector where $b = 3a/2 $, so we can take $v_2 = (1, \frac{3}{2})^t $. We then have two solutions to the differential equation:
+\begin{align*}
+X_1(t) &= e^{5t}\begin{pmatrix} 1 \\ -1 \end{pmatrix}  =\begin{pmatrix}  e^{5t} \\ - e^{5t} \end{pmatrix} \\  X_2(t) &= e^{0t}\begin{pmatrix} 1 \\ \frac{3}{2} \end{pmatrix} = \begin{pmatrix} 1 \\ \frac{3}{2} \end{pmatrix} \end{align*}
+It is easy to verify, using the Wronskian criterion, that these solutions are linearly independent. Therefore, we have 2 l.i. solutions of a $2 \times 2$ system. By the general solution theorem, we conclude that the general solution of this system is
+$$X(t)=  C_1X_1 + C_2X_2 = C_1\begin{pmatrix}  e^{5t} \\ - e^{5t} \end{pmatrix} + C_2\begin{pmatrix} 1 \\ \frac{3}{2} \end{pmatrix}.$$
+\end{ejemplo}
+
+\begin{ejemplo} \label{ex:eigenval_rep_corr}
+    \textbf{Case 2: Repeated real roots, with correct multiplicity.} Consider the system 
+$$X' = \begin{pmatrix} 5 & 4 &2 \\ 4 & 5 & 2 \\ 2 & 2 & 2 \end{pmatrix}X$$
+We calculate the zeros of the characteristic polynomial of $A$,
+$$\det(A-xI) = \det \begin{pmatrix} 5-x & 4 &2 \\ 4 & 5-x & 2 \\ 2 & 2 & 2-x \end{pmatrix} = -x^3 + 12x^2 - 21x + 10 = (10-x)(x-1)^2,$$
+(we factor using synthetic division). The eigenvalues are then $10$ and $1$, but note that $1$ appears with multiplicity $2$, so it must be treated differently. Let us begin by solving the system $(A-10I)v=0$
+$$\begin{pmatrix} -5 & 4 &2 \\ 4 & -5 & 2 \\ 2 & 2 & -8 \end{pmatrix}\begin{pmatrix} a \\ b \\ c \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix},$$
+we can use any method (elimination, substitution) to see that a possible solution is $v_1 = (2,2,1)^t$ (Important: in general these systems cannot be solved by calculator, since these matrices have determinant $0$). This produces the solution of the system
+$$X_1(t) = \begin{pmatrix} 2e^{10t} \\ 2e^{10t} \\ e^{10t} \end{pmatrix}.$$
+To find the other solutions, we must now solve the system $(A-I)v = 0$. However, since $1$ is an eigenvalue of multiplicity $2$, we must find two linearly independent solutions $v_2,v_3$ instead of one. This is only possible if the dimension of the solution space is $2$ (which is indeed the case), for when this is not fulfilled, we have case $3$. Once again, it should be noted that the choice of $v_2,v_3$ can be made in many ways, since the system $(A-I)v = 0$ has infinitely many solutions. We have then 
+$$\begin{pmatrix} 4 & 4 &2 \\ 4 & 4 & 2 \\ 2 & 2 & 1 \end{pmatrix} = \begin{pmatrix} a \\ b \\ c \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.$$
+In this system, we see that in fact all rows are multiples of the third, that is, it gives us all the information we need. More specifically, we only need two vectors of the form $v = (a,b,c)$ that satisfy $2a+2b + c=0$ and are l.i. Two options are $v_2 = (-1,1,0)^t$ and $v_3 = (-1,0,2)^t$ (it is easy to see they are l.i. since neither is a multiple of the other). This produces then the other two fundamental solutions of the system
+$$X_2 = \begin{pmatrix} -e^{t} \\ e^{t} \\ 0 \end{pmatrix} \ , \ X_3 = \begin{pmatrix} -e^{t} \\ 0 \\ 2e^t \end{pmatrix}.$$
+The reader can verify that $X_1,X_2,X_3$ are linearly independent, so the general solution is given by 
+$$X(t) = C_1\begin{pmatrix} 2e^{10t} \\ 2e^{10t} \\ e^{10t} \end{pmatrix} + C_2\begin{pmatrix} -e^{t} \\ e^{t} \\ 0 \end{pmatrix} + C_3  \begin{pmatrix} -e^{t} \\ 0 \\ 2e^t \end{pmatrix}.$$
+\end{ejemplo}
+
+We have in summary a method to solve systems of type \eqref{eqn:15}, when the eigenvalues are real numbers: we simply calculate each eigenvalue $\lambda$, and if its multiplicity is $k$, we must find $k$ l.i. vectors that satisfy the equation $(A-\lambda I)v = 0$. Once said vectors $v$ are found, the solution $e^{\lambda t}v$ is associated to each one. This procedure generates then a total of $n$ l.i. solutions of the system, which leads us immediately to the general solution.
+In case an eigenvalue $\lambda$ has multiplicity $k$, but the solution space of $(A-\lambda I)v=0$ has dimension less than $k$ (this means we cannot find $k$ l.i. eigenvectors associated to $\lambda$), we must vary the solution slightly, finding generalized eigenvectors.
+
+\begin{ejemplo} \label{ex:eigenval_rep_incorr}
+    \textbf{Case 3: Repeated real roots, with incorrect multiplicity.} Solve the system $$X' = \begin{pmatrix} 1 & -1 \\ 1 & 3 \end{pmatrix}X.$$
+The characteristic polynomial is $(x-2)^2$, so the only eigenvalue is $2$, with multiplicity $2$. We would like to now find $2$ l.i. solutions for the system 
+$$(A-2I)v = \begin{pmatrix} -1 & -1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} a \\ b  \end{pmatrix} = 0.$$
+Unfortunately, the rank of this matrix is $1$, which makes it impossible to find $2$ l.i. solutions. (since if the rank is $1$, the dimension of the solution space of the system is $1$, meaning we have at most one l.i. solution). The l.i. solution we can find is $v_0 = (-1,1)^t$. To finish solving the system, we proceed then to find \textbf{generalized eigenvectors}, that is, instead of solving the system $(A-2I)v=0$, we solve $(A-2I)v = v_0$,
+$$\begin{pmatrix} -1 & -1 \\ 1 & 1 \end{pmatrix}\begin{pmatrix} a \\ b  \end{pmatrix} = \begin{pmatrix} -1 \\ 1  \end{pmatrix},$$
+which admits the solution $v_1 = (1,0)^t$. Then we can associate the solutions to each vector
+\begin{align*} X_1(t) &=  e^{2t}v_0 =  \begin{pmatrix} -e^{2t} \\ e^{2t} \end{pmatrix} \end{align*}
+To find $X_2(t)$ however, we must use the formula
+$$X_2(t) = e^{2t} (tv_0 + v_1) = e^{2t}\left( \begin{pmatrix} -t \\ t \end{pmatrix} + \begin{pmatrix} 1 \\0 \end{pmatrix} \right) = \begin{pmatrix} (1-t)e^{2t} \\ te^{2t} \end{pmatrix}$$
+The general solution is then expressed in the same form.
+$$X(t) = C_1X_1 + C_2X_2.$$
+\end{ejemplo}
+
+We will now explain in general how to proceed in this method. Suppose we have an eigenvalue $\lambda$ with multiplicity $k$, but the solution space of the system $(A-\lambda I)v$ does not provide us with enough l.i. solutions. (it must always provide at least one). Then we take a solution $v_0$ of said system, and construct generalized eigenvectors, solving the systems 
+\begin{align*}
+(A-\lambda I)v &= v_0 , \text{ whose solution we call } v_1 \\
+(A-\lambda I)v &= v_1 , \text{ whose solution we call } v_2 \\
+\vdots
+\end{align*}
+until we have the $k$ vectors we need. Once these vectors are constructed, the solution of the system associated to each one is constructed, in the form
+\begin{align*}
+X_0(t) &= e^{\lambda t}v_0 \\
+X_1(t) &= e^{\lambda t}(v_1 + tv_0) \\
+X_2(t) &= e^{\lambda t} \left( v_2 + tv_1 + \frac{t^2}{2}v_0 \right) \\
+X_3(t) &= e^{\lambda t}\left(v_3 + tv_2 + \frac{t^2}{2!}v_1 + \frac{t^3}{3!}v_0\right) \\
+\vdots
+\end{align*}
+The pattern to follow is the same one given by the Taylor series of $e^x$ (this is no coincidence, we will see in the next section what happened here). Finally, the general solution is expressed as always:
+$$X(t) = C_0X_0+ \dots + C_{k-1}X_{k-1}.$$
+Next we will see how to proceed in case some eigenvalue is not a real number. Let us remember that although the eigenvalues are complex, we are working with matrices $A$ that only have real numbers as entries. We can use the following theorem.
+
+\begin{teorema}{}{}
+    Let $A$ be an $n \times n$ matrix whose entries are real numbers. If $\lambda_1 = a+bi$ is an eigenvalue with associated eigenvector $v_1$, then the number $\lambda_2 = a-bi$ (the conjugate of $\lambda_1$) is also an eigenvalue of $A$, and its associated eigenvector is $\bar{v}$ (the vector obtained by conjugating each entry of $v$).
+\end{teorema}
+\begin{ejemplo}
+    Consider the system
+$$X'(t) = \begin{pmatrix} 3 & 9 \\ -4 & -3 \end{pmatrix} X.$$
+The characteristic polynomial of this matrix is $x^2 + 27$, so the eigenvalues are $\pm 3 \sqrt{3}i$. Thanks to the previous theorem, we only have to find one eigenvector. Let us solve the system $(A-3\sqrt{3}iI)v=0$.
+$$\begin{pmatrix} 3-3\sqrt{3}i & 9 \\ -4 & -3 -3\sqrt{3}i\end{pmatrix} \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix},$$
+We can apply the substitution $b = -\frac{1}{3}(1-\sqrt{3}i)a$ to the first equation, so a possible choice would be taking $a=3$, to obtain $v_1 = (3 , -1+\sqrt{3}i)^t$. This choice associates the first solution of the system
+$$X(t) = e^{3\sqrt{3}it} \begin{pmatrix} 3 \\ -1 +\sqrt{3}i \end{pmatrix}.$$
+We can then apply Euler's formula to obtain
+\begin{align*}
+X(t) &= (\cos(3\sqrt{3}t) + i \sin (3\sqrt{3}t))\begin{pmatrix} 3 \\ -1 +\sqrt{3}i \end{pmatrix}\\ &= \begin{pmatrix} 3\cos(3\sqrt{3}t) + 3i \sin (3\sqrt{3}t) \\ -\cos(3\sqrt{3}t) - i \sin (3\sqrt{3}t) + \sqrt{3}i\cos(3\sqrt{3}t) -  \sqrt{3}\sin (3\sqrt{3}t) \end{pmatrix}
+\end{align*}
+From here, we can separate the real part from the imaginary part, to be able to write in the form $X_1(t) + iX_2(t)$.
+$$X(t) = \underbrace{\begin{pmatrix} 3\cos(3\sqrt{3}t) \\ -\cos(3\sqrt{3}t) - \sqrt{3} \sin (3\sqrt{3}t) \end{pmatrix}}_{X_1} + i \underbrace{\begin{pmatrix} 3\sin(3\sqrt{3}t) \\ -\sin(3\sqrt{3}t) - \sqrt{3} \cos (3\sqrt{3}t) \end{pmatrix}}_{X_2}.$$
+However, thanks to the previous theorem (and a series of algebraic manipulations), we can extract the general solution at once, without having to go through the other eigenvalue. In fact, the general solution is given directly by
+\begin{align*}
+X(t) = C_1X_1(t) + C_2X_2(t)\\ &= C_1\begin{pmatrix} 3\cos(3\sqrt{3}t) \\ -\cos(3\sqrt{3}t) - \sqrt{3} \sin (3\sqrt{3}t) \end{pmatrix} + C_2\begin{pmatrix} 3\sin(3\sqrt{3}t) \\ -\sin(3\sqrt{3}t) - \sqrt{3} \cos (3\sqrt{3}t) \end{pmatrix}.
+\end{align*}
+\end{ejemplo}
+
+\section{The Matrix Exponential Function}
+Let us return to chapter 1 for a moment. When solving the equation 
+$$y' = ay,$$
+with $a \in \mathbb{R}$, we can arrive almost immediately at the solution $y = Ce^{ax}$. Let now $A$ be an $n \times n$ matrix of constant coefficients, and consider the system 
+$$X' = AX.$$
+In a way, we are going to extend the exponential function $e^x$ to be able to calculate $e^A$ (the result of this operation will be a matrix of the same size as $A$). When we manage to do this, we will be able, analogously to first order equations, to affirm that the solution to the system is precisely
+$$X=e^{At}C,$$
+where $C=(C_1,\dots,C_n)^t$ is our column vector of parameters (we must multiply on the left for size reasons). To be able to define the operation $e^A$, we borrow the Taylor series.
+
+\begin{definicion}{Matrix Exponential}{}
+    For a matrix $A$ $n \times n$ with constant entries, we define $e^A$ as
+$$e^A = I + A + \frac{1}{2!}A^2 + \frac{1}{3!}A^3 + \dots = \sum_{k=0}^\infty \frac{1}{k!}A^k.$$
+\end{definicion}
+
+The matrix exponential is easy to calculate when some power of our matrix is the null matrix.
+
+\begin{ejemplo}
+    Consider the matrix
+$$A=\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}.$$
+Note that 
+$$A^2=\begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix},$$
+so 
+$$e^A = I + A +0 + 0 + \dots =\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} $$
+\end{ejemplo}
+\textbf{Note: }The exponential of a matrix $A$ is \textbf{not} obtained by exponentiating each entry of $A$.
+
+We can also define the matrix exponential when we multiply all entries of $A$ by the variable $t$, repeating the definition.
+$$e^{At} = \sum_{k=0}^\infty \frac{t^k}{k!}A^k,$$
+which produces a matrix function. The derivative of this function is calculated the same way as with real variable functions,
+$$\frac{d}{dt}e^{At} = Ae^{At}.$$
+It is thanks to this property that we see that indeed, the general solution of the system $X'=AX$ is precisely the matrix $e^{At}C$, where $C$ is a parameter vector. In other words, the fundamental matrix of the system $X'=AX$ is $ \Phi(t) = e^{At}$.
+
+\begin{teorema}{Properties of the Matrix Exponential}{}
+    The matrix exponential function satisfies the following properties:
+\begin{itemize}
+\item $e^{O}=I$, where $O$ denotes the null matrix.
+\item $e^{At}e^{As}=e^{A(t+s)}$, where $t$ and $s$ are scalars.
+\item When $AB=BA$, then $e^Ae^B = e^{A+B}$. This can be false if $A$ and $B$ do not commute.
+\item $(e^{At})^{-1} = e^{-tA}$, where $t$ is a scalar.
+\item When $A$ is a diagonal matrix, we can calculate $e^{A}$ simply by exponentiating each entry. That is,
+$$\exp \begin{pmatrix} a_{11} & 0 & \dots & 0 \\ 0& a_{22} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & a_{nn}\end{pmatrix} = \begin{pmatrix} e^{a_{11}} & 0 & \dots & 0 \\ 0& e^{a_{22}} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & e^{a_{nn}}\end{pmatrix}.$$
+\end{itemize}
+\end{teorema}
+
+These properties help us calculate some exponentials more easily.
+
+\section{Variation of Parameters}
+So far, we have not solved any non-homogeneous system, that is, of the form
+\begin{equation}\label{eqn:16}
+X'(t) = A(t)X(t) + F(t)
+\end{equation}
+where $F(t)$ is not null. Recall that the general procedure for solving non-homogeneous systems is to find the complementary solution of the homogeneous $X_c$ and then a particular solution $X_p$. The general solution would be given by $X_c + X_p$, as we already know. To find $X_p$ we will use variation of parameters.
+
+\begin{teorema}{Variation of Parameters for Systems}{}
+    To solve system \eqref{eqn:16}, we take the fundamental matrix $\Phi(t)$, and calculate the particular solution $X_p$ using the formula
+$$X_p(t) = \Phi(t) \int \Phi^{-1}(t)F(t)dt,$$
+where $\Phi^{-1}(t)$ denotes the inverse of the fundamental matrix, and the integral is calculated entry by entry.
+\end{teorema}
+
+\begin{ejemplo}
+    Solve the system
+$$X' = \begin{pmatrix} -3 & 1 \\ 2 & -4 \end{pmatrix}X + \begin{pmatrix} 3t \\ e^{-t}\end{pmatrix}.$$
+First we have to solve 
+$$X' = \begin{pmatrix} -3 & 1 \\ 2 & -4 \end{pmatrix}X,$$
+which we do by means of eigenvalues. The eigenvalues of this matrix are $-2$ and $-5$, and their associated eigenvectors are $v_1= (1,1)^t$ and $v_2=(1,-2)$ (exercise). Then we have that
+$$X_c = C_1\begin{pmatrix}e^{-2t} \\ e^{-2t} \end{pmatrix} + C_2 \begin{pmatrix} e^{-5t} \\ -2e^{-5t} \end{pmatrix}.$$
+The fundamental matrix of this system is therefore
+$$\Phi(t) = \begin{pmatrix} e^{-2t} & e^{-5t} \\ e^{-2t} & -2e^{-5t} \end{pmatrix}.$$
+Recall that the inverse of a $2\times 2$ matrix is very easy to calculate, by the formula 
+$$\begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \frac{1}{ad-bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}.$$
+This helps us calculate
+$$\Phi^{-1}(t) = \begin{pmatrix} \frac{2}{3}e^{2t} & \frac{1}{3}e^{2t} \\ \frac{1}{3}e^{5t} & -\frac{1}{3}e^{5t}\end{pmatrix}.$$
+Then, we only need to apply the variation of parameters formula.
+\begin{align*}
+X_p &= \Phi(t) \int \Phi^{-1}(t)F(t)dt \\ &= \begin{pmatrix} e^{-2t} & e^{-5t} \\ e^{-2t} & -2e^{-5t} \end{pmatrix} \int \begin{pmatrix} \frac{2}{3}e^{2t} & \frac{1}{3}e^{2t} \\ \frac{1}{3}e^{5t} & -\frac{1}{3}e^{5t}\end{pmatrix} \begin{pmatrix} 3t \\ e^{-t}\end{pmatrix} dt \\
+&= \begin{pmatrix} e^{-2t} & e^{-5t} \\ e^{-2t} & -2e^{-5t} \end{pmatrix}  \int  \begin{pmatrix} 2te^{2t} + \frac{1}{3}e^t \\ te^{5t}-\frac{1}{3}e^{4t}
+\end{pmatrix}dt \ \\
+&= \begin{pmatrix} e^{-2t} & e^{-5t} \\ e^{-2t} & -2e^{-5t} \end{pmatrix} \begin{pmatrix} te^{2t} - \frac{1}{2}e^{2t}+\frac{1}{3}e^t \\ \frac{1}{5}te^{5}-\frac{1}{25}e^{5t} - \frac{1}{12}e^{4t} \end{pmatrix} \\
+&= \begin{pmatrix} \frac{6}{5}t - \frac{27}{50}+\frac{1}{4}e^{-t} \\ \frac{3}{5}t - \frac{21}{50} - \frac{1}{2}e^{-t} \end{pmatrix}.
+\end{align*}
+Remember that to evaluate the integral of a vector, we simply integrate each of its entries separately. So we have that the general solution of the equation is
+$$X= X_c + X_p = C_1\begin{pmatrix}e^{-2t} \\ e^{-2t} \end{pmatrix} + C_2 \begin{pmatrix} e^{-5t} \\ -2e^{-5t} \end{pmatrix} +\begin{pmatrix} \frac{6}{5}t - \frac{27}{50}+\frac{1}{4}e^{-t} \\ \frac{3}{5}t - \frac{21}{50} - \frac{1}{2}e^{-t} \end{pmatrix}.$$
+\end{ejemplo}
+
+\section{Higher Order Equations and Systems}
+Throughout this section, we have noted many similarities with the section on higher order equations: solution space, Wronskian criterion, complementary solution, particular solution. Practically all concepts have their counterpart in the topic of higher order ODEs. The reason for this is very simple: \textbf{Every higher order linear differential equation can be converted into a system of first order linear equations.} The way to do this is very simple, we simply introduce additional variables, one for each derivative.
+
+\begin{ejemplo}
+    Consider the differential equation
+$$x(t)''' + 3x(t)'' + 3x(t)' + x(t) = 0.$$
+We know, by the theory of linear ODEs with constant coefficients, that the general solution is 
+$$x= C_1e^{-t} + C_2te^{-t} + C_3t^2e^{-t}.$$
+We are going to convert it into a first order system. Define the variables $x_1 = x$ , $x_2 = x'$ , $x_3 = x''$. Then the original equation becomes 
+$$x_3 ' = -x_1 - 3x_2 - 3x_3.$$
+Now, differentiating the definitions of the new variables, we obtain enough equations to convert the higher order equation into the system of equations
+$$\begin{cases} x_1' = x_2 \\
+x_2' = x_3 \\
+x_3' =  -x_1 - 3x_2 - 3x_3
+\end{cases}.$$
+Taking $X=(x_1,x_2,x_3)^t$, we must solve the system
+$$X' = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ -1 & -3 & -3 \end{pmatrix}X.$$
+The only eigenvalue of this matrix is $-1$. We solve the system
+$$(A+I)v =  \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ -1 & -3 & -2 \end{pmatrix}\begin{pmatrix} a \\ b \\c \end{pmatrix}.$$
+We find that the only l.i. eigenvector of this matrix is $v_0 = (1,-1,1)^t$. Then we solve the system $(A+I)v=v_0$, whose solution is $v_1$, and then the system $(A+I)v = v_1$ whose solution is $v_2$. In summary, the generalized eigenvectors are $v_1 = (1,0,-1)^t$ and $v_2 = (1,0,0)^t$. We can follow the formula we studied for this case, to find the solutions
+\begin{align*}
+X_1 &= e^{-t}v_0 = \begin{pmatrix} e^{-t} \\ - e^{-t} \\  e^{-t} \end{pmatrix} \\
+X_2 &= e^{-t}(v_1 + tv_0) = e^{-t}\begin{pmatrix}1+t \\ -t \\ -1+t \end{pmatrix} \\
+X_3 &= e^{-t} (v_2 + tv_1 + \frac{t^2}{2}v_0) = e^{-t}\begin{pmatrix}1+t +\frac{t^2}{2}\\ -\frac{t^2}{2} \\ -t + \frac{t^2}{2} \end{pmatrix} 
+\end{align*}
+So the general solution of the system is
+$$\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = K_1 \begin{pmatrix} e^{-t} \\ - e^{-t} \\  e^{-t} \end{pmatrix} + K_2e^{-t}\begin{pmatrix}1+t \\ -t \\ -1+t \end{pmatrix} +K_3e^{-t}\begin{pmatrix}1+t +\frac{t^2}{2}\\ -\frac{t^2}{2} \\ -t + \frac{t^2}{2} \end{pmatrix} .$$
+Since $x_1 = x$, the solution of the original equation is given by the first entry of this vector,
+$$x= K_1e^{-t} + K_2e^{-t}(1+t) + K_3e^{-t}(1+t+\frac{t^2}{2}).$$
+To arrive at the same solution, we must make a small renaming of constants. Take $C_1 = K_1+K_2+K_3$, $C_2 = K_2 + K_3$, and $C_3 = \frac{K_3}{2}$, to arrive at the solution we obtained at the beginning.
+$$x= C_1e^{-t} + C_2te^{-t} + C_3t^2e^{-t}.$$
+It is clear however, that in most cases this method is not efficient to apply. It is much simpler to just find the zeros of the characteristic equation.
+\end{ejemplo}

@@ -1,0 +1,200 @@
+\chapter{Power Series Solutions}
+
+In this section we are going to introduce a new method for solving differential equations. To apply this method, we must revisit the concept of a \textbf{power series}, which will allow us to find solutions \textit{analytically.} Recall that a power series centered at a number $a$ is an infinite sum of the form
+\begin{equation}\label{eqn:12}
+\sum_{n=0} ^ \infty c_n(x-a)^n = c_0 + c_1(x-a) + c_2 (x-a)^2 + \dots
+\end{equation}
+where $a,c_n \in \mathbb{R}$ (or even $\mathbb{C}$). 
+
+Power series help us approximate functions, in fact, we say that a power series \textbf{converges to a function $f(x)$} if on some interval $I \subseteq \mathbb{R}$ it holds that
+$$f(x) = \lim_{K \to \infty} \sum_{n=0} ^ K c_n(x-a)^n , \quad \text{for all $x \in I$}$$
+or in other words, if the partial sums of the sum are getting closer and closer to a value $f(x)$. We give here a quick review of the key concepts about convergence of power series. Let us assume that our series is defined only on the real numbers.
+
+\begin{definicion}{Convergence}{}
+    Consider the power series \eqref{eqn:12}.
+\begin{itemize}
+\item \textbf{Interval of convergence: }It is the interval of real numbers $x$ where the series converges.
+\item \textbf{Radius of convergence: }The interval of convergence $I$ can be expressed as $I = [a-R,a+R]$, where $R \geq 0$. We call this number $R$ the radius of convergence \linebreak (if $R = \infty$, we say that $I=\mathbb{R}$).
+\end{itemize}
+\end{definicion}
+
+A special case of power series are Taylor (and Maclaurin) series.
+
+\begin{definicion}{Taylor Series}{}
+    Given an infinitely differentiable function $f:\mathbb{R} \to \mathbb{R}$, we define its Taylor series centered at $a$ as the sum
+$$S(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n.$$
+When $a=0$, we call it a Maclaurin series.
+\end{definicion}
+
+We are going to connect these concepts from differential calculus with our interest in differential equations with the following definition.
+
+\begin{definicion}{Ordinary Point}{}
+    Consider the second order linear differential equation
+\begin{equation}\label{eqn:13}
+y''+ P(x)y' + Q(x)y = 0
+\end{equation}
+We say that a point $x_0$ is an \textbf{ordinary point} of equation \eqref{eqn:13} if both functions $P$ and $Q$ are analytic at $x_0$. Those points that are not ordinary are called \textbf{singular points}.
+\end{definicion}
+
+\begin{ejemplo}
+    Consider the equation
+$$x^2y'' - 2y' + xy = 0$$
+(note that none of the methods we have can solve this equation). The point $x=1$ is an ordinary point of the equation, since the functions
+$$P(x) = -\frac{2}{x^2} \ , \ Q(x) = \frac{1}{x}$$
+are both analytic at $1$. However, the point $x=0$ is singular, since $P'(0)$ and $Q'(0)$ cannot even be defined (for a function to be analytic, it must be at least infinitely differentiable).
+\end{ejemplo}
+
+\section{Solution in a Neighborhood of an Ordinary Point}
+We then have the first theorem that helps us solve equations using series.
+
+\begin{teorema}{}{}
+    If $x_0$ is an ordinary point of an equation in the form \eqref{eqn:13}, we can find two linearly independent solutions $y_1,y_2$ in the form of power series centered at $x_0$. These series converge for all $x$ that is between $x_0$ and the nearest singular point.
+\end{teorema}
+This theorem tells us that, if $a$ is an ordinary point, we can declare a candidate solution of the form
+$$y(x)= \sum_{n=0}^{\infty} c_n (x-a)^n.$$
+And therefore, if we manage to solve for the coefficients $c_n$ in some way, we will have our solution in series form.
+
+\begin{ejemplo}
+    Solve the equation $$y'' + xy= 0.$$
+Note that none of the methods we have studied so far works to solve this equation. We will proceed by power series: since there are no singular points, we can choose any point (we will choose $0$ for convenience) as the center of our power series, and this same series will converge on all of $\mathbb{R}$ by the previous theorem. We then assume that our solution has the form of a series centered at $0$
+$$y = \sum_{n=0}^\infty c_nx^n = c_0 + c_1x + c_2x^2 + \dots.$$
+The idea of this method is the following: since we are assuming that $y$ is a solution, by differentiating it and substituting it into the differential equation, we will have enough information to solve for the coefficients $c_n$.
+$$2c_2 + \sum_{n=1}^\infty [c_{n+2}(n+2)(n+1) + c_{n-1}]x^n = 0.$$
+From here, we must compare coefficients on each side of the equality, to find the values of $c_n$.
+$$\begin{cases}
+c_2 = 0 \\
+c_{n+2}(n+2)(n+1) + c_{n-1} = 0 , \text{ for all } n \geq 1.
+\end{cases}$$
+From here, to solve for the other $c_n$'s, we must use a \textbf{recurrence relation}: Note that $c_{n+2}$ can be found from $c_{n-1}$, in the form
+$$c_{n+2} = \frac{-c_{n-1}}{(n+2)(n+1)}$$
+The general solution to the equation $y'' + xy =0$ is then
+$$y = c_0y_0(x) + c_1y_1(x)$$
+where
+\begin{align*}
+y_0(x) &=  \sum_{n=0} ^\infty \frac{4 \cdot 7 \cdot 10\cdots (3n-2) }{(3n)!} (-1)^n  x^{3n} \\
+y_1(x) &= \sum_{n=0}^\infty \frac{2 \cdot 5 \cdot 8\cdots (3n-1) }{(3n+1)!} (-1)^n  x^{3n+1}
+\end{align*}
+In general it is difficult to go from the series expression to an elementary expression (trigonometric, exponential, logarithm, etc). In fact, most analytic solutions do not have an elementary expression.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Solve the equation
+$$y'' + (\cos x)y = 0.$$
+Once again, we take $y = \sum_{n=0}^\infty c_nx^n$.
+We will center around 0 for convenience, since there are no singular points. We then have to use the Taylor series for $\cos(x)$, which is analytic.
+\begin{alignat*}{2}
+&& y'' + (\cos x)y &= \sum_{n=2}n(n-1)c_nx^{n-2} + \left(1-\frac{x^2}{2!} + \frac{x^4}{4!} - \dots \right)\sum_{n=0}^\infty c_nx^n = 0\\
+\Rightarrow&&  &=2c_2 + 6c_3x + 12c_4x^2 + \dots +  \left(1-\frac{x^2}{2!} + \dots \right) (c_0 + c_1x  + \dots) = 0
+\end{alignat*}
+Then, comparing coefficients, we obtain the system of equations
+$$\begin{cases}
+2c_2 + c_0 = 0 \\
+6c_3 + c_1 = 0 \\
+12c_4 + c_2 - \frac{1}{2}c_0 = 0 \\
+20c_5 + c_3 - \frac{1}{2}c_1 = 0
+\end{cases}$$
+whose solution is $c_2 = -c_0/2$ , $c_3 = -c_1/6$ , $c_4 = c_0/12$, and $c_5 = c_1/30$. Grouping the terms of the series, we finally obtain that the general solution (as far as we could calculate it), is
+$$y= c_0y_0(x) + c_1y_1(x)$$
+where
+$$y_0(x) = 1-\frac{1}{2}x^2 + \frac{1}{12}x^4 + \dots \ \text{ and } \ y_2(x)=x- \frac{1}{6}x^3 + \frac{1}{30}x^5 + \dots$$
+\end{ejemplo}
+
+\section{Solution in a Neighborhood of a Regular Singular Point}
+We can also solve differential equations of the form \eqref{eqn:13} centering our series around a singular point, but we must take certain precautions.
+
+\begin{definicion}{Regular Singular Point}{}
+    Let $x_0$ be a singular point of the equation $y''+ P(x)y' + Q(x)y = 0$. We say that $x_0$ is a \textbf{regular singular point} if the functions
+$$p(x) = (x-x_0)P(x) \ , \ q(x) = (x-x_0)^2Q(x)$$
+are both analytic at $x_0$. Singular points that are not regular are called \textbf{irregular} points.
+\end{definicion}
+
+\begin{teorema}{Frobenius Method}{}
+    If $x=x_0$ is a regular singular point of the differential equation
+$$y''+P(x)y' + Q(x)y =0,$$ then there exists at least one solution of the form
+$$y=\sum_{n=0}^{\infty} c_n(x-x_0)^{n+r}.$$
+The series will converge in some interval $(x_0-R,x_0+R)$, with $R>0$. To find $r$, we must solve the \textbf{indicial equation}, given by
+$$r(r-1) + p_0r + q_0 = 0$$
+where
+$$p_0 = \lim_{x \to x_0} (x-x_0)p(x) \quad \text{and} \quad q_0 = \lim_{x \to x_0} (x-x_0)^2q(x).$$
+Depending on the two solutions of the indicial equation, the solutions are constructed in different ways:
+\begin{itemize}
+\item \textbf{Case 1:} When $r_1-r_2 \notin \mathbb{Z}$, we have two l.i. solutions of the form
+$$y_1(x) = \sum_{n=0}^\infty c_n x^{n+r_1} \quad \text{and} \quad y_2(x) = \sum_{n=0}^\infty b_n x^{n+r_2} $$
+\item \textbf{Case 2:} If $r_1-r_2 \in \mathbb{Z}$, the solutions are
+$$y_1(x) = \sum_{n=0}^\infty c_n x^{n+r_1} \quad \text{and} \quad y_2(x) = Ay_1(x)\ln(x) + \sum_{n=0}^\infty b_n x^{n+r_2} $$
+where $A$ is a constant to be determined (which could even be $0$). In the special case when $r_1=r_2$, we have $A=1$.
+\end{itemize}
+\end{teorema}
+
+\begin{ejemplo}
+    For the equation
+$$(x^2 -4)^2y'' + 3(x-2)y' + 5y = 0$$
+it is evident that $x_0=2$ and $x_1=-2$ are both singular points. However, note that, studying first $x_0=2$,
+\begin{align*}
+p(x) &= (x-2)P(x) = \frac{3(x-2)^2}{(x^2-4)^2} = \frac{3}{(x+2)^2} \\
+q(x) &= (x-2)^2Q(x) = \frac{5(x-2)^2}{(x^2-4)^2}= \frac{5}{(x+2)^2}.
+\end{align*}
+Since both functions $p(x),q(x)$ are analytic at $x=2$, we conclude that $2$ is a regular singular point. Let's see what happens with $-2$,
+\begin{align*}
+p(x) &= (x+2)P(x) = \frac{3(x+2)(x-2)}{(x^2-4)^2} = \frac{3}{(x+2)(x-2)}.
+\end{align*}
+This function is not analytic at $x=-2$, so the point $-2$ is an irregular singular point (we don't need to check $q(x)$).
+\end{ejemplo}
+
+\begin{ejemplo}
+    Solve the following ODE
+$$3xy'' + y' - y = 0.$$
+First, we rewrite:
+$$y'' + \frac{y'}{3x} - \frac{y}{3x} = 0,$$
+from which we can immediately observe that $x_0 = 0$ is a regular singular point, indeed:
+\begin{align*}
+p(x) = \frac{x}{3x} &= \frac{1}{3}\\
+q(x) = -\frac{x^2}{3x} &=  -\frac{x}{3}
+\end{align*}
+both functions analytic at $0$ (and on all of $\mathbb{R}$). Then we proceed to solve the indicial equation. Since
+$$p_0=\lim_{x \to 0} p(x) = \frac{1}{3} \quad \text{and} \quad q_0 = \lim_{x \to 0} q(x) = 0,$$
+we must solve the equation
+$$r(r-1) + \frac{r}{3} = 0.$$
+The roots of this equation are $r_1= 0$ and $r_2= 2/3$, so we must proceed as in case 1. We propose two solutions of the form
+$$y_1(x) = \sum_{n=0}^\infty c_n x^n \quad \text{and} \quad y_2(x) = \sum_{n=0}^\infty b_n x^{n+2/3}.$$
+Differentiating $y_1$ and substituting into the equation, we obtain the recurrence
+$$c_0 = c_1 \ \text{ and } \ c_{n+1} = \frac{c_n}{(n+1)(3n+1)}$$
+so that, in general, for all $n \geq 1$,
+$$c_n = \frac{c_0}{(n!) \cdot 1 \cdot 4 \cdot 7 \cdot (3n-2)}$$
+and therefore
+$$y_1(x) = \left(1+ \sum_{n=1}^\infty \frac{x^n}{(n!)\cdot 1 \cdot 4 \cdot 7 \cdots (3n-2)} \right).$$
+
+For $y_2$, we obtain the recurrence
+$$b_{n} = \frac{b_{n-1}}{n(3n+2)} \ \text{ for $n \geq 1$}.$$
+which gives
+$$b_n = \frac{b_0}{(n!)\cdot 5 \cdot 8 \cdot 11 \cdots (3n+2)} \text{ for $n \geq 1$}$$
+from which we obtain
+$$y_2(x) = x^{2/3} \left(1+ \sum_{n=1} ^\infty \frac{x^n}{(n!)\cdot 5 \cdot 8 \cdot 11 \cdots (3n+2)}  \right).$$
+The general solution is $y(x) = Ay_1(x) + By_2(x)$.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Consider the equation
+$$x(x-1)y'' + 3xy' + y = 0$$
+The point $x_0 = 0$ is a regular singular point (exercise: verify). The indicial equation is $r(r-1)=0$, with roots $r_1=0$, $r_2=1$. Since we are in case 2, we take $y_1(x) = \sum_{n=0}^\infty c_nx^n$. Substituting we obtain the recurrence $c_0= 0$ and $c_{n+1} = c_n \frac{n+1}{n}$, from which $c_n= nc_1$, which gives us
+$$y_1(x) = \sum_{n=1}^\infty n x^n = \frac{x}{(1-x)^2}.$$
+
+For $y_2$, we can use Abel's formula:
+$$y_2(x) = y_1(x) \int \frac{\exp(-\int \frac{3dx}{x-1})}{y_1^2(x)}dx = -\frac{1+x \ln x}{(1-x)^2}.$$
+The general solution is
+$$y = C_1\frac{x}{(1-x)^2} + C_2 \frac{1+x\ln(x)}{(1-x)^2}.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Find the general solution of $y' = 3y$ using a power series expansion centered at $x=0$.
+    \item Find the two fundamental solutions of the \textit{Airy} equation $y'' = xy$.
+    \item Find the general solution of $(x^2+1)y'' + xy' - y = 0$.
+    \item Prove that the function $$J_0(t) = \sum_{m=0}^\infty \frac{(-1)^m}{(m!)^2}\left( \frac{t}{2}\right)^m$$
+    is a solution of the equation $t^2x''(t) + tx'(t) + t^2x(t) =0$. This function is known as the \textit{Bessel function of order} 0.
+    \item Prove using power series, that the general solution of $y'' + y =0$ is given by $y = A\cos(x) + B\sin(x)$.
+    \item Find the first $5$ terms of the power series expansion of each fundamental solution of the equation
+    $y'' + \sin(x) + e^x y = 0$.
+    \item Find a fundamental solution of the equation $x^2 y'' - xy' + (1-x)y = 0$. Express it as a power series around the point $x=0$.
+    \end{enumerate}
+\end{ejercicios}
