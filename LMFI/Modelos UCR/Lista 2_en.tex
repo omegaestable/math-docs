@@ -1,0 +1,637 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage[rgb]{xcolor}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage{nomencl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{tikz-cd}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,tikz,amssymb,tkz-linknodes}
+\usepackage[colorlinks=true, urlcolor=blue,  linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{rotating}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\NN}{\mathcal N}
+\doublespacing
+\begin{document}
+\homework{SP1301 Model Theory: Problem Set \#2}{Date: 07/19/2020}{Samaria Montenegro}{}{Juan Ignacio Padilla}{B55272}
+Second problem set for the model theory course. These correspond to Chapter 5 of the course notes: models of arithmetic and incompleteness theorems.\\
+\textbf{Problem 1. Presburger Arithmetic} \\
+Consider $\LL_{\op{Pres}}= \{0,1,+,<,1 \} \cup \{ \equiv_n , n \geq 1 \}$, where $\equiv_n $ are binary relations. \textit{Presburger arithmetic} is given by the $\LL_{\op{Pres}}$-theory $T_{\op{Pres}}$ consisting of:
+\begin{itemize}
+    \item Axioms for an ordered commutative group.
+    \item $1$ is the least positive element.
+    \item For all $n \geq 1$ the following axiom
+          $$ \varphi_n := \forall x,y \left( x \equiv_n y \leftrightarrow \exists z \  x+\underbrace{z+z+\dots + z}_{n \text{-times}} = y \right).$$
+    \item For all $n \geq 1$ the following axiom
+          $$\psi_n := \forall x \left ( \bigwedge_{i=0}^{n-1} x \equiv_n \underbrace{1+1+\dots + 1}_{i-\text{times}} \right).$$
+\end{itemize}
+\begin{enumerate}
+    \item Prove that $\langle \mathbb Z , 0 ,1 , + , < , \equiv_n  \rangle \models T_{\op{Pres}}.$
+    \item Prove that $T_{\op{Pres}}$ has quantifier elimination, and that it is complete.
+    \item Deduce that $T_{\op{Pres}}$ is decidable.
+\end{enumerate}
+\textbf{Solution:} Part 1) is evident; it is clear that $\mathbb Z$ is an ordered group whose first positive element is $1$, and where the congruence relations modulo $n$ (for $n \geq 1$) satisfy the axioms $\varphi_n$ and $\psi_n$. To prove part 2), we will show that every model of $T_{\op{Pres}}$ contains $\mathbb Z$ as a substructure. Let us add $-$ to the language, since it is definable from the group axioms. Let $\mathcal M \models T_{\op{Pres}}$. Define
+\begin{align*}
+    Z^+ & := \{ \underbrace{1+1+\dots + 1}_{n-\text{times}} , n \geq 1\} \\
+    Z^- & := \{ -z , z \in Z^+ \}                                       \\
+    Z   & := Z^- \cup \{ 0 \} \cup Z^+.
+\end{align*}
+and restrict $+,<$ and $\equiv_n$ to $Z$. Let us show that $Z \subseteq \mathcal M$.\\
+By construction, $Z$ is closed under $+$,$-$ and contains $0$. This makes $Z$ a commutative group. We also have that $<$ is the restriction of a total order on $\mathcal M$, which makes $<$ a total order on $Z$. Furthermore, if $a,b \in Z$ and $c \in Z^+$, since $Z^+$ only contains positive elements of $\mathcal M$, we have
+$$Z \models a < b \rightarrow a+c < b+c.$$
+It remains to show that if $\mathcal M \models x \equiv_n y$ then $Z \models x \equiv_n y$ for $n \geq 1$. Suppose there exists $\alpha \in \mathcal M$ such that $x+\alpha n = y$, with $x,y \in Z$; in fact, we may assume without loss of generality that $\alpha > 0$ (otherwise swap $b$ with $a$). Then we have $\alpha n =y-x \in  Z$. This implies that the set $K = \{ z \in Z^+ , \alpha \leq z \}$ is non-empty. Let $k_0$ be the first element of $K$ (since $\langle Z^+ , \leq  \rangle \cong \langle \mathbb N , \leq \rangle$). Assume by contradiction that $\alpha \notin Z$. Then
+\begin{alignat*}{2}
+                &  & Z & \models k_0 - 1 < \alpha < k_0  \\
+    \Rightarrow &  & Z & \models 0 < \alpha + 1- k_0 < 1
+\end{alignat*}
+which contradicts the axioms of $T_{\op{Pres}}$. Therefore we can deduce that $\alpha \in Z$ and that \linebreak$Z \models x \equiv_n y$. Finally, it is clear that the map $\underbrace{1+1+\dots+1}_{m-\text{times}} \mapsto m$ can be defined so that $Z \cong \mathbb Z$ (respecting all relations and functions). We have shown that $\mathbb Z \subseteq  \mathcal M$. We will now prove 2), that $T_{\op{Pres}}$ admits quantifier elimination.\\
+Let $\mathcal M, \mathcal N \models T_{\op{Pres}}$. We know that $\mathbb Z$ is a substructure of both models. Let $\varphi(x,\bar{y})$ be a quantifier-free formula. We will show that the existence of $\bar{z} \in \mathbb{Z}^p$ and $m \in \mathcal M$ satisfying $\mathcal M \models \varphi [m,\bar{z}]$, implies the existence of $n \in \mathcal N$ such that $\mathcal N \models \varphi [n,\bar{z}]$. Since $\varphi$ has no quantifiers, the following logical equivalence holds
+$$\varphi(x,\bar{y}) \sim \bigvee_i \bigwedge_j \chi_{ij}(x,\bar{y})$$
+with $\chi_{ij}$ atomic formulas (or negations thereof). In fact, if $\mathcal M \models  \varphi [m,\bar{z}]$ then for some $i$, $\mathcal M \models \bigwedge_j  \chi_{ij} [m,\bar{z}]$. Thanks to this, we may assume that $\varphi$ is a conjunction of atomic formulas or their negations. \\
+In $\LL_{\op{Pres}}$, atomic formulas are equivalent \footnote{Expressions of the type $p(x) \not\equiv_n 0 $ can be replaced by one of the form $\bigvee_{i=1}^{n-1}p(x)+\underbrace{1+1+\dots+1}_{i-\text{times}} \equiv_n 0$} to one of the following forms: $p(\bar{x}) = 0$, \newline$ p(\bar{x}) < 0, p(\bar{x}) \equiv_n 0$ , where $p(\bar{x})$ is a polynomial \textbf{of degree 1} with coefficients in $\mathbb Z$. Therefore, we assume without loss of generality that
+$$\varphi(x,\bar{y}) = \bigwedge_i (p_i(x,\bar{y}) = 0) \land \bigwedge_i (q_i(x,\bar{y}) < 0) \land \bigwedge_i (r_i(x,\bar{y}) \equiv_n 0)$$
+Where $p_i,q_i,r_i$ are degree $1$ polynomials with coefficients in $\mathbb Z$. \\
+If $\mathcal M \models p_i(m,\bar{z})=0$, then there exist $k,a_1,\dots,a_n \in \mathbb Z$ such that
+\begin{alignat*}{2}
+     &  & km +a_1z_1 + a_2z_2 + \dots + a_pz_p & = 0
+    \\ \Rightarrow && km = -(a_1z_1 + a_2z_2 + \dots + a_pz_p ) &:= A \in \mathbb{Z}
+\end{alignat*}
+By an argument analogous to one used earlier, we can show that $km \in \mathbb Z \Rightarrow m \in \mathbb Z$, so $m$ would be the witness in $\mathcal N$ that we are looking for. Suppose then that $\varphi$ has the form
+$$\varphi(x,\bar{y}) =  \bigwedge_i (q_i(x,\bar{y}) < 0) \land \bigwedge_i (r_i(x,\bar{y}) \equiv_n 0).$$
+Then $m$ is the solution of a system (with unknown $x$) of the type
+\begin{align*}
+    \begin{cases}
+        k_ix < A_i \quad                & \text{ for finitely many } i \\
+        l_jx + B_j \equiv_{n_j} 0 \quad & \text{ for finitely many } j
+    \end{cases}
+\end{align*}
+where $k_i,A_i,l_j,B_j \in \mathbb Z$ and $n_j \geq 2$ for all $i,j$.
+We want to solve this system in $\mathcal N$. Note that the inequality $k_ix < A_i $ is equivalent to $x < h_i$, where $h_i$ is the smallest integer such that $hk_i < A_i < h(k_i+1)$. Moreover, we can summarize all inequalities into a single one by taking $h= \min_i \{h_i \}$. We need to solve in $\mathcal N$ the equivalent system
+\begin{equation} \label{eqn:1}
+    \begin{cases}
+        x < h                                                     \\
+        l_jx + B_j \equiv_{n_j} 0 \quad & \text{ for finitely many } j
+    \end{cases}
+\end{equation}
+Let $n=\prod_j n_j$, and choose $ 0 \leq j \leq n-1$ satisfying $\mathcal M \models m \equiv_n j$. By known properties of $\equiv_n$, $j$ is a solution to the system of congruences. Finally, choose a representative $g<A$ of the equivalence class of $j$ modulo $n$; this is possible since $(-\infty,A]$ contains, thanks to the axioms of $T_{\op{Pres}}$, at least one element congruent to each of $1,2,\dots,n-1$. Then we have $g<A$ and since $g \equiv_n j$ it follows that $g$ is also a solution of the congruences, and therefore a solution of system \eqref{eqn:1}. Since $g \in \mathcal N$, $\mathcal N \models \varphi(g,\bar{z})$. We conclude therefore that
+$$\mathcal M \models \exists x \varphi [x,\bar{z}] \Rightarrow \mathcal N \models \exists x \varphi [x,\bar{z}]$$
+which is equivalent to $T_{\op{Pres}}$ having quantifier elimination. Since every model of $T_{\op{Pres}}$ has $\mathbb Z$ as a substructure, given $\mathcal M , \mathcal N$ any two models of $T_{\op{Pres}}$, by what we have just shown, we will have $\mathcal M \equiv \mathcal N$. Since these are arbitrary models, we conclude that $T_{\op{Pres}}$ is complete. Finally, to see 3), note that $T_{\op{Pres}}$ is clearly recursive, and being complete, a theorem from the section tells us it is a decidable theory. \newpage
+\textbf{Problem 2.} \begin{enumerate}
+    \item Let $\Phi = \{  \#\varphi, \varphi \text{ is a satisfiable $\LL_{ar}$-sentence } \}$. Prove that $\Phi$ is not recursively enumerable.
+    \item Let $\Phi_m$ be the set of codes of $\LL_{ar}$-sentences satisfiable by some $\LL_{ar}$-structure with domain $ \{0,\dots,m-1 \}$. Prove that  $\Phi_m$ is primitive recursive.
+    \item Let $\Phi_{fin}$ be the codes $\# \varphi$ of $\LL_{ar}$-sentences satisfiable by some finite $\LL_{ar}$-structure. Using the previous question and an appropriate encoding, prove that $\Phi_{fin}$ is recursively enumerable.
+\end{enumerate}
+\textbf{Solution: }
+First we prove a). Suppose that $\Phi$ is recursively enumerable. By the representability theorem, there exists a $\Sigma_1$-formula $\tau$ that represents $\Phi$. That is, $\sf{PA_0} \models \tau(\# \varphi) $ if and only if there exists an $\LL_{ar}$-structure $\mathcal M$ such that $\mathcal M \models \varphi$ (with $\varphi$ a sentence). Let $\mathcal M \models \sf{PA_0}$.
+\begin{itemize}
+    \item If $\mathcal M \models \varphi$, then by definition of $\tau$, $\sf{PA_0} \models \tau(\# \varphi) \Rightarrow \mathcal M \models \tau(\# \varphi)$.
+    \item If $\mathcal M \models \neg \varphi$, then $\sf{PA_0} \models \tau(\# \neg \varphi) \Rightarrow \mathcal M \models \tau(\# \neg \varphi)$.
+\end{itemize}
+We have just shown that there exists a formula with one free variable $\tau(x)$ that has the property
+$$\mathcal M \models \varphi \iff \tau(\# \varphi),$$
+this contradicts Tarski's theorem.\\
+Before proving b) and c) we must work through some preliminaries. First we will give an effective enumeration of all finite $\LL_{ar}$-structures. Let $m\geq 1$, and let $\mathcal M$ be an $\LL_{ar}$-structure whose domain has $m$ elements. We will encode the interpretations of the symbols of $\LL_{ar}$: $+,\times,<,S$ (to be rigorous we should encode that $0^{\mathcal M} = 0$ but this does not alter the proof). For $n \geq 0$, define $\pi(n)$ as the $(n+1)$-th prime number and let $\alpha_n:\mathbb N ^2 \to \mathbb N$ be a primitive recursive and invertible function. We encode as follows:
+\begin{itemize}
+    \item $ +:M^2 \to M $ as follows: if $a,b,c \in M$ are such that $a+b=c$, then $$\lceil  + \rceil = \prod_{a,b \in M} \pi(\alpha_2(a,b))^c.$$
+    \item $ \times:M^2 \to M $ as follows: if $a,b,c \in M$ are such that $a\times b=c$, then $$\lceil  \times \rceil = \prod_{a,b \in M} \pi(\alpha_2(a,b))^c.$$
+    \item $< \subseteq M^2$ as follows: if $a,b \in M$ are such that $a<b$, then $$\lceil  < \rceil = \prod_{a,b \in M} \pi(\alpha_2(a,b))^{\mathds{1}_{a<b}}.$$
+    \item $S:M \to M$ as follows: if $a,b \in M$ are such that $S(a) =b$, then $$\lceil  S \rceil = \prod_{a \in M} \pi(a)^b.$$
+\end{itemize}
+Finally we define
+$$\lceil \mathcal M \rceil = \alpha_5(m,\lceil + \rceil,\lceil \times \rceil, \lceil   < \rceil , \lceil S \rceil).$$
+Let $\mathcal M$ be an $\LL_{ar}$-structure with $m$ elements; let us momentarily enrich the language to $\LL_{ar}^*$, adding symbols for $1,2,\dots,m-1$. We will show by induction on $\varphi$ that the set $\# \op{Thm}(\mathcal M) = \{ \# \varphi ; \text{with $\varphi$ a sentence and } \mathcal M \models \varphi \}$ is primitive recursive.
+\begin{itemize}
+    \item If $\varphi$ is atomic, when interpreted in $\mathcal M$ it is equivalent to a formula of one of the following forms:
+          \begin{itemize}
+              \item $a+b = c$.
+              \item $a \times b = c$.
+              \item $S(a) = b$.
+              \item $a<b$.
+          \end{itemize}
+          For some $a,b,c \in M = \{0,1,\dots,m-1 \}$. \\
+          To check if $\mathcal M \models \varphi$, in the first case we must check if $\pi (\alpha_2 (a,b))^c \mid \lceil + \rceil$. The other cases are similar. Moreover, all these operations are primitive recursive.
+    \item The Boolean case is direct since primitive recursive functions are compatible with Boolean connectives.
+    \item If $\varphi = \exists x \psi(x)$, with $\psi(x)$ a formula, we note that since
+          $$ \mathcal M \models \exists x \varphi (x) \iff \mathcal M \models \bigvee_{k=0}^{m-1} \varphi(i),$$
+          the result follows by induction hypothesis, since we can check in a primitive recursive way if $\mathcal M \models \varphi (k)$ for each $k = 0,1\dots,m-1$.
+\end{itemize}
+\textit{Note:} we can return to considering only sentences in the language $\LL_{ar}$ by adding to the elements of $ \op{Thm}(\mathcal M)$ the additional restriction of having no occurrence of $1,2,\dots,m-1$. The last thing we need for the proofs is to observe that since there are only finitely many $\LL_{ar}$-structures with $m$ elements, the set of their codes is primitive recursive; let us denote it $\mathcal F_m$.\\
+Proof of b): We have
+\begin{align*} n \in  \Phi_m \iff n= \# \varphi \text{ with $\varphi$ a sentence, } & \exists z , z =  \lceil \mathcal M \rceil \text{ with  $\lceil \mathcal M \rceil \in \mathcal F_m/$ }
+               \text{ and also } n \in \# \op{Thm}(\mathcal M)\} .
+\end{align*}
+As we have shown, all these sets are primitive recursive, so $\Phi_m$ is as well.\\
+Proof of c): Let $\mathcal F$ be the set of codes of all finite $\LL_{ar}$-structures. We have already given a recursive enumeration of this set. Then note that
+\begin{align*}
+    \Phi_{fin} =  \{ (n,z) ,  n= \# \varphi \text{ with $\varphi$ a sentence},    z=  \lceil \mathcal M \rceil \text{ for } \mathcal \lceil \mathcal M \rceil \in \mathcal F  , n \in \# \op{Thm}(\mathcal M) \}.
+\end{align*}
+Similar to b), we conclude that $\Phi_{fin}$ is recursively enumerable. \newpage
+\textbf{Problem 3. } Let $\LL = \{ P , c \}$ where $P$ is a unary predicate and $c$ a constant symbol.
+\begin{enumerate}
+    \item Determine all countable $\LL$-structures up to isomorphism.
+    \item Deduce that two $\LL$-structures $\mathcal M$ and $\mathcal N$ are elementarily equivalent when the following two conditions are satisfied
+          \begin{itemize}
+              \item $\mathcal M \models Pc$ if and only if $ \mathcal N \models Pc$.
+              \item $\mathcal M \models \exists^{\geq k}xQx$ if and only if $\mathcal N \models \exists^{\geq k}xQx $ for any $k \in \mathbb{N}$ and $Q \in \{ P , \neg P \}$.
+          \end{itemize}
+    \item Prove that an $\LL$-sentence $\varphi$ is universally valid if and only if $\mathcal M \models \varphi$ for any finite $\LL$-structure. Deduce that the empty theory in $\mathcal L$ is decidable.
+\end{enumerate}
+\textbf{Solution: }\\In a countable $\LL$-structure $\mathcal M$, the only things we can define are $c^{\mathcal M}$ and $P^{\mathcal M}$. In other words, the only way to distinguish elements of $\mathcal M$ is by checking whether it is $c$ or whether $P$ holds for that element. Whether $\mathcal M \models Pc$ is also key. We will show then that the isomorphism class of $\mathcal M$ depends only on the satisfiability of $Pc$ and on the size of $P^{\mathcal M}$. \\
+\textbf{Lemma: }Let $\mathcal M = \{m_0,m_1,\dots \}$ and $\mathcal N = \{ n_0,n_1,\dots \}$, be countable $\LL$-structures such that
+\begin{itemize}
+    \item $\mathcal M \models Pc$ if and only if $ \mathcal N \models Pc$.
+    \item $\mathcal M \models \exists^{\geq k}xQx$ if and only if $\mathcal N \models \exists^{\geq k}xQx $ for any $k \in \mathbb{N}$ and $Q \in \{ P , \neg P \}$.
+\end{itemize}
+Then $\mathcal M \cong \mathcal N$.\\
+\textbf{Proof: } We will exhibit the isomorphism. Define $\sigma: M \to N$ as follows: first, $\sigma(c^{\mathcal M}) = c^{\mathcal N}$. Since $\mathcal M$ and $\mathcal N$ are countable, we can find $\alpha, \beta \leq \omega$ such that
+$$P^{\mathcal M} = \{ m_{i_k} \}_{k \in \alpha \leq \omega} \quad , \quad
+    \mathcal M \setminus P^{\mathcal M} = \{ \hat{m}_{i_k} \}_{k \in \beta \leq \omega}. $$
+By the second hypothesis, we have $|P^{\mathcal N}| = \alpha$ and $|\mathcal N \setminus P^{\mathcal N}| = \beta$. Then we can also enumerate
+$$P^{\mathcal N} = \{ n_{i_k} \}_{k \in \alpha \leq \omega} \quad , \quad
+    \mathcal N \setminus P^{\mathcal N} = \{ \hat{n}_{i_k} \}_{k \in \beta \leq \omega}. $$
+Then take $m_{i_k} \mapsto n_{i_k}$ and $\hat{m}_{i_j} \mapsto \hat{n}_{i_j}$ for all $k \in \alpha$ and all $j \in \beta$. By construction, $\sigma$ is a morphism of $\LL$-structures, since it preserves $P$ and $c$. Moreover, we have constructed it to be bijective, which allows us to see that $\mathcal M \cong \mathcal N$. This completes the proof of 1). \pagebreak \\
+To prove 2) note that every $\LL$-sentence $\varphi$ is a consequence of a formula of the type
+\begin{equation}\label{eqn:3}
+    Pc \land  \exists^{\geq k_1}xPx \land  \exists^{\geq k_2}y \neg Py \tag{*}
+\end{equation}
+or of the type
+\begin{equation}\label{eqn:4}
+    \neg  Pc \land  \exists^{\geq k_1}xPx \land  \exists^{\geq k_2}y \neg Py \tag{**}
+\end{equation}
+for some $k_1,k_2 \in \mathbb{N}$. To see this, we can assume the opposite. If $\varphi$ is not a consequence of any formula of this type, we can find countable $\LL$-structures $\mathcal M_1$, $\mathcal M_2$ that satisfy the hypotheses of the previous lemma, but also satisfy $\mathcal M_1 \models \varphi$ and $\mathcal M_2  \models  \neg \varphi$. By the same lemma however we would have $M_1 \equiv M_2$, which is absurd. We can assume then without loss of generality that if $\varphi$ is a sentence, then it has one of the forms \eqref{eqn:3} or \eqref{eqn:4}; thanks to the hypotheses we can then conclude that $\mathcal M \models \varphi$ if and only if $\mathcal N \models \varphi$.\\
+The $\Rightarrow$ direction of 3) is evident. Let us prove the converse direction: suppose that for all finite $\mathcal M$, $\mathcal M \models \varphi$. Let $\mathcal M'$ be an infinite $\LL$-structure. We must show that $\mathcal M' \models  \varphi$. Suppose without loss of generality that $\mathcal M' \models Pc$ (the opposite case would be handled analogously). We consider two cases:
+\begin{itemize}
+    \item If $P^{\mathcal M'}$ is finite, we can find some finite $\mathcal M$ such that $|P^{\mathcal M'}| = |P^{\mathcal M}|$ and also $\mathcal M \models Pc$. Then by 2) we would have $\mathcal M' \equiv \mathcal M$ and by hypothesis we conclude that $\mathcal M' \models \varphi$.
+    \item If $P^{\mathcal M'}$ is infinite, consider the following theory
+          $$T = \{ \varphi , Pc \} \cup \{ \bigwedge _{i\neq j} x_i \neq x_j  \}_{i,j< \omega}
+              \cup \{Px_i \}_{i <  \omega}.$$
+\end{itemize}
+We know that $T$ is finitely consistent, since for all $n$ we can define a finite $L$-structure $\mathcal M_n$ where $|P^{\mathcal M_n}| = n$, $M_n \models Pc$ and $M_n \models \varphi$ (thanks to its finiteness). By the compactness theorem, there exists $\mathcal N \models T$. This implies that $P^{\mathcal N}$ is infinite, and since $N \models Pc$, by 2) we have $\mathcal M' \equiv \mathcal N$, and therefore $\mathcal M \models \varphi$. Finally, to see that in $\LL$ the empty theory is decidable, note that $\op{Thm}(\varnothing)= \{ \varphi  , \vdash_\LL \varphi \} $. We know from the theory of the chapter that the set of universal truths is recursively enumerable. Finally, $\op{Thm}(\varnothing)^C$ consists of those sentences $\varphi$ whose negation is in $\Phi_{fin}$, and we can adapt the proof of part 2) of Problem 3 to see that $\Phi_{fin}$ is recursively enumerable. The conclusion follows from the complement theorem.
+\newpage
+
+
+
+
+\textbf{Problem 4.} The objective of this exercise is to prove that there exists a total recursive function that is not provably total $\Sigma_1$.
+\begin{enumerate}
+    \item Prove that there exists a partial recursive function $h \in \mathcal F_2^*$ with the following properties:
+          \begin{enumerate}[a)]
+              \item If $a = \# \varphi$ for a $\Sigma_1$-formula $\varphi(v_0,v_1)$ and if $n \in \mathbb N$ is such that there exists $m \in \mathbb{N}$ \linebreak with $\sf{PA} \vdash \varphi(\underline{n},\underline{m})$, then $\sf{PA} \vdash \varphi (\underline{n} , \underline{h(a,n)})$.
+              \item If $a = \# \varphi$ for a $\Sigma_1$-formula $\varphi(v_0,v_1)$ and if $n \in \mathbb{N}$ is such that there is no $m \in \mathbb{N}$ \linebreak with $\sf{PA} \vdash \varphi(\underline{n},\underline{m})$, then $(a,n) \not\in \op{dom}(h)$.
+              \item In any other case, $h(a,n)=0$.
+          \end{enumerate}
+    \item Choose $h$ as above, and define $g \in \mathcal F^3$ as follows
+          \begin{itemize}
+              \item If $a = \# \varphi $ for a $\Sigma_1$-formula $\varphi(v_0,v_1)$ and if $b = \#\#d$ for a formal proof $d$ of $\forall v_0 \exists ! v_1 \varphi(v_0,v_1)$ in $\sf{PA}$, then $g(a,b,n)= h(a,n)$.
+              \item In any other case, $g(a,b,n)=0$.
+          \end{itemize}
+          Prove that $g$ is total recursive, and that it is \textit{universally provably total } $\Sigma_1$ in the following sense: a function $f \in \mathcal F_1$ is provably total $\Sigma_1$ if and only if there exist $a,b \in \mathbb{N}$ such that $ f = \lambda n . g(a,b,n)$.
+    \item Conclude.
+\end{enumerate}
+\textbf{Solution: } Throughout the proof, we will use the following fact: if $\phi$ is a $\Sigma_1$-sentence, then $\sf{PA_0} \vdash \phi$ if and only if $\sf{PA} \vdash \phi$. This follows from a theorem in the notes that states that every $\Sigma_1$-sentence valid in $\mathbb N_{st}$ is indeed a theorem of $\sf{PA_0}$. First we prove 1). Given $a= \# \varphi$ and $n \in \mathbb N$ satisfying the hypotheses of 1a), we only need to show that $h(a,n)$ is recursive in this case. We can describe $h(a,n)$ as the first number $m$ such that $\sf{PA}\vdash \varphi(\underline{n},\underline{m})$. We can in fact represent the function $h$ as follows
+$$\sf{PA} \vdash \forall y \left ( ( \varphi(\underline{n},y) \land (\forall (z < y) \neg \varphi(\underline{n},z) ) \leftrightarrow y = \underline{h(a,n)} \right) $$
+Since the formula on the left side of the $\leftrightarrow$ is $\Sigma_1$, we deduce that $h$ is partial recursive. To prove 2), it is clear that $g$ is a total function. Consider now the set $C \subseteq \mathbb N^2$ of ordered pairs satisfying that $a =  \#\varphi$, for a $\Sigma_1$-formula $\varphi(v_0,v_1)$ and $b = \#\#d$ for a formal proof $d$ of $\forall v_0 \exists ! v_1 \varphi(v_0,v_1)$ in $\sf{PA}$. The results studied in the section show that $C$ is recursive. This implies that we can define $g$ recursively as
+$$g(a,b,n) = \begin{cases}
+        h(a,n)  \quad & \text{ if } (a,b) \in C     \\
+        0  \quad      & \text{ if } (a,b) \not\in C
+    \end{cases}$$
+Next, it is clear that for any $a,b$, the functions $\lambda n . g(a,b,n)$ are $\Sigma_1$-provably total, since in the non-trivial case where $(a,b) \in C$, the formula that describes $g$ is precisely the one whose code is $a$. Now, if $f$ is $\Sigma_1$-provably total, choose $\chi_f (x,y)$ a $\Sigma_1$-formula that represents $f$ and such that $\sf{PA} \vdash \forall x \exists ! y \chi_f(x,y)$. Let $n \in \mathbb N$, let $m = f(n)$. Then take $a = \# \chi_f(\underline{n},\underline{m})$ and $b$ as the code of the formal proof of $\forall x \exists ! y \chi_f(x,y)$ in $\sf{PA}$. Note then that by definition of $g(a,b,n)$, $m$ is the first natural number satisfying $\sf{PA} \vdash \chi_f(\underline{n},\underline{m})$. Since $\chi_f$ is $\Sigma_1$, this is equivalent to $\sf{PA_0} \vdash \chi_f(\underline{n},\underline{m})$, and since $\chi_f$ represents $f$, this is in turn equivalent to
+$\sf{PA_0} \vdash \underline{f(n)} = \underline{m}$. We conclude then that for all $n$, $\sf{PA_0} \vdash \underline{g(a,b,n)} = \underline{f(n)}$, which implies that $g(a,b,n) = f(n)$ since $\mathbb N \models \sf{PA_0}.$  This proves that $f$ is $\Sigma_1$-provably total if and only if there exist $a,b$ such that $f(n) = \lambda n. g(a,b,n)$. \\
+Finally, to conclude the existence of a total recursive function that is not $\Sigma_1$-provably total, consider by a diagonalization argument the function $ d(n) = \lambda n . g(\beta_1^2 (n) , \beta_2^2(n) , n)+ 1$, which is clearly total recursive\footnote{Here we take $\beta_1^2$ and $\beta_2^2$ as the components of some primitive recursive bijection between $\mathbb N$ and $\mathbb N^2$.}. If this function were $\Sigma_1$-provably total, there would exist $a,b$ such that $d(n) = g(a,b,n)$. Take in particular $n_0 = \beta^{-1} (a,b)$ and observe that
+$$d(n_0) = g(a,b,n_0) + 1 = g(a,b,n_0)$$
+which is impossible.
+\newpage
+\textbf{Problem 5. End extensions in Peano arithmetic.} \\ The objective of this exercise is to prove the following result:\\
+Let $\mathcal M$ be a countable model of $\sf{PA}$. Then there exists a proper elementary extension $\mathcal M \preccurlyeq \mathcal N$ where $\mathcal N$ is an end extension of $\mathcal M$, that is, for all $m \in M$ and all $n \in N \setminus M$, we have $\mathcal N \models m < n$.
+\begin{enumerate}
+    \item Let $\mathcal M \models \sf{PA}$. Prove that the \textit{pigeonhole principle} holds in $\mathcal M$:  for every $\LL_{ar}(M)$-formula $\theta(v,z)$ and every $a \in M$, we have
+          $$\mathcal M \models p(a) := \left[ \forall x (\exists z > x)(\exists v <a )\theta (v,z) \right] \rightarrow (\exists v < a)\forall x (\exists z > x)\theta (v,z)$$
+    \item Let $\mathcal M \models \sf{PA}$. Let $c$ be a new constant symbol, and let $\LL = \LL_{ar}(M) \cup \{ c\}$. Consider now the $\LL$-theory $T \coloneqq D(\mathcal M) \cup \{c>m , m \in M\}$, where $D(\mathcal M)$ is the complete diagram of $\mathcal M$.
+          \begin{itemize}
+              \item Verify that $T$ is consistent.
+              \item Let $a \in M$ and let $\theta(v,z)$ be an $\LL$-formula such that $T \vdash \forall v(\theta(v,c) \rightarrow v<a)$ and such that $T \cup \{ \exists v \theta(v,c)\}$ is consistent. Prove that there exists $m \in M$ with $m<a$ and such that $\mathcal M \models \forall x (\exists z > x) \theta (m,z)$.
+              \item Let $a \in M$ be a nonstandard element. Consider the set of formulas
+                    $$\pi_a(v) \coloneqq \{ v < a\} \cup \{ v\neq m, m \in M \}.$$
+                    Prove that $\pi_a$ is a non-isolated partial $1$-type in $T$.
+          \end{itemize}
+    \item Conclude.
+\end{enumerate}
+\newpage
+\textbf{Solution: } 1).
+We can proceed by induction in $\mathcal M$. If $a=0$, there is nothing to prove. Assume as hypothesis that $\MM \models p(a)$. Assume that
+$$\MM \models \left[ \forall x (\exists z > x)(\exists v <a+1 )\theta (v,z) \right] $$
+In view of the following equivalence
+\begin{align*}
+    \MM \models \forall x (\exists z > x)(\exists v <a+1 )\theta (v,z) & \leftrightarrow \forall x (\exists z > x)(\exists v <a )   \ \theta (v,z) \lor \theta(z+1)                      \\
+                                                                       & \leftrightarrow  \forall  (\exists v <a )  x (\exists z > x)  \ \theta (v,z) \lor \theta(z+1) \text{   by I.H} \\
+                                                                       & \leftrightarrow (\exists v <a+1 ) \forall x (\exists z > x)\theta (v,z)
+\end{align*}
+The proof is complete.\\
+2) If $T_0$ is a finite part of $D(\MM) \cup \{ c > m \}_{m \in M}$, then there exists $m \in M$ such that \linebreak $T_0 \subseteq D(\MM) \cup \{ c > m \}$. We can take $\MM$ as a model of $T_0$, interpreting $c^{\MM} = S(m)$ and all other symbols as their respective elements of $\MM$. Since $T_0$ is arbitrary, we conclude by the compactness theorem that $T$ is consistent. \\
+Let $a \in M$ and let $\theta(v,z)$ be an $\LL$-formula such that $T \vdash \forall v(\theta(v,c) \rightarrow v<a)$ and such that $T \cup \{ \exists v \theta(v,c)\}$ is consistent. We want to prove that
+$$\MM \models (\exists m < a) \forall x (\exists z > x) \theta (m,z).$$
+For this, by the pigeonhole principle it suffices to prove the same proposition with the $\forall x$ swapped with $(\exists m < a)$. Suppose by contradiction that this is not the case. That is
+\begin{equation}\label{eqn:5}
+    \MM \models \exists x (\forall m < a) ( \forall z > x) \neg \theta (m,z) \tag{*}.\end{equation}
+Let now $\NN \models T \cup \{ \exists v \theta(v,c) \} $. Since $\MM \preccurlyeq \NN_{\upharpoonright \LL}$,
+$$\NN \models \exists x (\forall m < a) ( \forall z > x) \neg \theta (m,z).$$
+We then have $x \in \NN$ a witness for this last formula. Note that then $\NN \models x \geq c$, since we know by our hypotheses that
+$$\NN \models  \exists v< a \ \theta(v,c) $$
+that is, in $\NN$, for any $x<c$ we can find $m<a$ such that $\NN \models \theta(m,c)$. Since $\NN \models x \geq c$, a witness of formula \eqref{eqn:5} cannot belong to $M$. This contradicts our initial assumption, which concludes the proof.\\
+To see that $\pi_a(v)$ is a partial $1$-type, consider a finite part $\pi(v) \subset \{ v < a \} \cup \{ v \neq m_i\}_{i=1}^{k}$. Let $\NN \models T$, then $\NN$ realizes $\pi(v)$, since $a$ being nonstandard, there are infinitely many elements in $\NN$ less than $a$, and one of them must be different from the $m_i$. Suppose now by contradiction that $\pi_a(v)$ is isolated; in that case there exists an $\LL-$formula $\varphi(v)$, or more precisely, an $\LL_{ar}(\MM)-$formula $\theta(v,z)$ such that
+\begin{align*}
+    T & \vdash (\theta(v,c) \rightarrow v< a)                                \\
+    T & \vdash (\theta(v,c) \rightarrow v \neq m) \text{ for each } m \in M
+\end{align*}
+The first condition, together with the previous item, allows us to conclude that in $\MM$, there exists $m<a$ such that
+$$\MM \models \forall x \exists z > x  \ \theta(m,z).$$
+Let us see that $T \cup \{ \theta(m,c) \} $ is consistent. Any finite part of this theory has the form \linebreak $T_0 \subseteq D(\MM) \cup \{c>m_0 \} \cup \{\theta(m,c) \}$, for some $m_0 \in M$. We can then take $\MM \models T_0$, interpreting $c$ as the witness of $\exists z > m_0 \ \theta(m,z)$; this proves consistency. Let $\NN \models T \cup \{ \theta(m,c) \}$; in particular we have $\NN \models \theta (m,c) \rightarrow m \neq m$, which is absurd. We conclude that for all nonstandard $a \in M$, $\pi_a(v)$ is a non-isolated partial 1-type. \\
+3) Since $\MM$ is countable, $\LL$ is also countable, and we can apply the omitting types theorem to find an $\LL$-structure $\MM'$ that omits $\pi_a(v)$ for all nonstandard $a \in M$. That is, for all $m' \in M'$ and for all nonstandard $a \in M$, $\MM' \models m' \geq a$ or $m' \in M$. In particular, this implies that if $m' \in M' \setminus M$, for any $m \in M$ we have $\MM' \models m' > m$. $\MM'$ is an elementary end extension of $\MM$.
+\newpage
+\textbf{Problem 6. Tennenbaum's Theorem}\\
+Let $\MM$ be a nonstandard model of $\sf{PA}$ and let $\eta(x,y)$ be an $\LL_{ar}$-formula. Denote $S_{\eta}(\MM)$ as the family of $A\subseteq \mathbb N$ for which there exists $a \in M$ such that
+$$A= \{ n \in \mathbb N , \MM \models \eta(\underline{n},a)\}.$$
+Let $S(\MM)$ be the union of $S_{\eta}(\MM)$, where $\eta$ ranges over all formulas with two free variables.
+\begin{enumerate}
+    \item Let $\eta_0(x,y)$ be an $\LL_{ar}$-formula such that for any pair of finite disjoint sets \linebreak $A,B \subseteq \mathbb N$, the sentence
+          $$\exists x \left( \bigwedge_{i \in A} \eta_0(\underline{i},x) \land \bigwedge_{j \in B} \neg \eta_0 ( \underline{j},x) \right)$$
+          is provable in $\sf{PA}$.  Prove that $S_{\eta_0}(\MM) = S(\MM)$.
+    \item Prove that there exists a $\Sigma_1$-formula $\eta_0$ with two free variables such that for all $n \in \mathbb N$ the sentence
+          $$\eta_0(\underline{n},x) \leftrightarrow \exists y (\underline{\pi(n)} \cdot y = x)$$
+          is provable in $\sf{PA}$. Prove that $S_{\eta_0}(\MM) = S(\MM)$. \footnote{$\pi(n)$ denotes the $(n+1)$-th prime number.}
+    \item Let $A,B \subseteq \mathbb N$ be two disjoint recursively enumerable sets.
+          \begin{enumerate}[a)]
+              \item The set of $\Delta_0$-formulas is defined as the smallest set of $\LL_{ar}$-formulas that contains the atomic formulas and is stable under $\land, \neg$ and under bounded quantification \linebreak  $(\exists x < t)$ , $(\forall x < t)$,  with $t$ a term not depending on the variable $x$. Observe that there are \linebreak $\Delta_0$-formulas $\alpha(x,y)$ and $\beta(x,y)$ such that in $\mathbb N_{st}$, $A$ is defined by $\exists y \alpha(x,y)$ and $B$ by $\exists \beta (x,y)$.
+              \item Prove that for all $k \in \mathbb N$,
+                    $$\MM \models (\forall x,y,z < \underline{k} ) \neg (\alpha(x,y) \land \beta(x,z)),$$
+                    and that there exists nonstandard $\zeta \in M$ such that
+                    $$\MM \models (\forall x,y,z < \zeta ) \neg (\alpha(x,y) \land \beta(x,z)).$$
+              \item Consider $A,B$ infinite and recursively inseparable ($A\cap B = \varnothing$ and there is no recursive $C\subseteq \mathbb N$ such that $A\subseteq C$ and $C \cap B = \varnothing$). Deduce that $S(\MM)$ contains a non-recursive set.
+          \end{enumerate}
+    \item If $M$ is countable and $h:\mathbb N \to M$ is a bijection, we can transport the $\LL_{ar}$-structure $\MM$ via $h^{-1}$ to $\mathbb N$, defining $x +' y = h^{-1}(h(x)+h(y))$ and the other operations analogously.\\
+          Suppose $\MM$ is \textit{recursive,} that is, there exists a bijection $h$ as described, such that $+'$ and $\cdot'$ are recursive functions.
+          \begin{enumerate}
+              \item For any fixed $c \in \mathbb N$, prove that the function $f \in \mathcal{F}^2$ given by
+                    $$
+                        f(n,m) = \begin{cases}
+                            1, & \text{ if} \underbrace{m+'\dots +' m}_{\pi(n)-\text{times}} = c \\
+                            0, & \text{in any other case}
+                        \end{cases}
+                    $$
+                    is recursive.
+              \item Deduce from this that $S(\MM)$ only contains recursive sets.
+          \end{enumerate}
+    \item Deduce Tennenbaum's theorem: \textit{There are no nonstandard models of $\sf{PA}$ that are recursive}.
+\end{enumerate}
+\textbf{Solution: } 1) It is only necessary to prove $S(\MM) \subseteq S_{\eta_0}(\MM)$. Let $a \in M$, $\eta(x,y)$ be arbitrary and let $A = \{n \in \mathbb N , \MM \models \eta(\underline{n},a)   \} $. We must prove that there exists $b \in M$ such that $$A = \{n \in \mathbb N , \MM \models \eta_0(\underline{n},b) \}.$$
+Let $n \in \mathbb N$. Take
+\begin{align*}
+    A_n & = \{  k \leq n , \MM \models \eta(\underline{k},a) \}      \\
+    B_n & = \{  k \leq n , \MM \models \neg \eta(\underline{k},a) \}
+\end{align*}
+We know by hypothesis that
+$$ \sf{PA} \vdash \exists x \left( \bigwedge_{i \in A_n} \eta_0(\underline{i},x) \land \bigwedge_{j \in B_n} \neg \eta_0 ( \underline{j},x) \right).$$
+If we define the formula $\phi(x) = (\forall y  \leq x) \eta_0(y,x) \leftrightarrow \eta(y,x)$, this proves in particular that $\MM \models \phi(\underline{n})$ for any $n \in \mathbb N$. By the \textit{overspill} lemma, there exists $b \in M$ (nonstandard) such that $\MM \models \phi(b)$. This implies that for all natural $n$,
+$$\sf{PA} \vdash \eta(\underline{n},a) \iff \eta_0(\underline{n},b)$$
+which concludes the proof. \\
+2) Note that the formula $\exists y ( \underline{\pi(n)}y = x )$ expresses that ``$x$ is divisible by the $n$-th prime number". We need to first describe the $n-$th prime. Consider the function $f:\mathbb N \to \mathbb N$ that sends $n$ to the number of primes strictly less than $n$ (the $\pi$ function from number theory). Note that since $f(0) = 0$ and $f(n+1) = f(n) + \mathds{1}_{\text{prime}}$, $f$ is a recursive function. Therefore, we can assert that $f(n) = k $ if and only if there exist $a,b \in \mathbb N$ such that $\beta(a,b,0) = 0$, $\beta(a,b,n)=k$, and for each $0< i < n$, $\beta(a,b,i+1) = \beta(a,b,i) + \mathds{1}_{\text{prime}}$, where $\beta$ is Gödel's beta function. In summary, we can represent $f$ with a $\Sigma_1$-formula, and therefore we can also represent the following property
+$$\phi(n,x) := f(x+1) = n \land f(x) + 1 = n$$
+Note that $\MM \models \phi(\underline{n},x)$ if and only if $x$ is the $n$-th prime number \footnote{Strictly, $\pi(n)$ represents the $(n+1)$-th prime, but for convenience we have renumbered.}. We can then define the formula we need as
+$$\eta_0(n,x) = \exists y \exists z  ( yz = x \land \phi(\underline{n},z)).$$
+To see in this case that $S(\MM) = S_{\eta_0}(\MM)$, take $A,B$ finite and disjoint, and note that the formula
+$$\exists x \left( \bigwedge_{i \in A} \eta_0(\underline{i},x) \land \bigwedge_{j \in B} \neg \eta_0 ( \underline{j},x) \right)$$
+has as witness $x = \prod_{i \in A} \pi(i)$, which belongs to every model of $\sf{PA}$. We see then that $\eta_0$ satisfies all hypotheses of 1).\\
+3a) Since $A$ is recursively enumerable, there exists a $\Sigma_1$-formula $\varphi(x)$ that describes it. We can assume without loss of generality that $\varphi$ has the form $\exists x_1,x_2,\dots x_k \tilde{\varphi}(x,x_1,\dots,x_k)$ , with $\tilde{\varphi}$ a $\Delta_0$-formula. This is possible since $\varphi$ is a $\Sigma_1$-formula, and removing the $\exists$ will leave a formula whose only quantifiers are of the type $\forall v < t$. Next, we can replace the block of existentials as follows,
+$$\varphi \sim \exists y \tilde{\varphi}(x,\beta_1^k(x) , \dots , \beta_k^k(x)) =: \exists y \alpha(x,y), $$
+where $\beta_i^k$ are the components of a primitive recursive bijection between $\mathbb N^k$ and $\mathbb N$. This procedure applies equally to $B$. \\
+3b) Suppose by contradiction that for some $k$, there exist $x,y,z < k$ such that
+$$\MM \models \alpha(x,y) \land \beta(x,y),$$
+this directly implies that $x\in A$ and $x \in B$, by item 3a). This is impossible since $A$ and $B$ are disjoint. The existence of the required $\zeta$ follows directly from the \textit{overspill} lemma. \\
+3c) First consider $k \in \mathbb N$. Let $i < k$ be arbitrary and observe that $i \in A$ if and only if there exists $a_i\in M$ such that $\MM \models \alpha(\underline{i}
+    ,a_i)$, which implies by item 1) that there exists $y_i \in M  $ such that $\MM \models \eta_0 (\underline{i},y_i)$, or in other words, $\MM \models \pi(i) | y(i)$. We can repeat this to find $z_0,z_1,\dots,z_k$ satisfying $ i \in B  \Rightarrow \pi(i) | z(i)$. Note first that for all $i$, $y_i \neq z_i$, since if they coincided, we would again have $A\cap B \neq \varnothing$. Take $y = y_0\dots y_k$; then we have shown that for all $k \in \mathbb N$, there exists $y \in M$ such that
+$$\MM \models \exists y (\forall i < k ) ( (i \in A \rightarrow \pi(i)|y) \land (i \in B \rightarrow \pi(i) \nmid y) ).$$
+By the \textit{overspill} lemma, there exists nonstandard $\zeta \in M$ such that
+$$\MM \models \exists  \zeta (\forall i < \zeta ) ( (i \in A \rightarrow \pi(i)| \zeta) \land (i \in B \rightarrow \pi(i) \nmid  \zeta) ).$$
+That is, there exists $\zeta \in M$ whose prime divisors are indexed by some set that contains $A$ and is disjoint from $B$. Let then
+\begin{align*}
+    C & := \{ n \in \mathbb N , \MM \models \underline{\pi(n)} | \zeta \}                                 \\
+      & = \{ n \in \mathbb N , \MM \models \eta_0(\underline{n},  \zeta) \} \in S_{\eta_0}(\MM) = S(\MM).
+\end{align*}
+Since $A \subseteq C$ and $C\cap B = \varnothing$, by the inseparability hypothesis, we conclude that $C \in S(\MM)$ is not recursive. \pagebreak \\
+4a) Assuming that $+'$ is recursive, we can define the summation operation $g(n,m) = \underbrace{m +' \dots +' m }_{n-\text{times}}$ recursively as
+\begin{align*}
+    g(n,0)   & = 0           \\
+    g(n,m+1) & = g(n,m) +' m \\
+\end{align*}
+It is then easy to describe the function $f$ with recursive conditions. Observe that
+$$f(n,m) = \begin{cases}
+        1 & \text{ if } g(\pi(n),m) = c \\
+        0 & \text{ if not.}
+    \end{cases}$$
+Since $\pi(n)$ is primitive recursive, this proves what we wanted.\\
+4b) Let $A \in S(\MM)$. We know from what we have been proving that there exists $a \in M$ such that the elements of $A$ are the indices of the prime divisors of $a$ (indexing with the usual order of $\mathbb N$). In other words, $n \in A$ if and only if there exists $y \in M$ such that $\MM \models \underbrace{y + \dots + y }_{\pi(n)-\text{times}} = a$. Let $x = h^{-1}(y)$; we can translate this condition to $\mathbb N$ via $h$. We are looking then for $x \in \mathbb N$ such that $\MM \models \underbrace{h(x) + \dots + h(x) }_{\pi(n)-\text{times}} = a$. Applying $h^{-1}$, we can see then that $n \in A$ if and only if there exists $x \in \mathbb N$ such that
+$$\mathbb N \models \underbrace{x +' \dots +' x}_{\pi(n)-\text{times}} = h^{-1}(a)$$
+and finally, taking $h^{-1}$ as the $c$ from the previous item, we see that $a \in A \iff \mathbb N \models \exists x f(n,x) = 1$. Finding a recursive way to determine if such an $x$ exists or not will therefore be equivalent to proving that $A$ is recursive. \\
+We know that the division algorithm is valid in $\sf{PA}$, therefore it is equally valid in $\MM$. Since $\pi(n)$ is standard, there are finitely many elements in $\MM$ less than $\pi(n)$, and all are standard (of the form $1+\dots + 1$). Dividing $a$ by $\pi(n)$, we know with certainty that there exists $q \in M$ (unique) such that the disjunction of the following formulas is true in $\MM$.
+\begin{align*}
+    a & = \underbrace{q+\dots + q}_{\pi(n)-\text{times}}                                                        \\
+    a & = \underbrace{q+\dots + q}_{\pi(n)-\text{times}} + 1                                                    \\
+      & \vdots                                                                                                  \\
+    a & = \underbrace{q+\dots + q}_{\pi(n)-\text{times}} + \underbrace{1 + \dots + 1}_{(\pi(n)-1)-\text{times}} \\
+\end{align*}
+Note that this is an exclusive disjunction. Translating via $h^{-1}$, denoting $\tilde{q} = h^{-1}(q)$ and $\tilde{1} = h^{-1}(1)$, we know that in $\mathbb N$ there exists $\tilde{q}$ such that only one of the following equalities holds.
+\begin{align*}
+    h^{-1}(a) & = \underbrace{\tilde{q}+'\dots +' \tilde{q}}_{\pi(n)-\text{times}}                                                                           \\
+    h^{-1}(a) & = \underbrace{\tilde{q}+'\dots +' \tilde{q}}_{\pi(n)-\text{times}} +' \tilde{1}                                                              \\
+              & \vdots                                                                                                                                       \\
+    h^{-1}(a) & = \underbrace{\tilde{q}+'\dots +' \tilde{q}}_{\pi(n)-\text{times}} +' \underbrace{\tilde{1} +' \dots +' \tilde{1}}_{(\pi(n)-1)-\text{times}} \\
+\end{align*}
+Since we are assuming that $+'$ is recursive, the procedure of checking the truth of each of these (finitely many) equalities is recursive. Finally, noting that the first of these is equivalent to $f(n,q)=1$, we conclude that to recursively determine if $\exists x f(n,x)$, it suffices to check which of the equalities is true. If the first one is, then $n \in A$; otherwise, $n \not\in A$. Since $A$ was taken arbitrarily, we conclude that every element of $S(\MM)$ is recursive. \\
+5) To conclude, simply observe that the conclusion of 4b) contradicts that of 3c). This implies that the hypothesis of 4b) cannot be possible. In other words, the existence of a recursive and nonstandard model of $\sf{PA}$ is not possible.
+Describe a Turing machine that computes the sum $ \lambda xy.x+y$.\\
+\textbf{Solution: } We define a machine $\mathcal{M}$ that has 4 tapes, $B_1,B_2,B_3$ and $B_4$. It receives the \textit{input} on the first two tapes, and outputs the result on $B_3$. The machine works as follows:
+\begin{enumerate}
+    \item Copy the number indicated on $B_1$ to $B_3$, and return the head to the beginning.
+    \item \begin{itemize}
+              \item If the number on $B_2$ is the same as on $B_4$, then proceed to clear tape $B_4$ and finish here.
+              \item If not, then add a $|$ to the first empty space on tape $B_4$, and then repeat this action for tape $B_3$. Next, repeat step 2.
+          \end{itemize}
+\end{enumerate}
+More formally, the machine $\mathcal{M}$ has $5$ states, in addition to $q_i , q_f$ (initial and final). The transition function is given somewhat informally as follows (symbols marked by $\times$ mean it could be either $|$ or $b$):
+\begin{align*}
+    (q_i,\$,\$,\$,\$)       & \mapsto (q_i,\$,\$,\$,\$,+1)                             \\
+    (q_i,|,\times,b,\times) & \mapsto (q_i,|,\times,|,\times,+1)                       \\
+    (q_i,b,\times,b,\times) & \mapsto (q_|,b,\times,b,\times, \text{return to start}) \\
+    (q_|,\$,\$,\$,\$)       & \mapsto (q_2,\$,\$,\$,\$,+1)                             \\
+    (q_2,\times,b,\times,b) & \mapsto \text{END}                                       \\
+    (q_2,\times,|,\times,|) & \mapsto (q_2,\times,|,\times,|,+1)                       \\
+    (q_2,\times,|,\times,b) & \mapsto (q_3,\times,|,\times,|,\text{return to start})  \\
+\end{align*}
+
+\begin{align*}
+    (q_3,\$,\$,\$,\$)            & \mapsto (q_4,\$,\$,\$,\$,+1)                                 \\
+    (q_4,\times,\times,|,\times) & \mapsto (q_4,\times,\times,|,\times,+1)                      \\
+    (q_4,\times,\times,b,\times) & \mapsto (q_5,\times,\times,|,\times,\text{return to start}) \\
+    (q_5,\$,\$,\$,\$)            & \mapsto (q_2,\$,\$,\$,\$,+1)                                 \\
+\end{align*}
+\textbf{Problem 2.} Let $p,q$ be primes. We say that $q$ is \textit{$p$-Mersenne} if for some $n \in \mathbb{N}$,
+$$q=\frac{p^n-1}{p-1}.$$
+Show that the set
+$$\{ n \in \mathbb{N} , \exists p \text{ such that } n \text{ is $p$-Mersenne} \}$$
+is primitive recursive.\\
+\textbf{Solution:}
+Note that if there exists $m$ such that $n = \frac{p^m-1}{p-1}$, then $n=1+p+p^2+\dots + p^{m-1} \geq p$. Furthermore,
+\begin{alignat*}{2}
+                &  & p^m-1  & = n(p-1)      \\
+    \Rightarrow &  & m \leq & p^m \leq np+1
+\end{alignat*}
+We can then say that $n$ is $p$-Mersenne if and only if $n$ is prime and
+$$(\exists p \leq n)(\exists m \leq Np+1) \left( p \text{ is prime } \land n= \sum_{k=0}^{m-1}p^k  \right)$$
+\textbf{Problem 3. } We define the function $\operatorname{fib} \in \mathcal{F}_1$ by
+\begin{align*}
+    \operatorname{fib}(0)   & = 0                                             \\
+    \operatorname{fib}(1)   & =1                                              \\
+    \operatorname{fib}(n+2) & = \operatorname{fib}(n+1)+\operatorname{fib}(n)
+\end{align*}
+Prove that $\operatorname{fib}(n)$ is a recursive function.\\
+\textbf{Solution: }Consider the function $f:\mathbb{N} \to \mathbb{N}^2$, given by
+\begin{align*}
+    f(0)   & = (0,1)                                            \\
+    f(n+1) & = \left( P_2^2f(n) , P_1^2f(n) + P_2^2f(n) \right)
+\end{align*}
+It is clear that $f$ is primitive recursive, and it is also easy to see that $\operatorname{fib}(n) = P_1^2f(n)$.\\
+\textbf{Problem 4. Kalmár's elementary functions:}\\
+$E$ (the set of Kalmár's elementary functions) is defined as the smallest subset of $\mathcal{F}$ satisfying
+\begin{itemize}
+    \item $E$ contains the functions $C_0^0, P_i^n , \mathds{1}_=$ for all $i,n \in \mathbb{N}$.
+    \item if $g \in \mathcal{F}_k \cap E$, and $f_1,f_2,\dots,f_k \in \mathcal{F}_n \cap E$, then $g(f_1,f_2,\dots,f_k) \in E$.
+    \item If $f \in {F}_{n+1} \cap E$, then bounded sums and products are in $E$, that is
+          $$\sum_{i=0}^x f(x_1,\dots,x_n,i) \in E \quad , \quad \prod_{i=0}^x f(x_1,\dots,x_n,i) \in E.$$
+\end{itemize}
+\begin{enumerate}
+    \item Prove that $C_k^n$ is elementary for all $k,n \in \mathbb{N}$.\\
+          \textbf{Solution: } Note that $C_1^0 = \mathds{1}_=(C_0^0 , C_0^0)$, then we can see that
+          $$C_k^0 = \sum_{i=0}^k C_1^0$$
+          and finally we see that $C_k^n(\bar{x}) = P_1^{n+1}(C_k^0,\bar{x}).$
+    \item We say that $A \subseteq N^n$ is \textit{elementary} if $\mathds{1}_A \in E$. Prove that $\{0\}$ is elementary, and that the set of elementary parts of $\mathbb{N}$ is closed under Boolean operations.\\
+          \textbf{Solution: } We can define the recursive subtraction $\lambda x$.$1-x$ within $E$ by means of
+          $$1-x =  \mathds{1}_=(0,x).$$
+          It is clear that $\mathds{1}_{\{0\}}(x) = \mathds{1}_=(x , C_0^0)$ is elementary. Suppose now that $A,B \subseteq \mathbb{N}$ are elementary, then
+          \begin{align*}
+              \mathds{1}_{A\cap B} & = \mathds{1}_A \mathds{1}_B \\
+              \mathds{1}_{A^c}     & = 1-\mathds{1}_A
+          \end{align*}
+    \item Prove that $\exp(x,y)=\lambda xy . x^y$ is elementary.\\
+          \textbf{Solution: }
+          $$x^y = \prod_{i=0}^{y-1}x$$
+          which is recursive by axiom.
+    \item Define $T \in \mathcal{F}_2$ as
+          \begin{align*}
+              T(m,0)   & =m               \\
+              T(m,n+1) & = \exp(2,T(m,n))
+          \end{align*}
+          Define also $T_n = \lambda x. T(x,n)$
+          \begin{enumerate}
+              \item Prove that $T$ is primitive recursive.\\
+                    \textbf{Solution: } $T$ is the primitive recursion between the functions $g(x) = P_1^1(x) =x$ and \newline $h(x,y,z) =\exp(2,z)$.
+              \item Prove that for all $n$, $T_n$ is strictly increasing and that for fixed $m$, $T(m,n)$ is strictly increasing in $n$.\\
+                    \textbf{Solution: }By induction, note that $T_0 = id$ is strictly increasing. Suppose now that $T_n$ is strictly increasing. Let $m_1 < m_2$, then
+                    \begin{align*}
+                        T_{n+1}(m_1) & = 2^{T_n(m_1)}               \\
+                                     & < 2^{T_n(m_2)} \ \text{(IH)} \\
+                                     & = T_{n+1}(m_2)
+                    \end{align*}
+                    which proves what we wanted.\\
+                    Suppose now that $m$ is fixed, and note that for all $n$
+                    $$T_{n+1}(m) = 2^{T_n(m)} > T_n(m)$$
+                    so, for all $k>0$,
+                    $$T_{n}(m) < T_{n+1}(m) < \dots < T_{n+k}(m).$$
+                    This proves that $T$ is strictly increasing in $n$ as well.
+              \item Prove that every elementary function is dominated by some $T_n$.\\
+                    \textbf{Solution: } Note that $T_1(m) =2^m$, and that
+                    \begin{itemize}
+                        \item $C_k^n \leq T_1(m)$, except for finitely many $m$'s. This is clear since we already know that $T_1$ is strictly increasing and the left side is constant.
+                        \item $P_i^n(\bar{x}) \leq 2^{\max{\bar{x}}}$. This is clear.
+                        \item $\sum_{k=0}^{n}x_k \leq n\max_k{x_k} < 2^{\max_k
+                                          {x_k}}$ except for finitely many tuples. This is because in general, $nt < 2^t$ for $t$ sufficiently large.
+                        \item $\prod_{k=0}^{n}x_k \leq (\max_k{x_k})^n < 2^{\max_k{x_k}}$ except for finitely many tuples. This is because, in general, $t^n < 2^t$ for $t$ sufficiently large.
+                    \end{itemize}
+                    Suppose now that $g \in E\cap \mathcal{F}_n$, and that $f_1,\dots,f_n \in E \cap \mathcal{F}_m$. If there exist $n,n_1,\dots, n_m$ such that (except for finitely many tuples $\bar{y} \in \mathbb{N}^n$ and $\bar{x} \in \mathbb{N}^m$)
+                    \begin{align*}
+                        g(\bar{y})   & \leq T_n(\max{\bar{y}})                                 \\
+                        f_i(\bar{x}) & \leq T_{n_i}(\max{\bar{x}}) \ \text{ for } i=1,\dots,n
+                    \end{align*}
+                    Then, except for finitely many tuples, we have
+                    \begin{align*}
+                        g(f_1(\bar{x}),\dots,f_n(\bar{x})) & \leq T_n(\max{\{ f_1(\bar{x}),\dots,f_n(\bar{x})\}} )                                      \\
+                                                           & \leq T_n \left(\max {\{ T_{n_1}(\max{\bar{x}}) , \dots , T_{n_m}(\max{\bar{x}})\}} \right) \\
+                                                           & \leq T_n(T_N(\max{\bar{x}})) , \quad \text{ where } N = \max{\{ n_1 , \dots , n_m\}}       \\
+                        *                                  & \leq T_{N+n+1}(\max{\bar{x}})
+                    \end{align*}
+                    which proves what we wanted. To prove the last inequality, we proceed by induction; note that
+                    $$T_0(T_N(m)) = T_N(m)$$
+                    which confirms the base case. Assuming inequality ($*$) for $n$, we see that
+                    \begin{align*}
+                        T_{n+1}(T_N(m)) & = \exp (2,T_n(T_N(m)))                  \\
+                                        & \leq \exp(2,T_{n+N+1}(m)) \ \text{(IH)} \\
+                                        & = T_{n+N+2}(m)
+                    \end{align*}
+                    We have thus proved that all basic functions are dominated by some $T_n$, as are their sums, products, and compositions. Therefore, every Kalmár elementary function is dominated by some $T_n$.
+              \item Prove that $T$ is not elementary.\\
+                    \textbf{Solution: } Suppose that $T$ is elementary, then $\lambda n. T_n(n)$ is elementary, which implies that there exist $M$ and $N$ such that if $n \geq N$
+                    $$T_n(n) \leq T_M(m)$$
+                    This is impossible for $n > \max \{N,M \}$. Therefore we deduce that $T$ cannot be an elementary function.
+          \end{enumerate}
+\end{enumerate}
+\textbf{Problem 5.}
+\begin{enumerate}
+    \item Let $f \in \mathcal{F}_1$ be an increasing recursive function. Prove that $\op{Im}(f)$ is recursive.\\
+          \textbf{Solution: }Note that
+          $$y \in \op{Im}(f) \iff (\exists x \leq y) (f(x) = y).$$
+          We can assert that $x \leq y$ since $f$ is increasing.
+    \item Prove that every infinite recursive $X \subseteq \mathbb{N}$ is the image of a unary recursive function.\\
+          \textbf{Solution: }Let $X \subseteq \mathbb{N}$ be infinite and recursive. Define $f:\mathbb{N} \to\mathbb{N}$ given by
+          \begin{align*}
+              f(0)   & = \mu m (m \in X)                \\
+              f(n+1) & = \mu m (m \in X \land m > f(n))
+          \end{align*}
+          $f$ is recursive and strictly increasing by definition. Clearly $\op {Im}f = X$.
+    \item Prove that every infinite and recursively enumerable $X$ contains an infinite recursive set.\\
+          \textbf{Solution: }Let $X \subseteq \mathbb{N}$ be infinite and recursively enumerable. Then there exists $f:\mathbb{N} \to \mathbb{N}$ total recursive such that $X= \op{Im}f$. Then define $g:\mathbb{N} \to \mathbb{N}$ given by
+          \begin{align*}
+              g(0)   & = f(0)                           \\
+              g(n+1) & = \mu x (x \in X \land x > f(n))
+          \end{align*}
+          Observe that $g$ is recursive and strictly increasing, so $\op{Im}g$ is recursive (by the previous point). Note also that $\op{Im}g \subseteq \op{Im}f$.
+\end{enumerate}
+\textbf{Problem 6. Construction of a primitive bijection whose inverse is not primitive recursive.}
+\begin{enumerate}
+    \item Prove that the set of bijective recursions on $\mathbb{N}$ forms a group.\\
+          \textbf{Solution: } Let $S = \{ f: \mathbb{N} \to \mathbb{N}, f \text{ is bijective} \}$. It is clear that if $f,g \in $, then $f \circ g \in S$, by axioms of recursion. Moreover, it is also clear that the identity is in $S$, and is the neutral element. Finally, note that if $f \in S$, then
+          $$f^{-1}(y) = \mu x ( f(x) = y)$$
+          which shows that $f^{-1} \in S$.
+    \item Prove that for every Turing machine $\mathcal{M}$ that computes a total function, the graph of the time function $T_\mathcal{M}$ is primitive recursive.\\
+          \textbf{Solution: }  Note that if $\bar{x} \in \mathbb{N}^n$, then
+          $$(\bar{x},t) \in G(T_\mathcal{M}) \iff ((i,t,\bar{x}) \in B^n) \land (\forall z \leq t) ((i,z,\bar{x}) \notin B^n)$$
+          where $G(T_\mathcal{M})$ is the graph of $T_\mathcal{M}$ and $B^n$ is the set of 3-tuples $(i,t,\bar{x})$ where the machine with index $i$ and \textit{input} $\bar{x}$ is in a final state at time $t$, with a valid \textit{output} configuration (i.e., one that represents a number on the output tape).
+    \item Prove that $f \in \mathcal{F}_n$ is primitive recursive if and only if its graph is primitive recursive and $f$ is bounded above by some primitive recursive function.\\
+          \textbf{Solution: } Suppose that $f$ is primitive recursive, then its graph satisfies
+          $$\mathds{1}_{G(f)}(\bar{x},y) = \mathds{1}_=(f(\bar{x},y)$$
+          which makes $G(f)$ primitive recursive. Moreover, we know that there exist $n,k \in \mathbb{N}$ such that, except for finitely many tuples $\bar{x}$,
+          $$f(\bar{x}) \leq \xi_n^k (\max{\bar{x}}),$$
+          where $\xi_n^k$ is the Ackermann function evaluated at $n$ and composed with itself $k$-times. Then we can define $N$ as the maximum value that $f(\bar{x})$ takes on the tuples that do not satisfy the above inequality, and conclude that
+          $$f(\bar{x}) \leq \max \{ N ,\xi_n^k (\max{\bar{x}}) \}.$$
+          Suppose now that $G(f)$ is primitive and that there exists a primitive recursive function $g$ such that for all $\bar{x}$
+          $$f(\bar{x}) \leq g(\bar{x}).$$
+          We can then characterize $f$ in a primitive recursive way as follows:
+          $$f(\bar{x}) = (\mu y \leq f(\bar{x}) ((\bar{x},y) \in G(f)).$$
+    \item Let $g \in \mathcal{F}_1$ be strictly increasing. Prove that the graph of $g$ is primitive recursive if and only if $\op{Im} g$ is primitive recursive.\\
+          \textbf{Solution: } If we first assume that $G(g)$ is primitive recursive, then we can characterize $\op{Im}g$ as
+          $$y \in \op{Im}g \iff (\exists x \leq y)((x,y) \in G(f)).$$
+          If we now assume that the image of $g$ is a primitive recursive set, then
+          $$(x,y) \in G(g) \iff (x,y) \in ({P_1^2}) ^{-1}[\op{Im}y],$$
+          since the property of being primitive recursive is preserved under preimage of a primitive recursive function.
+    \item  Let $f \in \mathcal{F}_1$ be recursive but not primitive recursive, and let $\mathcal{M}$ be a Turing machine that computes $f$.
+          \begin{enumerate}
+              \item Let $g_0 \in  \mathcal{F}_1$ be defined by
+                    $$g_0(x) = \max \{T_\mathcal{M}(y) , y \leq x \} + 2x.$$
+                    Prove that $g_0$ is recursive, but not primitive recursive. Prove also that its graph and image are both primitive recursive. \\
+                    \textbf{Solution: } Note that $g_0$ is strictly increasing and recursive (since $T_\mathcal{M}$ is). Note that (Kleene normal form)
+                    $$f(x) = (\mu y \leq T_\mathcal{M})((i,y,T_\mathcal{M}(\bar{x})x) \in C^p).$$
+                    If $g_0(x)$ were primitive recursive, since by definition $g_0(x) > T_\mathcal{M}$, we would have the same expression for $f(x)$ but with primitive recursive time,
+                    $$f(x) = (\mu y \leq g_0(x))((i,y,T_\mathcal{M}(\bar{x}),\bar{x}) \in C^p).$$
+                    This would imply that $f$ is primitive recursive, a contradiction.
+              \item Let $g_1 \in  \mathcal{F}_1$ be some strictly increasing function such that $\op{Im}g_1 = \mathbb{N} \setminus \op{Im}g_0$. Consider the function $h \in  \mathcal{F}_1$ given by
+                    \begin{align*}
+                        h(2x)   & = g_0(x) \\
+                        h(2x+1) & = g_1(x)
+                    \end{align*}
+                    Prove that $h$ is a recursive bijection that is not primitive recursive. Prove that $h^{-1}$ is primitive recursive.\\
+                    \textbf{Solution: } \\
+                    \textbf{Injectivity: }Let $x,y \in \mathbb{N}$. If $x \not \equiv y \pmod 2$, by definition, it is not possible that $h(x) = h(y)$ since $h$ $\op{Im}g_0 \cap \op{Im}g_1 = $. If $x$ and $y$ have the same parity, and if w.l.o.g $x<y$, we have $h(x) < h(y)$, since both $g_0$ and $g_1$ are strictly increasing. \\
+                    \textbf{Surjectivity:} Note that
+                    $$\op{Im}h = \op{Im}g_0 \cup \op{Im}g_1 = \mathbb{N}.$$
+                    \textbf{Recursivity: }We know that $g_0$ is recursive and that $\op{Im}g_0$ is primitive recursive, so $\op{Im}g_1 = \mathbb{N} \setminus \op{Im}g_0$ is also primitive recursive, which implies, by point 4), that $G(g_1)$ is primitive recursive. Now observe that
+                    $$g_1(x) = \mu y ((x,y) \in G(g_1)),$$
+                    which implies that $g_1$ is recursive. We conclude that $h$ is recursive by definition by cases.\\
+                    \textbf{$h$ is not primitive recursive: }Suppose by contradiction that it is, then by 3), there exists a primitive recursive function $p$ such that for all $x$
+                    \begin{alignat*}{2}
+                                    &  & h(x)   & \leq p(x)                            \\
+                        \Rightarrow &  & h(2x)  & \leq p(2x)  , \text{ in particular } \\
+                        \Rightarrow &  & g_0(x) & \leq p(2x)
+                    \end{alignat*}
+                    That is, $g_0$ is bounded by a primitive recursive function, and since $G(g_0)$ is primitive recursive, we conclude by 3) that $g_0$ is primitive recursive, a contradiction to the previous item.\\
+                    \textbf{$h^{-1}$ is primitive recursive: }We can prove this by describing $h$ explicitly,
+                    $$h^{-1}(y) = \begin{cases}
+                            2((\mu x \leq y)((x,y) \in G(g_0))) \text{ if } x \in \op{Im}g_0   \\
+                            2((\mu x \leq y)((x,y) \in G(g_1)))+1 \text{ if } x \in \op{Im}g_1 \\
+                        \end{cases}$$
+          \end{enumerate}
+\end{enumerate}
+\textbf{Problem 7: Existence of recursively enumerable sets that are recursively inseparable.} \textit{Note: }Recall that $\varphi_i^p$ denotes the $i$-th recursive function of $p$ variables.
+\begin{enumerate}
+    \item Given $k \in \mathbb{N}$, denote by $Z_k$ the set of all $n \in \mathbb{N}$ such that $n \in \op{dom}(\varphi_n^1)$ and $\varphi_n^1(n)=k$. Prove that $Z_k$ is recursively enumerable for all $k$.\\
+          \textbf{Solution: } Note that the function $g(n) = \lambda n . \varphi_n^1(n)$ is partial recursive, so \newline $Z_k = g^{-1}[\{ k\}]$ is recursive. Moreover, since
+          $$Z_k^c = \{ n \in \mathbb{N} , \varphi_n^1(n) \neq k\} = g^{-1}[\{ k\}^c],$$
+          we see that its complement is recursive. We conclude then that $Z_k$ is recursively enumerable.
+    \item Deduce that there exist disjoint recursively enumerable sets $A,B \subseteq \mathbb{N}$ such that there is no recursive $C$ satisfying $A \subseteq C$ and $C \cap B = \varnothing$.\\
+          \textbf{Solution: }Take $A= Z_2$ and $B=Z_1 \cup Z_0$. Suppose that such $C$ exists, then by universal properties, for some index $i$,
+          $$\mathds{1}_C = \varphi_i^1,$$
+          note that this necessarily makes $\varphi_i^1$ total. Now observe that \begin{itemize}
+              \item If $i \in C $, then $\mathds{1}_C(i) = 1  = \varphi_i^1(i)$.
+              \item If $i \not\in C $, then $\mathds{1}_C(i) = 0  = \varphi_i^1(i)$.
+          \end{itemize}
+          In both cases, we would have $i \in B$, which is a contradiction to the definition of $C$.
+    \item Prove that there exists a unary partial recursive function that cannot be extended to a total recursive function.\\
+          \textbf{Solution: } Let $D = \cup_k Z_k = \op{dom}(\lambda x . \varphi_x(x))$. Define the function $g:D \to \mathbb{N}$ given by $g(d) = \varphi_d(d)+1$. Suppose by contradiction that there exists $\tilde{g}:\mathbb{N}\to \mathbb{N}$, total recursive, that extends $g$. Let then $j$ be such that for all $x$,
+          $$\tilde{g}(x) = \varphi_j^1(x).$$
+          We have that, in particular:
+          \begin{itemize}
+              \item If $j \not\in D$, then $\varphi_j^1(j)$ is not defined! This contradicts the fact that $\tilde{g}$ is total.
+              \item  If $j \in D$, then $\tilde{g}(j)= \varphi_j^1(j)$, but since $\tilde{g}$ extends $g$, we also have $ \tilde{g}(j)=g(j) = \varphi_j^1(j)+1$. This is impossible.
+          \end{itemize}
+          We conclude then that $g$ cannot be extended.
+\end{enumerate}
+\textbf{Problem 8.} Prove that there exist primitive recursive functions $s_1,s_2 \in \mathcal{F}_1$ such that if $\varphi_i^2$ is bijective, the two components of its inverse can be expressed as $\varphi_{s_1(i)}^1$ , $\varphi_{s_2(i)}^1$.\\
+\textbf{Solution: } Suppose that $\varphi_i^2(x,y) = n$. We will prove the fact for the first coordinate, while the second coordinate is handled analogously. Let $g_1(i,n)$ be the first coordinate of the inverse of $\varphi_i^1$. We know from a previous exercise that $g_1$ is recursive, so we can choose $j \in \mathbb{N}$ such that
+$$g(i,n) = \varphi_j^2(i,n).$$
+It is important to note that $j$ depends on neither $i$ nor $n$. Applying the \textit{smn} theorem, we see that there exists $s_1^1 \in \mathcal{F}_2$ primitive recursive such that
+$$g(i,n) =  \varphi^1_{s_1^1(j,i)}(n).$$
+Since $j$ does not depend on any other variable, we can simply take $s_1(i) := s_1^1(j,i)$.
+\end{document}
