@@ -1,0 +1,441 @@
+\chapter{La Transformada de Laplace}
+
+En matemática, cuando tenemos un problema difícil de resolver, es usual encontrarnos con métodos de solución que consistan en \textit{transformar} nuestro problema en otro aparentemente distinto, que sí podamos solucionar, y luego \textit{destransformar} la solución de este nuevo problema, para obtener la solución de nuestro problema original. A lo largo del curso, de hecho, hemos aplicado este principio a las ecuaciones diferenciales: hemos visto que resolver una ecuación homogénea es casi lo mismo que factorizar un polinomio, o que resolver un sistema de ecuaciones es equivalente a encontrar valores propios (lo cual en el fondo también es factorizar un polinomio). En este último tema vamos a desarrollar una poderosa herramienta que nos permitirá resolver muchas más ecuaciones diferenciales, en especial, aquellas en donde participen funciones que \textit{no son continuas.} Primero, debemos definir la \textbf{transformada de Laplace}, un importante operador integral.
+
+\begin{definicion}{Transformada de Laplace}{}
+    Sea $f:[0,+ \infty) \to \mathbb{R}$ una función integrable. La transformada de Laplace de $f(t)$ es una nueva función $L\{f(t)\}(s)$ de variable $s$, dada por la siguiente integral impropia
+$$\LL\{f(t)\}(s) = \int_0^{\infty}e^{-st}f(t)dt.$$
+\end{definicion}
+
+\textbf{Nota: }Para algunos valores de $s$, la integral anterior podría no converger. En dado caso, no es posible definir $\LL\{f(t)\}(s)$. También denotaremos la transformada de $f$ por $\LL[f]$ cuando no tengamos ambigüedad.
+
+\begin{ejemplo}
+    Usando la definición, calculamos la transformada $\LL\{f(t)\}(s)$ para $f(t) =1$, la función constante.
+\begin{align*}
+\LL\{1\} &= \int_0^{\infty}e^{-st}dt \\
+&=\lim_{b \to \infty} \int_0^{b}e^{-st}dt\\
+&= \lim_{b \to \infty} \left[ \frac{e^{-st}}{-s} \right]_{t=0}^{t=b}\\
+&=\lim_{b \to \infty} \frac{1-e^{-sb}}{s} \\
+&= \frac{1}{s}
+\end{align*}
+puesto que $e^{-sb}$ tiene a $0$ cuando $b$ tiende a $+\infty$, siempre y cuando $s>0$. Note que si $s$ es negativo, la integral diverge.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Calculemos $\LL\{e^{-3t}\}(s)$.
+\begin{align*}
+\LL\{e^{-3t}\}(s)&= \int_0^{\infty}e^{-st}e^{-3t}dt\\
+&= \lim_{b \to \infty} \int_0^{b}e^{-(s+3)t}dt \\
+&= \lim_{b \to \infty} \left[-\frac{e^{-(s+3)t}}{s+3} \right]_0^{b} \\
+&= \lim_{b \to \infty} \frac{1-e^{-(s+3)t}}{s+3} \\
+&= \frac{1}{s+3}
+\end{align*}
+siempre y cuando $s>-3$, para que el término $e^{-(s+3)b}$ pueda ir para $0$ cuando $b$ va hacia $\infty$.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Calculemos ahora $\LL[\sen(2t)]$. Sabemos primero que (integrando por partes)
+$$I=\int e^{-st}\sen(2t)dt = \frac{-e^{-st} \sen(2t)}{s} + \frac{2}{s} \int e^{-st}\cos(2t)dt.$$
+Haciendo la segunda integral, también por partes,
+$$\int e^{-st}\cos(2t)dt = \frac{-e^{-st} \cos(2t)}{s} - \frac{2}{s} \int e^{-st}\sen(2t)dt.$$
+Sustituyendo esto en la integral original, obtenemos
+\begin{align*}
+I &= \frac{-e^{-st} \sen(2t)}{s} + \frac{2}{s} \left( \frac{-e^{-st} \cos(2t)}{s} + \frac{2}{s}I \right)\\ 
+&= \frac{-e^{-st} \sen(2t)}{s} + \frac{-2e^{-st} \cos(2t)}{s^2} - \frac{4}{s^2} I
+\end{align*}
+Ahora podemos evaluar en los límites de integración,
+$$\LL \{ \sen(2t)\}(s) =  \frac{-e^{-st} \sen(2t)}{s} \bigg \rvert_0^\infty + \frac{-2e^{-st} \cos(2t)}{s^2}\bigg \rvert_0^\infty - \frac{4}{s^2} \LL \{ \sen(2t)\}(s)$$
+Para no hacer demasiados pasos, entendamos que evaluar en el límite de integración igual a $\infty$, equivale a evaluar en $b$ y luego enviar $b \to \infty$. Con esto, vemos que el primer sumando de la última expresión es $0$, pues en $\infty$, la exponencial se anula y en $0$, el seno se anula. El segundo sumando sin embargo, se convierte en $\frac{2}{s^2}$, puesto que en $\infty$, la exponencial se anula, mientras que en $0$, se tiene que $-2e^{-s0}\cos(0)=-2$, y el $-$ se cancela con el $-$ que proviene de la resta de los límites de integración. Tenemos entonces que
+$$\LL \{ \sen(2t)\}(s) = \frac{2}{s^2} - \frac{4}{s^2}\LL \{ \sen(2t)\}(s)$$
+Finalmente al despejar, obtenemos que
+$$\LL \{ \sen(2t)\}(s) = \frac{2}{s^2 +4}, \quad  \text{ para } s > 0$$
+\end{ejemplo}
+
+\textbf{Nota:} Recordemos que la integral de la transformada de Laplace tiene variable $t$, por lo que la $s$ se trata como una constante durante el proceso de integración.
+
+\begin{teorema}{Linealidad de la transformada de Laplace}{}
+    Si $f$,$g$ son funciones y $\lambda \in \C$ es un escalar, entonces
+$$\LL \{f(t) + \lambda g(t) \}(s) = \LL \{ f(t)\}(s) + \lambda \LL \{g(t) \}(s).$$
+\end{teorema}
+En otras palabras: para calcular transformadas, podemos sacar escalares y separar las sumas.
+
+\textbf{Algunas transformadas básicas:} Sea $\omega \in \R$
+\begin{enumerate}
+\item $\LL \{ 1\}(s) = \dfrac{1}{s}$
+\vspace{8pt}
+\item $\LL \{ e^{\omega t}\}(s) = \dfrac{1}{s-\omega}$
+\item $\LL \{ t^n\}(s) = \dfrac{n!}{s^{n+1}}$. Para $n= 1,2,3,\dots$.
+\vspace{8pt}
+\item $\LL \{ \sen(\omega t)\}(s) = \dfrac{\omega}{s^2 + \omega^2}$
+\vspace{8pt}
+\item $\LL \{ \cos(\omega t)\}(s) = \dfrac{s}{s^2 + \omega^2}$
+\vspace{8pt}
+\item $\LL \{ \senh(\omega t)\}(s) = \dfrac{\omega}{s^2-\omega^2}$
+\vspace{8pt}
+\item $\LL \{ \cosh(\omega t)\}(s) = \dfrac{s}{s^2-\omega^2}$
+\end{enumerate}
+
+Es recomendable elaborar una ficha o una tabla donde vaya anotando las distintas transformadas de las funciones, además de las propiedades de la transformada misma.
+Como hemos mencionado, no siempre se tiene que $\LL[f]$ existe. Por ejemplo, no es posible calcular $\LL[1/t]$, ni $\LL[e^{t^2}]$. Para que $\LL[f]$ exista, deben suceder dos cosas.
+
+\begin{teorema}{Existencia}{}
+    Si $f(t)$ cumple las siguientes dos condiciones: 
+\begin{enumerate}
+\item Es continua a trozos en $[0,\infty)$. Es decir, que solo tenga un número finito de discontinuidades.
+\item Es de \textit{orden exponencial.}
+\end{enumerate}
+Entonces $f(t)$ posee transformada de Laplace.
+\end{teorema}
+
+Debemos especificar qué significa que $f$ tenga \textit{orden exponencial.}
+
+\begin{definicion}{Orden Exponencial}{}
+    Se dice que una función $f$ es de \textbf{orden exponencial} si existen constantes $c,T > 0$ tales que para todo $t > T$, se cumpla
+$$ |f(t)| \leq Me^{ct}.$$
+\end{definicion}
+
+En palabras más sencillas, una función es de orden exponencial si la gráfica de su magnitud es superada eventualmente por la de alguna función exponencial.
+Una manera equivalente de expresar que una función $f$ es de orden exponencial es: si para algún $k$, se tiene que
+$$\lim_{t \to \infty} \frac{f(t)}{e^{kt}} = 0.$$
+
+\section{Propiedades de la transformada de Laplace.}
+En esta sub-sección estudiaremos algunas propiedades que extienden nuestra capacidad de cálculo de transformadas.
+
+\begin{teorema}{}{}
+    Sea $a > 0$ 
+$$\LL \{f(at) \}(s) = \frac{1}{a}\LL \{f(t) \}\left(\frac{s}{a}\right) $$
+\end{teorema}
+En resumen, para calcular la transformada de $f(at)$, calculamos primero la transformada de $f(t)$, y cambiamos la $s$ por $s/a$.
+
+\begin{ejemplo}
+    Sabemos que $\LL[e^t] = \frac{1}{s-1}$. Apliquemos el teorema anterior para calcular $\LL[e^{\omega t}]$,
+\begin{align*}
+\LL\{e^{\omega t}\}(s) &= \frac{1}{\omega} \LL\{e^{t}\}\left(\frac{s}{\omega}\right)\\
+&= \frac{1}{\omega} \left( \frac{1}{\frac{s}{\omega}-1} \right) \\
+&= \frac{1}{s-\omega}
+\end{align*}
+\end{ejemplo}
+
+\begin{teorema}{Primer Teorema de Traslación}{}
+    Sea $\omega \in \R$, entonces
+$$\LL\{e^{wt}f(t)\}(s)  = \LL\{f(t) \}(s-w)$$
+\end{teorema}
+En otras palabras, para calcular la transformada de $e^{\omega t} f(t)$, primero calculamos la transformada de $f(t)$, y luego cambiamos la $s$ por $s-\omega$.
+
+\begin{ejemplo}
+    Calcule $\LL\{ e^{5t} \sin{4t}\}(s)$.\\
+Sabemos que $\LL[\sin 4t] = \frac{4}{s^2+16}$. Aplicando el teorema anterior, tenemos que
+$$\LL\{ e^{5t} \sin{4t}\}(s) = \LL \{ \sin{4t} \}(s-5) = \frac{4}{(s-5)^2 + 16}.$$
+\end{ejemplo}
+
+\begin{teorema}{Derivada de una transformada}{}
+    Para todo $n \in \mathbb{N}$, se cumple que
+$$\LL \{ t^n f(t)\} = (-1)^n \frac{d^n}{ds^n} \LL \{ f(t) \}(s)$$
+\end{teorema}
+
+En otras palabras, para calcular la transformada de $t^n f(t)$, primero calculamos la transformada de $f(t)$, luego la derivamos $n$ veces con respecto a $s$, y multiplicamos por $(-1)^n$.
+
+\begin{ejemplo}
+    Calcule $\LL \{ t \cos t \}(s)$.
+\\ Sabemos que $\LL [\cos(t)] = \frac{s}{s^2 + 1}$. Entonces podemos aplicar el teorema anterior.
+\begin{align*}
+\LL \{ t \cos(t) \} &= -\frac{d}{ds} \left( \frac{s}{s^2+1} \right) \\
+&= \frac{s^2-1}{(s^2 + 1)^2}
+\end{align*}
+\end{ejemplo}
+
+\begin{teorema}{Integral de una transformada}{}
+    $$\LL \left[\frac{f(t)}{t} \right] = \int_s ^ \infty \LL \{f(t)\}(x)dx.$$
+\end{teorema}
+Es decir, para calcular la transformada de $f(t) /t$, primero calculamos la de $f(t)$, y luego integramos lo que quede desde $s$ hasta $\infty$ (necesitamos una variable de integración distinta de $s$).
+
+\begin{ejemplo}
+    $$\LL \left \{\frac{\sen(t)}{t} \right \} = \int_s^\infty \frac{dx}{1+x^2} = \arctan(x)\big\rvert_s^{\infty} = \frac{\pi}{2} - \arctan(s).$$
+\end{ejemplo}
+
+\section{Transformada de una derivada}
+Esta es una de las propiedades más importantes de la transformada de Laplace, es la que nos permitirá más adelante resovler EDO's. Suponga que $f$ es una función cuyas derivadas son todas de orden exponencial (esto solo lo agregamos para que su transformada exista), entonces
+
+\begin{teorema}{Transformada de una derivada}{}
+\begin{align*}
+\LL\{f'(t)\}(s) &= s \LL \{f(t) \}(s) - f(0)\\
+\LL\{f''(t)\}(s) &= s^2\LL \{f(t) \}(s) - sf(0) - f'(0).\\
+\LL \{f'''(t) \}(s) &= s^3 \LL \{f(t) \}(s) - s^2 f(0) - s f'(0) -  f''(0)\\ 
+\vdots  \\
+\LL\{f^{(n)}(t)\}(s) &= s^n\LL \{f(t) \}(s) - \sum_{k=0}^{n-1} s^{n-k-1}f^{(k)}(0).
+\end{align*}
+\end{teorema}
+
+\begin{ejemplo}
+    Calcule $\LL \{ t^n \}$. \\
+Note que, si $f(t) = t^n$, derivando $n$-veces, se puede ver que $f^{(n)}(t) = n!$, entonces por el teorema anterior, podemos ver entonces que
+\begin{align*}
+\LL\{ f^{(n)}(t) \}&= \LL\{n!\}(s)\\ 
+&= s^n \LL \{ t^n \}(s) - s^{n-1}f(0) - s^{n-2}f'(0) - s^{n-3}f''(0) - \dots - sf^{(n-2)}(0) - f^{(n-1)}(0)
+\end{align*}
+Note que las primeras $n-1$ derivadas de $t^n$ son de la forma $Ct^k$, con $k>0$ (es decir todas tienen un factor de $t$). Esto hace que al evaluarlas en $0$ se anulen, lo cual simplifica la fórmula anterior,
+$$\LL\{n!\}(s) = s^n \LL \{ t^n \}.$$
+Finalmente, como las constantes pueden salir de la transformada, $\LL \{n! \} = n! \LL \{ 1 \} = n!/s$, al despejar $\LL\{ t^n \}$, se obtiene
+\begin{align*}
+\LL \{ t^n \} = \frac{n!}{s^{n+1}}
+\end{align*}
+\end{ejemplo}
+
+Finalmente, como última propiedad de la transformada, vemos un corolario de este teorema.
+
+\begin{teorema}{Transformadada de Laplace de una integral}{}
+    $$\LL \left[ \int_0^t f(u)du\right] = \frac{1}{s}\LL [f]$$
+\end{teorema}
+En cierto modo, transformar una derivada equivale a \textit{multiplicar} por $s$ la transformada original (y restarle un polinomio $p(s)$), mientras que transformar una integral equivale a \textit{dividir} por $s$ la transformada original. Esta propiedad de convertir las operaciones propias del cálculo a operaciones algebraicas será clave a la hora de resolver EDOs.
+
+\section{Funciones especiales y sus transformadas.}
+En esta subsección estudiaremos algunas funciones que serán de gran utilidad a la hora de resolver ecuaciones diferenciales.
+
+\begin{definicion}{Función Periódica}{}
+    Sea $T>0$. Una función $f$ se dice ser \textbf{periódica de periodo} $T$ (o $T$-periódica) , si se cumple que para todo $x$
+$$f(x+T) = f(x).$$
+\end{definicion}
+Por ejemplo, $\sen(x)$ y $\cos(x)$ son funciones $2\pi-$periódicas.
+Existe una fórmula que nos permite calcular la transformada de cualquier función $T$-periódica.
+
+\begin{teorema}{}{}
+    Sea $f$ una función $T$-periódica. Entonces
+$$\LL \{ f(t) \}(s) = \frac{1}{1-e^{sT}}\int_0^Te^{-st}f(t)dt.$$
+\end{teorema}
+Es decir, en vez de tener que integrar de $0$ a $\infty$, solo tenemos que integrar de $0$ a $T$ (o sea el área bajo un periodo de la curva), y dividir el resultado por $(1-e^{sT})$.
+
+La siguiente función es muy simple, pero será de gran importancia.
+
+\begin{definicion}{Función de Heaviside}{}
+    Sea $a \in \R$. Definimos la función de \textbf{Heaviside} (o escalón unitario), como la función $H_a : \R \to \R$ dada por
+$$H_a(t) = \begin{cases}
+0 \text{ si } t \leq a \\
+1 \text{ si } t > a
+\end{cases}$$
+\end{definicion}
+Simplemente es una función que vale $0$ antes del tiempo $t=a$, y luego del tiempo $t=a$ vale $1$. Podemos ver esta función como una especie de \textit{interruptor} matemático.
+
+El siguiente teorema nos ayudará a calcular transformadas de funciones como la del ejemplo anterior.
+
+\begin{teorema}{Segundo Teorema de Traslación}{}
+    Sea $a > 0 $. Entonces
+$$\LL \{ H_a(t)f(t-a) \} (s) = e^{-as}\LL \{ f(t) \}(s)$$
+\end{teorema}
+En otras palabras, para calcular la transformada de $H_a(t)f(t-a)$, primero debemos calcular la transformada de $f(t)$ y luego multiplicarla por $e^{-as}$. Note que si la función a transformar no tiene su argumento en la forma $t-a$, debemos hacer el ajuste.
+
+\begin{ejemplo}
+    Calcule $\LL [H_2(t) e^{5(t-2)}]$.\\
+Podemos aplicar el teorema directamente.
+$$\LL \{H_2(t) e^{5(t-2)}\}(s) = e^{-2s}\LL \{ e^{5t}\}(s) = \frac{e^{-2s}}{s-5}$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Calcule $\LL \{ H_2(t) e^{5t}\}$.\\
+Note que el argumento no está en la forma $t-2$, entonces debemos sumar y restar $2$. Observe que $e^{5t} = e^{5(t-2) +10}$, entonces podemos aplicar el teorema.
+\begin{align*}
+\LL \{ H_2(t) e^{5t} \} &= \LL \{H_2(t) e^{5(t-2) + 10} \} \\
+&= e^{10}\LL \{ H_2(t) e^{5(t-2)}\}\\
+&= \frac{e^{-2s+10}}{s-5}
+\end{align*}
+\end{ejemplo}
+
+La siguiente función que estudiaremos es muy particular, en el sentido que no puede ser estrictamente clasificada como una función. Sin embargo, podremos tratarla como tal sin mayor problema a la hora de hacer cálculos.
+
+\begin{definicion}{Delta de Dirac}{}
+    Sea $a \in \R$. Se define la \textbf{delta de Dirac} como la ``función'' definida por
+$$\delta_a(t) = \begin{cases}
+0 \text{ si } t \neq a \\
+\infty \text{ si } t = a
+\end{cases}$$
+\end{definicion}
+Podemos pensar la delta de Dirac como una especie de \textit{impulso}. Una propiedad interesante de la $\delta$ de Dirac es que para cualquier función $f(t)$, se cumple que
+$$\int_0 ^ \infty f(t) \delta_a(t)dt = f(a)$$
+
+\begin{teorema}{}{}
+    Sean $a \in \R$ y $f(t)$ una función. Entonces
+$$\LL \{ f(t)\delta_a(t)\} = f(a)e^{-as}.$$
+\end{teorema}
+\textbf{Corolario: } $\LL \{ \delta_a(t)\}= e^{-as}.$
+
+La última función especial que estudiaremos la función gamma $\Gamma$. Esta función es ampliamente usada en la probabilidad moderna, pues es un análogo continuo a la operación factorial (que es discreta).
+
+\begin{definicion}{Función Gamma}{}
+    Para $t >0$ se define la \textbf{función gamma} por
+$$\Gamma(t) = \int_0 ^ \infty e^{-x}x^{t-1}dx.$$
+\end{definicion}
+La propiedad principal de $\Gamma$ es que $\Gamma(t+1) = t\Gamma(t).$
+La gran ventaja que tiene $\Gamma$ sobre el factorial es que podemos evaluarla en el número que deseemos. No tiene mucho sentido en pensar en el número $(-1/2)!$ en el sentido clásico, sin embargo, sí podemos calcular $\Gamma(1/2) = \sqrt{\pi}$.
+
+La función $\Gamma(t)$ nos ayuda calcular muchas transformadas más.
+\begin{teorema}{}{}
+    Sea $r > -1$ cualquier número real. Entonces
+$$\LL \{ t^r \}(s) = \frac{\Gamma(r+1)}{s^{r+1}}$$
+\end{teorema}
+
+\section{Convolución de funciones}
+En esta subsección definiremos una nueva operación con funciones integrables.
+
+\begin{definicion}{Convolución}{}
+    Considere dos funciones $f,g:[0,\infty) \to \R$. La \textbf{convolución} de $f$ y $g$, denotada por $f * g$, es una nueva función, definida por
+$$(f*g)(t) = \int_0^t f(u)g(t-u)du.$$
+\end{definicion}
+
+Afortunadamante, la convolución tiene la propiedad de \textbf{conmutatividad} es decir, siempre se tiene que
+$$(f*g)(t) = (g*f)(t).$$
+La razón por la que definimos esta operación, es debido a que tiene una propiedad interesante con respecto a la transformada de Laplace.
+
+\begin{teorema}{Transformada de una convolución}{}
+    Sean $f,g$ funciones. Entonces
+$$\LL \{(f*g)(t) \}(s)=\LL \{f(t) \}(s) \cdot \LL \{g(t) \}(s).$$
+\end{teorema}
+En palabras: Para calcular la transformada de $f*g$, calculamos la de $f$, luego la de $g$, y multiplicamos el resultado. En otras palabras: la transformada de Laplace convierte convoluciones en multiplicaciones. Podemos usar este teorema para calcular transformadas de Laplace eficientemente.
+
+\begin{ejemplo}
+    Calcule $\LL \{ e^{t} * \sin(t) \}(s)$. 
+\\ En vez de calcular la convolución por medio de integrales, podemos utilizar el teorema
+\begin{align*}
+\LL \{ e^{t} * \sen(t) \}(s) &= (\LL \{ e^t \}(s))( \LL \{\sen(t) \}(s)) \\
+&= \frac{1}{s-1} \cdot \frac{1}{s^2 +1 } \\
+&= \frac{1}{(s^2+1)(s-1)} \\
+&= \frac{1}{s^3-s^2+s-1}
+\end{align*}
+\end{ejemplo}
+
+\section{La transformada inversa de Laplace.}
+Anteriormente, nos dábamos una función $f(t)$, y queríamos calcular $\LL[f]$. Ahora, dada una función $F(s)$, ¿Será que existe alguna $f(t)$ de forma que $\LL \{ f(t) \} (s) = F(s)$? Por ejemplo, para $F(s)= 1/s$ tenemos que $f(t)=1$. Cuando esto sucede, decimos que $f(t)$ es la \textbf{trasnformada inversa de} $F(s)$, y lo denotamos por
+$$\IL \{ F(s)\} =  f(t).$$
+En el fondo ya somos capaces de calcular cualquier transformada inversa, incluso podemos aplicar todos los teoremas que ya hemos estudiado para el cálculo de transformadas inversas.
+
+\textbf{Ejemplo: Uso de fracciones parciales.} Vamos a calcular
+$$\IL \left \{\frac{s^2 + 6s + 9}{(s-1)(s-2)(s+4)} \right \}.$$
+En caso de que el denominador no estuviese factorizado, debemos hacerlo con los métodos que ya conocemos (inspección, completar cuadrado, división sintética). Debemos aplicar una descomposición en fracciones parciales para separar la fracción que no sabemos transformar, en una suma de fracciones que sí sepamos trasnformar (con denominador de la forma $as+b$ o $s^2 + \omega^2$). Tenemos entonces que
+$$\frac{s^2 + 6s + 9}{(s-1)(s-2)(s+4)}  =  \frac{A}{s-1 } + \frac{B}{s-2}  + \frac{C}{s+4}.$$
+El lector puede utilizar su método favorito para determinar que en este caso $A= -16/5$, $B = 25/6 $, y $C = 1/30$. Gracias a esto, tenemos entonces que
+\begin{align*}
+\IL \left \{\frac{s^2 + 6s + 9}{(s-1)(s-2)(s+4)} \right \} &= -\frac{16}{5} \IL \left \{ \frac{1}{s-1}\right \} + \frac{25}{6} \IL \left \{ \frac{1}{s-2}\right \} + \frac{1}{30} \IL \left \{ \frac{1}{s+4}\right \} \\
+&= \frac{-16}{5}e^t + \frac{25}{6}e^{2t} + \frac{1}{30}e^{-4t}.
+\end{align*}
+
+Tenemos también una versión inversa de cada uno de los teoremas de la sección anterior.
+
+\begin{teorema}{}{}
+    $$\IL \{ F(s-a) \} = e^{at} \IL \{ F(s) \}.$$
+\end{teorema}
+Es decir, para encontrar la transformada inversa de una función trasladada por $-a$, podemos encontrar la inversa de la función sin trasladar, y multiplicar el resultado por $e^{at}$.
+
+\begin{teorema}{}{}
+    $$ \IL \{ F(s) \} = -\frac{1}{t}\IL \left\{ \frac{d}{ds} F(s) \right \}.$$
+\end{teorema}
+
+\begin{teorema}{}{}
+    Si $\LL { f(t) } (s) = F(s)$, entonces
+$$\IL \{ e^{-as} F(s) \} = f(t-a)H_a(t). $$
+\end{teorema}
+Por lo tanto, siempre que necesitemos destransformar alguna expresión que venga multiplicada por $e^{as}$, necesitaremos la ayuda de $H_a(t)$.
+
+\begin{teorema}{}{}
+    $$\IL \{ F(s) G(s)\} = (f*g)(t) = \int_0^t f(u)g(t-u)du,$$
+where $\LL \{f(t) \}(s) = F(s)$ y  $\LL \{g(t) \}(s) = G(s)$.
+\end{teorema}
+Es decir, si queremos calcular la transformada inversa de un producto de 2 funciones, podemos calcular la transformada de cada función por aparte, y aplicar convolución de los resultados.
+
+\section{Resolución de ecuaciones diferenciales.}
+Finalmente, vamos a aplicar todos los conocimientos que tenemos sobre $\LL$ y $\IL$ para resolver no solo EDOs, sino también ecuaciones integrales (donde intervienen integrales en vez de derivadas), y ecuaciones integro-diferenciales (combinación de derivadas e integrales).
+
+Supongase que tenemos un problema de valor inicial
+\begin{align*}
+\begin{cases}
+a_ny^{(n)}(t) + a_{n-1}y^{(n-1)}(t) + \dots + a_1y'(t)+ a_0y(t)= f(t) \\
+y(t_0)=y_0 \\
+y'(t_0)=y_1 \\
+\vdots \\
+y^{(n-1)}(t_0)=y_{n-1}
+\end{cases}
+\end{align*}
+Para resolver dicho problema, vamos a seguir el siguiente procedimiento
+\begin{itemize}
+\item\textit{Paso 1: }Aplicamos $\LL$ en ambos lados de la ecuación diferencial. Es en este paso donde necesitamos saber los valores de $y(t_0),y'(t_0),..,y^{(n-1)}(t_0)$. La nueva ecuación será una ecuación algebraica (sin presencia de derivadas), pero en variable $s$.
+\item \textit{Paso 2: }En la ecuación mencionada en el paso 1, despejamos el valor $\LL\{y\}(s)$. En otras palabras, debemos dejar todo lo que dependa de $s$ en un solo lado de la ecuación.
+\item \textit{Paso 3.} Aplicamos $\IL$ para obtener el valor de $y$.
+\end{itemize}
+
+\begin{ejemplo}
+    Resolvamos una ecuación de orden $2$.
+$$\begin{cases}
+y''-3y'+2y = e^{-4t}\\
+y(0)=1\\
+y'(0) = 5
+\end{cases}$$
+Siguiendo de nuevo el procedimiento al pie de la letra, aplicamos primero $\LL$ para obtener
+\begin{align*}
+\LL \{y'' \} - 3\LL \{y' \} + 2\LL \{y\} &= \LL \{ e^{-4t} \} \\
+s^2Y(s) -sy(0) - y'(0) - 3(sY(s) - y(0)) + 2Y(s) &= \frac{1}{s+4} \\
+s^2Y(s) - s - 5 - 3sY(s) + 3 + 2Y(s) &= \frac{1}{s+4}  \\
+Y(s) (s^2 -3s+2) &=s+2+\frac{1}{s+4} \\
+Y(s) (s^2 -3s+2) &= \frac{(s+2)(s+4) + 1}{s+4} \\
+Y(s) &= \frac{(s+2)(s+4) + 1}{(s+4) (s^2 -3s+2) }
+\end{align*}
+Expandiendo el numerador, y factorizando el denominador, obtenemos que
+$$Y(s) = \frac{s^2+6s+9}{(s-1)(s-2)(s+4)}.$$
+Solo nos queda aplicar transformada inversa. Afortunadamente, esta transformada ya la calculamos al inicio de la sección anterior. De todas formas es un buen ejercicio calcularla de nuevo. Tenemos entonces la solución del problema dada por.
+$$y(t) = \IL \left \{  \frac{s^2+6s+9}{(s-1)(s-2)(s+4)}\right \} = \frac{-16}{5}e^t + \frac{25}{6}e^{2t} + \frac{1}{30}e^{-4t}.$$
+\end{ejemplo}
+
+\subsection{Ecuaciones integrales e integro-diferenciales.}
+Vamos a utilizar el mismo algoritmo de \textit{transformar-resolver-destransformar} para resolver ecuaciones en donde interviene la integral de nuestra variable $y(t)$. Considere la siguiente ecuación
+$$y(t) = 3t^2 - e^{-t} - \int_0^ty(u)e^{t-u}du.$$
+Para poder encontrar la solución $y(t)$, debemos recurrir a la transformada de Laplace. Note que la integral que aparece corresponde con $y * e^t$, por lo que reescribimos
+$$y = 3t^2 - e^{-t} - y*e^{t}.$$
+Ahora podemos transformar ambos lados de la ecuación. Aplicando la propiedad de la convolución,
+$$Y(s) = \frac{6}{s^3} - \frac{1}{s+1}-\frac{Y(s)}{s-1}.$$
+Despejando $Y(s)$  se obtiene
+\begin{align*}
+Y(s)(s-1) + Y(s) &= \frac{6}{s^2} - \frac{6}{s^3} - \frac{s-1}{s+1} \\
+Y(s) &= \frac{6}{s^3} - \frac{6}{s^4} - \frac{s-1}{s(s+1)}
+\end{align*}
+Aplicando transformada inversa, obtenemos que
+$$y(t) = \IL\left \{  \frac{6}{s^3} - \frac{6}{s^4} - \frac{s-1}{s(s+1)}\right \} = 3t^2 - t^3 + 1-2e^{-t}.$$
+
+\subsection{Sistemas y la transformada de Laplace}
+Podemos utilizar la transformada de Laplace para resolver sistemas de ecuaciónes diferenciales.
+
+\begin{ejemplo}
+    Resuelva el sistema
+$$\begin{cases}
+x''(t) - y(t) &= \sen(t)\\
+y''(t) + x'(t) &= \cos(t)\\
+\end{cases}$$
+con condiciones iniciales $x(0) = 1 , x'(0)=0$, $y(0)=-1 , y'(0) = -1$.\\
+Denotemos $X(s) = \LL \{ x(t) \}(s)$ y $Y(s) = \LL \{ y(t) \}(s)$. Aplicando $\LL$ a todo el sistema, obtenemos
+$$\begin{cases}
+s^2X(s)- s - Y(s) &= \dfrac{1}{s^2+1} \vspace{8pt}\\
+s^2Y(s)+s + sX(s) &=\dfrac{s}{s^2+1}\\
+\end{cases}$$
+que se puede reescribir como
+$$\begin{cases}
+s^2X(s)- Y(s) &= \dfrac{1}{s^2+1} + s \vspace{8pt}\\
+sX(s) + s^2Y(s) &=\dfrac{s}{s^2+1} -s\\
+\end{cases}.$$
+Podemos aplicar eliminación gaussiana (la clásica) para resolver esta ecuación (note que no hay derivadas). Multiplicamos la primera ecuación por $s^2$, y sumamos las dos ecuaciones para poder despejar $X(s)$.
+\begin{align*}
+s^4X(s) + sX(s) &= \frac{s^2}{s^2+1} + s^3 - s + \frac{s}{s^2+1} \\
+s(s^3+1)X(s) &= \frac{s^2(s^3+1)}{s^2+1}\\
+X(s) = \frac{s}{s^2+1}
+\end{align*}
+Por lo que $x(t) = \cos(t)$. Podemos proceder ahora de muchas formas: aplicando la otra eliminación, sustituyendo $X(s)$ en el sistema transformado, o simplemente sustituir $x(t)$ en el sistema original. Como $y''(t) = \cos(t) - x'(t) = \cos(t) + \sen(t)$, integrando 2 veces obtenemos que
+$$y(t) = -\cos(t) - \sen(t) + At + B$$
+Pero como $y(0) = -1$ y $y'(0) = -1$, podemos determinar fácilmente que $A=B=0$, por lo que la solución del sistema de ecuaciones sería
+\begin{align*}
+x(t) &= \cos(t) \\
+y(t) &= -\sen(t) - \cos(t)
+\end{align*}
+\end{ejemplo}
+
+\begin{ejercicio}
+    Utilice la transformada de Laplace para resolver el siguiente problema de valores iniciales
+    $$\begin{cases}
+    x'(t) &= -2x(t) - 2y(t) \\
+    y'(t)+ y(t) &= -2y(t) 
+    \end{cases}$$
+    Con condiciones iniciales $x(0) = y(0) = 1$.
+\end{ejercicio}

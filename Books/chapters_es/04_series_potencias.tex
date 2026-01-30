@@ -1,0 +1,127 @@
+\chapter{Soluciones por Series de Potencias}
+
+En esta sección vamos a introducir un nuevo método de resolución de ecuaciones diferenciales. Para aplicar este método, debemos retomar el concepto de \textbf{serie de potencia}, el cual nos va a permitir encontrar soluciones de manera \textit{analítica.} Recordemos que una serie de potencias centrada en un número $a$ es una suma infinita de la forma
+\begin{equation}\label{eqn:12}
+\sum_{n=0} ^ \infty c_n(x-a)^n = c_0 + c_1(x-a) + c_2 (x-a)^2 + \dots
+\end{equation}
+donde $a,c_n \in \mathbb{R}$ (o incluso $\mathbb{C}$). 
+
+Las series de potencia nos ayudan a aproximar funciones, de hecho, decimos que una serie de potencias \textbf{converge a una función $f(x)$} si en algún intervalo $I \subseteq \mathbb{R}$ se cumple que 
+$$f(x) = \lim_{K \to \infty} \sum_{n=0} ^ K c_n(x-a)^n , \quad \text{para todo $x \in I$}$$
+o en otras palabras, si las sumas parciales de la suma se van a acercando cada vez más a un valor $f(x)$. Damos aquí rápidamente un repaso de los conceptos clave acerca de la convergencia de las series de potencia. Asumamos que nuestra serie está definida únicamente en los números reales.
+
+\begin{definicion}{Convergencia}{}
+    Considere la serie de potencias \eqref{eqn:12}.
+\begin{itemize}
+\item \textbf{Intervalo de convergencia: }Es el intervalo de números reales $x$ donde la serie converge.
+\item \textbf{Radio de convergencia: }El intervalo de convergencia $I$ se puede expresar de la forma $I = [a-R,a+R]$, donde $R \geq 0$. A este número $R$ le denominamos radio de convergencia \linebreak (si $R = \infty$, decimos que $I=\mathbb{R}$).
+\end{itemize}
+\end{definicion}
+
+Un caso especial de las series de potencias son las series de Taylor (y Maclaurin).
+
+\begin{definicion}{Serie de Taylor}{}
+    Dada una función $f:\mathbb{R} \to \mathbb{R}$ infinitamente diferenciable, definimos su serie de Taylor centrada en $a$ como la suma
+$$S(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n.$$
+Cuando $a=0$, la llamamos serie de Maclaurin.
+\end{definicion}
+
+Vamos a conectar estos conceptos de cálculo diferencial con nuestro interés en ecuaciones diferenciales con la siguiente definición. 
+
+\begin{definicion}{Punto Ordinario}{}
+    Considere la ecuación diferencial lineal de segundo orden
+\begin{equation}\label{eqn:13}
+y''+ P(x)y' + Q(x)y = 0
+\end{equation}
+Decimos que un punto $x_0$ es un \textbf{punto ordinario} de la ecuación \eqref{eqn:13} si ambas funciones $P$ y $Q$ son analíticas en $x_0$. Aquellos puntos que no sean ordinarios, se llaman \textbf{puntos singulares}.
+\end{definicion}
+
+\begin{ejemplo}
+    Considere la ecuación 
+$$x^2y'' - 2y' + xy = 0$$
+(note que ningún método de los que tenemos puede resolver esta ecuación). El punto $x=1$ es un punto ordinario de la ecuación, puesto que las funciones 
+$$P(x) = -\frac{2}{x^2} \ , \ Q(x) = \frac{1}{x}$$
+son ambas analíticas en $1$. Sin embargo, el punto $x=0$ es singular, puesto que $P'(0)$ y $Q'(0)$ ni siquiera se pueden definir (para que una función sea analítica, tiene que ser por lo menos infinitamente diferenciable).
+\end{ejemplo}
+
+\section{Solución en una vecindad de un punto ordinario}
+Tenemos entonces el primer teorema que nos ayuda a resolver ecuaciones por medio de series. 
+
+\begin{teorema}{}{}
+    Si $x_0$ es un punto ordinario de una ecuación en la forma \eqref{eqn:13}, podemos encontrar dos soluciones linealmente independientes $y_1,y_2$ en forma de series de potencias centradas en $x_0$. Estas series convergen para todo $x$ que esté entre $x_0$ y el punto singular más cercano.
+\end{teorema}
+Este teorema nos dice que, si $a$ es un punto ordinario, podemos declarar una solución candidata de la forma
+$$y(x)= \sum_{n=0}^{\infty} c_n (x-a)^n.$$
+Y por lo tanto, si logramos despejar de alguna forma los coeficientes $c_n$, tendremos nuestra solución en forma de serie.
+
+\begin{ejemplo}
+    Resuelva la ecuación $$y'' + xy= 0.$$
+Note que ninguno de nuestros métodos estudiados hasta el momento funciona para resolver esta ecuación. Procederemos por series de potencias: puesto que no hay puntos singulares, podemos escoger cualquier punto (escogeremos $0$ por ser el más cómodo) como centro de nuestra serie de potencias, y ésta misma va a converger en todo $\mathbb{R}$ por el teorema anterior. Suponemos entonces que nuestra solución tiene la forma de una serie centrada en $0$
+$$y = \sum_{n=0}^\infty c_nx^n = c_0 + c_1x + c_2x^2 + \dots.$$
+La idea de éste método es la siguiente: como estamos asumiendo que $y$ es solución, al derivarla y sustituirla en la ecuación diferencial, tendremos suficiente información para despejar los coeficientes $c_n$.
+$$2c_2 + \sum_{n=1}^\infty [c_{n+2}(n+2)(n+1) + c_{n-1}]x^n = 0.$$
+A partir de aquí, debemos comparar coeficientes a cada lado de la igualdad, para encontrar los valores de $c_n$.
+$$\begin{cases}
+c_2 = 0 \\
+c_{n+2}(n+2)(n+1) + c_{n-1} = 0 , \text{ para todo } n \geq 1.
+\end{cases}$$
+A partir de aquí, para despejar las demás $c_n$'s, debemos utilizar una \textbf{relación de recurrencia}: Note que $c_{n+2}$ puede encontrase a partir de $c_{n-1}$, de la forma
+$$c_{n+2} = \frac{-c_{n-1}}{(n+2)(n+1)}$$
+La solución general a la ecuación $y'' + xy =0$ es entonces
+$$y = c_0y_0(x) + c_1y_1(x)$$
+donde
+\begin{align*}
+y_0(x) &=  \sum_{n=0} ^\infty \frac{4 \cdot 7 \cdot 10\cdots (3n-2) }{(3n)!} (-1)^n  x^{3n} \\
+y_1(x) &= \sum_{n=0}^\infty \frac{2 \cdot 5 \cdot 8\cdots (3n-1) }{(3n+1)!} (-1)^n  x^{3n+1}
+\end{align*}
+En general es difícil pasar de la expresión en serie a una expresión elemental (trigonométrica, exponencial, logaritmo, etc). De hecho, la mayoría de soluciones analíticas no tienen expresión elemental.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Resuelva la ecuación 
+$$y'' + (\cos x)y = 0.$$
+Una vez más, tomamos $y = \sum_{n=0}^\infty c_nx^n$. 
+Centraremos alrededor de 0 por comodidad, pues no hay puntos singulares. Tenemos entonces que usar la serie de Taylor para $\cos(x)$, que es analítica.
+\begin{alignat*}{2}
+&& y'' + (\cos x)y &= \sum_{n=2}n(n-1)c_nx^{n-2} + \left(1-\frac{x^2}{2!} + \frac{x^4}{4!} - \dots \right)\sum_{n=0}^\infty c_nx^n = 0\\
+\Rightarrow&&  &=2c_2 + 6c_3x + 12c_4x^2 + \dots +  \left(1-\frac{x^2}{2!} + \dots \right) (c_0 + c_1x  + \dots) = 0
+\end{alignat*}
+Entonces, comparando coeficientes, obtenemos el sistema de ecuaciones
+$$\begin{cases}
+2c_2 + c_0 = 0 \\
+6c_3 + c_1 = 0 \\
+12c_4 + c_2 - \frac{1}{2}c_0 = 0 \\
+20c_5 + c_3 - \frac{1}{2}c_1 = 0
+\end{cases}$$
+cuya solución es $c_2 = -c_0/2$ , $c_3 = -c_1/6$ , $c_4 = c_0/12$, y $c_5 = c_1/30$. Al agrupar los términos de la serie, obtenemos finalmente que la solución general (hasta donde la pudimos calcular), es
+$$y= c_0y_0(x) + c_1y_1(x)$$
+donde
+$$y_0(x) = 1-\frac{1}{2}x^2 + \frac{1}{12}x^4 + \dots \ \text{ y } \ y_2(x)=x- \frac{1}{6}x^3 + \frac{1}{30}x^5 + \dots$$
+\end{ejemplo}
+
+\section{Solución en un vecindario de un punto singular regular}
+También podemos resolver ecuaciones diferenciales de la forma \eqref{eqn:13} centrando nuestra serie alrededor de un punto singular, pero debemos tener ciertas precauciones.
+
+\begin{definicion}{Punto Singular Regular}{}
+    Sea $x_0$ un punto singular de la ecuación $y''+ P(x)y' + Q(x)y = 0$, Decimos que $x_0$ es un \textbf{punto singular regular} si las funciones
+$$p(x) = (x-x_0)P(x) \ , \ q(x) = (x-x_0)^2Q(x)$$
+son ambas analíticas en $x_0$. Los puntos singulares que no son regulares, los llamaremos puntos \textbf{irregulares.}
+\end{definicion}
+
+\begin{teorema}{Método de Frobenius}{}
+    Si $x=x_0$ es un punto singular regular de la ecuación diferencial 
+$$y''+P(x)y' + Q(x)y =0,$$ entonces existe al menos una solución de la forma
+$$y=\sum_{n=0}^{\infty} c_n(x-x_0)^{n+r}.$$
+La serie convergerá en algún intervalo $(x_0-R,x_0+R)$, con $R>0$. Para encontrar $r$, debemos resolver la \textbf{ecuación indicial}, dada por
+$$r(r-1) + p_0r + q_0 = 0$$
+donde
+$$p_0 = \lim_{x \to x_0} (x-x_0)p(x) \quad \text{y} \quad q_0 = \lim_{x \to x_0} (x-x_0)^2q(x).$$
+Dependiendo de las dos soluciones de la ecuación indicial, las soluciones se construyen de distintas formas:
+\begin{itemize}
+\item \textbf{Caso 1:} Cuando $r_1-r_2 \notin \mathbb{Z}$, tenemos dos soluciones l.i de la forma
+$$y_1(x) = \sum_{n=0}^\infty c_n x^{n+r_1} \quad \text{y} \quad y_2(x) = \sum_{n=0}^\infty b_n x^{n+r_2} $$
+\item \textbf{Caso 2:} Si $r_1-r_2 \in \mathbb{Z}$, las soluciones son 
+$$y_1(x) = \sum_{n=0}^\infty c_n x^{n+r_1} \quad \text{y} \quad y_2(x) = Ay_1(x)\ln(x) + \sum_{n=0}^\infty b_n x^{n+r_2} $$
+donde $A$ es una constante a determinar (la cual podría ser incluso $0$). En el caso especial cuando $r_1=r_2$, tenemos que $A=1$.
+\end{itemize}
+\end{teorema}

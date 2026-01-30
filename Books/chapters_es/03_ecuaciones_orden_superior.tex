@@ -1,0 +1,400 @@
+\chapter{Ecuaciones de Orden Superior}
+
+Hemos estudiado ya varios métodos de resolución para ecuaciones diferenciales de orden 1 (aquellas en donde la derivada de mayor orden es la primera). En esta sección estudiaremos principalmente la resolución de ecuaciones \textbf{lineales} de orden mayor o igual a 2. Recordemos que dichas EDOs tienen la forma
+ \begin{equation}\label{eqn:6}
+    a_n(x)y^{(n)}(x) + a_{n-1}(x)y^{(n-1)}(x) + \dots + a_1(x)y'(x) + a_0(x)y(x) = f(x)
+  \end{equation}
+  donde $a_n,a_{n+1},\dots,a_1,a_0,f$ son funciones de una variable $x$, y además $a_n(x) \neq 0$, con $n \geq 2$. Recordemos también que si $f(x)=0$, llamamos a la ecuación \eqref{eqn:6} \textbf{homogénea}. Finalmente, cuando $a_n,a_{n-1},\dots,a_1,a_0$ son funciones constantes, es decir números, decimos que la ecuación \eqref{eqn:6} tiene \textbf{coeficientes constantes.} Primero presentamos un teorema que generaliza al último de la sección 5.
+  
+  \begin{teorema}{Existencia y unicidad}{}
+    Considere el problema de Cauchy
+  \begin{align*}
+\begin{cases}
+a_n(x)y^{(n)}(x) + a_{n-1}(x)y^{(n-1)}(x) + \dots + a_1(x)y'(x) + a_0(x)y(x) = f(x) \\
+y(x_0)=y_0 \\
+y'(x_0)=y_1 \\
+y''(x_0)=y_2 \\
+\vdots \\
+y^{(n-1)}(x_0)=y_{n-1}
+\end{cases}
+\end{align*}
+Cuando todas las funciones $a_n,a_{n+1},\dots,a_1,a_0,f$ son continuas en algún $A \subseteq \mathbb{R}$, entonces el problema de Cauchy posee una única solución.
+  \end{teorema}
+  
+  \begin{ejemplo}
+   El problema $$\frac{y''}{x^2} - \sqrt{x}y = 0 \ , \ y(2)=1  \ , \ y'(3) = 0$$
+posee una única solución, siempre que $x>0$, gracias a que los coeficientes $\dfrac{1}{x^2}$, y $-\sqrt{x}$ son continuos en esta región. La aplicación del teorema es directa en este caso.
+  \end{ejemplo}
+
+\begin{ejemplo}
+    Todo problema de Cauchy cuya ecuación diferencial sea lineal con coeficientes constantes y homogénea, es decir de la forma
+$$a_ny^{(n)} +a_{n-1}y^{(n-1)}+ \dots + a_1y' + a_0y = 0 \quad , \quad  a_i \in \mathbb{R} \text{ para } i=0,1,\dots,n$$tiene solución única, pues evidentemente todas las funciones constantes son continuas.
+\end{ejemplo}
+
+La importancia de los teoremas de existencia y unicidad para ecuaciones diferenciales es más teórica que práctica, puesto que no son realmente maneras de calcular la solución de un problema determinado, sino solamente herramientas para demostrar que una solución existe (lo cual hace que valga la pena intentar buscarla en primer lugar).
+
+\section{Espacios Vectoriales}
+Hemos visto que cuando resolvemos una ecuación diferencial de primer orden, por ejemplo $y'=y$, su solución general viene dada por una \textit{familia} de funciones, en este caso $y'=Ce^x$, donde $C$ es cualquier número real. Para ecuaciones de orden superior, vamos a tener una situación similar (entre mayor el orden, más parámetros necesitamos). Para precisar esta intuición de manera matemática, necesitamos volver a la noción de un \textbf{espacio vectorial}. A partir de ahora, vamos a permitirnos usar números complejos ($\mathbb{C}$) cuando sea conveniente. El uso de números complejos nos permitirá resolver aún más ecuaciones diferenciales.
+
+\begin{definicion}{Combinación Lineal}{}
+    Si $f_1(x),\dots,f_n(x):\mathbb{R} \to \mathbb{R}$ son funciones, entonces aquellas funciones de la forma
+$$c_1f_1(x) + c_2f_2(x) + \dots + c_nf_n(x)$$
+para $c_i \in \mathbb{C}$, se llaman \textbf{combinaciones lineales} de $f_1,\dots,f_n$. Note que las combinaciones lineales de una sola función $g(x)$, son todas de la forma $\lambda g(x)$, con $\lambda \in \mathbb{C}$, es decir, son todas \textbf{múltiplos} de $g(x)$.
+\end{definicion}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item La función $f(x)=x^2 + 3x + 1$ es una combinación lineal de las funciones $x^2 ,x, 1$.
+        \item La función $e^{iz} = \cos(z) + i \sen(z)$ es una combinación lineal de $\sen(z)$ y $\cos(z)$.
+        \item La función $\cos(x)$ no se puede escribir como un múltiplo de $\sen(x)$.
+    \end{itemize}
+\end{ejemplo}
+
+El siguiente teorema se conoce como \textit{principio de superposición} para ecuaciones homogéneas, y nos dice que el conjunto de solución de una EDO lineal homogénea es en efecto un espacio vectorial.
+
+\begin{teorema}{Principio de Superposición}{}
+    Si $y_1,y_2,\dots,y_k$ son soluciones de una EDO lineal homogénea, entonces cualquier combinación lineal de ellas es también una solución.
+\end{teorema}
+Esto nos dice básicamente que sumar soluciones de una EDO lineal homogénea produce nuevas soluciones de la misma ecuación.
+
+\begin{ejemplo}
+    Las funciones $y_1=x^2$ y $y_2 = x^2 \ln x$ son soluciones de la ecuación lineal homogénea $x^3y''' - 2xy' + 4y = 0$. Por el principio de superposición, tenemos que las funciones \linebreak $y_3= -x^2 + 5x^2 \ln(x)$ , $y_4 = \frac{2}{7}x^2 - \sqrt{3}x^2 \ln (x)$ son también soluciones  a la misma ecuación. Más generalmente, para cualesquiera $C_1,C_2 \in \mathbb{C}$, la función
+$$y=C_1x^2 + C_2x^2 \ln(x)$$
+es solución a la ecuación diferencial.
+\end{ejemplo}
+
+Vemos entonces que cuando se trata de una EDO lineal homogénea, sin importar el grado, su \textit{familia} de soluciones es en realidad un espacio vectorial. Recordemos que para describir un espacio vectorial, basta con describir una base del mismo. Buscaremos entonces una base del espacio solución.
+
+\begin{definicion}{Independencia Lineal}{}
+    Un conjunto de funciones $\{f_1(x),\dots,f_n(x) \}$ se dice ser \textbf{linealmente independiente} si no existen constantes $c_1 , c_2 , \dots , c_n \in \mathbb{C}$ \textbf{no todas nulas}, que hagan que
+$$c_1f_1(x) + c_2f_2(x) + \dots + c_nf_n(x)=0$$
+para todo $x \in \mathbb{R}$.
+\end{definicion}
+
+Verificar si un conjunto de funciones es l.i. puede llegar a ser complicado, especialmente si tenemos muchas funciones. Para ello, tomamos prestado un recurso de álgebra lineal, el determinante.
+
+\begin{definicion}{Wronskiano}{}
+    El \textbf{Wronskiano} de las funciones $f_1(x),\dots,f_n(x)$ se define mediante la fórmula
+$$W(f_1(x),\dots,f_n(x))(x) = \det \begin{pmatrix}
+f_1(x) & f_2(x) & \dots & f_n(x) \\
+f'_1(x) & f'_2(x) & \dots & f'_n(x) \\
+\vdots & \vdots & \ddots & \vdots\\
+f_1^{(n-1)}(x) & f_2^{(n-1)}(x) & \dots & f_n^{(n-1)}(x)
+ \end{pmatrix}$$
+\end{definicion}
+
+ \begin{teorema}{}{}
+    Si $f_1,\dots,f_n$ son funciones \textbf{l.d.}, entonces, para todo $x \in \mathbb{R}$, $$W(f_1(x),f_2(x),\dots,f_n(x))(x)=0.$$ Es decir, el Wronskiano de las funciones es la constante $0$.
+ \end{teorema}
+ 
+ También podemos ver el mismo teorema escrito de otra forma:
+ 
+ \begin{teorema}{}{}
+    Si $f_1,\dots,f_n$ son funciones, y existe algún $x$ tal que $$W(f_1(x),\dots,f_n(x))(x)\neq0,$$ entonces las funciones son \textbf{l.i}. Es decir, cuando el Wronskiano no es la constante 0, las funciones serán l.i.
+ \end{teorema}
+ 
+ \begin{ejemplo}
+     Demostremos de nuevo que las funciones $x,x^2$ son l.i. Note que
+ $$W(x,x^2)(x) = \det \begin{pmatrix*}
+ x & x^2 \\
+ 1 & 2x
+ \end{pmatrix*} = (x)(2x)-(1)(x^2)=x^2.$$
+ Como el Wronskiano no es la constante 0, concluímos gracias al teorema que $x$ y $x^2$ son l.i. La prueba es más fácil que la anterior.
+ \end{ejemplo}
+
+\begin{teorema}{}{}
+    La familia de soluciones de una EDO lineal homogénea de orden $n$, es decir, de la forma
+  \begin{equation}\label{eqn:7}
+ a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)} + \dots + a_1(x)y' + a_0(x)y =0
+  \end{equation}
+ es un espacio vectorial de dimensión $n$. En otras palabras, existen $n$ funciones linealmente independientes $y_1,\dots,y_n$ que cumplen que, para cualquier otra solución $y$, existen (únicos) escalares $c_1,c_2, \dots , c_n \in \mathbb{C}$ tales que para todo $x$,
+ $$y(x) = c_1y_1(x)+ \dots + c_ny_n(x).$$
+ Dicho de una tercera forma, el conjunto solución una EDO lineal homogénea de orden $n$, tiene un \textit{base} con $n$ elementos.
+\end{teorema}
+
+El teorema anterior simplemente nos dice que si estamos intentando resolver una EDO lineal homogénea de orden $n$, y ya tenemos $n$ soluciones que son l.i., entonces ya tenemos la solución general.
+
+\section{Ecuaciones diferenciales homogéneas con coeficientes constantes}
+En esta subsección vamos a resolver ecuaciones de la forma  
+ \begin{equation}\label{eqn:8}
+    a_n y^{(n)} + a_{n-1}y^{(n-1)} + \dots + a_1y' + a_0y = 0
+  \end{equation}
+  donde los $a_i$ son todos números reales. Para resolver esta ecuación, vamos a construir una nueva ecuación, llamada la \textbf{ecuación característica}, la cual no es una EDO, sino una ecuación polinomial clásica. Ésta se consigue cambiando en \eqref{eqn:8} las $y^{(k)}$ por un $m^k$ para todo $k \in \{0,1,\dots,n \}$. Es decir, la ecuación característica es
+ \begin{equation}\label{eqn:9}
+    a_n m^n + a_{n-1}m^{n-1} + \dots + a_1m + a_0 = 0.
+  \end{equation}
+  Las raíces de esta ecuación son $n$ números complejos (puesto que todo polinomio de grado $n$ tiene exactamente $n$ raíces en $\mathbb{C}$). Supongamos que $\alpha_1,\dots,\alpha_n$ son las raíces de \eqref{eqn:9}. Entonces es posible demostrar que las funciones $y_i(x) = e^{\alpha_ix}$ son soluciones de la ecuación \eqref{eqn:8}. De ellas podemos entonces construir directamente la solución general de la ecuación \eqref{eqn:8}.
+  
+  \textbf{Caso 1:} Si todos los $\alpha_1,\dots,\alpha_n$ son reales y distintos, entonces la solución general es
+  $$y(x) = C_1e^{\alpha_1 x} +  C_2e^{\alpha_2 x} + \dots +  C_{n-1}e^{\alpha_{n-1} x} +  C_ne^{\alpha_n x}.$$
+  Esto pues en caso de ser todas las raíces distintas, todas las $y_i = e^{\alpha_ix}$ son l.i, y como son exactamente $n$, son una base del espacio solución.
+  
+  \textbf{Caso 2: }Si entre los $\alpha_1,\dots,\alpha_n$ hay algunos repetidos (sean reales o complejos), entonces debemos contar sus \textbf{multiplicidades} (es decir, cuántas veces aparece cada uno repetido). Entonces por ejemplo, si la raíz $\alpha_1$ tiene una multiplicidad de $k$, a esta raíz se le asocia la solución
+  $$y_{\alpha_1}(x) = C_0e^{\alpha_1x} +C_1xe^{\alpha_1x} +C_2x^2e^{\alpha_1x} + \dots C_{k_1}x^{k-1}e^{\alpha_1x}.$$
+  Es decir, para obtener la solución asociada a una raíz repetida $k$ veces, sumamos a partir de $e^{\alpha_1 x}$, agregándole $xe^{\alpha_1 x}$, y así sucesivamente hasta llegar a la potencia $k-1$ en $x$.
+  Repitiendo esto para cada solución \textbf{distinta} de la ecuación característica, se tiene que la solución general es
+  $$y(x) = y_{\alpha_1}(x) + \dots + y_{\alpha_n}(x)$$
+
+\textbf{Caso 3: }Cuando alguna de las raíces sea un número complejo (no real), de la forma $\alpha+\beta i$, sabemos que $\alpha - \beta i$ (su conjugado complejo) también es raíz de \eqref{eqn:9}. Esto nos dice que las funciones $e^{\alpha + \beta i}$ y $e^{\alpha - \beta i}$  son ambas soluciones de \eqref{eqn:8}. Aplicando el principio de superposición y algunas identidades de números complejos, podemos resumir la solución asociada a ambas raíces $\alpha+\beta i$ y $\alpha-\beta i$ , como una función de argumento real, dada por
+$$y_{\alpha + \beta i} = e^{\alpha x}(c_1 \cos(\beta x) + c_2 \sen(\beta x)) \quad \text{con } c_1,c_2 \in \mathbb{C}.$$
+
+\begin{ejemplo}
+    La ecuación $$y'' - 3y' - 10y = 0$$
+es una EDO lineal homogéna de coeficientes constantes. Entonces podemos aplicar este método. Su ecuación característica es
+$$m^2 - 3m -10 = 0.$$
+Por medio de inspección o fórmula general, podemos ver que las raíces de esta ecuación son $m_1 = -2$ y $m_2 = 5$. Como son soluciones reales distintas, podemos aplicar el caso 1 del método y decir simplemente que la solución general es
+$$y(x) = C_1 e^{-2x} + C_2 e^{5x}.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    La ecuación
+$$y'' +10y' +25y=0$$
+tiene ecuación característica
+$$m^2 + 10m + 25 = 0.$$
+la cual se factoriza como 
+$$(m+5)^2 = 0.$$
+Esto nos dice que la raíz $m_1 = -5$ tiene \textbf{multiplicidad 2}, por lo que debemos aplicar el caso 2 del método. La solución asociada a $m_1 = -5$ es
+$y_{m_1}= C_1 e^{-5x} + C_2 x e^{-5x}$,
+y como no hay más raíces, la solución general viene dada por 
+$$y(x) = y_{m_1} =  C_1 e^{-5x} + C_2 x e^{-5x}.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Encuentre la solución general de cada una de las siguientes EDOs.
+    \begin{enumerate}
+    \item $y''+4y'-y=0$.
+    \item $y''' -3y''+3y'-3y = 0$
+    \item $y''+5y=4y'$.
+    \item $16 \dfrac{d^4y}{dx^4}+24\dfrac{d^2y}{dx^2} + 9y=0$.
+    \item $u^{(5)} + 5u^{(4)}-2u^{(3)}-10u''+u'+5u=0$.
+    \end{enumerate}
+\end{ejercicios}
+
+\begin{ejercicios}
+    Resuelva los siguientes problemas de valor inicial.
+    \begin{enumerate}
+    \item $8x''(t) - 2x'(t) -15x(t) = 0$ con las condiciones $y(0)=y'(0)=1$ .
+    \item $y^{(6)}-2y^{(5)}-2y^{(4)}+2y^{(3)}+y''+4y'+4y=0$, con la condición \newline $y(0) = y'(0)=\dots = y^{(5)}(0)=0$.
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Operadores Diferenciales}
+Vamos a introducir una nueva manera de denotar la derivada de una función. Definimos el \textit{operador diferencial }$D$ como la función
+$$D(f(x))=f'(x).$$
+Así, tenemos que $D(x^3)=3x^2$, y $D(\sen(x))=\cos(x)$ por ejemplo. Denotamos $Df$ en vez de $D(f(x))$ por comodidad. Note que las derivadas de orden superior también se pueden expresar con este operador
+$$D^2y = D(D(y))=D(y')=y'' \ , \ \text{y en general } \ D^ny=y^{(n)}.$$
+Además podemos formar expresiones polinomiales usando este operador.
+Cualquier EDO lineal se puede reescribir usando el operador diferencial $D$. Por ejemplo, la ecuación
+$$y''+5y'+6y=5x$$
+pasa a ser
+$$(D^2+5D+6)y=5x.$$
+Para resolver ecuaciones no homogéneas, vamos a definir los anuladores diferenciales.
+
+\begin{definicion}{Anulador Diferencial}{}
+    Un \textit{anulador diferencial} (o aniquilador diferencial) de una función $f$ es un polinomio en $D$, llamado $H(D)$, que cumpla que
+$$H(D)f=0.$$
+\end{definicion}
+
+Por ejemplo, $D-1$ es un anulador de $e^x$, $D^2+1$ es un anulador de $\sen(x)$.
+A continuación una lista con los anuladores que vamos a necesitar más a menudo.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Función $f$}                                                                    & \multicolumn{1}{c|}{\textbf{Anulador Diferencial}} \\ \hline
+$a_nx^n + \dots + a_1x + a_0$                                                           & $D^{n+1}$                                          \\ \hline
+$Ae^{\alpha x}$                                                                         & $D-\alpha$                                         \\ \hline
+$Ax^ne^{\alpha x}$                                                                      & ($D-\alpha)^{n+1}$                                     \\ \hline
+$A \cos(\omega x) + B \sen(\omega x)$                                                   & $D^2 + \omega^2$                                   \\ \hline
+$A \cosh(\omega x) + B\senh(\omega x)$                          & $D^2-\omega^2$                                     \\ \hline
+$P_n(x)\cos(\omega x) + Q_m(x) \sen(\omega x)$ & $(D^2 + \omega^2)^{N+1} \, \ N=\max{n,m}$   \\ \hline
+$e^{\alpha x}(P_n(x)\cos(\omega x) + Q_m(x) \sen(\omega x))$ & $((D-\alpha)^2 + w^2)^{N+1} \ , \ N=\max{n,m}$
+\\ \hline
+\end{tabular}
+\end{center}
+
+\section{EDOs lineales no homogéneas}
+Vamos a considerar ecuaciones de la forma
+ \begin{equation}\label{eqn:10}
+   a_ny^{(n)} + \dots + a_1y' + a_0 = f(x)
+  \end{equation}
+Donde $a_i \in \mathbb{R}$ y $f(x) \neq 0$. Esta ecuación puede verse como 
+$$(a_nD^n + \dots + a_1D + a_0)y = f(x)$$
+Para resolver esta ecuación debemos encontrar un anulador diferencial $H$ de $f(x)$. Una vez encontrado, multuplicamos toda la ecuación por $H$, para obtener
+$$H(a_nD^n + \dots + a_1D + a_0)y = Hf(x)=0.$$
+la cual es una ecuación lineal homogénea. Una vez hecho esto, debemos comparar la solución general $y_h$ de esta ecuación homogénea con la \textbf{solución complementaria} $y_c$ de 
+$$(a_nD^n + \dots + a_1D + a_0)y = 0$$
+es decir, de la ecuación original sin el término $f$. Esta comparación nos permitirá encontrar una solución particular $y_p$ de la ecuación \eqref{eqn:10}. La solución general viene dada finalmente por
+$$y = y_c + y_p.$$
+
+\begin{ejemplo}
+    Encuentre la solución general de la ecuación 
+$$y'' - 2y + y = x.$$
+Lo primero que debemos hacer es resolver la ecuación como si fuera homogénea, para encontrar $y_c$. Esta ecuación ya la sabemos resolver, por lo que
+$$y_c = C_1e^x + C_2xe^x.$$
+Ahora, reescribimos la ecuación en términos del operador $D$, para obtener
+$$(D^2 - 2D + 1)y = (D-1)^2y =  x,$$
+como el anulador de $x$ es $D^2$, se lo aplicamos a la ecuación en ambos lados.
+$$D^2(D-1)^2 y = 0.$$
+Esta ecuación también la sabemos resolver (simplemente resolvemos la ecuación característica $m^2 (m-1)^2 = 0$. Esto nos dice que
+$$y_h = C_3 + C_4x + C_5e^x + C_6xe^x.$$
+Para conseguir $y_p$ debemos eliminar los términos \textit{similares} a los de $y_c$, en la solución $y_h$, es decir, los términos que son iguales salvo parámetros. En este caso, los términos similares son $e^x$ y $xe^x$, por lo que, eliminándolos, buscamos una solución particular de la forma
+$$y_p = C_3 + C_4x.$$
+Como buscamos una solución \textit{particular,} debemos hallar los valores de $C_3$ y $C_4$, para esto simplemente derivamos nuestra candidata, y la sustituimos en la ecuación original.
+\begin{alignat*}{2}
+&&(C_3 + C_4x)'' - 2(C_3+C_4x)' + (C_3 + C_4x) &= x \\
+\Rightarrow&& -2C_4 + C_3 + C_4x &= x\\
+\end{alignat*}
+Al comparar coeficientes a cada lado, se deduce que $C_4=1$, y por lo tanto $C_3=2$. Esto implica que $y_p = 2+x$. Finalmente, la solución general de la ecuación es
+$$y = y_c + y_p = C_1e^x + C_2xe^x + 2 + x.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Encuentre la solución general de las siguientes ecuaciones diferenciales.
+    \begin{enumerate}
+    \item $y'' + 3y' + 2y = 4x^2$.
+    \item $y'' - 5y' + 6y = e^{-3x} + \sen(2x)$.
+    \item $y'''+y'' = e^x \sen(x)$
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Método de coeficientes indeterminados}
+Una vez más, estamos interesados en resolver ecuaciones de la forma \eqref{eqn:10}. Vamos a utilizar la misma técnica de encontrar la solución complementaria $y_c$, y a partir de ella una solución particular $y_p$, de donde se sigue que la solución general es $y=y_c + y_p$. Sin embargo, para encontrar $y_p$, usaremos un nuevo método, el cual consiste en una especie de \textit{conjetura} que hacemos a partir de la forma que tenga $f(x)$.
+
+\textbf{Nota: }Este método funciona únicamente cuando el término $f(x)$ de la ecuación \eqref{eqn:10} es un polinomio, un seno o un coseno, una exponencial, o cualquier suma y/o producto de estos.
+
+\begin{ejemplo}
+    Encuentre la solución general de
+$$y''+4y-2y = 2x^2 - 3x + 6$$
+mediante coeficientes indeterminados.
+Comenzamos al igual que con el método de anuladores, resolviendo la ecuación sin término $f(x)$,
+$$y''+4y'-2y = 0,$$
+cuya solución es
+$$y_c = C_1 e^{-(2+\sqrt{6})x}+ C_2 e^{(-2+\sqrt{6})x}.$$
+Ahora, como la función $f(x)$ es un polinomio de grado 2, el método consiste en \textbf{asumir} que la solución particular debe ser también un polinomio de grado 2:
+$$y_p = Ax^2 + Bx+ C,$$
+del cual solo debemos despejar $A,B,C$. Derivando nuestra candidata, obtenemos
+\begin{alignat*}{2}
+&& y_p''+4y_p' - 2y_p &= 2x^2 - 3x + 6\\  \Rightarrow && (Ax^2 + Bx+ C)'' + 4(Ax^2 + Bx+ C)' - 2(Ax^2 + Bx+ C) &= 2x^2 - 3x + 6 \\
+\Rightarrow && 2A+8Ax+4B - 2Ax^2 - 2Bx - 2C &=2x^2 - 3x + 6
+ \end{alignat*}
+ Comparando los coeficientes de cada polinomio, debemos resolver el sistema
+ $$\begin{cases}
+ -2A=2 \\
+ 8A-2B=-3\\
+ 2A+4B-2C=6\\
+ \end{cases}.$$
+ La solución es $A=-1$, $B=-\frac{5}{2}$, $C=-9$. Esto nos dice que
+ $$y_p = -x^2 - \frac{5}{2}x - 9$$
+ por lo que finalmente la solución general es
+ $$y=y_c+y_p = C_1 e^{-(2+\sqrt{6})x}+ C_2 e^{(-2+\sqrt{6})x}+-x^2 - \frac{5}{2}x - 9. $$
+\end{ejemplo}
+
+\begin{ejercicio}
+Complete la siguiente tabla.
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{$f(x)$}             & \textbf{Forma de $y_p$} \\ \hline
+$1$ (o cualquier constante) & A                       \\ \hline
+$5x+5$                      & A$x$+B                    \\ \hline
+$3x^2-2$                    &                         \\ \hline
+$x^4 - 2x$                  &                         \\ \hline
+$\sen(4x)$                  &                         \\ \hline
+$\cos(x)+1$                 &                         \\ \hline
+$e^{5x}$                    &                         \\ \hline
+$9xe^{5x}$                  &                         \\ \hline
+$x^2 \sen(3x)$              &                         \\ \hline
+$e^{3x}\sen(4x)$            &                         \\ \hline
+$5x^2 + x \sen(4x)$         &                         \\ \hline
+$xe^x\sin(x)$               &                         \\ \hline
+\end{tabular}
+\end{center}
+\end{ejercicio}
+
+\subsection{Método de variación de parámetros}
+En esta subsección estamos interesados en resolver ecuaciones de orden 2, de la forma
+ \begin{equation}\label{eqn:11}
+   y'' + p(x)y' + q(x)y = f(x)
+  \end{equation}
+En donde $f(x) \neq 0$ y tampoco es de la forma apropiada para aplicar anuladores o coeficientes indeterminados. La inspiración de este método proviene de la solución de la homogénea. Supongamos por un momento que la ecuación sí es homogénea, es decir que $f(x)=0$. Entonces existen dos funciones, $y_1(x)$ y $y_2(x)$, que son l.i.  y que hacen que la solución de la homogénea sea
+$$y_c=C_1y_1(x) + C_2y_2(x)$$
+donde $C_1,C_2$ son escalares. La idea de este método es no considerar $C_1,C_2$ como números sino como \textbf{funciones} de $x$. Esto nos ayudará a encontrar la solución particular que tendrá la forma
+$$y_p = C_1(x)y_1(x) + C_2(x)y_2(x).$$
+
+\begin{teorema}{Variación de Parámetros}{}
+    Considere la ecuación diferencial \eqref{eqn:11}, con sistema fundamental de soluciones $\{y_1,y_2\}$. La solución general de la ecuación es dada por
+$$y(x)=Ay_1(x) + By_2(x) + C_1(x)y_1(x) + C_2(x)y_2(x)$$
+en donde $A,B \in \mathbb{C}$, y
+$$C_1(x) = \int \frac{-y_2(x)f(x)}{W(y_1,y_2)(x)}dx \quad , \quad C_2(x) = \int \frac{y_1(x)f(x)}{W(y_1,y_2)(x)}dx.$$
+\end{teorema}
+
+\begin{ejemplo}
+    Considere la ecuación 
+$$y'' - 2y' + y = e^x \ln(x).$$
+Comenzamos igual que siempre, como se trata de coeficientes constantes, es fácil calcular la solución complementaria
+$$y_c = Ae^x + Bxe^x$$
+de donde solamente nos interesa tomar el sistema fundamental:
+$$y_1 = e^x  \ ; \ y_2 = xe^x.$$
+Podemos calcular el Wronskiano de una vez
+$$W(e^x,xe^x)(x) = \det \begin{pmatrix*}
+e^x & xe^x \\
+e^x & (x+1)e^x\\
+\end{pmatrix*} = e^{2x}.$$
+Ahora, podemos aplicar la variación de parámetros, usando las fórmulas para $C_1$ y $C_2$.
+\begin{align*}
+C_1 &=  \int \frac{-y_2(x)f(x)}{W(y_1,y_2)(x)}dx = \int \frac{-xe^x e^x \ln(x)}{e^{2x}}dx = \int -x\ln( x )dx = \frac{x^2(1-2\ln(x))}{4} \\
+\vspace{8pt}
+C_2 &=\int \frac{y_1(x)f(x)}{W(y_1,y_2)(x)}dx = \int \frac{e^x e^x \ln(x) }{e^{2x}} = \int \ln(x)dx ) =  x \ln(x) - x
+\end{align*}
+Ambas integrales se calculan usando integración por partes. Además, omitimos las constantes de integración pues en caso de agregarlas, redundarían con los parámetros finales $A$ y $B$. Gracias al teorema, encontramos rápidamente la solución general a la ecuación
+$$y=y_c + y_p = Ae^x + Bxe^x + \left(\frac{x^2(1-2\ln(x))}{4} \right)e^x + (x\ln(x) - x)xe^x$$
+la cual, después de agrupar un poco, queda como 
+$$y= Ae^x + Bxe^x - \frac{3}{4}x^2e^x + \frac{1}{2}x^2 \ln(x)e^x.$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Resuelva las siguientes ecuaciones diferenciales y problemas de valor inicial, utilizando el método de variación de parámetros.
+    \begin{enumerate}
+    \item $y''-2y' + y = \dfrac{e^x}{1+x^2}$.
+    \item $y'' - y = \frac{1}{x}$. \textit{Nota: }si aparecen integrales no elementales, puede dejarlas en forma integral.
+    \item $x''(t) + 3x'(t) + 2x(t) = \sen(e^-t).$
+    \item $y'' + y = \cot(x)$, bajo la condición $y(\pi/4)= y'(\pi/4)=0$.
+    \item $x^2y'' - xy' + y = \dfrac{x}{1+\ln^2(x)}$ con las condiciones $y(1) = y(e) =0$, sabiendo que una solución particular es $y=x$. \textit{Sugerencia: } Esta ecuación no tiene coeficientes constantes, para encontrar la otra solución l.i. puede utilizar la fórmula de Abel.
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Ecuación de Cauchy-Euler}
+Para concluir con el tema de EDOs de orden superior, estudiaremos el método de solución para las ecuaciones de \textit{Cauchy-Euler}, las cuales tienen la forma
+
+ \begin{equation}\label{eqn:120}
+  a_nx^ny^{(n)} + a_{n-1}x^{n-1}y^{(n-1)} + \dots + a_1xy' + a_0y=0.
+  \end{equation}
+En donde $a_0,a_1,\dots,a_n$ son constantes. Es decir, estas ecuaciones tienen coeficientes variables, pero estos coeficientes tienen un patrón, pues el coeficiente que acompaña la $k$-ésima derivada de $y$ es simplmente $x^k$.
+Para resolver este tipo de ecuación, debemos aplicar el cambio de variable $x=e^u$, de donde $\frac{dx}{du}=x$, la cual convierte a la ecuación en una de coeficientes constantes, que debe ser resuelta por alguno de los otros métodos que hemos estudiado.
+
+\begin{ejemplo}
+    Considere la ecuación de segundo orden
+$$x^2y'' +bxy' + cy = 0.$$
+Tomando el cambio de variable $x=e^u$ (o equivalentemente $ u= \ln(x)$), debemos calcular ahora las dos primeras derivadas de $y$ con respecto a $u$. Debemos usar la regla de la cadena,
+$$\frac{dy}{du} = \frac{dy}{dx}\frac{dx}{du}=x\frac{dy}{dx} = xy',$$
+y derivando de nuevo con respecto a $u$ (hay que aplicar la regla del producto, y la regla de la cadena de nuevo),
+$$\frac{d^2y}{du^2}=\frac{dx}{du}\frac{dy}{dx} + x \frac{d^2y}{dx^2}\frac{dx}{du} = xy' + x^2y''.$$
+Utilizando estas dos igualdades, podemos despejar $y''$ y $y'$, para obtener
+\begin{align*}
+y' &= \frac{1}{x} \frac{dy}{du} \\
+y'' &= \frac{1}{x^2} \left(\frac{d^2y}{du^2} -  \frac{dy}{du} \right)
+\end{align*}
+Después de sustituir y simplificar, esto convierte a nuestra ecuación en
+$$\frac{d^2y}{du^2} + (b-1) \frac{dy}{du}+ cy=0$$
+la cual es una EDO lineal de coeficientes constantes. Note que este cambio de variable y las manipulaciones a los diferenciales serán siempre los mismos, sin importar qué ecuación se tenga (siempre y cuando sea de orden 2).
+\end{ejemplo}
+
+\begin{ejercicio}
+\begin{itemize}
+\item $x^2y'' - 3xy' + 3y = 2x^4e^x$.
+\item $3x^2y'' - xy' + 2y = 0$.
+\item $x^3y'' - 4x^2y' + 6xy = \ln(x^{x^4})$.
+\item $x^3y''' +5x^2y'' + 7xy' + 8y = 0$.
+\end{itemize}
+\end{ejercicio}

@@ -1,0 +1,464 @@
+\chapter{Ecuaciones de Primer Orden}
+
+\section{Método de separación de variables}
+El primer método se conoce como separación de variables, y nos va a permitir resolver cualquier ecuación de la forma
+$$f(x)dx = g(y)dy.$$
+Es decir que, si por medio de manipulaciones algebraicas (tratando los diferenciales $dx$ y $dy$ como variables), logramos que de un lado de la ecuación solo aparezca $x$ y del otro lado solo aparezca $y$, este método funcionará. Una vez se logre alcanzar esta forma, simplemente se integra a ambos lados:
+$$\int f(x)dx  = \int g(y)dy.$$
+\begin{ejemplo}
+    Para resolver la ecuación
+    $$\frac{dy}{dx} = \frac{x^2}{y(1+x^3)}$$
+    Podemos despejar fácilmente para obtener
+    $$ydy = \frac{x^2}{1+x^3}dx.$$
+    Por lo que solo tenemos que integrar a ambos lados para obtener
+    $$\int y dy = \int \frac{x^2}{1+x^3}dx$$
+    Esta integral se puede resolver mediante el cambio de variable $u=(1+x^3)$. Finalmente, la solución general se obtiene de manera implícita:
+    $$\frac{y^2}{2} = \frac{\ln(1+x^3)}{3} + C$$
+    Donde $C \in \mathbb{R}$ es un parámetro.
+\end{ejemplo}
+
+\textbf{NOTA: }En sentido estricto, se deberían obtener $2$ constantes de integración, una a cada lado de la igualdad, obteniendo la solución general
+$$\frac{y^2}{2} = \frac{\ln(1+x^3)}{3} + C_1 - C_2$$
+Sin embargo, como tanto $C_1$ y $C_2$ son números reales cualesquiera, la cantidad $C_1- C_2$ también será un número real cualquiera, por lo que la resumimos simplemente como un nuevo parámetro $C$. Abusaremos mucho de este hecho a lo largo de la resolución de EDOs y problemas de valor inicial.
+
+\begin{ejemplo}
+    También podemos resolver problemas de valor inicial:
+    $$xdx + ye^{-x}dy = 0 \quad , \quad y(0)=1.$$
+    Primero debemos encontrar la solución general, para poder despejar el parámetro. Separando las variables obtenemos
+    $$ydy = -xe^xdx$$
+    e integrando en ambos lados se obtiene la solución (implícita)
+    $$\frac{y^2}{2} = e^x (1-x) + C$$
+    o equivalentemente
+    $$y^2 = 2e^x(1-x) + C $$
+    donde volvemos a hacer el abuso ``$2C = C$''. Ahora solo nos falta resolver usando la condición inicial. Como $y(0)=1$, necesitamos que 
+    $$1= 2e^0 (1-0)+C$$
+    de lo cual se deduce que $C=-1$. La solución del problema es entonces
+    $$y^2 = 2e^x(1-x) -1$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Encuentre la solución general de las siguientes EDOs
+    \begin{enumerate}
+    \item $e^x y' = 2x$
+    \item $dy + 2xydx = 0$
+    \item $\dfrac{dQ}{dt}=300(Q-70)$
+    \item $\dfrac{1+x^2 }{\sqrt{1-y^2}}dy=\dfrac{dx}{\arcsen(y)}$
+    \item $y'+y\tan(x) = 0$
+    \item $\sec^2xdy + \csc ydx = 0$
+    \end{enumerate}
+\end{ejercicios}
+
+\textbf{Resumen: }Este método se reduce simplemente a ``separar"  las variables en cada lado de la ecuación, con sus respectivos $dx$ y $dy$, y luego integrar a ambos lados. La mayor dificultad que se puede presentar es una integral complicada al final, por eso debemos dominar los métodos de integración.
+
+\section{Cambios de Variable}
+Al igual que cuando estudiamos métodos de integración, en la resolución de ecuaciones diferenciales, un buen cambio de variable puede hacer que un problema que pareciera imposible se vuelva más sencillo. Los cambios de variable se deben hacer siempre respetando la regla de la cadena. Veamos un ejemplo.
+
+\begin{ejemplo}
+    La ecuación $$\frac{dy}{dx}=\frac{1}{x+y}$$
+    no es separable. Considere ahora el cambio de variables $z=x+y$. Derivando (justo como se haría en el cambio de variable de una integral)
+    $$dz=dx+dy \Rightarrow \frac{dy}{dx} = \frac{dz}{dx}-1$$
+    lo cual quiere decir, que en este caso en particular, podemos reescribir la ecuación únicamente en términos de $x$ y $z(x)$:
+    $$\frac{dz}{dx}-1 = \frac{1}{z}$$
+    la cual sí es separable. Al separar sus variables se obtiene que
+    $$\frac{z}{1+z}dz = dx.$$
+    Integrando a ambos lados obtenemos la solución implícta pero en términos de $z(x)$.
+    $$z- \ln(1+z) = x + C$$
+    por lo que solo falta deshacer el cambio de variable
+    $$x+y - \ln(1+x+y) = x+C.$$
+    La solución general viene dada de forma implícita:
+    $$y-\ln(1+x+y) = C.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    A veces es necesario realizar más de un cambio de variable. Considere la ecuación
+    $$xy'=y\cos(xy)$$
+    la cual reescribimos como 
+    $$xdy = y \cos(xy)dx.$$
+    Comencemos primero tomando $x=e^t$ (esto cambiará la variable independiente, ahora será $t$). Tenemos entonces que $dx = e^t dt$ por lo que al sustituir en la ecuación obtenemos que
+    $$e^tdy = y\cos(ye^t)e^tdt $$
+    la cual se simplifica a 
+    $$dy = y\cos(ye^t)dt.$$
+    Esta ecuación aún no es separable, por lo que ahora consideramos el cambio de variable $u = ye^t$. Derivando (usando la regla del producto) se tiene que 
+    \begin{alignat*}{2}
+     &&du &= e^t dy + ye^tdt \\
+     && &= e^tdy + udt \\
+     \Rightarrow&& dy &= (du-udt)e^{-t}.
+    \end{alignat*}
+    Por lo que nuestra ecuación puede expresarse en términos de $u(t)$ y $t$
+    $$(du-udt)e^{-t} = ue^{-t}\cos(u)dt$$
+    la cual sí es separable. No nos interesa por ahora el resto de la resolución, pues la integral que resulta al final no se puede expresar elementalmente.
+\end{ejemplo}
+
+Cuando hacemos cambios de variable siempre debemos mantenernos atentos a si nuestras variables son dependientes o independientes. Recodemos que como trabajamos con ecuaciones \textbf{ordinarias}, solo podemos tener en todo momento \textbf{una} variable independiente, y \textbf{una} independiente (y sus derivadas).
+
+\textbf{NOTA: } El cambio de variable del ejemplo anterior de hecho funciona para cualquier ecuación de la forma $$xy'=yf(xy)$$
+
+\subsection{Sustitución lineal}
+Este cambio de variables lo utilizamos para resolver ecuaciones de la forma
+$$y'=f(ax+by+c)$$
+El cambio de variable a usar es $z=ax+by+c$, del cual se deduce que $dz=adx+bdy$. 
+
+\begin{ejemplo}
+    $$y' = \tan(x+y+3).$$
+    Tomemos $z=x+y+3$, lo cual implica que $dz=dx+dy$. Entonces, recordando que nuestra ecuación se puede ver como $dy =\tan(x+y+3)dx$, al sustituir obtenemos
+    \begin{alignat*}{2}
+    &&(dz-dx)=\tan(z)&dx \\
+    \Rightarrow&& dz = (1+\tan(z))&dx
+    \end{alignat*}
+    Por lo tanto, nuestro último obstáculo para resolver esta ecuación, es resolver la integral
+    $$\int \frac{dz}{1+\tan(z)}.$$
+    Recomiendo el cambio de variable 
+    $u=\tan(z)$, seguido de una descomposición en fracciones parciales. La solución general de la ecuación es
+    $$    \ln(\tan(x+y+3) +1) + y + \ln(\cos (x+y+3)) = x + C$$
+\end{ejemplo}
+
+\section{Ecuaciones que contienen funciones homogéneas}
+Antes de proceder con este método, vamos a definir el concepto de \textbf{función homogénea}. Esto NO se debe confundir con el concepto de EDO lineal homogénea, pues son completamente distintos.
+
+\begin{definicion}{Función Homogénea}{}
+    Sea $f:\mathbb{R}^2 \to \mathbb{R}$ una función de $2$ variables. Diremos que $f(x,y)$ es \textbf{homogénea de grado $k$} si para todo $t \in \mathbb{R}$ se cumple que 
+    $$f(tx,ty)=t^k f(x,y).$$
+\end{definicion}
+
+\begin{ejemplo}
+    \begin{itemize}
+    \item La función $f(x,y) = x^2 + y^2$ es homogénea de grado $2$, puesto que si $t \in \mathbb{R}$, se tiene que
+    $$f(tx,ty)=(tx)^2 + (ty)^2 = t^2x^2 + t^2y^2 = t^2(x^2+y^2) = t^2f(x,y)$$
+    \item La función $f(x,y) = \dfrac{x^3 + y^3}{x^3 - y^3}$ es homogénea de grado 0, puesto que si $t \in \mathbb{R} \setminus \{0\}$, se tiene que
+    $$f(tx,ty)=\frac{(tx)^3 + (ty)^3}{(tx)^3 - (ty)^3} = \frac{t^3 (x^3 + y^3)}{t^3(x^3 - y^3)} = \frac{x^3 + y^3}{x^3 - y^3} = t^0f(x,y)$$
+    \item La función $f(x,y) = x^4y^4$ es homogénea de grado $8$, puesto que si $t \in \mathbb{R}$, se tiene que
+    $$f(tx,ty)=(tx)^4(ty)^4 = t^8 (xy)^4 = t^8 f(x,y)$$
+    \item La función $f(x,y)= \cos(x+y)$ no es homogénea, pues no hay ningún número $k$ tal que
+    $$\cos(t(x+y)) \neq t^k \cos(x+y)$$
+     \end{itemize}
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Verifique si la función $g(x,y)= \dfrac{1}{\sqrt{x+y}}$ es homogénea. Encuentre su grado.
+    \end{enumerate}
+\end{ejercicios}
+
+En esta subsección veremos el método de resolución para ecuaciones que tengan la forma
+\begin{equation}\label{eqn:4}
+   y'=f(x,y)
+ \end{equation}
+donde $f$ es una función homogénea \textbf{de grado 0}. O equivalentemente, ecuaciones de la forma
+$$M(x,y)dx + N(x,y)dy = 0$$
+donde $M(x,y)$ y $N(x,y)$ son funciones homogéneas \textbf{del mismo grado}.
+
+La sustitución que usaremos para resolver \eqref{eqn:4}, cuando $f(x,y)$ es homogénea de grado 0 será
+$$u= \frac{y}{x}$$
+o equivalentemente $y=ux$, por lo que
+$$dy = udx + xdu.$$
+Esto convierte a nuestra ecuación en
+$$udx+xdu = f(x,ux)dx$$
+que por homogeneidad se vuelve
+$$udx+xdu = f(1,u)dx$$
+una ecuación separable.
+
+\begin{ejemplo}
+    Resuelva la ecuación
+    $$y' = \frac{x^2 + 3y^2}{2xy}.$$
+    Observe que el lado derecho de la ecuación es una función homogénea de grado 0. Por lo tanto tomando $y=ux$ y $dy = udx + xdu$ obtenemos
+    \begin{alignat*}{2}
+    && xdu + udx &= \frac{x^2 + 3(ux)^2 }{2x (ux)}dx \\
+    && &=\frac{1+3u^2}{2u}dx
+    \end{alignat*}
+    la cual, después de separar variables, se convierte en 
+    \begin{alignat*}{2}
+    && xdu &=  \left(  \frac{1+3u^2}{2u} - u\right)dx \\
+    \Rightarrow && xdu &= \left( \frac{1+u^2}{2u} \right)dx \\
+    \Rightarrow&& \frac{2u}{1+u^2} &= \frac{dx}{x}
+    \end{alignat*}
+    Al integrar a ambos lados, obtenemos que
+    $$\ln(1+u^2) = \ln(x) + C.$$
+    Al deshacer el cambio de variable, obtenemos la solución general
+    $$\ln\left(1+\frac{y^2}{x^2}\right) = \ln(x) +C$$
+    la cual se puede simplificar aplicando la función exponencial a ambos lados (y usando el abuso ``$e^C=C$")
+    $$1+\frac{y^2}{x^2} = Cx \quad , C>0$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Considere la ecuación diferencial
+    $$xdy -(\sqrt{y^2-x^2}+y)dx = 0.$$
+    Estamos ante una ecuación de la forma
+    $M(x,y)dx+N(x,y)dy=0$. Es fácil verificar que tanto $M(x,y)$ como $N(x,y)$ son funciones homogéneas del mismo grado (1). Aplicando el cambio de variable $xu=y$, obtenemos
+    $$x(udx+xdu) - (\sqrt{x^2u^2-x^2}+ux)dx=0$$
+    lo cual, al dividir todo por $x$ se vuelve
+    $$udx + xdu - (u+\sqrt{u^2-1})dx= 0$$
+    la cual es una ecuación separable. Después de reducir términos semejantes y separar las variables, se obtiene
+    $$\frac{du}{\sqrt{u^2-1}}= \frac{dx}{x}.$$
+    Al integrar a ambos lados, obtenemos la solución
+    $$\ln(\sqrt{u^2-1}+u) = \ln(x) + C.$$
+    Finalmente, al deshacer el cambio de variable y exponenciar a ambos lados, obtenemos la solución general.
+    $$\sqrt{\frac{y^2}{x^2}-1} + \frac{y}{x} = Cx \quad , C>0.$$
+    Como ejercicio, se recomienda completar los detalles en este ejemplo, incluyendo la integral.
+\end{ejemplo}
+
+\begin{ejercicios}
+    Resuelva los siguientes problemas de valor inicial.
+    \begin{enumerate}
+    \item $y'= \dfrac{y(2xy + 1)}{x(xy-1)}$, con la condición $y(1)=1$. Utilice el cambio $z=xy$.
+    \item $y'=\sen(-x+y-2\pi)$, con la condición $y(0)=0$
+    \item $(x+y)dx + xdy = 0$ , con la condición $y(1)=0$.
+    \item $y' = \dfrac{y-x}{y+x}$ , con la condición $y(1)=1$.
+    \item $\left(y + x\cot\dfrac{y}{x} \right) -xdy = 0$, con la condición $y(1)=-\pi$.
+    \item $\dfrac{x+y+1}{x-y-1}$, con la condición $y(1)=1$.
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Ecuaciones Diferenciales Exactas}
+Una EDO de primer orden en la forma
+$$M(x,y)dx + N(x,y)dy = 0$$
+se dice ser \textbf{exacta} si
+$$\frac{\partial M(x,y)}{\partial y}=\frac{\partial N(x,y)}{\partial x}$$
+
+\begin{ejemplo}
+    La ecuación $$(2xy-9x^2)dx + (2y+x^2 + 1)dy = 0$$
+    es exacta. Pues tomando $M(x,y)=2xy-9x^2$ y $N(x,y)=2y+x^2 + 1$, podemos notar que
+    $$\frac{\partial M}{\partial y} = 2x  = \frac{\partial N}{\partial x}.$$
+\end{ejemplo}
+\textbf{Nota: }Recuerde que para calcular la derivada parcial con respecto a una variable, hacemos como si las demás variables fueran constantes.
+
+\begin{ejemplo}
+    La ecuación
+    $$\cos(x+y)dx + ydy = 0$$
+    no es exacta, pues si $M(x,y)=\cos(x+y)$ y $N(x,y)=y$, vemos que
+    $$\frac{\partial M}{\partial y} = -\sen(x+y) \neq 1 = \frac{\partial N}{\partial x}.$$
+\end{ejemplo}
+
+Para resolver una ecuación diferencial exacta, tenemos que encontrar una \textbf{función potencial}, esto es, una función $F(x,y)$ que cumpla
+$$\frac{\partial F(x,y)}{\partial x } = M(x,y)\quad , \quad \frac{\partial F(x,y)}{\partial y} = N(x,y).$$
+Una vez encontrada dicha función, la solución general viene dada simplemente por 
+$$F(x,y)=C$$
+donde $C$ es el parámetro.
+
+\begin{ejemplo}
+    Resolvamos paso a paso la ecuación $$(2xy^2+4)dx - 2(3-x^2y)dy = 0.$$
+    Si deseamos utilizar este método, debemos verificar primero que se trata de una ecuación exacta. Tomemos por lo tanto $M(x,y)=(2xy^2+4)$ y $N(x,y)=-2(3-x^2y)$. Tenemos entonces que
+    $$\frac{\partial M}{\partial y} = 4xy$$
+    mientras que 
+    $$\frac{\partial N}{\partial x} = -2(-2xy)=4xy.$$
+    Por lo que nuestras derivadas coinciden. Lo que resta es encontrar nuestra función potencial. Estamos buscando alguna función $F(x,y)$ que cumpla
+    $$\begin{cases}
+    \frac{\partial F(x,y)}{\partial x}=M(x,y)=2xy^2+4 \\
+    \frac{\partial F(x,y)}{\partial y}=N(x,y)=-2(3-x^2y)
+    \end{cases}$$
+    Para encontrarla, debemos integrar dos veces, una con respecto a $x$ y otra con respecto a $y$.
+    \begin{alignat*}{2}
+    && \dfrac{\partial F(x,y)}{\partial x}&=2xy^2+4 \\
+    \Rightarrow&& \int  \dfrac{\partial F(x,y)}{\partial x}dx&=\int (2xy^2+4) dx \\
+    \Rightarrow&& F(x,y) &= x^2y^2 + 4x + 
+    C(y)
+    \end{alignat*}
+    En la integral de la derecha, como se trabaja respecto a $x$, hacemos cuenta de que $y$ es un número, por lo cual sale de la integral. Además, note que en vez de constante de integración, añadimos una función que solo depende de $y$. Esto pues, al derivar toda la expresión de nuevo con respecto a $x$, se tiene que $\frac{\partial C(y)}{\partial x}=0$, por lo que $C(y)$ en realidad se comporta de manera análoga a la constante de integración. De igual forma, integrando la segunda igualdad,
+    \begin{alignat*}{2}
+    && \dfrac{\partial F(x,y)}{\partial y}&=-2(3-x^2y) \\
+    \Rightarrow&& \int  \dfrac{\partial F(x,y)}{\partial y}dy&=\int -2(3-x^2y) dy \\
+    \Rightarrow&& F(x,y) &= -6y + x^2y^2 + K(x)
+    \end{alignat*}
+    donde una vez más, $K(x)$ es la ``constante de integración'' que en realidad depende de $x$ (pues esta vez integramos con respecto a $y$). Tenemos por lo tanto suficiente información acerca de $F(x,y)$:
+    \begin{align*}
+    F(x,y)&=x^2y^2 + 4x + C(y) \\
+    F(x,y)&= x^2y^2 + K(x) - 6y
+    \end{align*}
+    A partir de aquí, podemos ver por medio de un tanteo, que $K(x) =4x$ y que $C(y) =-6y$. Es decir, si bien cada una de las integrales no nos muestra quien es $F$, al unir la información, llegamos a la función, por lo que $F(x,y)=x^2y^2 +4x - 6y$. Finalmente, la solución general de la ecuación es $F(x,y)=C$, o sea
+    $$x^2y^2 +4x - 6y=C$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Resuelva el siguiente problema de valor inicial
+    $$ (3y^3 e^{3xy}-1)dx + (2ye^{3xy}+3xy^2e^{3xy})dy = 0 \ ; \ y(0)=1$$
+    Tenemos entonces que $M(x,y)=3y^3 e^{3xy}-1$ y que $N(x,y) =2ye^{3xy}+3xy^2e^{3xy}$. Derivando, obtenemos
+    $$\frac{\partial M}{\partial y}  = 9y^2e^{3xy} + 9xy^3e^{3xy}= \frac{\partial N}{\partial x}$$
+    por lo que nuestra ecuación es exacta. Tenemos ahora que encontrar $F(x,y)$ tal que 
+    $$\begin{cases}
+    \dfrac{\partial F(x,y)}{\partial x}=3y^3 e^{3xy}-1 \\
+    \ \\
+    \dfrac{\partial F(x,y)}{\partial y}=2ye^{3xy}+3xy^2e^{3xy}
+    \end{cases}$$
+    para lo cual integramos con respecto a $x$:
+    \begin{alignat*}{2}
+    && F(x,y) &= \int (3y^3e^{3xy} -1) dx \\
+    \Rightarrow&& &= y^2e^{3xy} - x + C(y).
+    \end{alignat*}
+    Ahora podemos integrar con respecto a $y$, pero en vez de eso, usaremos un atajo. Sabemos \footnote{Recordemos la abreviación
+    $F_z = \dfrac{\partial F}{\partial z}$} que $F_y = N(x,y)$. Es decir, que si derivamos la expresión que tenemos para $F$ con respecto a $y$, deberíamos obtener $N(x,y)$, en otras palabras
+    \begin{alignat*}{2}
+    &&\frac{\partial}{\partial y} \left( y^2e^{3xy} - x + C(y) \right) &= 2ye^{3xy}+3xy^2e^{3xy} \\
+    \Rightarrow&& 2ye^{3xy} + 3xy^2e^{3xy} +  C'(y) &= 2ye^{3xy}+3xy^2e^{3xy} \\
+    \Rightarrow&& C'(y) = 0
+    \end{alignat*}
+    Esto nos dice que $C(y)$ es en realidad una constante, digamos $C(y)=k$. Tenemos entonces nuestra función potencial, sin haber hecho la segunda integral con respecto a $y$. 
+    $$F(x,y) = y^2e^{3xy}-x +k.$$
+    La solución general al problema es
+    $$y^2 e^{3xy} - x  = C.$$
+    donde una vez más usamos el abuso ``$C-k=C$''. Solamente falta resolver la condición inicial: como $y(0)=1$, tenemos que
+    $$1e^0 - 0 = C \Rightarrow C=1$$
+    por lo que la solución al problema es finalmente  $$y^2 e^{3xy} - x  = 1.$$
+\end{ejemplo}
+
+\section{Solución por factores integrantes}
+No todas las ecuaciones de la forma
+$$M(x,y)dx + N(x,y)dy = 0$$
+son exactas. Sin embargo, a veces es posible multiplicar toda la ecuación por alguna función $\mu(x,y) \neq 0$ de forma que la nueva ecuación
+$$\mu(x,y)M(x,y)dx + \mu(x,y)N(x,y)dy=0$$
+sea exacta. Cuando esto es posible, decimos que la función $\mu(x,y)$ es un \textbf{factor integrante} de la ecuación diferencial.
+
+\begin{ejemplo}
+    La ecuación
+    $$\left(1+  \frac{y^2}{x} \right) - 2ydy = 0$$
+    no es exacta, pues si $M(x,y)=\left(1+  \frac{y^2}{x}\right)$ y $N(x,y)=-2y$, vemos fácilmente que $M_y = \frac{2y}{x} \neq 0 = N_x$. Sin embargo, si multiplicamos por $\mu(x) = \frac{1}{x}$ (el factor integrante puede ser incluso una función de una variable), obtenemos la ecuación
+    $$\left(\frac{1}{x}+  \frac{y^2}{x^2} \right) - \frac{2y}{x}dy = 0$$
+    en la cual, si tomamos ahora $P = \frac{1}{x}+  \frac{y^2}{x^2}$ y $Q = -\frac{2y}{x}$, vemos que
+    $$P_y = \frac{2y}{x^2} = Q_x,$$
+    lo cual implica que nuestra nueva ecuación sí es exacta. Tenemos entonces que la función potencial es $$F(x,y)=\int P dx = \ln(x) - \frac{y^2}{x}+C(y)$$
+    y como $F_y=Q$, derivando esta última expresión respecto a y, obtenemos
+    $$-\frac{2y}{x}+C'(y) = -\frac{2y}{x} \Rightarrow C'(y)=0$$
+    o sea, que $C(y)=C$ (es constante). Después de simplificar las constantes adicionales, la solución general de la ecuación es
+    $$\ln(x) - \frac{y^2}{x} = C.$$
+\end{ejemplo}
+
+En general, encontrar un factor integrante es difícil, pues no hay muchas fórmulas que nos ayuden a encontrarnos. Tenemos sin embargo un recurso que funciona para cierto tipo de ecuaciones diferenciales.
+Suponga que deseamos resolver
+$$M(x,y)dx+N(x,y)dy = 0$$
+usando algún factor integrante $\mu(x,y)$. Entonces, se tiene que
+\begin{itemize}
+\item Si la función $\varphi = \dfrac{My-Nx}{N}$ solo es función de $x$, entonces un factor integrante para la ecuación diferencial es $\mu(x) = e^{\int \varphi(x)}$.
+\item Si la función $\psi = \dfrac{Nx-My}{M}$ solo es función de $y$, entonces un factor integrante para la ecuación diferencial es $\mu(y) = e^{\int \psi(y)}$.
+\end{itemize}
+
+\begin{ejemplo}
+    Encuentre la solución general de la ecuación
+    $$(y \ln(y) + ye^x)dx + (x+y \cos y)dy = 0.$$
+    Esta ecuación no es exacta. Intentemos calcular un factor integrante tomando \linebreak $M=(y\ln(y) + ye^x)$ y $N=(x+y \cos y)$. Tenemos entonces que
+    $$M_y = \ln(y) +e^x + 1 , \quad Nx=1.$$
+    Podemos observar entonces que la función
+    $$\psi = \frac{N_x-M_y}{M}= \frac{\ln(y) - e^x}{y(\ln(y) + e^x)}=\frac{-1}{y}$$
+    solo depende de $y$. Por lo tanto, nuestro factor integrante es
+    $$\mu(y) = e^{-\int \frac{1}{y} dy}= e^{-\ln y}=\frac{1}{y}.$$
+    Al multiplicar la ecuación original por $\mu$, se obtiene la ecuación exacta
+    $$(\ln(y) + e^x)dx + \left(\frac{x}{y} + \cos(y) \right)dy = 0$$
+    la cual ya podemos resolver con nuestras herramientas. La solución general de la ecuación es 
+    $$e^x + x \ln(y) + \sen(x) = C.$$
+\end{ejemplo}
+
+\section{Ecuaciones lineales de primer orden}
+Recordemos que una EDO lineal de primer orden tiene la forma
+$$a(x)y' + b(x)y = c(x)$$
+donde $a(x) \neq 0$. Podemos incluso dividir toda la ecuación por $a(x)$ para llegar a una de la forma
+ \begin{equation}\label{eqn:5}
+   y'+p(x)y= q(x).
+  \end{equation}
+En esta sección daremos una \textbf{fórmula general} para resolver cualquier ecuación de ese tipo. Note primero que podemos reescribir la ecuación \eqref{eqn:5} como
+$$(p(x)y - q(x))dx + dy = 0.$$
+Tomando ahora $M=p(x)y - q(x)$ y $N=1$, podemos ver que 
+$$\frac{M_y-N_x}{N} = \frac{p(x)}{1}=p(x)$$
+solo depende de x. Podemos tomar el factor integrante $\mu(x) = e^{\int p(x)dx}$. Así de \eqref{eqn:5} obtenemos la ecuación
+$$y' e^{\int p(x)dx} + p(x)ye^{\int p(x)dx} = q(x)e^{\int p(x)dx}$$
+cuyo lado izquierdo es simplemente la derivada de $\mu y$:
+$$(ye^{\int p(x)dx})' = q(x)e^{\int p(x)dx}.$$
+Esta ecuación se resuelve simplemente integrando a ambos lados con respecto a $x$ (también se puede hacer separando variables), para obtener que
+\begin{alignat*}{2}
+&&\int(\mu(x)y(x))'dx &= \int q(x) \mu(x)dx \\
+\Rightarrow&&\mu(x)y &= \int q(x)\mu(x)dx + C
+\end{alignat*}
+Por lo que, hemos demostrado que la solución general de la ecuación \eqref{eqn:5} es
+$$y = \frac{1}{\mu(x)}\left(\int q(x)\mu(x)dx + C\right)$$
+donde $C$ es un parámetro y $\mu(x)= e^{\int p(x)dx}$.
+
+\begin{ejemplo}
+    Para resolver la ecuación $y' +y\tan(x) = x^2 \cos(x)$, simplemente tomamos $p(x) = \tan(x)$, $q(x) =x^2 \cos(x)$. Calculamos 
+    $$\mu(x) = e^{\int p(x)dx} = e^{-\ln(\cos(x))}=\sec(x).$$
+    Entonces nuestra solución general viene dada por
+    $$y = \frac{1}{\sec(x)}\left(\int x^2 \cos(x) \sec(x)dx +C \right) = \cos(x)\left( \frac{x^3}{3}+C\right).$$
+\end{ejemplo}
+
+La fórmula general para ecuaciones lineales es una herramienta muy útil, pues nos ahorra todo el trabajo de encontrar factores integrantes. Para finalizar la sección, veremos el método de resolución de dos tipos de ecuaciones más, en las cuales un cambio de variable nos lleva a una ecuación lineal.
+
+\subsection{Ecuación de Bernoulli}
+Son aquellas EDOs de la forma
+$$y' +p(x)y = q(x)y^n, \quad \text{con $n \in \mathbb{R}$ }$$
+las cuales se pueden reescribir como
+$$y'y^{-n} + p(x)y^{1-n} = q(x).$$
+Para resolver estas ecuaciones, utilizamos el cambio de variable $u = y^{1-n}$, por lo que \linebreak $du = (1-n)y^{-n}dy$. Después de sustituir en la ecuación reescrita, se obtiene
+$$\frac{u'}{1-n}+up(x) = q(x)$$
+que es una ecuación diferencial lineal, solo restaría aplicar la fórmula general.
+
+\begin{ejemplo}
+    Resuelva el siguiente problema de valores iniciales
+    $$y'-5y = e^{-2x}y^{-2} \ ; \ y(0)=1$$
+    Estamos en presencia de una ecuación de Bernoulli. Tomando entonces $u=y^3$, vemos que $du = 3y^2dy$, por lo que, sustituyendo obtenemos
+    $$\frac{u'}{3}-5u = e^{-2x} \Rightarrow u' - 15u = 3e^{-2x}.$$
+    Esta ecuación tiene como factor integrante $\mu(x) = e^{-15x}$, por lo que gracias a la fórmula general, se tiene que
+    $$u=e^{15x}\left(\int{3e^{-15x}e^{-2x}dx + C}\right) = 3e^{15x}\left(\int e^{-17x}dx + 
+    C\right) = 3e^{15x}\left(-\frac{e^{-17x}}{17}+ C \right).$$
+    Deshaciendo nuestro cambio de variable, se tiene que la solución general es
+    $$y^3 = -\frac{3}{17}\left( e^{-2x} +Ce^{15x} \right).$$
+    Finalmente, como $y(0) = 1$, tenemos que 
+    $$1 = -\frac{3}{17}(1+C).$$
+    Por lo que $C=-\frac{21}{3}.$
+\end{ejemplo}
+
+\subsection{Ecuación de Riccati}
+Son aquellas ecuaciones que tienen la forma
+$$y' +a(x)y+ b(x)y^2 = c(x).$$
+Aunque no veremos el método de resolución general, veremos una forma de deducir una solución a partir de otra. Si se conoce una solución $y_1$, entonces podemos aplicar el cambio $z=y-y_1$, en donde $z'=y'-y_1'$ para obtener
+\begin{alignat*}{2}
+&&y_1' + z' +a(x)(y_1+z) + b(x)(y_1+z)^2 &= c(x) \\
+\Rightarrow&& y_1' + z' + a(x)y_1 + a(x)z + b(x)y_1^2 + 2b(x)y_1z + b(x)z^2 &= c(x) \\
+\Rightarrow && (y_1' + a(x)y_1 + b(x)y_1^2) + z' + a(x)z+2b(x)y_1z + b(x)z^2 &= c(x)
+\end{alignat*}
+Ahora, como sabemos que $y_1$ es solución, esto significa que 
+$$y_1' + a(x)y_1 + b(x)y_1^2 = c(x)$$
+por lo que sustituyendo esto en la ecuación anterior obtenemos
+\begin{alignat*}{2}
+&&c(x) + z' + a(x)z + 2b(x)y_1z + b(x)z^2 &= c(x) \\
+\Rightarrow && z' +a(x)z+2b(x)y_1z + b(x)z^2 &= 0 \\
+\Rightarrow && z' + (a(x)+2b(x)y_1)z + b(x)z^2 &= 0
+\end{alignat*}
+Esta última ecuación es de Bernoulli, y se puede resolver con el método de la subsección anterior.
+
+\begin{ejemplo}
+    Resuelva la ecuación
+    $$y'+y^2\sen(x) = 2\tan(x)\sec(x)$$
+    si se sabe que $y_1=\sec x$ es una solución de la ecuación.
+    Note primero que en esta ecuación, $a(x)=0$, $b(x)=\sen(x)$, y que $c(x) = 2\tan(x)\sec(x)$. Tomando el cambio $z=y-\sec(x)$, podemos ahorrarnos todo el proceso hecho arriba para llegar a que nuestra ecuación se convierte en
+    $$z' + 2\sen(x)\sec(x)z + \sen(x)z^2 = 0$$
+    la cual es una ecuación de Bernoulli, que se puede reescribir como
+    $$z'z^{-2} + 2\sen(x)\sec(x)z^{-1} = -\sen(x).$$
+    El cambio de variable $u=z^{-1}$ convierte esta ecuación en una lineal:
+    $$-u' + 2\sen(x)\sec(x)u = -\sen(x)$$
+    la cual se resuelve gracias al factor integrante
+    $$\mu(x) = e^{-2\int \sen(x)\sec(x)dx} = e^{-2\int \tan(x)dx} = e^{2\ln(\cos(x))} = \cos^2(x).$$
+    La solución viene dada gracias a la fórmula general
+    $$u = -\sec^2(x) \left( \int \sen(x)\cos^2(x) dx + C\right) = \frac{-\cos(x)}{3}-C\sec^2(x).$$
+    Finalmente, al deshacer los cambios de variable $u=z^{-1}$, y $z=y-\sec(x)$, llegamos a la solución general
+    $$\frac{1}{\sec(x)- y} = \frac{\cos(x)}{3} + C\sec^2(x).$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    Resuelva las siguientes EDOs exactas. En caso de no ser exactas, utilice un factor integrante.
+    \begin{enumerate}
+    \item $2(y-1)e^xdx+2(e^x-2y)dy = 0$. 
+    \item $x \arctan(y)dx + \dfrac{x^2}{2(1+y^2)}dy = 0$.
+    \item $(3x^2+y\cos(x))dx + (\sen(x)-4y^3)dy=0$.
+    \item $\dfrac{2y}{x}y' = \dfrac{x+y^2}{x^2}$
+    \item $(1+y^2)dx + xydy = 0$.
+    \item $\left(e^x - \dfrac{y^2}{2} \right)dx + (e^y - xy)dy=0$.
+    \item $(t^2-1)x'(t) = -t-2x(t)$.
+    \end{enumerate}
+\end{ejercicios}
+
+\begin{ejercicios}
+    Resuelva las siguientes EDOs lineales, de Bernoulli y de Riccati.
+    \begin{enumerate}
+    \item $y'-2xy = e^{x^2}.$
+    \item $2r'(\theta) + r \sec(\theta) = \cos(\theta)$.
+    \item $xy' + 2y + x^5y^3e^x = 0.$
+    \item $y' = y \cot(x) + y^3 \csc(x).$
+    \item $\dfrac{dy}{dx}= -2-y+y^2$, si se sabe que una solución es $y_1=2$.
+    \item $\dfrac{dy}{dx} = \dfrac{2\cos^2(x)-\sen^2(x)+y^2}{2\cos(x)}$, si se sabe que una solución es $y_1=\sen(x)$.
+    \end{enumerate}
+\end{ejercicios}

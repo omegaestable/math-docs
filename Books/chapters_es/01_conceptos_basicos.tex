@@ -1,0 +1,677 @@
+\chapter{Fundamentos}
+
+\section{Introducción}
+¡Bienvenidos/as al curso de ecuaciones diferenciales! A manera de introducción, adjuntaré algunos detalles y observaciones generales del curso. Toda la siguiente información estará detallada a fondo en la carta al estudiante. Nuestro objetivo principal en el curso será el desarrollo de la destreza matemática necesaria para la resolución de ecuaciones diferenciales.
+
+Los requisitos formales del curso son MA-1002 Cálculo II y MA-1004 Álgebra Lineal.
+
+\section{Un breve repaso}
+\subsection{Derivadas}
+Trabajaremos principalmente con funciones diferenciables $f:\mathbb{R} \to \mathbb{R}$, es decir, funciones de una variable real, cuyas derivadas (primera, segunda, tercera...) existen. El primer concepto fundamental que debemos recordar es: 
+$$\text{¿Qué es una derivada?}$$
+A lo largo de los cursos de matemática, hemos aprendido varias maneras de darle sentido a la derivada de una función. Más específicamente, si $f(x)$ es una función, podemos dar al menos 3 ideas de qué significa la expresión $f'(x)$, la cual también denotamos $\frac{df}{dx}$:
+\begin{enumerate}
+    \item $f'(x) = \lim_{x \to a} \frac{f(x)-f(a)}{x-a}$. Nuestra defición original de derivada es de la forma de un límite. Sin embargo, esta definición no nos da mucho significado geométrico o físico de la función $f$.
+    \item $f'(x)$ representa la \textbf{pendiente} de la recta tangente a la gráfica de $f$ en el punto $x$. Por ejemplo, sabemos que la recta pendiente a la parábola $f(x) = 1-x^2$, en el punto $x=0$ viene dada por la recta $y=1$, la cual tiene pendiente $0$. Justamente se cumple que $f'(x) = -2x$, por lo que $f'(0) = 0$.
+    \item $f'(x)$ también nos dice de cierta forma \textbf{a qué velocidad crece $f(x)$} cuando nos movemos de izquierda a derecha en el eje $x$. Por ejemplo: sabemos intuitivamente que la función $f(x)=e^x$ crece más rápido que la función $g(x) = x+2$ , cuando $x>0$. Esto se evidencia calculando $f'(x)=e^x$ y $g'(x)=1$. Como $f'(x)$ es mayor que 1 (siempre y cuando $x>0$), podemos concluir que $f(x)$ crece más rápido que $g(x)$. Nótese que $f$ crece más rápido de $g$, pero esto no implica que $f(x) > g(x)$ para todo $x$, ya que por ejemplo $f(1)= e \approx 2.7$, mientras que $g(1) = 3$.
+\end{enumerate}
+Debemos tener siempre en mente estos 3 conceptos, especialmente cuando debamos resolver problemas de aplicaciones.
+
+\begin{center}
+    En palabras simples, la derivada de una función $f(x)$ nos dice \textbf{cómo cambia f(x)} cuando $x$ cambia.
+\end{center}
+
+La motivación principal para estudiar las ecuaciones diferenciales, es que no importa si no conocemos el valor de alguna función $f(x)$, nos basta con conocer cómo ella cambia (o sea, conocer su derivada) para poder deducir bastante información. Veamos ésto con un ejemplo:
+
+\begin{ejemplo}
+    \textbf{Hay 1 bacteria en un jarro. Sabemos que cada minuto, las bacterias que estén en el jarro se duplican. Entonces, ¿Cuántas bacterias habrán en $m$ minutos?}
+    
+    En este ejemplo, nos están pidiendo que encontremos la función $f(m)$ que recibe como entrada los minutos que han pasado, y devuelva cuántas bacterias hay dentro del jarro. Solamente tenemos como información el hecho de que cada minuto, sea cual sea la cantidad $f(m)$, el siguiente minuto habrá el doble, es decir:
+    $$f(m+1) = 2f(m)$$
+    Sabiendo que al minuto $0$ hay 1 bacteria, no es difícil deducir que la función que describe esta situación es precisamente
+    $$f(m) = 2^m.$$
+\end{ejemplo}
+
+Hemos podido deducir el valor exacto de $f$ sólo sabiendo cómo ella cambia (aunque no hayamos usado su derivada de manera explícita). Sin embargo, hemos usado una pieza de información adicional, a saber, la \textbf{cantidad inicial} de bacterias. Pensemos qué pasaría si al minuto 0, en vez de 1 bacteria, hubiera 2 bacterias. Entonces la solución al problema sería 
+$$f(m) = 2^{m+1}.$$
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item ¿Cuántas bacterias hay al minuto $m$ si iniciamos con algún número $n$ de bacterias?
+    \end{enumerate}
+\end{ejercicios}
+
+La idea que debemos tener presente es que, en general, los únicos ingredientes que necesitamos para resolver este tipo de problemas (los cuales son en el fondo ecuaciones diferenciales), son:
+\begin{itemize}
+    \item Cómo cambia nuestra función $f$.
+    \item Dónde inicia nuestra función $f$.
+\end{itemize}
+Podemos pensarlo incluso así: Si sabemos que un tren sale a una hora en punto, y sabemos su velocidad, podremos calcular fácilmente su posición en cualquier momento.
+
+Durante el curso, será absolutamente necesario el conocimiento de cómo calcular derivadas, y de sus propiedades. A manera de resumen, adjuntaré algunas de las derivadas más comunes, y algunas propiedades importantes. Si usted como estudiante considera que no domina (o no recuerda) algunos de estos temas, recomiendo repasarlos, pues se usarán todos los días.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    $f(x)$                & $f'(x)$ \\ \hline
+    $C$                   &     $0$    \\ \hline
+    $x$                   &      $1$   \\ \hline
+    $x^n \quad (n \neq 0) $ &     $nx^{n-1}$    \\ \hline
+    $e^x$                 &     $e^x$    \\ \hline
+    $a^x \quad (a \in \mathbb{R})$                       &    $a^x \ln(a)$     \\ \hline
+       $\ln(x)$                   &   $\frac{1}{x}$      \\ \hline
+               $\log_a(x)$           &   $\frac{1}{x \ln(a)}$       \\ \hline
+            $\sen(x)$              &     $\cos(x)$    \\ \hline
+            $\cos(x)$             &   $-\sen(x)$      \\ \hline
+            $\tan(x)$              &    $\sec^2(x)$     \\ \hline
+                $\sqrt{x}$          &     $\frac{1}{2\sqrt{x}}$     \\ \hline
+                $\sqrt[n]{x}$          &  $\frac{1}{n\sqrt[n]{x^{n-1}}}$       \\ \hline
+                $\sec(x)$          &       $\sec(x)\tan(x)$    \\ \hline
+                $\csc(x)$          &     $-\csc(x)\cot(x)$    \\ \hline
+                $\cot(x)$          &   $-\csc^2(x)$      \\ \hline
+                $\arcsen(x)$          &    $\frac{1}{\sqrt{1-x^2}}$       \\ \hline
+                $\arccos(x)$           &   $-\frac{1}{\sqrt{1-x^2}}$      \\ \hline
+                  $\arctan(x)$         &   $\frac{1}{1+x^2}$      \\ \hline
+    \end{tabular}
+\end{table}
+
+Sean $f,g$ funciones derivables y $C \in \mathbb{R}$. Entonces se cumple que:
+\begin{itemize}
+    \item \textbf{Linealidad: } $(Cf(x) + g(x))' = Cf'(x) + g'(x)$.
+    \item \textbf{Regla del producto: } $(f(x)g(x))' = f'(x)g(x) + f(x)g'(x)$.
+    \item \textbf{Regla de la cadena: } $(f(g(x)))' = f'(g(x))g'(x)$.  
+\end{itemize}
+
+\subsection{Integrales}
+Al igual que el concepto de diferenciación, el de integración nos será de gran utilidad a lo largo del curso. Análogamente, si tenemos una función $f(x)$, podemos resumir el concepto de la integral (o antiderivada) de $f(x)$ de 2 formas:
+\begin{itemize}
+    \item $\int f(x)dx$ es una \textbf{función} cuya derivada es exactamente $f(x)$. A este concepto se le conoce como integral indefinida.
+    \item $\int_a^b f(x)dx$ es un \textbf{número}, el cual corresponde al área debajo de la gráfica de $f$, comenzando a medir desde $x=a$ y terminando en $x=b$. A este concepto le llamamos integral definida.
+\end{itemize}
+La integral será la herramienta \#1 en la resolución de ecuaciones diferenciales. Por lo tanto, es indispensable que manejemos completamente todos los métodos de integración que hemos aprendido desde el primer curso de cálculo.
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Repasar todos los métodos de integración.
+    \end{enumerate}
+\end{ejercicios}
+
+Al igual que con las derivadas, daré un brevísimo resumen de algunas integrales indefinidas, junto con las técnicas básicas de integración.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    $f(x)$                       & $\int f(x)dx$                                                                  \\ \hline
+    $1$                          & $x+C$                                                                    \\ \hline
+    $A$                          & $Ax+C$                                                                    \\ \hline
+    $x^n \quad n \neq -1 $       & $\frac{x^{n+1}}{n+1}+ C$                                                    \\ \hline
+    $\frac{1}{x}$                & $\ln(x) + C$                                                             \\ \hline
+    $\sin(x)$                    & $-\cos(x)+C$                                                             \\ \hline
+    $\cos(x)$                    & $\sin(x) + C$                                                            \\ \hline
+    $\tan(x)$                    & $-\ln(\cos(x))+C$                                                        \\ \hline
+    $\cot(x)$                    & $\ln(\sin(x)) + C$                                                       \\ \hline
+    $\sec(x)$                    & $\ln(\sec(x) + \tan(x))+C$  \\ \hline
+    $\csc(x)$                    & $-\ln(\csc(x) + \cot(x))+C$ \\ \hline
+    $e^x$                        & $e^x + C$                                                                \\ \hline
+    $a^x$                        & $\frac{a^x}{\ln(a)} + C$                                                 \\ \hline
+    $\frac{1}{\sqrt{a^2 - x^2}}$ & $\arcsen(\frac{x}{a}) + C$                                               \\ \hline
+    $\frac{1}{a^2 + x^2}$        & $\frac{1}{a}\arctan(\frac{x}{a}) + C$                                    \\ \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Linealidad: } Si $f,g$ son funciones integrables, y $C \in \mathbb{R}$ entonces
+$$\int Cf(x)+g(x) dx  = C \int f(x)dx + \int g(x)dx.$$
+
+\subsection{Métodos de integración}
+A continuación se presenta un resumen de los distintos métodos de integración. Una vez más, para el entendimiento del curso, es indispensable que el estudiante \textbf{maneje bien todos los métodos}. Recomiendo resolver cada una de las integrales utilizadas como ejemplo.
+
+\subsubsection{Cambio de variable}
+Funciona cuando tenemos que resolver una integral del tipo
+$$\int f(u(t))u'(t)dt.$$
+Es decir, cuando dentro de la integral, encontramos una expresión cuya derivada está también dentro de la integral (en este caso $u$). Por ejemplo, para resolver la integral
+$$\int  \frac{\ln(t)}{t}dt$$
+el cambio $u= \ln(t)$ es de gran ayuda.
+
+\subsubsection{Integración por partes}
+Nos ayuda cuando tenemos que integrar un producto de funciones de la forma $u(x)v'(x)$, por medio de la identidad:
+$$\int u(x) v'(x) dx = u(x)v(x) - \int v(x) u'(x) dx + C$$
+O escrita más simple:
+$$\int u dv = uv- \int vdu$$
+Al enfrentarnos a una integral por partes, la escogencia correcta de $u$ y $v$ es fundamental. Una buena regla para escogerlos es que $u$ sea fácil de derivar y $v$ sea fácil de integrar. Por ejemplo, para evaluar la integral
+$$\int xe^{2x} dx$$
+por partes, es posible tomar $u=x$ y $dv=e^{2x}$.
+
+\subsubsection{Fracciones parciales}
+Este método nos permite evaluar integrales del tipo
+$$\int \frac{P(x)}{Q(x)}dx$$
+donde $P(x)$ y $Q(x)$ son polinomios. Este método cuenta con muchas variantes, pero los pasos generales son los mismos:
+\begin{itemize}
+    \item \textbf{Paso 0: } Si el grado de $P$ es mayor al grado de $Q$, entonces es necesario efectuar una división de polinomios. En caso contrario, se procede al paso 1.
+    \item \textbf{Paso 1: } Factorizar $Q(x)$, ya sea usando inspección, completación de cuadrados, o división sintética.
+    \item \textbf{Paso 2: } Usar la factorización obtenida en el paso 1 para descomponer la fracción a integrar en suma de fracciones más sencillas de integrar, usualmente se tratará de fracciones cuyo denominador es un polinomio de grado 1 o 2. Recuerde que es necesario despejar los numeradores de dichas fracciones, pues aparecen como incógnitas al efectuar la descomposición.
+    \item \textbf{Paso 3: } Integrar cada fracción por aparte, usando las demás técnicas conocidas.
+\end{itemize}
+Por ejemplo, para resolver
+$$\int \frac{1}{x^2 -16}$$
+podemos aplicar la descomposición
+$$\frac{1}{x^2 -16} = \frac{1}{(x+4)(x-4)} = \frac{A}{x+4} + \frac{B}{x-4}.$$
+O para resolver 
+$$\int \frac{1}{x(x^2 + 2x + 5)}$$
+podemos utilizar una variante:
+$$\frac{1}{x(x^2 + 2x + 5)} = \frac{A}{x} + \frac{Bx+C}{x^2 + 2x + 5}$$
+ya que el discriminante del factor cuadrático en el denominador es negativo.
+
+A lo largo del curso nos encontraremos con bastantes integrales de este tipo, por lo que nos será oportuno repasar todas las variantes de este método.
+
+\subsubsection{Sustitución trigonométrica}
+Este tipo de cambio de variable será util principalmente en 3 casos:
+\begin{itemize}
+    \item Para integrales de la forma $\int \sqrt{b^2 - x^2}$, se utiliza el cambio $x=b\sin(\theta)$.
+    \item Para integrales de la forma $\int \sqrt{b^2 + x^2}$, se utiliza el cambio $x=b\tan(\theta)$.
+    \item Para integrales de la forma $\int \sqrt{x^2 - b^2}$, se utiliza el cambio $x=b\sec(\theta)$.
+\end{itemize}
+Realizamos este repaso previo a comenzar con el curso, pues la resolución de ecuaciones diferenciales incluye extensamente la resolución de integrales, por lo que es muy importante que no tengamos ningún problema a la hora de integrar funciones, ya que este no es el objetivo del curso. Más adelante retomaremos más métodos de integración, mas considero que estos presentados en esta lección son una buena base para iniciar el curso.
+
+\section{Conceptos Básicos De Ecuaciones Diferenciales}
+En esta sección definiremos el concepto de ecuación diferencial, y daremos también algunas definiciones que nos ayudarán a identificar los distintos tipos de ecuaciones diferenciales. La capacidad de identificar correctamente el tipo de ecuación a que enfrentamos es el primer paso en la resolución de la misma. Primero debemos responder la pregunta: 
+$$\textbf{¿Qué es una ecuación diferencial?}$$
+Al igual que las ecuaciones clásicas que estudiamos en el colegio, en las ecuaciones diferenciales estaremos intentando despejar o averiguar el valor de una incógnita (o varias). La principal diferencia es que en las ecuaciones clásicas, el valor a despejar, o \textbf{solución}, es un número, mientras que en las ecuaciones diferenciales, se trata de una función. Un ejemplo:
+\begin{itemize}
+    \item \textbf{Ecuación clásica: } $x^2 + 2x + 1 = 0$ tiene como solución $x=-1$, un \textbf{número real}.
+    \item \textbf{Ecuación diferencial: } Se nos pide encontrar una función $y(x)$ que cumpla la ecuación $y' = y$. Una solución es $y(x) = e^x$, una \textbf{función}.
+\end{itemize}
+
+Más específiamente,
+
+\begin{definicion}{Ecuación Diferencial}{}
+    Una \textbf{ecuación diferencial} es una ecuación en donde pueden aparecer:
+    \begin{itemize}
+        \item Variables independientes, ($x$,$t$, ...)
+        \item Variables dependientes, las cuales serán las incógnitas a despejar. Usualmente se denotan por $y$, pero debemos recordar siempre que depende de $x$, por lo que en realidad se trata de $y(x)$.
+        \item Derivada (o derivadas) de la variable dependiente: $y', y'', y'''$, etc.
+    \end{itemize}
+\end{definicion}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $y' = e^x$
+        \item $y' + y'' = \cos(x)$
+        \item $x^2y'' + xy + 1=0$
+        \item $ (y')^2 + \cfrac{1}{2 \sen(x)} = \sqrt{xy}$
+        \item $\cfrac{dy}{dx} + \cfrac{d^2y}{dx^2} = y \cos(x)$.
+    \end{itemize}
+\end{ejemplo}
+
+Como mencionamos anteriormente, es convención que $y$ sea función de $x$, aunque podríamos tener ecuaciones donde la variable independiente sea $t$, y la dependiente sea $x$, u otros casos, por ejemplo
+\begin{itemize}
+    \item $x' = t$
+    \item $\cfrac{dx}{dt} + \cfrac{d^2x}{dt^2} = x \cos(t)$.
+    \item $z'(v) = z(v) + v^2$
+\end{itemize}
+son todas ecuaciones diferenciales. Poco a poco iremos estudiando métodos para resolverlas.
+
+\subsection{Clasificación}
+El estudio de las ecuaciones diferenciales es muy amplio, y hay muchas maneras de clasificarlas y estudiarlas. Comenzamos con la primera definición:
+
+\begin{definicion}{Ecuación Diferencial Ordinaria (EDO)}{}
+    Una ecuación diferencial \textbf{ordinaria} (EDO, o ODE en inglés), es aquella donde la solución es una función de \textbf{una variable.} Por ejemplo:
+    $$y'x = 1$$
+    Es una ODE con solución $y(x)= \ln(x)$.
+\end{definicion}
+
+\begin{definicion}{Ecuación Diferencial Parcial (EDP)}{}
+    Una ecuación diferencial \textbf{parcial} (EDP, o PDE en inglés), es aquella donde la solución es una función de \textbf{varias variables.} En este caso aparecen también las derivadas parciales de la función a despejar. Por ejemplo:
+    $$\frac{\partial f}{\partial x} + \frac{\partial f}{\partial y} = 0$$
+    tiene como solución la función de dos variables $f(x,y)=x-y$.
+\end{definicion}
+
+Durante este curso, nos enfocaremos mayoritariamente en el estudio de las EDO's. En las últimas dos semanas daremos algunos métodos para resolver las EDP's más básicas. Por lo tanto, podemos olvidarnos momentáneamente de las ecuaciones en derivadas parciales y trabajar solamente con las EDO's.
+
+Una definición más formal de una ecuación diferencial ordinaria es la siguiente.
+
+\begin{definicion}{EDO (Formal)}{}
+    Una EDO es una ecuación de la forma
+    $$F(x,y,y', \dots, y^{(n)})=0$$
+    Donde $F:\mathbb{R}^{n+1} \to \mathbb{R}$ es una función.
+\end{definicion}
+
+La definición anterior simplemente resume más concisamente el concepto que tenemos ecuación diferencial: una expresión donde tenemos: variables ($x$), funciones de dichas variables ($y$), y sus respectivas derivadas ($y',y'', \dots$).
+
+A continuación, daremos dos definiciones que nos ayudarán a identificar los distintos tipos de EDO's. En cierto modo, nos servirán para clasificar las ecuaciones por su dificultad.
+
+\begin{definicion}{Orden}{}
+    El \textbf{orden} de una EDO, es el orden de la mayor derivada que aparece en dicha ecuación.
+\end{definicion}
+
+\begin{definicion}{Grado}{}
+    El \textbf{grado} de una EDO, es el exponente al cual está elevada la derivada de mayor orden.
+\end{definicion}
+
+No debemos confundir estas definiciones! El orden se trata de cuántas veces hemos derivado la función incógnita, mientras que el grado simplemente es el exponente al cual está elevada la derivada mayor.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $xy' = yx^2$ tiene orden 1 y grado 1.
+        \item $(1+y')^3 = x$ tiene orden 1 y grado 3.
+        \item $(y'')^3 + (y')^7 = 1+ \ln(x)$ tiene orden 2 y grado 3.
+        \item $y^{(9)} + y^{(8)}+ \dots + y'+y = 0$ tiene orden 9 y grado 1
+    \end{itemize}
+\end{ejemplo}
+
+\textbf{NOTA:} Cuando nuestra ecuación tiene radicales, es necesario eliminarlos para saber su grado, por ejemplo
+$$\sqrt{\frac{dy}{dx}} = y+x$$
+Se debe reescribir como 
+$$\frac{dy}{dx} = (y+x)^2.$$
+En donde deducimos que se trata de una ODE de orden 1 y grado 1.
+
+Algunas ODE se presentan en \textbf{forma diferencial}:
+$$M(x,y)dx + N(x,y)dy = 0$$
+la cual nos puede resultar poco familiar. Esto es simplemente una reescritura de una ODE común y corriente. Veamos un ejemplo, la ecuación
+$$(y-x)dx + 4xdy=0$$
+puede transformarse en 
+$$\frac{dy}{dx} = \frac{x-y}{4x}$$
+por un simple despeje. Notemos nada más que para efectuar este despeje, fue necesario pasar la cantidad $dx$ a dividir. La justificación formal de este hecho no nos preocupará en este curso.
+
+A continuación definiremos el concepto de ecuación lineal, las cuales serán extensamente estudiadas, pues están entre las más sencillas de resolver.
+
+\begin{definicion}{Ecuación Diferencial Lineal}{}
+    Una ecuación diferencial ordinaria \textbf{lineal}, es una EDO de la forma
+    $$a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)}+ \dots + a_1(x)y' + a_0(x)y = g(x)$$
+    donde $g(x) , a_1(x),a_2(x), \dots , a_n(x)$ son funciones que \textbf{solamente dependen de $x$} (pueden incluso ser funciones constantes). 
+\end{definicion}
+
+Otra manera de identificar si una ecuación diferencial es lineal es la siguiente:
+\begin{enumerate}
+    \item La incógnita $y$ y todas sus derivadas aparecen con exponente $1$. Es decir, todas las EDO linealws tienen grado 1.
+    \item La incógnita $y$ y todas sus derivadas aparecen multiplicadas \textbf{únicamente} por funciones de la variable $x$ (o constantes).
+\end{enumerate}
+En una EDO lineal, las funciones $a_i(x)$ se llaman \textbf{coeficientes}.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item $\cos(x) y^{(3)} + e^x y'' - \frac{y'}{x} + y = \tan(x)$ es una EDO lineal de orden 3
+        \item $y^{(5)} = y$ es une EDO lineal de orden 5. Note que todos los coeficientes son constantes, muchos de los cuales son 0.
+    \end{itemize}
+\end{ejemplo}
+
+Notemos que las EDOs lineales tienen un ligero parecido con los polinomios, pues en general, un polinomio tiene la forma
+$$p(t) = a_nt^n + a_{n-1}t^{n-1} + \dots + a_1t +a_0$$
+Solo que en este caso, los coeficientes son números reales, no funciones, y la variable $t$ representa un número, no una función como en el caso de las EDOs.
+
+\textbf{Tipos de ecuaciones lineales: } Hay dos tipos de EDOs lineales, los cuales son muy fáciles de identificar, mas los métodos de resolución de cada uno son distintos. 
+Sea $$a_n(x)y^{(n)} + a_{n-1}(x)y^{(n-1)}+ \dots + a_1(x)y' + a_0(x)y = g(x)$$ una EDO lineal. Si $g(x)=0$, decimos que se trata de una ecuación \textbf{homogénea}, en caso contrario (si $g(x) \neq 0$), sería \textbf{no homogénea}.
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item La ecuación $x^4y^{(4)} + y'' + xy = 0$ es lineal, homogénea, de orden 4.
+        \item La ecuación $y'' + \sin(x) y = x$ es lineal no homogénea, de orden 2.
+    \end{itemize}
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Para cada una de las siguientes EDOs, determine el grado, el orden, y si es lineal, especifique si se trata de una homogénea o no.
+    \begin{itemize}
+        \item $v'(t) + \dfrac{v(t)}{5} = \dfrac{t}{5}$
+        \item $\dfrac{dT}{dt} = 9(200-T)$
+        \item $\dfrac{dy}{dx} = \dfrac{-x \pm \sqrt{x^2+y^2}}{y}$
+        \item $y'' - (1-y^2)y' + y = 0$
+        \item $yy'y''y'''=x$
+        \item $y^{(50)} = 1$
+    \end{itemize}
+    \end{enumerate}
+\end{ejercicios}
+
+\section{Soluciones de una EDO}
+\begin{definicion}{Solución}{}
+    Sea 
+    \begin{equation}\label{eqn:def_sol}
+        F\left(x,y,y',\dots,y^{(n)}\right)=0
+    \end{equation}
+    una ecuación diferencial ordinaria. Una \textbf{solución} de \eqref{eqn:def_sol} es una función $f(x)$ que cumple que 
+    $$F\left(x,f(x),f'(x),\dots,f^{(n)}(x)\right)=0.$$
+\end{definicion}
+
+Esta definición nos puede parecer un poco redundante, pero veámosla más de cerca. Volvamos al ejemplo de ecuaciones clásicas. Si tenemos por ejemplo, que resolver la ecuación
+$$t^4 = 81$$
+Estamos buscando un número real, el cual al ser sustituido en el lugar de $t$, hace que la igualdad sea verdadera. Es fácil ver que $3$ es solución, puesto que 
+$$3^4 = 81.$$
+En el caso de EDOs la situación es parecida, veamos un ejemplo. Tenemos la ecuación 
+\begin{equation}\label{eqn:ej2}
+   y'=x \sqrt{y}
+\end{equation}
+Se propone como solución $y=\dfrac{x^4}{16}$. Para verificar que nuestra candidata funciona, debemos sustituirla en la ecuación. Note que a diferencia del ejemplo anterior, necesitamos derivar $y$ para poder sustituir, del contrario tendremos un error.
+
+Notemos que 
+$$y'=\frac{x^3}{4}$$
+Por lo que al sustituir en \eqref{eqn:ej2} debería cumplirse que 
+$$\frac{x^3}{4} \stackrel{?}{=} x \sqrt{\frac{x^4}{16}}$$
+lo cual se vuelve evidente después de eliminar la raíz del lado derecho. Es claro entonces que la función $y(x) = \frac{x^4}{16}$ es solución de la ecuación \eqref{eqn:ej2}.
+
+Veamos otro ejemplo:
+\begin{equation}\label{eqn:ej3}
+   y''-2y'+y=0.
+\end{equation}
+Proponemos la solución $y=xe^x$. Para verificar nuestra solución necesitamos derivar 2 veces. Veamos entonces que
+\begin{align*}
+y'&=e^x(1+x) \\
+y''&= e^x(2+x)
+\end{align*}
+Al sustituir en \eqref{eqn:ej3}, debemos verificar si 
+\begin{alignat*}{2}
+&&(2+x)e^x - 2(1+x)e^x + xe^x  &\stackrel{?}{=} 0 \\
+\iff&&  2e^x+xe^x-2e^x-2xe^x + xe^x &\stackrel{?}{=}0\\
+\iff&& 0 &\stackrel{?}{=} 0 
+\end{alignat*}
+Lo cual se cumple. Entonces la función $y(x)=xe^x$ es una solución de  \eqref{eqn:ej3}. Note también que es muy sencillo verificar que la función $y(x) = 0$ también es una solución.
+
+En matemática no sólo es importante encontrar soluciones, es usual preguntarnos ¿Hay más soluciones? ¿Cómo podemos encontrar todas las soluciones a mi problema? El estudio de ecuaciones diferenciales no es excepción: una ecuación diferencial puede tener:
+\begin{itemize}
+    \item Una única solución, como por ejemplo la ecuación $(y')^2 + y^2 = 0$ tiene como solución única $y=0$.
+    \item Infinitas soluciones, como por ejemplo la ecuación $y'=y$ tiene como soluciones \linebreak $y=e^x, 2e^x, 3e^x, -e^x$ y en general $Ce^x$ donde $C$ es cualquier número real.
+    \item Cero soluciones, como por ejemplo, la ecuación $(y')^2 = -x^2-1$ no posee soluciones que sean funciones reales.
+\end{itemize}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Para cada una de las ecuaciones siguientes, verifique si la función propuesta es solución o no.
+    \begin{enumerate}
+        \item  $y(x) = x^2 + C$, para la ecuación $y'=x$
+        \item $y(x)=x^2 + Cx$, para la ecuación $x \displaystyle  \left (\frac{dy}{dx} \right) = x^2 + y$.
+        \item $y=A\sen(5x) + B\cos(5x)$, para la ecuación $y'' + 25y = 0$
+        \item $y(t)=8t^5 + 3t^2 + 5$, para la ecuación $\displaystyle \frac{d^2y}{dt^2} - 6 = 160t^3$.
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+También podemos hacernos la pregunta inversa, es decir, dada una función $y(x)$, ¿Es posible encontrar alguna EDO para la cual $y(x)$ sea una solución?
+
+\begin{ejemplo}
+    Encuentre una ecuación diferencial cuya solución sea $y= \sen(x)$.
+    
+    \textbf{Solución: } Como debemos buscar una ecuación diferencial, la idea es calcular las derivadas de nuestra función, y buscar si podemos encontrar alguna relación entre ellas y la función. Observe que $y'= \cos(x)$ y $y''(x)= -\sin(x)$. De esta información vemos que la segunda derivada de $y$ es precisamente $-y$. Es decir, $y$ es solución a la ecuación
+    $$y''=-y.$$
+\end{ejemplo}
+
+\begin{ejemplo}
+    Encuentre una ecuación diferencial cuya solución sea $y= e^{2x}$.
+    
+    \textbf{Solución: } Observe que $y'= 2e^{2x}$ . Vemos de inmediado que una ecuación posible sería 
+    $$y'=2y.$$
+    NOTA: este proceso se puede hacer de muchas formas distintas, y pueden haber muchas repuestas correctas, por ejemplo, la ecuación $y'''- 8y = 0$ también tiene como solución $y=e^{2x}$.
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Para cada una de las siguientes funciones, encuentre una ecuación diferencial para la cual sean solución.
+    \begin{enumerate}
+        \item $y=C_1e^x + C_2e^{-x}$
+        \item $y=\tan(4x+c)$
+        \item $y=(x-C_1)^2 + y^2 + C_2^2 $
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+\subsection{Tipos de soluciones}
+Como hemos mencionado antes, una EDO puede tener cero, una o infinitas soluciones. Vamos a clasificarlas de la siguiente forma:
+
+\begin{itemize}
+    \item \textbf{Solución general: } Describe simultáneamente una familia de soluciones que solo difieren entre ellas por un parámetro. En otras palabras, la solución general nos da la forma de cada posible solución. Por ejemplo
+    \begin{itemize}
+        \item La sencilla ecuación $y'=1$ tiene como solución general $y=x+C$, donde $C \in \mathbb{R}$. Es decir, que cualquier valor que tome $C$, nos genera una solución distinta.
+        \item La solución general de la ecuación $x''(t) + 16x(t)=0$ es la función \linebreak $x(t) = A \cos(4t) + B \sen(4t)$. En este caso tenemos 2 parámetros, $A$ y $B$.
+    \end{itemize}
+    \textbf{Por lo general, el número de parámetros que aparecen en la solución general corresponden con el orden de la ecuación diferencial.}
+    \item \textbf{Solución particular: } Simplemente se trata de un caso particular de la solución general, en donde le damos valor concreto a los parámetros de la solución (incluso podemos darles el valor $0$). Por ejemplo
+    \begin{itemize}
+        \item Una solución particular de $y'=1$ es $y=x+20$.
+        \item Las funciones $ \cos(4t)$, $5\sen(4t)$ y $ 2\cos(4t)+ 9\sen(4t)$ son todas soluciones particulares de la ecuación $x''(t) + 16x(t)=0$ .
+    \end{itemize}
+    \item \textbf{Solución singular: }Son soluciones que no se pueden obtener a partir de la solución general. Es decir, sin importar qué valor le demos a los parámetros, no podemos producir dicha solución.  Por ejemplo: la EDO $(y')^2= 4y$ tiene como solución general \linebreak $y = (x+C)^2$. Todas las soluciones que vamos a obtener al escoger valores de $C$ serán parábolas. Sin embargo, el estudiante puede corroborar que la función $y = 0$ es también solución de la ecuación, la cual no obedece la forma que dicta la solución general. Se trata de una solución singular.
+    \textit{No todas las ecuaciones diferenciales tienen soluciones singulares.}
+\end{itemize}
+
+Cuando una solución (ya sea general, particular, o singular) se puede expresar \textbf{únicamente en términos de la variable dependiente}, decimos que se trata de una solución \textbf{explícita}. Caso contrario, cuando no podemos despejar el criterio de nuestra solución, decimos que se trata de una solución \textbf{implícita.}
+
+\begin{ejemplo}
+    \begin{itemize}
+        \item Una solución particular explícita de la ecuación $xy' + y = 0$ sería $y(x) = 1/x$. Note que podemos expresar el criterio de $y$ explícitamente en función de $x$.
+        \item Considere la ecuación $\dfrac{dy}{dx} = -\dfrac{x}{y}$. Veamos que una solución en forma implícita viene dada por $x^2 + y^2 = 25$ (expresión en la cual no es posible despejar $y$, puesto que tendríamos dos posibilidades de despeje $y = \pm \sqrt{25-x^2}$). Para verificar que nuestra curva es en efecto una solución, debemos recurrir a la \textbf{derivación implícita}. Observe que
+        \begin{alignat*}{2}
+        && x^2 + y^2 &= 25 \\
+        \Rightarrow&& 2x + 2yy' &= 0\\
+        \Rightarrow&& y' = -\frac{2x}{2y} &= -\frac{x}{y}
+        \end{alignat*}
+    \end{itemize}
+\end{ejemplo}
+
+Otra manera de definir una solución a una EDO es por trozos. Por ejemplo, considere la ecuación 
+$$xy'-4y = 0$$
+cuya solución general es $y=cx^4$. Podemos entonces definir la solución
+$$y(x) = \begin{cases} x^4 \text{    \quad si $x>0$} \\ -x^4 \text{ \ si $x \leq 0$}
+\end{cases}$$
+al escoger $c=1$ en el eje positivo y $c=-1$ en el eje negativo.
+
+\section{Problemas de valor inicial}
+Suponga que se desea resolver la ecuación
+$$y' = y.$$
+La solución general de esta ecuación es $y(x)=Ce^x$. Aquí estamos en realidad hablando de infinitas soluciones, una para cada valor de $C$. Ahora, podemos plantearnos la siguiente pregunta: ¿Cuál de todas esas soluciones cumple que $y(0) = 5$? Si sabemos que la solución debe tener la forma $Ce^x$, solamente necesitamos verificar si $Ce^0 = 5$. Por lo tanto, obtenemos que cuando $C=5$, la solución particular $y=5e^x$ resuelve nuestro problema.
+
+Este tipo de problemas se conocen como \textbf{problemas de valor inicial} (o problemas de Cauchy). Los problemas de valor inicial son frecuentemente aplicados en el modelaje de fenómenos de la vida real, pues tienen una solución específica, no una familia de infinitas soluciones. Aquí es donde retomamos lo que se mencionó en la sección 2: una ecuación diferencial puede tener muchas soluciones, pero una vez que especificamos su valor inicial, obtenemos una solución concreta, en vez de una familia infinita. Se presenta la definición formal de esta situación.
+
+\begin{definicion}{Problema de Valor Inicial}{}
+    Un problema de valores iniciales es sistema del tipo
+    \begin{align*}
+    \begin{cases}
+    F(x,y,y',\dots,y^{(n)})&=0 \\
+    y(x_0)&=y_0 \\
+    y'(x_1)&=y_1 \\
+    y''(x_2)&=y_2 \\
+    &\vdots \\
+    y^{(n-1)}(x_{n-1})&=y_{n-1}
+    \end{cases}
+    \end{align*}
+    donde $x_0,x_1,\dots,x_{n-1},y_0,y_1,\dots,y_{n-1}$ son números reales. Cuando todas las $x_i's$ son iguales, le llamamos un \textbf{problema de Cauchy}.
+\end{definicion}
+
+En su forma general, un problema de valores iniciales, además de incluir una ecuación diferencial, incluye información acerca de todas las derivadas de la función. Esta información nos ayudará a darle valores concretos a cada parámetro en la solución general. Vamos a explicar esto con varios ejemplos:
+
+\begin{ejemplo}
+    Considere el problema
+    \begin{align*}
+    \begin{cases}
+    y' + y &= x \\
+    y(0)&=1\\
+    \end{cases}
+    \end{align*}
+    La solución general de la ecuación es $y(x) = Ce^{-x} +x - 1$. Ahora, para asegurarnos que $y(0)=1$ debemos escoger un valor apropiado para el parámetro $C$. Necesitamos que 
+    \begin{alignat*}{2}
+    &&Ce^0 + 0 -1 &= 1 \\
+    \Rightarrow && C-1&=1 \\
+    \Rightarrow && C&=2
+    \end{alignat*}
+    Por lo tanto, la solución de nuestro problema de valor inicial es $y(x) = 2e^{-x} +x- 1$.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Considere el problema
+    \begin{align*}
+    \begin{cases}
+    y'' + 2y' + y &= 0 \\
+    y(0)&=1 \\
+    y'(0) &= 0\\
+    \end{cases}
+    \end{align*}
+    La solución general de la ecuación es $y(x) = C_1e^{-x} +C_2xe^{-x}$, tiene 2 parámetros pues se trata de una ecuación de orden 2. Ahora, para asegurarnos que $y(0)=1$ y $y'(0)=0$ debemos despejar ambos parámetros. Primero, como $y(0)=1$, eso implica que
+    \begin{alignat*}{2}
+    &&C_1e^0 + C_2 0 e^0 &= 1 \\
+    \Rightarrow&& C_1 &=1
+    \end{alignat*}
+    Ahora, calculamos $y'(x) = -e^{-x} + C_2e^{-x}(1-x)$ (donde ya usamos que $C_1=1$). Ahora, como $y'(0)=0$, eso implica que
+    \begin{alignat*}{2}
+    &&-e^0 + C_2e^0(1-0) &= 0 \\
+    \Rightarrow&& -1+C_2 &=0 \\
+    \Rightarrow&& C_2 &=1 \\
+    \end{alignat*}
+    Entonces finalmente, la solución a nuestro problema es 
+    $y(x)=e^{-x} + xe^{-x}.$
+    Note que este último problema es de Cauchy, pues tanto $y$ como $y'$ aparecen evaluadas en $x=0$ en las condiciones iniciales.
+\end{ejemplo}
+
+\begin{ejemplo}
+    Considere el problema
+    \begin{align*}
+    \begin{cases}
+    y''  + 9y &= 0 \\
+    y\left(\frac{\pi}{12}\right)&=0 \\
+    y'\left(\frac{\pi}{9}\right)&=1\\
+    \end{cases}
+    \end{align*}
+    La solución general es $y= A \sen(3x) + B \cos(3x)$, una vez más tenemos 2 parámetros. Calculemos de una vez $y'(x) = 3A\cos(3x) - 3B \sen(3x)$. Note que este problema es de valor inicial, pero no de Cauchy, pues las condiciones iniciales están evaluadas en puntos distintos ($\pi/12$ y $\pi/9$). Primero, como $y\left(\frac{\pi}{12}\right)=0$, obtenemos que
+    $$A\sen\left(\frac{3\pi}{12}\right) + B\cos\left(\frac{3\pi}{12}\right) = A \frac{\sqrt{2}}{2}+B \frac{\sqrt{2}}{2}=0$$
+    mientras que con la otra condición $y'\left(\frac{\pi}{9}\right)=1$ obtenemos que
+    $$3A\cos\left(\frac{3\pi}{9}\right) - 3B\sen\left(\frac{3\pi}{9}\right) = A \frac{3}{2}-B \frac{3\sqrt{3}}{2}=1$$
+    Para despejar $A$ y $B$, debemos entonces resolver un sistema de ecuaciones:
+    $$\begin{cases}
+    A \frac{\sqrt{2}}{2}+B \frac{\sqrt{2}}{2}=0 \\
+    A \frac{3}{2}-B \frac{3\sqrt{3}}{2}=1
+    \end{cases}$$
+    el cual no debería representar ningunda dificultad para el estudiante. La solución es
+    $$A= \frac{2}{3+3\sqrt{3}} \quad ; \quad B= -\frac{2}{3+3\sqrt{3}}$$
+    por lo que la solución al problema es
+    $$y(x) = \frac{2}{3+3\sqrt{3}}( \sen(3x) - \cos(3x)).$$
+\end{ejemplo}
+
+\begin{ejercicios}
+    \begin{enumerate}
+    \item Se presentan varios problemas de valor inicial, son sus respectivas soluciones generales. Encuentre el valor de los parámetros en cada caso, para resolver el problema.
+    \begin{enumerate}
+        \item $\begin{cases}y'-2y = 3x  \\ y(0)=1
+        \end{cases}$, con solución general $y=Ce^{2x} - \dfrac{3x}{2} + \dfrac{3}{4}$.
+        \item $\begin{cases}y'' - 6y' + 5y = 0  \\ y(0)=1 \\ y'(0)=0
+        \end{cases}$, con solución general $y=C_1e^x + C_2e^{5x}$.
+        \item $\begin{cases}y'' +25y = 0  \\ y\left(\frac{\pi}{15}\right)=1 \\ y'\left(\frac{\pi}{20}\right)=0
+        \end{cases}$, con solución general $y= A\sin(5x) + B\cos(5x)$.
+        \item $\begin{cases}y'''=8  \\ y(0)=1 \\ y'(1)=0 \\ y''(0)=0
+        \end{cases}$, con solución general $y=\dfrac{4x^3}{3} + Ax^2 + Bx + C$.
+    \end{enumerate}
+    \end{enumerate}
+\end{ejercicios}
+
+Concluimos esta sección con un importante teorema, el cual nos asegura cuándo un problema de valor inicial tiene solución única.
+
+\begin{teorema}{Existencia y unicidad}{}
+    Sea
+    $$\begin{cases}
+    y'=F(x,y) \\
+    y(x_0)=y_0
+    \end{cases}$$
+    un problema de Cauchy. Si la función $F$ y todas sus derivadas parciales son continuas, entonces existe una única solución para dicho problema.
+\end{teorema}
+
+Este teorema es muy sencillo de aplicar:
+
+\begin{ejemplo}
+    Para el problema
+    $$\begin{cases}
+    y'= y+x \sen(y) \\
+    y(x_0)=y_0
+    \end{cases}$$
+    Se tiene que $F(x,y)=y+x\sen(y)$, la cual es claramente una función continua. Veamos además que
+    $$\frac{\partial F}{\partial x} = \sen(y)$$
+    y además 
+    $$\frac{\partial F}{\partial y} = 1+x\cos(y).$$
+    Ambas derivadas parciales de $F$ son continuas, por lo que, aunque no sepamos resolver el sistema, podemos asegurar gracias al teorema que hay una única solución.
+\end{ejemplo}
+
+\section{Campos direccionales e isoclinas}
+Nuestra última sección antes de iniciar de lleno con métodos de resolución corresponde con una interpretación más geométrica de las ecuaciones diferenciales. Considere por ejemplo la ecuación diferencial
+$$f'(x)=f(x)$$
+ Geométricamente, la ecuación anterior nos dice que para todo punto $x$, la pendiente de la recta tangente a la curva de $f(x)$ es precisamente $f(x)$. Es decir, no es necesario resolver la ecuación para tener una idea de cómo es su gráfica. Desafortunadamente, como no tenemos condiciones iniciales, no vamos a obtener una sola curva, sino que muchas. 
+
+Visualmente, estas curvas coinciden con la solución general de la ecuación: $f(x) = Ce^x$, una familia de funciones exponenciales. Si bien al principio del problema no teníamos la solución, al trazar muchos segmentos tangentes, podemos darnos una idea de cómo es la curva solución, esta es la idea principal detrás del concepto de campos direccionales.
+
+\begin{definicion}{Campo direccional}{}
+    Sea 
+    $$
+    y'=F(x,y) \\
+    $$
+    una ecuación diferencial. Un \textbf{campo direccional} (o campo de pendientes)  es una familia de rectas tangentes, cada una pasando por cada punto $(a,b)$ del dominio de $F(x,y)$, o sea, son \textbf{todas las posibles rectas tangentes de todas las soluciones} particulares. Una \textbf{isoclina} es una curva de la forma $F(x,y)=C$, donde $C$ es una constante.
+\end{definicion}
+
+Geométricamente, para obtener una isoclina de una ecuación, tomamos primero una constante $C$ cualquiera, y en el campo direccional, buscamos todos los puntos sobre los cuales la pendiente es precisamente $C$. La colección de estos puntos es una isoclina de la ecuación. Evidentemente, hay infinitas isoclinas (una para cada $C$).
+
+\begin{ejemplo}
+    Considere la ecuación diferencial
+    $$y' = -\frac{x}{y}$$
+    Para calcular su campo direccional, simplemente tomamos muchos puntos del plano $(x_0 , y_0)$ y calculamos la pendiente que tendría la curva tangente a la solución que pasa por dicho punto $(x_0,y_0)$ mediante la fórmula $-x_0 / y_0 $. Entre más puntos calculemos, tendremos mejor resolución del campo. Se adjunta una tabla con algunos valores:
+    
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{$x_0$} & \textbf{$y_0$} & \textbf{pendiente $= -\frac{x_0}{y_0}$} \\ \hline
+    1              & 1              & -1                                      \\ \hline
+    -1             & 1              & 1                                       \\ \hline
+    1              & -1             & 1                                       \\ \hline
+    -1             & -1             & -1                                      \\ \hline
+    0              & 1              & 0 (horizontal)                          \\ \hline
+    1              & 0              & $\infty$ (vertical)                     \\ \hline
+    \end{tabular}
+    \end{center}
+    
+    Vemos además que, sin haber resuelto la ecuación, las gráficas de las soluciones parecen ser círculos! En efecto, como se vio en un ejemplo anterior, la solución general de esta ecuación viene dada de manera implícita por la ecuación
+    $$x^2 + y^2 = K.$$
+    Al cambiar el valor de K, se obtienen soluciones distintas (círculos distintos).
+    
+    Ahora, recordemos que las isoclinas de una ecuación vienen dadas por la familia $F(x,y)=C$. Para este caso específico, la familia de isoclinas es 
+    $$-\frac{x}{y}=C.$$
+     O sea que la familia de isoclinas son todas las rectas que pasan por el origen. 
+    
+    De manera geométrica, volviendo a la imagen, podríamos preguntarnos ¿En el campo direccional, cuáles puntos tienen pendiente \textbf{horizontal} (o sea, pendiente $C=0$)? Gracias a la imagen, es fácil observar que solo aquellos puntos que están en el eje $y$ cumplen esto. Equivalentemente, dada nuestra familia de isoclinas, buscamos aquellos puntos cuya pendiente es $C=0$, o sea que cumplan la ecuación
+    $$-\frac{x}{y}= 0.$$
+    Por lo que $x=0$ (el eje $y$) son todos los puntos que estamos buscando. De igual manera, si ahora $C=1$, la isoclina de puntos con pendiente $1$ es precisamente la recta $y=-x$.
+     \textbf{Nota: } Las isoclinas NO son soluciones de la ecuación diferencial.
+\end{ejemplo}
+
+\begin{ejemplo}
+    La ecuación
+    $$y' = e^{-x^2}$$
+    no se puede resolver en términos de funciones elementales (aunque sí tiene solución, a saber \linebreak $y(x) = \int_0^x e^{-t^2}dt$). Sin embargo, usando el campo direccional, podemos darnos una idea visual de cómo se ve su solución general.
+    
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{$x_0$} & \textbf{$y_0$} & \textbf{pendiente $= e^{-x_0^2}$} \\ \hline
+    -1              & 0              & $e^{-1} \approx 0.368$ \\ \hline
+    0             & 0              & 1                                      \\ \hline
+    1              &  0            & $e^{-1} \approx 0.368$                                       \\ \hline
+    0             & 1             & 1                                      \\ \hline
+    0             & -1             & 1                                      \\ \hline
+    \end{tabular}
+    \end{center} 
+    
+    Además, la familia de isoclinas viene dada por $e^{-x^2}=C$, de la cual despejando se obtiene que 
+    $$x=\sqrt{-\ln{C}}.$$
+    Es decir que todas las isoclinas son rectas verticales. 
+    En esta imagen es muy fácil ver que sobre las isoclinas, todos los pequeños segmentos de recta que pasan tienen la \textbf{misma inclinación}. De ahí su nombre.
+\end{ejemplo}
+
+\begin{definicion}{Curva Integral}{}
+    Una \textbf{curva integral} (o curva solución) simplemente es la gráfica de una solución particular de una ecuación diferencial.
+\end{definicion}
+
+\begin{ejemplo}
+    Consideremos la ecuación diferencial 
+    $$yy' = \cos(x)$$
+    cuya solución viene dada implícitamente por $y^2 = 2(C+\sen(x)).$
+\end{ejemplo}
+
+En resumen, podemos decir que el \textbf{campo direccional} es una idea de cómo se ven todas las soluciones de una dada ecuación diferencial (se visualiza como un conjunto de segmentos de recta, que dan una idea de cada una de las soluciones). Las \textbf{isoclinas} son curvas cuyos puntos tienen asignada la misma pendiente. Finalmente, las \textbf{curvas integrales}, son las gráficas de las soluciones particulares a la ecuación.
+
+Ahora que tenemos todos los conceptos básicos de EDOs, podemos presentar los distintos métodos de resolución de ecuaciones diferenciales. Es decir, vamos a responder la pregunta:
+
+\begin{center}
+    \textbf{Dada una ecuación diferencial, ¿Cómo podemos hallar su solución general?}
+\end{center}
