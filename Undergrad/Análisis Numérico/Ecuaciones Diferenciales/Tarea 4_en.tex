@@ -1,0 +1,252 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+\noindent
+\large\textbf{University of Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize School of Mathematics \hfill ID: B55272 \\
+MA-501 Numerical Analysis \hfill Prof. Juan Gabriel Calvo \\
+Homework 4 \hfill \today
+
+\section*{Homework 4}
+\subsection*{Problem 1.}
+\begin{enumerate}[a)]
+\justifying
+\item Write a function that takes as input $m \in \mathbb N$ and returns the matrix $A \in \mathbb{R}^{m \times m}$ given by
+$$ A=
+\begin{bmatrix}
+1 & & & &  &1 \\
+-1 & 1 & & & & 1 \\
+-1 & -1 &   1 & & & 1 \\
+\vdots & \vdots &\ddots &\ddots & &\vdots \\
+-1 & -1 & \dots & -1  & 1 & 1 \\
+-1 & -1 & \dots & -1  & -1 & 1 \\
+
+\end{bmatrix},$$
+
+where the entries on the diagonal and the last column are $1$, and the entries below the diagonal are $-1$.
+
+\textbf{Solution } The function is attached in the documents.
+
+\item For $m=60$, calculate the growth factor of $A$,
+$$\rho(A) = \frac{\max{|u_{ij}|}}{\max{|a_{ij}|}},$$
+and the norm $||A-LU||_2$. Comment on the results. You may use the \texttt{lu} command.
+
+\textbf{Solution: } The values were calculated using \texttt{MATLAB} to obtain
+$$\rho(A) = 5.76 \times 10^{17}$$
+$$||A-LU||_2 = 72.1526$$
+
+It can be observed that the error obtained in the $LU$ approximation of $A$ is very high. This is precisely due to the high growth factor of $A$ (in fact, it is the matrix with the highest growth factor in $\mathbb{R}^{60 \times 60}$).
+
+\item For each \texttt{m=10:60}, define \texttt{xExact = rand(m,1)} and compute \texttt{b=A*xExact}. Solve the system \texttt{A*xApr = b} using $LU$ factorization and $QR$ factorization (You may use the \texttt{lu} and \texttt{qr} commands). Obtain a graph of $||$\texttt{xExact-xApr}$||_2$ as a function of $m$. Justify the behavior of the graph.
+
+\textbf{Solution: } When implementing the solution in \texttt{MATLAB}, we obtain graph 1. \pagebreak
+
+ \begin{figure}[h]
+ \center
+        \includegraphics[scale=0.65]{Grafica1.eps}
+\end{figure}
+ Once again, the dependence on the growth factor $\rho$ of the $LU$ method can be observed, since its error grows rapidly as $m$ grows. Meanwhile, although the $QR$ method shows error spikes, there is no real growth that depends on $m$, since it was theoretically demonstrated that the stability of the method does not depend on the growth factor of the matrix.
+ \textbf{Note: } These spikes appeared in all runs of the script; it should be noted that the matrices we are evaluating are random.
+
+
+\end{enumerate}
+\subsection*{Problem 2}
+(Adaptive Runge-Kutta) In class we discussed the explicit fourth-order Runge-Kutta method, given by the scheme
+
+\center Scheme $1$
+
+\begin{table}[h]
+\center 
+\begin{tabular}{
+>{\columncolor[HTML]{FFFFFF}}c |
+>{\columncolor[HTML]{FFFFFF}}c 
+>{\columncolor[HTML]{FFFFFF}}c 
+>{\columncolor[HTML]{FFFFFF}}l 
+>{\columncolor[HTML]{FFFFFF}}l }
+{\color[HTML]{000000} $0$} & {\color[HTML]{000000} \textbf{}} & {\color[HTML]{000000} \textbf{}} &  &  \\
+{\color[HTML]{000000} $\frac{1}{2}$} & {\color[HTML]{000000} $\frac{1}{2}$} & {\color[HTML]{000000} } &  &  \\
+{\color[HTML]{000000} $\frac{1}{2}$} & {\color[HTML]{000000} $0$} & {\color[HTML]{000000} $\frac{1}{2}$} &  &  \\
+{\color[HTML]{000000} $1$} & {\color[HTML]{000000} $0$} & {\color[HTML]{000000} $0$} & $1$ &  \\ \hline
+{\color[HTML]{000000} } & {\color[HTML]{000000} $\frac{1}{6}$} & {\color[HTML]{000000} $\frac{1}{3}$} & $\frac{1}{3}$ & $\frac{1}{6}$ 
+\end{tabular}
+\end{table}
+
+\justifying
+For that case we assumed that $h$ is constant in each iteration. Next we describe an adaptive method, where at each step it is determined whether the value $h$ should be increased or decreased, according to local error considerations. We want to solve the problem
+\[
+  \begin{cases}
+     y' = f(t,y), \quad t \in [0,T_{\max }]\\
+     y(t_0)=y_0\\
+     \end{cases}
+\]
+Using the explicit fourth-order Runge-Kutta method, with variable \textit{step size}.
+
+\justifying
+The program includes three parameters: $h_{\max}$ (the maximum possible value of $h$, for stability considerations), $tol$ (the prescribed tolerance) and $h_0$ (initial value of $h$).
+
+At each iteration $k$, the local error $\Delta$ is estimated as follows. First, the approximation $y_1$ (at time $t_k + h$) is calculated using one Runge-Kutta iteration with increment $h$. Then, an approximation $y_2$ (at time $t_k + h$) is calculated using two Runge-Kutta iterations with increment $\frac{h}{2}$ each. Thus we take $\Delta = y_2 - y_1$.
+
+The value of $h$ is modified as follows. Calculate
+\[
+\tilde{h} = \begin{cases}
+Sh|\frac{tol}{\Delta}|^{0.20} , \quad \text{if } |\Delta| \leq tol \\
+Sh|\frac{tol}{\Delta}|^{0.25} , \quad \text{if } |\Delta| > tol \\
+\end{cases}
+\]
+where $S$ is a \textit{safety} factor close to $1$; in our case take $S=0.9$. Then, we take $h_{new} = \min{\{h_{\max},\tilde{h}}\}$. Finally, if $|\Delta| < tol$, we take the value $y_{k+1} = y_2 + \Delta/15$; otherwise the cycle is repeated. Note that in any case we continue with the value $h_{new}$.
+\begin{enumerate}[a)] 
+\item Write a function that implements the adaptive method described above. The inputs should be $f,y_0,t_0,T_{\max},h_0,h_{\max},tol$. (Suggestion: to calculate $y_1$ and $y_2$ you can use the function discussed in class that implements scheme $1$).
+
+\textbf{Solution: } The function \texttt{RKadaptive} is attached.
+
+
+\item Use the previous function for the case $f(t) = \log (t+0.01) + 1/(t-4), y_0=0.8,t_0=0$, $T_{\max}=3.99$. Take $h_0 =10^{-5}$, $h_{\max} = 10^{-2}$, $tol = 10^{-12}$. Plot $h$ as a function of time (on an appropriate scale). Comment on the observed variations in $h$. Also plot the error $|y(t) - \tilde{y}(t)|$ as a function of $t$.
+
+\textbf{Solution: }First we calculate the general solution of the equation
+
+\begin{alignat*}{2}
+ y'=\log \left(1+\frac{1}{100} \right) + \frac{1}{t-4}& \\
+ \Rightarrow  y = \int \log \left(1+\frac{1}{100} \right) + \frac{1}{t-4} &dt \\
+ \Rightarrow y = \left( t + \frac{1}{100}\right)\log\left(t+\frac{1}{100}\right)-t-\frac{1}{100}&+\log|4-t|+C\\
+\end{alignat*}
+ And solving for the initial condition $y(0)=0.8$, we have $C\approx -0.5302426593$.
+
+Then, when applying the function from part a), we obtain Graphs 2, 3 and 4. These correspond to a graph of the solution to the equation (obtained using the adaptive method), the step size $h$, and the error between the general solution and the approximation, respectively.
+
+In the first graph, one can appreciate that at least roughly, the solution seems to approach the expected one (the general solution can be entered into any function plotter), which is a good indicator. \pagebreak
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.7]{Grafica2.eps}
+\end{figure}
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.55]{Grafica3.eps}
+\end{figure}
+
+Regarding Graph 3, the first thing to note is an abrupt change in the step size in the first iterations. This tells us that our initial step is too small for the adaptive method, so it is quickly readjusted. Subsequently, this value stabilizes for most of the iterations. Finally, approaching the singularity of the function at $t=4$, the step size must be adjusted again, due to the anomalous behavior of the function near $4$.
+
+Finally, regarding the quality of the approximation, in Graph 4 one can note that the approximation is extremely precise, even with a very small number of iterations ($934$). This reveals the power of adaptive methods, as they ensure convergence and computational economy. \pagebreak
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.55]{Grafica4.eps}
+\end{figure}
+
+\end{enumerate}
+\subsection*{Problem 3}
+Consider the differential equation given by the system
+\[
+    \Large
+\begin{cases}
+\frac{\partial^2 x}{\partial t^2} = x + 2\frac{\partial y}{\partial t} - u_c\frac{x+u}{((x+u)^2 + y^2)^{3/2}} - u\frac{x-u_c}{((x-u_c)^2 + y^2)^{3/2}} \\
+\frac{\partial^2 y}{\partial t^2} = y -2 \frac{\partial x}{\partial t} - u_c\frac{y}{((x+u)^2 + y^2)^{3/2}} - u \frac{y}{((x-u_c)^2 + y^2)^{3/2}}
+\end{cases}
+\]
+
+where $x(t),y(t) $ are functions $x,y:[0,\infty) \to \mathbb R$. This system models the two-dimensional motion of a satellite, where $(x(t),y(t))$ represents its location at time $t$. In this case $u=0.012277471$ and $u_c = 1-u$ are given constants. Also consider the initial conditions of position and velocity at $t=0$ given by $x(0) =0.994, y(0) = 0, x'(0)=0 , y'(0)=-2.001585106$. We know a priori that the motion has period $T= 17.0652166$.
+\begin{enumerate}[a)]
+\item Let $z=x', w=y'$ and obtain a first-order system of differential equations with four equations of the form $\bm{u}' = \bm{f}(t,\bm{u}(t))$, $\bm{u}(0) = \bm{u}_0$.
+
+\textbf{Solution: } Let us call:
+$$F(t)=- u_c\frac{x+u}{((x+u)^2 + y^2)^{3/2}} - u\frac{x-u_c}{((x-u_c)^2 + y^2)^{3/2}} $$
+$$G(t) =  - u_c\frac{y}{((x+u)^2 + y^2)^{3/2}} - u \frac{y}{((x-u_c)^2 + y^2)^{3/2}}$$
+
+Then making the change of variables $z=x'$, $w=y'$, we obtain the system
+
+\[  
+\begin{cases}
+x'=z\\
+y'=w\\
+z'=x+2w+F(t)\\
+w'=y-2z + G(t)\\
+\end{cases}
+\]
+Then take $$\bm{u}=(x,y,z,w)$$  $$\bm{f}(t,\bm{u}(t))=\begin{pmatrix}z(t)\\w(t)\\x(t)+2w(t)+F(t)\\y(t)-2z(t)+G(t))\end{pmatrix}$$ and $\bm{u}_0=(x(0),y(0),x'(0),y'(0))$, to obtain the desired form.
+\item Solve the obtained system using the adaptive algorithm from question $3$. Use $T_{\max} = 40, h_0 =10^{-5}, h_{\max}=10^{-2}, tol = 10^{-6}.$ Plot the parametric curve $\{ (x(t),y(t)), t \in [0,T_{\max}] \}.$ Compare the values $(x(0),y(0)),(x(T),y(T))$ and $(x(2T),y(2T))$. Comment on your results.
+
+\textbf{Solution: } When implementing the algorithm for the application problem, we obtain figure $5$, which describes the trajectory
+
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.55]{Grafica5.eps}
+\end{figure}
+
+It can be observed that the approximation is quite good; numerically, when evaluating at the periods we obtained that
+\begin{align*}
+X(0)= 0.994000000000000\quad \quad \quad \quad \quad \quad \quad  &Y(0)=0 \\
+X(T)=  0.993208458224920\quad \quad \quad \quad \quad \quad \quad  &Y(T)= -0.004486955982549\\
+X(2T)=   0.994106192301190\quad \quad \quad \quad \quad \quad \quad  &Y(2T)= -1.272527371227908\times 10^{-4}\\
+\end{align*}
+
+Therefore the results are stable as $t$ advances.
+
+\textbf{Note: } This run took about $4100$ iterations.
+
+\item Now solve the system using the command
+$$\texttt{[t,u] = ode113(f,[0,40],u0)}.$$
+Plot the parametric curve $\{ (x(t),y(t)), t \in [0,T_{\max}] \}.$ What do you observe in this case?
+
+\textbf{Solution: } When implementing the \texttt{MATLAB} algorithm for the application problem, we obtain figure $6$, which describes the trajectory
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.55]{Grafica6.eps}
+\end{figure}
+
+This time we have 
+
+\begin{align*}
+X(0)=  0.994000000000000
+\quad \quad \quad \quad \quad \quad \quad  &Y(0)=0 \\
+X(T)=0.988300480980110 \quad \quad \quad \quad \quad \quad \quad  &Y(T)=0.012190987212319 \\
+X(2T)= 0.654532855410150  \quad \quad \quad \quad \quad \quad \quad  &Y(2T)=-0.349846602949540\\
+\end{align*}
+
+From which we can see that there is a stability problem with the solution, after the second period. However, it is important to highlight that this method requires \textbf{far fewer iterations} than the previous one, since it achieved similar results (at least initially), with about $10\%$ of the iterations needed in the previous one.
+
+\item Define the options vector
+$$\texttt{options = odeset('RelTol',1e-10,'Stats','on','AbsTol',1e-10)}.$$
+Now execute the command \texttt{[t,u] = ode113(f,[0,40],u0,options)}. Plot the parametric curve $\{ (x(t),y(t)), t \in [0,T_{\max}] \}.$ What do you observe in this case?
+
+    \textbf{Solution: } In this case, modifying the options of the internal \texttt{MATLAB} code, we obtain Graph $7$.\pagebreak
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.55]{Grafica7.eps}
+\end{figure}
+
+
+In which one can see a completely stable solution, which respects the expected period $T$. Numerically we obtained that
+
+\begin{align*}
+X(0)=   0.994000000000000
+\quad \quad \quad \quad \quad \quad \quad  &Y(0)=0 \\
+X(T)= 0.993996136853638\quad \quad \quad \quad \quad \quad \quad  &Y(T)= -2.864376096295169\times 10^{-7}\\
+X(2T)=  0.993996136853638  \quad \quad \quad \quad \quad \quad \quad  &Y(2T)= 4.696898262576229\times 10^{-5}\\
+\end{align*}
+Therefore we can conclude that this method is optimal for this type of problem, since it did not need as many iterations (it needed $1915$), as the manually programmed one (which still offered computational benefits). Furthermore, with few iterations, it offered precise and stable approximations to our initial value problem.
+
+\end{enumerate}
+\end{document}

@@ -1,0 +1,285 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{spalign}
+\usepackage{epsfig}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+\noindent
+\large\textbf{University of Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize School of Mathematics \hfill ID: B55272 \\
+MA-501 Numerical Analysis \hfill Prof. Juan Gabriel Calvo \\
+Partial Exam 1 \hfill \today
+\section*{Part 2}
+\subsection*{Problem 7}
+\justifying
+\begin{itemize}
+\item[7)] Given a function $f \in C^2([a,b])$ and an initial value $x_0$, define the sequence $\{x_k\}_{k=0}^{\infty}$ given by 
+ $$x_{k+1} = x_k + \frac{f(x_k)}{f'(x_k)}\left[1- \frac{f(x_k)}{f'(x_k)}\frac{f''(x_k)}{2f'(x_k)} \right]^{-1}$$
+ \begin{itemize}
+ \item[o)] Let $f \in C^3([a,b])$ such that $f(c)=0$, where $c$ is a simple zero. Prove that there exists $\delta > 0$ such that if $x_0 \ \in (c-\delta,c+\delta)$, then $x_k$ converges to $c$. What additional hypotheses are needed?
+ \end{itemize}
+ \begin{enumerate}[a)]
+ \item Prove that the rate of convergence is cubic, for $f$ in part o).
+ 
+ \textbf{Solution: } We will solve o) and a). Let $\delta_1 > 0$ such that $f'(x) \neq 0$ in $(c-\delta_1, c+\delta_1)$. Consider the order $3$ Taylor expansion around $x_k$.
+ $$ 0 = f(c) = f(x_k) + (c-x_k)f'(x_k) + \frac{(c- x_k)^2 f''(x_k)}{2} + \frac{(c-x_k)^3f'''(\xi_k)}{6}$$
+ Where $\xi_k $ is between $c$ and $x_k$. Rearranging we obtain
+ \begin{align*}
+ \frac{f(x_k)}{f'(x_k)} &= x_k-c - \frac{(x_k-c)^2f''(x_k)}{2f'(x_k)} + \frac{(x_k-c)^3f'''(\xi_k)}{6} \\
+ &= (x_k-c)\left(  1- \frac{(x_k-c)f''(x_k)}{2f'(x_k)}\right) + \frac{(x_k-c)^3f'''(\xi_k)}{6}   \label{eq:1} \tag{1}
+ \end{align*}
+ Now, taking an order 2 Taylor expansion around $x_k$, we have
+ $$f(x_k) = (x_k-c)f'(x_k) -
+ \frac{(x_k-c)^2 f''(\xi'_k)}{2}$$
+ Where $\xi'_k $ is between $c$ and $x_k$. Rearranging again, we have
+ $$x_k-c = \frac{f''(\xi'_k)(x_k-c)^2}{2f'(x_k)} + \frac{f(x_k)}{f'(x_k)}$$
+ And substituting into ($1$), we obtain
+ \begin{align*}
+ \frac{f(x_k)}{f'(x_k)} &= (x_k-c)\left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2} - \frac{f''(\xi'_k)(x_k-c)^2f''(x_k)}{4(f'(x_k))^2} \right)+\frac{(x_k-c)^3f'''(\xi_k)}{6} \\
+ &= (x_k-c)\left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2}\right) + (x_k-c)^3 \left(\frac{f'''(\xi_k)}{6} - \frac{f''(\xi'_k)f''(x_k)}{4(f'(x_k))^2} \right)
+ \end{align*}
+ If we denote $G(x_k) =  \left( 1 - \frac{f(x_k)f''(x_k)}{2(f'(x_k))^2}\right)$, then rearranging we obtain
+ $$\frac{f(x_k)}{f'(x_k)}(G(x_k))^{-1} = x_k - c + (x_k-c)^3 \left(\frac{f'''(\xi_k)}{6} - \frac{f''(\xi'_k)f''(x_k)}{4(f'(x_k))^2} \right) (G(x_k))^{-1}$$
+ And finally
+ $$|x_{k+1} - c| = \frac{1}{2}|x_k-c|^3\left|\frac{f'''(\xi_k)}{3} - \frac{f''(\xi'_k)f''(x_k)}{2(f'(x_k))^2} \right||G(x_k)|^{-1}$$
+ Therefore, as additional hypotheses, one can require that $G(x)$ be well-defined near $c$, and moreover that
+ $$\left|\frac{f'''(x)}{3} - \frac{f''(y)f''(z)}{2(f'(z))^2} \right|\left| 1 - \frac{f(z)f''(z)}{2(f'(z))^2}\right|^{-1} < M$$
+
+ For some $M >0$, and for all $x,y,z \in (c-\delta_1, c+\delta_1)$. Under these new hypotheses, we can take $\delta = \min\{1,1/M,\delta_1\}$ to obtain that, if $x_0 \in (c-\delta, c+\delta)$, since
+ $$|x_{k+1} - c| < \frac{1}{2}|x_k - c|^2$$
+ And by induction it follows that $x_k \in (c-\delta, c+\delta)$. Furthermore, it is easy to deduce convergence, since 
+ $$|x_{k+1} - c| <  \frac{1}{2^{2k+1}}|x_0-c| \to 0.$$
+ Finally, the order of convergence is cubic, since
+ $$\lim_{k\to \infty} \frac{|x_{k+1}-c|}{|x_k-c|^3} = \left|\frac{f'''(c)}{6} - \frac{f''(c)f''(c)}{4(f'(c))^2} \right| $$
+ \item Write a function \texttt{suc = iter(f,x0,tol)} in \texttt{MATLAB} that computes the sequence defined above, where the inputs are the function $f$, the initial value $x_0$ and a certain tolerance \texttt{tol}. For simplicity in the implementation, we will assume that $f$ is a polynomial, so when computing its derivatives we can do so exactly. 
+ 
+ \textbf{Solution: }The function is attached in the documents.
+ 
+ \item Verify the behavior of your function for $f(x) = 816x^3 - 3835x^2 + 6000x -3125$. Use $x_0 = 1.6$, \texttt{tol} $= 10^{-6}$. Compare the behavior of the obtained sequence with that obtained by applying Newton's method. Draw on the same graph the error $|x_k - c|$ for both cases. Comment on your results.
+ 
+ When executing both methods for the initial value $\texttt{x0} = 1.6$, we obtain Graph 1.
+ 
+ 
+ \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica1.eps}
+\end{figure}
+Where the green sequence ($c_n$) corresponds to the iterations of Newton's method, while the red one ($x_n$) corresponds to the new method. It is possible to appreciate the superlinear convergence of both; however, the new method is clearly faster than Newton's, since it was shown that its convergence is in fact cubic, which is evident in the graph. It should be noted that both convergences are very fast, achieving an accuracy of at least $10$ decimals in less than $5$ iterations.
+\textbf{Note: } Newton's method performed one more iteration, as that is what it took to reach the specified tolerance.
+ 
+ \item Plot the basins of attraction of the method given in ($2$). To do this, consider the vector of initial values \texttt{xx = linspace(1.4,1.7)}. Plot the convergence value of the method as a function of \texttt{xx}. Is there any improvement compared to Newton's method?
+ 
+ \textbf{Solution: } It is easy to see that the roots of $f$ are $x_0 = 25/17 \approx 1.4706$, $x_1= 25/16 =1.5625$, $x_2 = 5/3 \approx 1.66667$. Applying Newton's method with initial values \texttt{xx}, we have Graph 2.
+ 
+  \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica2.eps}
+\end{figure}
+While applying the new method, we obtain Graph 3.
+
+   \begin{figure}[h]
+\centering
+        \includegraphics[scale=0.6]{Grafica3.eps}
+\end{figure}
+When examining the basins of attraction, it can be observed that the basins of attraction of the new method are wider than Newton's, that is, an initial value does not need to be as close to a root to converge to it. Additionally, we see that in this specific case, the initial values converge to their nearest root, unlike Newton's method, where there are small anomalies near $x=1.52$ and $x=1.63$. This, however, could be good luck, and for other functions, the new method may still have regions where convergence is chaotic.
+ \end{enumerate}
+\end{itemize}
+\subsection*{Problem 8}
+\begin{itemize}
+\item[8)] When using methods for solving Partial Differential Equations, such as Finite Element Methods or Virtual Element Methods, it is necessary to compute integrals over polygonal regions in general. For this exercise, consider the reference triangle $T$ with vertices $A(0,0), B(1,0), C(0,1)$. In this exercise we seek a quadrature formula for the integral
+\[\iint \limits_{T} f(x,y)dydx  \label{eq:2} \tag{2} \]
+that is exact for polynomials in two variables of degree at most $n$.
+\begin{enumerate}[a)]
+\item First suppose that $n=1$. A polynomial in two variables of degree one has the form 
+$$p_1(x,y) = ax + by + c$$
+Where $a,b,c \in \mathbb{R}$. Obtain the values of the weights $w_j$ and the nodes $(x_j,y_j)$ such that the formula 
+$$\iint \limits_{T} p_1(x,y)dydx = \sum_{j=0}^kw_jp_1(x_j,y_j)$$
+is valid. What must be the value of $k$?
+
+\textbf{Solution: }We need the quadrature to be exact for polynomials of degree $1$. In particular, it must be exact for the generators of this space: $1,x,y$. So it suffices to choose $k$ and solve the system of variables $w_j,y_j,x_j$
+
+\[
+  \spalignsys{
+    \iint \limits_{T} dydx = \sum_{j=0}^{k}w_j ;
+    \iint \limits_{T} xdydx = \sum_{j=0}^{k}w_jx_j ;
+    \iint \limits_{T} ydydx = \sum_{j=0}^{k}w_jy_j 
+  } \Rightarrow 
+   \spalignsys{
+     \frac{1}{2} = \sum_{j=0}^{k}w_j\quad ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jx_j ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jy_j 
+  }
+\]
+Which has an easy solution to compute for $k=0$. Take $w_0 = \frac{1}{2}$ and $x_0 = y_0 = \frac{1}{3}$. This gives us the quadrature formula
+$$\iint \limits_{T} f(x,y)dydx = \frac{1}{2}f\left(\frac{1}{3},\frac{1}{3}\right)$$
+Which corresponds to half the value of $f$ at the centroid of the triangle.
+
+\item Calculate the error in the approximation from the previous part; that is, calculate a formula for 
+$$\mathcal E_1 = \iint \limits_{T} f(x,y)dydx - \sum_{j=0}^kw_jf(x_j,y_j)$$
+
+\textbf{Solution: } We can consider a multivariate Taylor expansion, of order 1, with remainder.
+$$f(x,y) = F(x,y) + R(x,y)$$
+Where
+\begin{align*}
+F(x,y) &= f(x_0,y_0) + (x-x_0)\frac{\partial{f}}{\partial{x}}(x_0,y_0) + (y-y_0)\frac{\partial{f}}{\partial{y}}(x_0,y_0) \\
+R(x,y) &= \frac{1}{2}\left( (x-x_0)^2 \frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2(x-x_0)(y-y_0)\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + (y-y_0)^2\frac{\partial^2{f}}{\partial{y}}(\xi,\eta)\right)
+\end{align*}
+Where $(\xi,\eta) \in T$. Then, applying the quadrature, the error $E$ is given by 
+$$E= \iint \limits_{T}F(x,y) + R(x,y)dydx - \frac{1}{2}\left(F\left(\frac{1}{3},\frac{1}{3}\right) + R\left(\frac{1}{3},\frac{1}{3}\right)\right)$$
+Since $F(x,y)$ is a polynomial of degree $1$, its quadrature approximates its integral exactly, therefore the $F$ terms cancel and we obtain 
+
+\begin{alignat*}{2}
+ & \quad E &&= \iint \limits_{T} R(x,y)dydx - \frac{1}{2}R\left(\frac{1}{3},\frac{1}{3}\right)\\
+ \Rightarrow & \quad |E| &&\leq \iint \limits_{T} |R(x,y)|dydx + \frac{1}{2}\left|R\left(\frac{1}{3},\frac{1}{3}\right)\right|
+\end{alignat*}
+Now, since $(x-x_0)\leq 1, |x-x_0||y-y_0|\leq 1, (y-y_0)\leq 1$, we have 
+$$|R(x,y)| \leq \frac{1}{2}\left|\frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + \frac{\partial^2{f}}{\partial{y^2}}(\xi,\eta) \right|$$
+If we call
+$$M \coloneqq \sup_{(\xi,\eta)\in T} \left|\frac{\partial^2{f}}{\partial{x^2}}(\xi,\eta) + 2\frac{\partial^2{f}}{\partial{x}\partial{y}}(\xi,\eta) + \frac{\partial^2{f}}{\partial{y^2}}(\xi,\eta) \right|$$
+Then we have $|R(x,y)| \leq M/2$ for all $(x,y) \in T$. And therefore we will have
+$$|E| \leq \iint \limits_{T} \frac{M}{2} dydx + \frac{M}{2} = \frac{M}{2}$$
+
+\item Repeat part (a) for $n=2$; that is, calculate new weights and nodes such that equation ($2$) is valid for polynomials of degree $2$, $p_2(x,y) = a + bx + cy + dx^2 + exy + fy^2$.
+
+\textbf{Solution: } We write again the system of equations we want to solve.
+
+\[
+  \spalignsys{
+    \iint \limits_{T} dydx = \sum_{j=0}^{k}w_j ;
+    \iint \limits_{T} xdydx = \sum_{j=0}^{k}w_jx_j ;
+    \iint \limits_{T} ydydx = \sum_{j=0}^{k}w_jy_j ;
+    \iint \limits_{T} x^2dydx = \sum_{j=0}^{k}w_jx^2_j ;
+    \iint \limits_{T} y^2dydx = \sum_{j=0}^{k}w_jy^2_j ;
+    \iint \limits_{T} xydydx = \sum_{j=0}^{k}w_jx_jy_j
+  } \Rightarrow 
+   \spalignsys{
+     \frac{1}{2} = \sum_{j=0}^{k}w_j\quad ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jx_j ;
+     \frac{1}{6} = \sum_{j=0}^{k}w_jy_j ;
+     \frac{1}{12} = \sum_{j=0}^{k}w_jx^2_j ;
+     \frac{1}{12} = \sum_{j=0}^{k}w_jy^2_j ;
+     \frac{1}{24} = \sum_{j=0}^{k}w_jx_jy_j
+  }
+\]
+\textbf{Note: } The calculations of the double integrals are omitted, but they are straightforward, since they are polynomial over an easy-to-describe region.
+
+This system, being more robust than the previous one, can have multiple solutions for different values of $k$. In this case, $k=3$ was chosen, and for convenience it was assumed that all $3$ weights have the same value. This allows solving the system with relative ease, for which we obtain
+\begin{align*}
+&w_0=w_1=w_2 = \frac{1}{6} \\
+&x_0=\frac{1}{6} , \quad x_1 = \frac{2}{3} , \quad  x_2 = \frac{1}{6} \\
+&y_0 = \frac{1}{6} , \quad y_1 = \frac{1}{6}, \quad y_2 = \frac{2}{3}
+\end{align*}
+Which gives a\footnote{There are many other possible quadratures, since several solutions can be found for this system when $k = 3$} degree $2$ quadrature
+$$\iint \limits_{T} f(x,y)dydx = \frac{1}{6}\left( f\left(\frac{1}{6},\frac{1}{6}\right) + f\left(\frac{2}{3},\frac{1}{6}\right) + f\left(\frac{1}{6},\frac{2}{3}\right)\right).$$
+\item Write a code that implements the quadrature formulas obtained in parts (a) and (c). Verify the behavior for the functions $f_1(x,y) = y-x+1$ and $f_2(x,y) = x^2 - xy +x - y$. Compare your results with the exact value.
+
+\textbf{Solution: }The functions \texttt{quad1} and \texttt{quad2} are attached in \texttt{MATLAB}. The evaluation results are summarized in table 1
+\center{Table 1. Quadrature results for $n=1,2$.}
+
+
+\begin{table}[h]
+\center
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Function} & \textbf{Exact value} & \textbf{Quadrature $n=1$} & \textbf{Quadrature $n=2$} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+$f_1(x,y)$ & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$ \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+$f_2(x,y)$ & $\frac{1}{24}$ & 0 & $\frac{1}{24}$ \\ \hline
+
+\end{tabular}
+\end{table}
+ 
+ \justifying 
+We can appreciate that all values are exact, except for the degree $n=1$ quadrature for the degree $2$ polynomial, which is to be expected, due to the nature of the order $1$ quadrature.
+
+\item[e)] Verify the behavior of the obtained quadratures for 
+$$f(x,y) = \sin(\pi x)\cos(\pi y)$$
+Calculate the relative error in each case. \newpage
+
+\textbf{Solution: } We have
+\begin{align*}
+\iint \limits_{T} \sin(\pi x)\cos(\pi y) dy dx &= \int_0^1 \sin(\pi x) \int_0^{1-x} \cos(\pi y) dy dx \\
+&= \frac{1}{\pi}\int_0^1 \sin(\pi x) \left[\sin(\pi y)\right]_0^{1-x}dx \\
+&= \frac{1}{\pi}\int_0^1\sin(\pi x) \sin(\pi (1-x))dx \\
+&=\frac{1}{2\pi}\int_0^1\cos(2\pi x - \pi) - \cos(\pi) dx \\
+&= \frac{1}{2\pi}\int_0^1 1-\cos(2\pi x)dx \\
+&= \frac{1}{2\pi} \approx 0.15915494309189.
+\end{align*}
+When executing the functions \texttt{quad1} and \texttt{quad2} we obtain the approximations $q_1 = 0.216506350946110$, and $q_2= 0.155502116982037$ respectively. Calculating the relative errors we have
+\begin{align*}
+2\pi\left|\frac{1}{2\pi}- q_1\right| &\approx 0.360349523175=36\% \\
+2\pi\left|\frac{1}{2\pi}- q_2\right| &\approx 0.022951383343 = 2.29\%
+\end{align*}
+From which we conclude that the first approximation is poor, while the second is decent.
+
+\item[f)] Consider the triangle $\widehat{T}$ with vertices $(x_0,y_0),(x_1,y_1),(x_2,y_2)$. By a change of variables, perform a change in the integration region
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = \iint \limits_{T} f(x,y)dydx $$
+In this way, it is not necessary to calculate the nodes and weights for each new triangle $\widehat{T}$. Approximate in this way the integral 
+$$\iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx$$
+Where $\widehat{T}$ is the triangle with vertices $(-1,1) , (1,3), (0,5)$, with the order one and two quadratures.
+
+\textbf{Solution: } Consider the linear functions
+\begin{align*}
+T_1(x,y) &= 1-x-y \\
+T_2(x,y)&=x \\
+T_3(x,y) &= y.
+\end{align*}
+We take the change 
+$$(\widehat{x},\widehat{y}) = \left(\sum_{i=1}^3x_iT_i(x,y),\sum_{i=1}^3y_iT_i(x,y)\right) = (u(x) ,v(y))$$
+Where $(x_i,y_i)$ are the vertices of the triangle. Observe that in particular, under this change of variables, we have
+\begin{align*}
+(0,0) &\mapsto (x_1,y_1) \\
+(0,1) &\mapsto (x_2,y_2) \\
+(1,0) &\mapsto (x_3,y_3)
+\end{align*}
+And being a linear transformation, it will preserve the lines that correspond to the sides of the original triangle. So we have $T \mapsto \widehat{T}$, therefore
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = \iint \limits_{T} f(u(x,y),v(x,y))|J(u,v)|dxdy$$
+Where the Jacobian is given by
+$$J(u,v) =  \begin{vmatrix} 
+\frac{\partial u}{\partial x} &\frac{\partial u}{\partial y} \\
+\frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+\end{vmatrix}. $$
+Since 
+\begin{align*}
+&\frac{\partial u}{\partial x} = x_2-x_1 ,\quad \frac{\partial u}{\partial y} = x_3-x_1 \\
+&\frac{\partial v}{\partial x} = y_2-y_1 ,\quad \frac{\partial v}{\partial y} = y_3-y_1
+\intertext{Then}
+J(u,v) &= (x_2-x_1)(y_3-y_1) - (x_3 - x_1)(y_2 - y_1) \\
+&= x_1(y_2-y_3) + x_2(y_3-y_1)+x_3(y_1-y_2) \\
+&= \det \begin{pmatrix} 
+1 & 1 & 1 \\
+x_1 & x_2 & x_3 \\
+y_1 & y_2 & y_3 
+\end{pmatrix} \\
+&= 2A_{\widehat{T}}
+\end{align*}
+Where $A_{\widehat{T}}$ denotes the area of the triangle $\widehat{T}$. So we obtain the change of variables formula
+$$\iint \limits_{\widehat{T}} \hat{f}(\hat{x},\hat{y})d\hat{y}d\hat{x} = 2A_{\widehat{T}} \iint \limits_{T} f(u(x,y),v(x,y))dxdy$$
+To calculate the integral $$\iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx$$
+Where $\widehat{T}$ is the triangle with vertices $(-1,1) , (1,3), (0,5)$, we proceed as described. 
+\justifying
+Using the determinant method, we have $2A_{\widehat{T}} =6$, therefore
+$$I = \iint \limits_{\widehat{T}} x^2 e^{-(x+y)} dy dx = 6 \iint \limits_{T} (u(x,y))^2 e^{-(u(x,y)+v(x,y))}dy dx$$
+Which is approximated by \texttt{quad1} and by \texttt{quad2} to obtain
+$$I_1 =   1.8410\times10^{-33} , \quad I_2 =  0.0633318$$
+respectively.
+\end{enumerate}
+\end{itemize}
+\end{document}

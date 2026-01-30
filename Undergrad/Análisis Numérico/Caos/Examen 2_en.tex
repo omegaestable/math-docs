@@ -1,0 +1,578 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage[makeroom]{cancel}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[document]{ragged2e}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+\noindent
+\large\textbf{University of Costa Rica} \hfill \textbf{Juan Ignacio Padilla B.} \\
+\normalsize School of Mathematics \hfill ID: B55272 \\
+MA-501 Numerical Analysis \hfill Prof. Juan Gabriel Calvo \\
+Second Partial Exam \hfill \today
+\justifying
+\section*{Second Partial Exam}
+\subsection*{Problem 1.}
+Consider a matrix $A\in \mathbb{C}^{m \times n}$. Prove that the set of nonzero eigenvalues of $A^*A$ and the set of nonzero eigenvalues of $AA^*$ are the same. What happens with the zero eigenvalues?
+
+\textbf{Solution: } Let $\lambda \neq 0$ and $\bm{v} \neq 0$ be such that $A^*A\bm{v}=\lambda \bm{v}$. Then $AA^*Av=\lambda A \bm{v}$. Since $\lambda \neq 0$ and $\bm{v} \neq 0$, we have $A\bm{v} \neq 0$ (otherwise $A^*A\bm{v}=0$). Therefore $A\bm{v}$ is an eigenvector of $AA^*$, and $\lambda$ is an eigenvalue of this matrix. By symmetry, we obtain the other inclusion.
+Now, if $\lambda =0$, we know that $A^*A\in \mathbb{C}^{n\times n}$ and $AA^* \in \mathbb{C}^{m \times m}$ share the nonzero eigenvalues, so if any eigenvalue is not shared, it must be 0. However, it is not correct to assert that both matrices will have at least one zero eigenvalue, due to size considerations. More specifically, if we assume $m>n$, and $n$ is the number of nonzero eigenvalues of $A^*A$ (and of $AA^*$), we can verify that $AA^*$ has zero eigenvalues (since it must have $m$ eigenvalues in total), while $A^*A$ does not (since it will have full rank). Therefore, in general if $\lambda=0$ \textbf{the result does not hold}.
+\textbf{Note: } If $m=n$ then the result does hold (by theorem $5$.$16$).
+
+\subsection*{Problem 2.}
+Given $\bm{v} \in \mathbb{R}^n$, consider the operator given by
+$$F = I-2\frac{\bm{vv^*}}{\bm{v^*v}},$$
+where $I\in \mathbb{R}^{n \times n}$ is the identity matrix.
+\begin{enumerate}[a)]
+\item Prove that F is orthogonal
+
+\textbf{Solution: } We have that 
+ $$F^T = I^T - 2\frac{\bm{vv}^*}{||\bm{v}||^2} = F$$
+ Then we compute $F^TF$,
+ \begin{align*}
+ F^TF &= \left(I - 2\frac{\bm{vv}^*}{||\bm{v}||^2} \right)  \left(I - 2\frac{\bm{vv}^*}{||\bm{v}||^2} \right)  \\
+ &= I-2\frac{\bm{vv}^*}{||\bm{v}||^2}-2\frac{\bm{vv}^*}{||\bm{v}||^2}+4\frac{\bm{vv}^*\bm{vv^*}}{||\bm{v}||^4} \\
+ &=I-4\frac{\bm{vv}^*}{||\bm{v}||^2} + 4||\bm{v}||^2\frac{\bm{vv}^*}{||\bm{v}||^4} \\
+ &= I\\
+ \end{align*}
+Therefore we conclude that $F$ is an orthogonal (and symmetric) operator.
+
+\item Characterize the eigenvalues and eigenvectors of $F$.
+
+\textbf{Solution: }First, note that the eigenvalues of $F$ are real, by (a). Suppose that $F\bm{x} = \lambda \bm{x}$. Then $||F\bm{x}||^2 = |\lambda|^2 ||\bm{x}||^2$. Now, since
+\begin{align*}
+||F\bm{x}||^2 &= \bm{x}^TF^TF\bm{x} \\
+&= \bm{x}^T\bm{x} \\
+&= ||\bm{x}||^2 
+\end{align*}
+It must be that $|\lambda| = 1$. Therefore the eigenvalues of $F$ must be $\pm 1$. 
+
+Now, to find the eigenvectors, we need to recall the geometric definition of $F$. We know that $F\bm{x}$ consists of the reflection of $\bm{x}$ over the hyperplane orthogonal to $\bm{v}$ (this hyperplane is $(\operatorname{span} \{\bm{v}\})^\perp$). Therefore, if we take $\bm{x} \perp \bm{v}$, we clearly have that 
+$$F\bm{x} = \bm{x} - 2\frac{\bm{v}}{||\bm{v}||^2}\bm{v}^*\bm{x} = \bm{x}$$
+(Recall that $\bm{v}$ should be considered as a column vector.)
+
+Therefore, all vectors orthogonal to $\bm{v}$ are eigenvectors associated with $1$. In particular, we can find $n-1 = \dim((\operatorname{span} \{\bm{v}\})^\perp)$ linearly independent eigenvectors associated with $1$.
+
+Finally, note that
+$$F\bm{v} = \bm{v} - 2\frac{\bm{v}}{||\bm{v}||^2}\bm{v^*v} = \bm{v}-2\bm{v}=-\bm{v}$$
+Therefore $\bm{v}$ is the eigenvector (linearly independent from the others) associated with -1.
+
+\item Determine the singular values of $F$.
+
+\textbf{Solution: } The singular values of $F$ are the square roots of the eigenvalues of $F^TF = I$, so they are all 1.
+
+\end{enumerate}
+\subsection*{Problem 3.}
+Prove that the growth factor of a matrix $A\in \mathbb{C}^{m \times m}$ (when using partial pivoting) satisfies $\rho \leq 2^{m-1}$.
+
+\textbf{Solution: } We will use induction on the number of steps of partial pivoting. Let $U_k = (u^{(k)}_{ij})$ be the matrix obtained after the $k$-th reduction (i.e., the matrix obtained after pivoting and performing row operations). For $k=1$, we have, thanks to pivoting, 
+$$\left| \frac{a_{i1}}{a_{11}}\right| \leq 1  \quad \quad \text{for } i=1,\dots,m$$
+Then for $i\geq2 , j\geq1$, we have\footnote{Note that the first row of $U_1$ is the same as that of $A$.}
+\begin{align*}
+ |u^{(1)}_{ij}| &\leq \left| \frac{a_{i1}}{a_{11} }a_{1j}\right| + |a_{ij}| \\ &\leq |a_{1j}| + |a_{ij}| \\
+&\leq 2 \max_{i,j}|a_{ij}|
+\end{align*}
+Therefore
+$$\frac{ \max_{i,j}|u^{(1)}_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2$$
+Inductively, if we assume the result for the $k$-th reduction, that is, for $k<m-1$
+$$\frac{ \max_{i,j}|u^{(k)}_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2^k$$
+We see that once again, thanks to partial pivoting, we have for $i=k+1,\dots,m$,
+$$\left|\frac{u^{(k)}_{i,k+1}}{u^{(k)}_{k+1,k+1}}\right| \leq 1$$
+Then we have, for $i\geq k+2 , j\geq k+1$,
+\begin{align*}
+ |u^{(k+1)}_{ij}| &\leq \left|\frac{u^{(k)}_{i,k+1}}{u^{(k)}_{k+1,k+1}}u^{(k)}_{kj}\right|+ |u^{(k)}_{ij}| \\ &\leq |u^{(k)}_{kj}|+|u^{(k)}_{ij}|\\
+&\leq 2 \max_{i,j}|u^{(k)}_{ij}| \\
+&\leq 2^{k+1}\max_{i,j}|a_{ij}|
+\end{align*}
+This implies the inductive step, because the other entries of $U_{k+1}$ were not altered.
+
+\noindent Therefore, upon completing the reduction (after $m-1$ steps, since the last row cannot be pivoted), we obtain the result by taking $U=U_{m-1}$
+$$ \rho(A) = \frac{ \max_{i,j}|u_{ij}|}{ \max_{i,j}|a_{ij}|}  \leq 2^{m-1}.$$
+\subsection*{Problem 4.}
+Let $A\in \mathbb{C}^{m \times m}$ and $\bm{x} \in \mathbb{C}^m$ be given. Consider the least squares problem: Find $\alpha \in \mathbb{C}$ such that $|| \alpha \bm{x} - A\bm{x}||_2 \to \min{}$. Find the value of $\alpha$, in terms of $A$ and $\bm{x}$.
+
+\textbf{Solution: }
+\begin{align*}
+||\alpha \bm{x} - A\bm{x}||^2_2 &= (\bar{\alpha}\bm{x^*}-\bm{x^*A^*})(\alpha\bm{x}-A\bm{x}) \\
+&= |\alpha|^2 ||\bm{x}||^2_2 - \bar{\alpha}\bm{x^*}A\bm{x} - \alpha \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2 \\
+&=(u^2+v^2)||\bm{x}||^2_2- (u-vi)\bm{x^*}A\bm{x} - (u+vi) \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2 \\
+\end{align*}
+Where we write $\alpha = u+vi$. Then we will optimize the real and imaginary parts separately. Define
+$$f(u,v)=(u^2+v^2)||\bm{x}||^2_2- (u-vi)\bm{x^*}A\bm{x} - (u+vi) \bm{x}^*A^*\bm{x}+||A\bm{x}||^2_2$$
+Then
+$$\frac{\partial f}{\partial u}(u,v) = 2u||\bm{x}||^2_2-\bm{x^*}A\bm{x}-\bm{x}^*A^*\bm{x}$$
+$$\frac{\partial f}{\partial v}(u,v) = 2v||\bm{x}||^2_2+(\bm{x^*}A\bm{x}-\bm{x^*}A^*\bm{x
+})i$$
+Therefore the critical point of $f$ (where $\nabla f = 0$) is given by
+$$(u,v)= \left( \frac{\bm{x^*}(A^*+A)\bm{x}}{2||x||^2_2},  \frac{\bm{x^*}(A^*-A)\bm{x}}{2i||x||^2_2}\right)$$
+It is easy to see that $(u,v)$ is a minimum, since $f_{uu} > 0$ and 
+$$H=f_{uu}f_{vv}-f^2_{uv} = ||\bm{x}||^4_2>0$$
+Therefore 
+$$\alpha = \frac{\bm{x^*}(A^*+A)\bm{x}}{2||x||^2_2}+  \frac{\bm{x^*}(A^*-A)\bm{x}}{2i||x||^2_2}i = \frac{\bm{x^*}A^*\bm{x}}{||x||^2_2}$$
+Minimizes the value $||\alpha x - Ax||_2$. (Note that minimizing the square of a positive function is equivalent to minimizing the function).
+\subsection*{Problem 5.}
+A differential equation that models the motion of a simple pendulum with damping is given by 
+$$\frac{d^2\theta}{dt^2} + \gamma\frac{d\theta}{dt}+\omega^2\sin{(\theta)} = 0,$$
+where we assume that $\gamma$ and $\omega$ are constants (related to damping and angular velocity). Also, $\theta=\theta(t)$ represents the measure of the angle of the pendulum with respect to the vertical at time $t >0$ (see Figure 1). In this exercise we will take $\gamma = 0.1$, $\omega^2 = 5/4$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.30]{Figura1.PNG}
+\end{figure}
+\begin{enumerate}[a)]
+\item Consider the initial conditions $\theta(0) = \pi/4$, $\theta'(0)=0$. Using the \texttt{ode45} command in \texttt{MATLAB}, plot the solution $\theta$ as a function of $t$, for $t \in [0,50]$. Also plot the angular velocity $\theta'$ as a function of $\theta$. What can you conclude from the graph?
+
+\textbf{Solution: } To use the \texttt{MATLAB} command, we first need to convert the problem into a system of equations. Let $\beta = \theta'$. Then we have the system
+\[
+\begin{cases}
+\theta' = \beta \\
+\beta' = -\gamma \beta - \omega^2 \sin(\theta)
+\end{cases}
+\]
+With initial condition $(\theta(0),\beta(0)) =( \pi/4 , 0)$
+When implementing the \texttt{ode45} command, we obtain graph $1$. (Next page). In which one can observe that the amplitude of oscillation (the difference between the maximum values of $\theta$ in each period) decreases slowly as $t$ increases. Possibly the pendulum will stop in infinite time.
+
+Furthermore, in graph $2$ the velocity is illustrated as a function of position. One can observe that at the starting point (on the right) the velocity is the initial one, and the oscillation begins towards the left, the velocity decreases (by convention, a displacement to the left is considered negative). Once again, we see that the magnitude of the velocity decreases continuously, until possibly reaching $0$ at infinity.
+\pagebreak
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.50]{Grafica1.eps}
+
+        \includegraphics[scale=0.60]{Grafica2.eps}
+\end{figure}
+
+\pagebreak
+\item Repeat part (a) with initial conditions $\theta(0) = \pi$, $\theta'(0) = -0.5$.
+
+\textbf{Solution: } We repeat, taking a larger initial angle, and with an initial push. We obtain graphs $3$ and $4$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.46]{Grafica3.eps}
+
+        \includegraphics[scale=0.55]{Grafica4.eps}
+\end{figure}
+The general scheme is very similar, with the only difference being the initial perturbation obtained from the push, which is damped quickly. It seems that this pendulum model is stable. \pagebreak
+
+\item Repeat part (a) with initial conditions $\theta(0) = \pi$, $\theta'(0) = 0$. What happens in this case? Can we say that $(\theta,\theta') = (\pi,0)$ is a stable or unstable point based on the graph?
+
+\textbf{Solution: } This time we obtain graphs $5$ and $6$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.50]{Grafica5.eps}
+
+        \includegraphics[scale=0.45]{Grafica6.eps}
+\end{figure}
+Which predict that the pendulum will remain static for a few seconds, and then resume its path. Numerically, it appears that the point $(\theta,\theta') = (\pi,0)$ \textbf{is not stable}, since the graph eventually moves away from the point.
+\item Construct a function that plots the physical motion of the pendulum (as one would observe it), with inputs $t$, $\theta$ and the length $L$ of the rope. Plot the motion of the pendulum for the results obtained in part (a) and in part (c), taking \quad \quad \quad\quad \quad \quad $L=1$. Does the pendulum's behavior make physical sense in each case?
+
+\textbf{Solution: } The scripts \texttt{Animation\_a.m} and \texttt{Animation\_c.m} are attached, which animate the pendulum motion in both cases. The scripts must be run manually.
+
+In case a), one can see that the pendulum's trajectory is quite faithful to what would be expected in real life. One can see where the pendulum begins to move from the point of greatest potential energy, and its oscillation amplitude decreases little by little. We conclude that it is \textbf{faithful} to real life.
+
+In case c), one can observe that the pendulum starts motionless for a short period, and then resumes its expected trajectory, which could happen due to the slightest perturbation. However, if we assume the cable is rigid, one could argue that the pendulum should be in perfect equilibrium on its axis, since the model does not include perturbations (it is believed that these arise numerically due to the nature of the method). Alternatively, one could consider that the cable is not rigid, and therefore the model would make no sense, since the mass cannot remain floating. We conclude that, under some assumptions, the model is \textbf{faithful} to real life.
+
+\item Use the \texttt{quiver} command to plot the phase diagram of the differential equation. Plot on the same graph $(\theta,\theta')$ for initial conditions  $$(\theta,\theta') = \left(\frac{\pi}{4} , 2\right)$$  $$(\theta,\theta') = \left(\frac{\pi}{4} , \frac{5}{2}\right)$$
+Comment on your results. The \texttt{meshgrid} command may be useful.
+
+
+\textbf{Solution: this was decided to be omitted.}
+
+
+\end{enumerate}
+\subsection*{Problem 6.}
+Consider the system of differential equations
+\[ \begin{cases}
+x'=\sigma(y-x) \\
+y'= x(\rho - z) - y \\
+z' = xy - \beta z \\
+\end{cases}
+\]
+where $\sigma, \rho, \beta$ are constants, $x=x(t)$, $y=y(t)$, $z=z(t)$. In this exercise, we will take $\sigma = 10$, $\rho = 28$, $\beta = 8/3$.
+\begin{enumerate}[a)]
+\item Implement a function in \texttt{MATLAB} that performs Newton's Method to solve the equation
+\[ \begin{cases}
+0= \sigma(y-x) \\
+0= z(\rho - z)-y \\
+0= xy - \beta z \\
+\end{cases}
+\]
+Approximate with this function all the equilibrium points of the system of differential equations.
+
+\textbf{Solution: }The function \texttt{NewtonMulti} was implemented in the files. When applying the method for different initial values in $[-21,21]^3$, $3$ solutions of the system were identified:
+\begin{align*}s_1 = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}\quad &; \quad s_2 = \begin{pmatrix} 8.485281374 \\ 8.485281374\\ 27 \end{pmatrix}  \quad ; \quad 
+s_3 = \begin{pmatrix} -8.485281374 \\ -8.485281374\\ 27 \end{pmatrix} \end{align*}
+
+\item Solve the equation with initial conditions $(x(0),y(0),z(0))=(1,1,1)$ for $t \in [0,100]$, and denote this solution by $(x_1,y_1,z_1)$.
+
+\textbf{Solution: } It was solved using the \texttt{ode45} command.
+
+\item Solve the equation with initial conditions $(x(0),y(0),z(0))=(1,1,1.00001)$ for \quad \quad \quad $t \in [0,100]$, and denote this solution by $(x_2,y_2,z_2)$.
+
+\textbf{Solution: } It was solved using the \texttt{ode45} command.
+
+\item On the same graph (in three dimensions), plot the trajectories $(x_i(t),y_i(t),z_i(t))), i \in \{1,2\}$ as well as the equilibrium points. Comment on your results. Suggestion: use the \texttt{plot3} command.
+
+\textbf{Solution: } When plotting in $3$ dimensions the trajectories of the functions with different initial conditions, and the equilibrium points, we obtain graph $7$, which is presented from $2$ different perspectives.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.39]{Grafica7.eps}
+
+        \includegraphics[scale=0.39]{Grafica7_1.eps}
+\end{figure}
+\pagebreak
+At first glance, the trajectories do not seem to be too far apart, so one could say initially that the solution \textbf{is stable} for these conditions. However, the graph is too complicated to say for certain, as will be seen below.
+
+\item Plot the distance 
+$$d(t) = \sqrt{(x_1(t) - x_2(t))^2 + (y_1(t) - y_2(t))^2 + (z_1(t) - z_2(t))^2}$$
+as a function of $t$. Comment on the behavior of the graph. Suggestion: the \texttt{deval} command may be useful.
+
+\textbf{Solution: } The distance between both trajectories was plotted, at time intervals of $t=0.1$s. We obtain graph $8$.
+
+\begin{figure}[h]
+ \center
+        \includegraphics[scale=0.39]{Grafica8.eps}
+\end{figure}
+
+From which it can be deduced that in reality, the trajectories diverge quite a bit, reaching up to $50$ units of distance apart! Clearly, this initial value problem \textbf{is not stable}, although the overall trajectory of both solutions appears to be the same.
+\end{enumerate}
+
+
+\subsection*{Problem 7.}
+Given a positive integer $n$, let $\mathbb{P}_n$ be the space of polynomials of degree at most $n$ with real coefficients defined on the interval $[-1,1]$. Define the differential operator $\mathcal{L}:\mathbb{P}_n \to \mathbb{P}_n$ given by
+$$\mathcal{L}P(x) = (1-x^2)\frac{d^2P(x)}{dx^2} - 2x\frac{dP(x)}{dx}.$$
+In this exercise we want to approximate the eigenvalues and eigenfunctions of the differential operator. Since $\mathbb{P}_n$ is a finite-dimensional space, it is possible to write the action of the operator $\mathcal{L}$ as a matrix $A \in \mathbb{R}^{n \times n}$ that acts on the coefficients of each polynomial.
+\begin{enumerate}[a)]
+\item Write $p(x) = \sum_{k=0}^{n} b_kx^k$, where $\bm{b} = [b_0,\dots,b_n]^T$ represents the coefficient vector. Determine the matrix $A$ such that $\bm{c} = A\bm{b}$ gives the vector with the coefficients of the image \quad \quad \quad \quad $\mathcal{L}P(x)= \sum_{k=0}^{n} c_kx^k$.
+
+\textbf{Solution: } Note that $\mathcal{L}$ is a linear operator, so it suffices to compute its action on the basis of the space to determine it completely. We see that
+$$\mathcal{L}(1)=0$$
+$$\mathcal{L}(x)=-2x$$
+And for $k\geq 2$,
+\begin{align*}
+\mathcal{L}(x^k)&=(1-x^2)(k^2-k)x^{k-2} - 2kx^k  \\
+&= (k^2-k)x^{k-2}-(k^2-k)x^k - 2kx^k \\
+&= (k^2-k)x^{k-2} - (k^2+k)x^k
+\end{align*}
+Therefore the matrix of $\mathcal{L}$ will be the matrix with columns $A=(\bm{a}_1,\dots,\bm{a}_{n+1})$, where
+$$\bm{a}_{i} = \begin{cases}
+\bm{0} &\text{ if } i=1 \\
+(0,-2,0,\dots,0)^T &\text{ if } i=2\\
+((i-1)^2-i+1)\vec{\bm{e}}_{i-2} - ((i-1)^2 + i-1)\vec{\bm{e}}_i &\text{ if } i\geq 3
+\end{cases}$$
+Where $\vec{\bm{e}}_i$ is the column vector with all entries $0$ except a $1$ in the $i$-th position. Expanded in $\mathbb{P}_{n}$, it has the form
+$$A=\begin{pmatrix}
+0&0 & 2 & 0 & \dots & 0 \\
+0 & -2 & 0 & 6& \dots & 0 \\
+0 & 0 & -6 & 0 & \dots & 0 \\
+0&0&0&-12&\dots&0 \\
+\vdots &\vdots &\vdots &\vdots &\ddots &\vdots & \\
+0&0&0&0 &\dots & n^2-n \\
+0&0&0&0 &\dots &0 \\
+0&0&0&0 &\dots & -n^2-n\\
+\end{pmatrix}$$
+
+\item Fix $n=7$. Calculate the matrix $A$. Using the command \texttt{[V,D] = eig(A)}, approximate the eigenvectors and eigenvalues of $A$. Deduce a formula for the eigenvalues, based on the results found. Also plot the eigenfunctions obtained. Comment on your results.
+
+\textbf{Solution: } We have that
+$$A=\begin{pmatrix}
+0&0&2&0&0&0&0&0 \\
+0&-2&0&6&0&0&0&0\\
+0&0&-6&0&12&0&0&0\\
+0&0&0&-12&0&20&0&0\\
+0&0&0&0&-20&0&30&0\\
+0&0&0&0&0&-30&0&42 \\
+0&0&0&0&0&0&-42&0\\
+0&0&0&0&0&0&0&56\\
+\end{pmatrix}$$
+Computing numerically the eigenvectors and eigenvalues of $A$, we have:
+$$A= VDV^{-1}$$
+Where
+$$D=\begin{pmatrix}
+0&0&0&0&0&0&0&0\\
+0&-2&0&0&0&0&0&0 \\
+0&0&-6&0&0&0&0&0 \\
+0&0&0&-12&0&0&0&0\\
+0&0&0&0&-20&0&0&0\\
+0&0&0&0&0&-30&0&0 \\
+0&0&0&0&0&0&-42&0\\
+0&0&0&0&0&0&0&-56\\
+\end{pmatrix}$$
+$$V=\begin{pmatrix}
+1&0& -0.3162&0&0.0649&0&-0.0124&0\\
+0&1&0&-0.5145&0&0.1573&0&  0.0132\\
+0&0& 0.9487&0&-0.6494&0& 0.2596 &0\\
+0&0&0& 0.8575 &0&-0.7340 &0&0.1280\\
+0&0&0&0& 0.7577&0&-0.7787&0\\
+0&0&0&0&0&0.6606&0&  0.4352\\
+0&0&0&0&0&0&0.5710&0\\
+0&0&0&0&0&0&0&0.8911\\
+\end{pmatrix}$$
+Based on the results obtained, it would seem reasonable to assume that the eigenvalues of $\mathcal{L}$ are $0$ and the numbers $-k^2-k$, for $k=1,\dots n-1$. In graph $9$, the eigenfunctions of $\mathcal{L}$ are plotted on the interval [-1,1]
+
+\begin{figure}[h]
+
+ \center
+   \centerline{ \includegraphics[scale=0.42]{Grafica9.eps}}
+   \item
+\end{figure}
+Where one can observe the polynomials associated with their respective eigenvalue. Note that $p_0 = 1$ and $p_{-2}(x) = x$. As an observation, it is important to note that the polynomial associated with the eigenvalue $\lambda$ is the solution of the differential equation
+
+$$\lambda p(x) = (1-x^2)\frac{d^2P(x)}{dx^2} - 2x\frac{dP(x)}{dx},$$
+With appropriate initial values. That is, these polynomials correspond to \textbf{Legendre Polynomials}, although they may differ in their norm.
+\end{enumerate}
+
+\pagebreak
+
+
+\subsection*{Problem 8.}
+(Quadratic Splines) Consider a set of $m+1$ points $\{(x_i,y_i)\}_{i=0}^{m}$, where
+$$0=x_0 < x_1 < \dots < x_{m-1} < x_m = 1$$
+is a partition of the interval $[0,1]$ (not necessarily with equidistant points). In particular we will assume that $y_0 = y_m$ since we will consider periodic functions. We want to construct a function $s_2:\mathbb{R} \to \mathbb{R}$ such that:
+\begin{itemize}
+\renewcommand{\labelitemi}{\scriptsize $\blacksquare$}
+\item $s_2$ is periodic with period $1$; that is, $s_2(x+1) = s_2(x)$, $\forall x \in \mathbb{R}$.
+\item $s_2 \in C^1(\mathbb{R})$; that is, $s_2$ has a continuous derivative.
+\item $s_2$ interpolates the values of the set of points; that is, $s_2(x_i) = y_i$, $\forall i =0,1,\dots,m$.
+\item The restriction of $s_2$ to each subinterval $[x_i,x_{i+1}]$ ($i=0,1,\dots,m-1$) is a quadratic polynomial.
+\end{itemize}
+It is clear that it suffices to construct $s_2$ on the interval $[0,1]$, since it will be periodic.
+\begin{enumerate}[a)]
+\item Write a system of equations that allows determining $s_2:[0,1] \to \mathbb{R}$ (Suggestion: you can follow the construction of natural cubic splines from chapter $7$; in this case define $\sigma_i = s'_2(x_i), i=0,1,\dots,m$ and generate a system to find the $\sigma_i$. Another idea is to write the restriction of $s_2(x)$ on each subinterval $[x_i,x_{i+1}]$ in the form $s_2(x) = \alpha_i + \sigma_i (x-x_i) + \beta_i(x-x_i)^2$. Also remember that $s_2$ must be periodic.)
+
+\textbf{Solution: } Let $\sigma_i = s_2'(x_i)$ for $i=0,\dots,m$. We know that the restriction of $s_2$ on $I_i = [x_{i-1}, x_i]$ is the linear interpolant of the points $\sigma_i$. That is, if $h_i = x_i-x_{i-1}$,
+$$s'_2(x) =\frac{x_i-x}{h_i}\sigma_{i-1} + \frac{x-x_{i-1}}{h_i}\sigma_i $$
+For $i=1,\dots,m$. Integrating, we obtain
+$$s_2(x) = \frac{(x-x_{i-1})^2}{2h_i}\sigma_i - \frac{(x_i-x)^2}{2h_i}\sigma_{i-1} + c_i$$
+By continuity of $s_2$, we have
+$$y_{i-1} = s(x^+_{i-1}) = -\frac{h_i}{2}\sigma_{i-1}+c_i \Rightarrow c_i = \frac{h_i}{2}\sigma_{i-1} + y_{i-1}$$
+$$y_{i} = s(x^-_{i}) = \frac{h_i}{2}\sigma_{i}+c_i \Rightarrow c_i = -\frac{h_i}{2}\sigma_{i} + y_{i}$$
+Solving for the $\sigma$'s, we obtain that, for $i=1,\dots,m$
+$$\sigma_i + \sigma_{i-1} = 2\frac{y_i-y_{i-1}}{h_i}$$
+Which gives us all the equations we need, except one. To find the last one, we must appeal to the periodicity of the function, extending $s_2$ to one more point. Let $x_{m+1} = 1+x_1 , y_{m+1} = y_1 , h_{m+1}=x_{m+1}-x_{m} = h_1$. Then, if $\sigma_{m+1} = s'(x_{m+1}) = \sigma_1$ and $c_{m+1} \in \mathbb{R}$, on $I_{m+1}$ we have
+$$s_2(x) = \frac{(x-x_{m})^2}{2h_{m+1}}\sigma_{m+1} - \frac{(x_{m+1}-x)^2}{2h_{m+1}}\sigma_m + c_{m+1}$$
+And again, by periodicity, we have 
+$$y_{0} = s(x^+_{m}) = -\frac{h_{m+1}}{2}\sigma_{m}+c_{m+1} \Rightarrow c_{m+1} = \frac{h_1}{2}\sigma_{m} + y_{0}$$
+$$y_{1} = s(x^-_{m+1}) = \frac{h_{m+1}}{2}\sigma_{i}+c_{m+1} \Rightarrow c_{m+1} = -\frac{h_1}{2}\sigma_{1} + y_{1}$$
+Therefore, solving for the $\sigma$'s, we have the last equation
+$$\sigma_m + \sigma_1 = 2\frac{y_1-y_0}{h_1}$$
+
+Therefore our system of equations will be
+$$A \bm{ \sigma } = \bm{b} $$
+Where
+$$A= \begin{pmatrix}
+1&1&0&0&\dots&0&0 \\
+0&1&1&0&\dots&0&0 \\
+0&0&1&1&\dots&0&0 \\
+\vdots&\vdots&\vdots&\vdots&\ddots&\vdots&\vdots \\
+0&0&0&0&\dots&1&1 \\
+0&1&0&0&\dots&0&1\\
+\end{pmatrix} \quad ; \quad \bm{b} = 
+2\begin{pmatrix}
+\frac{y_1-y_0}{h_1} \\
+\frac{y_2-y_1}{h_2} \\
+\vdots \\
+\frac{y_{m}-y_{m-1}}{h_m} \\
+\frac{y_1-y_0}{h_1} \\
+\end{pmatrix}$$
+\textbf{Note: }Additionally, the $c_i$'s must be calculated to solve the problem completely.
+\item Fix $m=15$ and take $f(x) = \cos(2\pi x)$. Define $\bm{x} = [x_0, \dots, x_m]^T$ using random values with the \texttt{rand} function and calculate $y_i=f(x_i) , \forall i=0,1,\dots,m.$ Construct $s_2$ for this data set. Plot $f$, $s_2$ and the points $\{(x_i,y_i) \}_{i=0}^{m}$ on the same graph. Also plot the absolute error $|f(x) - s_2(x)|$ and estimate $||f-s_2||_{L^\infty([0,1])}$. 
+
+\textbf{Solution: } A random partition of $[0,1]$ was defined, and the function $f(x) = \cos(2 \pi x)$ was approximated using quadratic splines. The results are presented in graph $10$.
+
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.50]{Grafica10.eps}
+   \item
+\end{figure}
+
+It can be observed that the results are not optimal, since the interpolation points do not fit correctly to those of the function. In graph 11 one can appreciate more exactly the error obtained.
+
+\pagebreak
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.45]{Grafica11.eps}
+   \item
+\end{figure}
+ It can be seen that the error is \textbf{large and irregular}, in some parts it is as high as $$||f-s_2||_{L^\infty([0,1])} \approx 0.6$$ which is too much, taking into account that the function is between $0$ and $1$
+ The cause of this error is attributed to the \textbf{solution of the associated system of equations}, since as seen in previous chapters, interpolation is usually sensitive to the choice of nodes, and it would be expected that an irregular partition produces erroneous results, since, possibly, the system to be solved is ill-conditioned.
+\item Repeat the previous exercise for $\bm{x} = \texttt{linspace(0,1,m+1)}'$. Compare with the results from the previous part and comment on your results.
+
+\textbf{Solution: }The exercise is repeated, this time using equidistant nodes, and graphs $12$ and $13$ are obtained.
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.43]{Grafica12.eps}
+ \end{figure}
+ \pagebreak
+ \begin{figure}[h]
+  \includegraphics[scale=0.42]{Grafica13.eps}
+   
+\end{figure}
+
+This time, the fit is quite \textbf{good.} In fact, the error is almost at machine precision, so one can affirm that the function was \textbf{interpolated successfully}. In this case, the maximum error was approximately 
+$$||f-s_2||_{L^\infty([0,1])} \approx 6 \times 10^{-16}$$
+
+\item One can approximate $f'(x)$ by $s'_2(x)$. Using $s_2$ as calculated in the previous part, write a program that calculates $s'_2(x)$. Plot $f'$ and $s'_2$ on the same graph. Also plot the absolute error $|f'(x)-s'_2(x)|$ and estimate $||f'-s'_2||_{L^\infty([0,1])}$. Note that $s'_2$ is piecewise differentiable. How could you approximate $f'$ by a function $s$ such that $s''$ is continuous?
+
+\textbf{Solution: } Recall that $$s'_2(x) =\frac{x_i-x}{h_i}\sigma_{i-1} + \frac{x-x_{i-1}}{h_i}\sigma_i $$
+Then we simply write these functions in \texttt{MATLAB}.
+
+When approximating numerically using $200$ points (keeping the $16$ nodes fixed), we obtain graph $14$, in which one can visually observe that the derivative of our polynomial fits \textbf{very well} to the derivative of the function. One can even appreciate its piecewise differentiability (the red line).
+
+
+
+ \begin{figure}[h]
+ \center
+  \includegraphics[scale=0.44]{Grafica14.eps}
+\end{figure}
+Regarding the error, it is presented in graph $15$. It can be observed that the error is not too large, no more than $1$ decimal of precision. Curiously, the error is maximum at \textbf{those points where the derivative of $s_2$ is not continuous}, which makes sense, since this is where there is more loss of information if one is trying to interpolate a smooth function.
+
+Finally, regarding the last question of the part, if one wanted to interpolate so that $s''(x)$ is continuous, it will be necessary to increase the degree of the \textit{spline}, since the additional continuity conditions will make the system overdetermined, and it might not have a solution.
+
+
+ \begin{figure}[h]
+ \center
+  \includegraphics[scale=0.40]{Grafica15.eps}
+\end{figure}
+\end{enumerate}
+
+
+\subsection*{Problem 9.}
+Consider a population where we want to study the spread of a disease. In the simplest model, we consider the population divided into three groups: susceptible, infected, and recovered. Consider the model system given by
+\[
+\begin{cases}
+\frac{dS}{dt} = \Lambda-\mu S - \beta IS \\
+\frac{dI}{dt} = \beta IS -\gamma I -\mu I \\
+\frac{dR}{dt} = \gamma I - \mu R \\
+\end{cases}
+\]
+where $S(t),I(t),R(t)$ represent the number of susceptible, infected, and recovered people at time $t$ (respectively). In this exercise consider $\Lambda = 15$ (births per unit time), $\gamma = 1/35$ (recovery rate), $\mu = 1/75$ (mortality rate).
+\begin{enumerate}[a)]
+\item Plot (on the same graph) the solution $(S(t),I(t),R(t))$ for $\beta = 1/5500$, $t\in [0,365]$, for the initial conditions $(999,1,0)$.
+
+\textbf{Solution: } The system was solved using the \texttt{ode45} command, and the solution vector was plotted as a function of time (graph 16).
+
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.57]{Grafica16.eps}
+   \item
+\end{figure}
+As can be seen in graph 16, one infected person is enough to increase the number of affected people to a maximum of almost $600$, in about $2$ months, after which the recovered population begins to increase, until all three values eventually stabilize. The number of infected never seems to drop to $0$ in this case.
+\item For each value of $\beta = 1./\texttt{linspace(25000,29000)}$, obtain $I(3650)$. Plot these values as a function of $R_0(\beta)=\frac{\Lambda \beta}{\mu (\mu + \gamma)}$ (which is called the \textit{basic reproduction number}.) What can be deduced from the graph?
+
+
+\textbf{Solution: }In graph $17$ the number of infected after $10$ years is illustrated as a function of the basic reproduction number.
+
+According to the graph, the number of infected after $10$ years, $I(3650)$, increases \textbf{very fast} as a function of $R_0(\beta)$, (the growth seems to be exponential), since with a small variation of $R_0(\beta)$ (of only $0.2$) the number of infected varies from practically $0$, to almost $100$.
+\pagebreak
+\begin{figure}[h]
+
+ \center
+ \includegraphics[scale=0.50]{Grafica17.eps}
+   \item
+\end{figure}
+
+Also observe that if $R_0 < 1$, the number of infected is almost $0$, that is, the disease no longer affects the population, however, when $R_0>1$, there is still an infected population after $10$ years.
+\item Obtain the equilibrium points of the system. What relationship must be satisfied for the number of infected to tend to zero?
+
+\textbf{Solution: } We solve the system explicitly
+
+\begin{align*}
+\begin{cases}
+0 = \Lambda-\mu S - \beta IS \\
+0 = \beta IS -\gamma I -\mu I \\
+0 = \gamma I - \mu R \\
+\end{cases} &\Rightarrow 
+\begin{cases}
+\Lambda = S(\mu + \beta I) \\
+I(\beta S - (\gamma + \mu)) = 0 \\
+\gamma I = \mu R \\
+\end{cases}
+\intertext{From which it is easily seen that one solution is $(\Lambda / \mu , 0 , 0)$, now, if $I\neq 0$,}
+&\Rightarrow \begin{cases}
+\Lambda = S(\mu + \beta I) \\
+S= \frac{\gamma + \mu}{\beta} \\
+\gamma I = \mu R \\
+\end{cases}
+\\
+&\Rightarrow \begin{cases}
+S=\frac{\gamma + \mu}{\beta} \\
+I=  \frac{\Lambda}{\gamma + \mu} - \frac{\mu}{\beta} \\
+R= \frac{\gamma \Lambda}{\mu (\mu + \gamma)} - \frac{\gamma}{\beta}
+\end{cases}
+\end{align*}
+Therefore the solutions in terms of $\beta$ are
+\begin{align*}s_1 = \begin{pmatrix} 1125 \\ 0 \\ 0 \end{pmatrix}\quad &; \quad s_2 = \begin{pmatrix} \frac{22}{525\beta} \\ \frac{7875}{22} - \frac{1}{75 \beta}\\ \frac{16875}{22} - \frac{1}{35 \beta}\end{pmatrix}
+\end{align*}
+\end{enumerate}
+\textbf{Note:} $s_1$ does not depend on $\beta$.
+
+After running tests with different values of $\beta$, and observing the behavior of graph $2$, we conclude that in the long term, for the number of infected $I$ to tend to $0$, \textbf{it is required that $R_0(\beta) < 1$}
+\subsection*{Problem 10.}
+Consider the implicit Runge-Kutta method of order four given by the table 
+
+\begin{table}[h]
+\center
+\Large
+\begin{tabular}{
+>{\columncolor[HTML]{FFFFFF}}c |
+>{\columncolor[HTML]{FFFFFF}}c 
+>{\columncolor[HTML]{FFFFFF}}c }
+{\color[HTML]{000000} $\frac{1}{2}- \frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}$} & {\color[HTML]{000000} $\frac{1}{4}- \frac{\sqrt{3}}{6}$} \\
+{\color[HTML]{000000} $\frac{1}{2}+\frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}+ \frac{\sqrt{3}}{6}$} & {\color[HTML]{000000} $\frac{1}{4}$} \\ \hline
+{\color[HTML]{000000} } & {\color[HTML]{000000} $\frac{1}{2}$} & {\color[HTML]{000000} $\frac{1}{2}$}
+\end{tabular}
+\end{table}
+
+\begin{enumerate}[a)]
+\justifying
+\item Write a function in \texttt{MATLAB} that implements this algorithm
+
+\textbf{Solution: } The function \texttt{RK4imp.m} was implemented.
+
+\item Verify the performance of your program to solve the differential equation $y'(t) = \log(t+0.01) + 1/(t-4), y(0)=0.8$ for $t \in [0,3$.$99]$. Determine an appropriate value for $h$ and plot the corresponding error.
+
+\textbf{Solution: }First we calculate the general solution of the equation
+\begin{alignat*}{2}
+ y'=\log \left(1+\frac{1}{100} \right) + \frac{1}{t-4}& \\
+ \Rightarrow  y = \int \log \left(1+\frac{1}{100} \right) + \frac{1}{t-4} &dt \\
+ \Rightarrow y = \left( t + \frac{1}{100}\right)\log\left(t+\frac{1}{100}\right)-t-\frac{1}{100}&+\log|4-t|+C\\
+\end{alignat*}
+ And solving for the initial condition $y(0)=0.8$, we have $C\approx -0.5302426593$.
+ 
+ When applying the function \texttt{RK4imp.m}, and plotting the results and the absolute error, we obtain graphs $18$ and $19$.
+ \pagebreak
+ 
+  
+ \begin{figure}[t]
+ \center
+        \includegraphics[scale=0.38]{Grafica18.eps}
+         \includegraphics[scale=0.50]{Grafica19.eps}
+\end{figure}
+As seen in Homework $4$, visually, the graph of the numerical solution closely resembles that of the exact solution. Furthermore, when plotting the error, we confirm our assertion. Indeed, the numerical solution closely approaches the exact solution of the equation, with the caveat that the error becomes unstable near the singularity (since the step size is fixed). In conclusion, we affirm that the implicit method produces \textbf{good results.}
+\end{enumerate}
+\end{document}
