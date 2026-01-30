@@ -75,6 +75,27 @@ En otras palabras: para calcular transformadas, podemos sacar escalares y separa
 \item $\LL \{ \cosh(\omega t)\}(s) = \dfrac{s}{s^2-\omega^2}$
 \end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Recorte10.png}
+    \caption{Gráficas de funciones exponenciales y su comportamiento típico en transformadas de Laplace.}
+    \label{fig:exponenciales}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{recorte11.png}
+    \caption{Funciones tipo Heaviside desplazadas para diferentes valores de $a$.}
+    \label{fig:heaviside_desplazadas}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Recorte13.png}
+    \caption{Combinación de función escalón (Heaviside) con función sinusoidal.}
+    \label{fig:heaviside_seno}
+\end{figure}
+
 Es recomendable elaborar una ficha o una tabla donde vaya anotando las distintas transformadas de las funciones, además de las propiedades de la transformada misma.
 Como hemos mencionado, no siempre se tiene que $\LL[f]$ existe. Por ejemplo, no es posible calcular $\LL[1/t]$, ni $\LL[e^{t^2}]$. Para que $\LL[f]$ exista, deben suceder dos cosas.
 
@@ -214,6 +235,13 @@ $$H_a(t) = \begin{cases}
 \end{cases}$$
 \end{definicion}
 Simplemente es una función que vale $0$ antes del tiempo $t=a$, y luego del tiempo $t=a$ vale $1$. Podemos ver esta función como una especie de \textit{interruptor} matemático.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Recorte12.png}
+    \caption{Funciones de Heaviside $H_a(t)$ para distintos valores de $a$.}
+    \label{fig:heaviside}
+\end{figure}
 
 El siguiente teorema nos ayudará a calcular transformadas de funciones como la del ejemplo anterior.
 

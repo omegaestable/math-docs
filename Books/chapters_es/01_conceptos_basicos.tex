@@ -603,6 +603,20 @@ Visualmente, estas curvas coinciden con la solución general de la ecuación: $f
 
 Geométricamente, para obtener una isoclina de una ecuación, tomamos primero una constante $C$ cualquiera, y en el campo direccional, buscamos todos los puntos sobre los cuales la pendiente es precisamente $C$. La colección de estos puntos es una isoclina de la ecuación. Evidentemente, hay infinitas isoclinas (una para cada $C$).
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Recorte1.png}
+    \caption{Curvas solución de una ecuación diferencial. Se muestran las soluciones para $c=1$ y $c=-1$.}
+    \label{fig:curvas_solucion}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Recorte2.png}
+    \caption{Campo direccional de una ecuación diferencial. Cada segmento muestra la pendiente de la solución en ese punto.}
+    \label{fig:campo_direccional}
+\end{figure}
+
 \begin{ejemplo}
     Considere la ecuación diferencial
     $$y' = -\frac{x}{y}$$
@@ -625,6 +639,13 @@ Geométricamente, para obtener una isoclina de una ecuación, tomamos primero un
     $$x^2 + y^2 = K.$$
     Al cambiar el valor de K, se obtienen soluciones distintas (círculos distintos).
     
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth]{Recorte3.png}
+        \caption{Campo direccional de la ecuación $y' = -\frac{x}{y}$. Las curvas solución son círculos centrados en el origen.}
+        \label{fig:campo_circular}
+    \end{figure}
+    
     Ahora, recordemos que las isoclinas de una ecuación vienen dadas por la familia $F(x,y)=C$. Para este caso específico, la familia de isoclinas es 
     $$-\frac{x}{y}=C.$$
      O sea que la familia de isoclinas son todas las rectas que pasan por el origen. 
@@ -633,6 +654,13 @@ Geométricamente, para obtener una isoclina de una ecuación, tomamos primero un
     $$-\frac{x}{y}= 0.$$
     Por lo que $x=0$ (el eje $y$) son todos los puntos que estamos buscando. De igual manera, si ahora $C=1$, la isoclina de puntos con pendiente $1$ es precisamente la recta $y=-x$.
      \textbf{Nota: } Las isoclinas NO son soluciones de la ecuación diferencial.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Recorte4.png}
+        \caption{Campo direccional de $y' = -\frac{x}{y}$ con isoclinas (rectas que pasan por el origen) superpuestas.}
+        \label{fig:isoclinas}
+    \end{figure}
 \end{ejemplo}
 
 \begin{ejemplo}
@@ -656,6 +684,13 @@ Geométricamente, para obtener una isoclina de una ecuación, tomamos primero un
     $$x=\sqrt{-\ln{C}}.$$
     Es decir que todas las isoclinas son rectas verticales. 
     En esta imagen es muy fácil ver que sobre las isoclinas, todos los pequeños segmentos de recta que pasan tienen la \textbf{misma inclinación}. De ahí su nombre.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Recorte5.png}
+        \caption{Campo direccional de $y' = e^{-x^2}$ con isoclinas verticales.}
+        \label{fig:isoclinas_verticales}
+    \end{figure}
 \end{ejemplo}
 
 \begin{definicion}{Curva Integral}{}
@@ -666,6 +701,13 @@ Geométricamente, para obtener una isoclina de una ecuación, tomamos primero un
     Consideremos la ecuación diferencial 
     $$yy' = \cos(x)$$
     cuya solución viene dada implícitamente por $y^2 = 2(C+\sen(x)).$
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Recorte6.png}
+        \caption{Campo direccional y curvas integrales de la ecuación $yy' = \cos(x)$.}
+        \label{fig:curvas_integrales}
+    \end{figure}
 \end{ejemplo}
 
 En resumen, podemos decir que el \textbf{campo direccional} es una idea de cómo se ven todas las soluciones de una dada ecuación diferencial (se visualiza como un conjunto de segmentos de recta, que dan una idea de cada una de las soluciones). Las \textbf{isoclinas} son curvas cuyos puntos tienen asignada la misma pendiente. Finalmente, las \textbf{curvas integrales}, son las gráficas de las soluciones particulares a la ecuación.
