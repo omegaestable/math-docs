@@ -1,0 +1,138 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\NN}{\mathcal N}
+\doublespacing
+\begin{document}
+\homework{Théorie des ensembles, Devoir Maison}{Date: 08/11/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercice 1.} Montrer que $\omega_1$ muni de la topologie de l'ordre n'est pas métrisable.\\
+\textbf{Solution. }\\
+Supposons qu'il est métrisable, avec une fonction métrique $d:\omega_1 \times \omega_1 \to \mathbb R$. On désigne la \textit{sphère de centre $\alpha$ et de rayon $r$} par
+$$B_r(\alpha) = \{ \beta \in \omega_1 , d(\alpha,\beta)<r \}.$$
+Rappelons que si $X$ est un espace topologique et $A\subseteq X$, on dit que $A$ est \textit{dense} si son adhérence topologique $\bar{A}=X$ et on dit que $X$ est \textit{séparable} s'il contient un sous-ensemble dénombrable dense. On voit d'abord que $\omega_1$ n'est pas séparable : soit $C \subseteq \omega_1$ dénombrable, et soit $\alpha = \sup C < \omega_1$. Alors on a $C \subseteq [0, \alpha] \subsetneq \omega_1$ donc $C$ est contenu dans un ensemble fermé propre, par conséquent il ne peut pas être dense.\\
+\textit{Lemme : } Il existe $\varepsilon > 0$ et un ensemble non dénombrable $C \subseteq \omega_1$ tel que pour tous $x\neq y \in C$, $d(x,y)>\varepsilon$.\\
+\textit{Preuve : } On va construire $C$ et $\epsilon$. D'abord, on définit une suite $\{ \alpha_\beta , \beta <  \omega_1\}$ et une fonction $k:\omega_1 \to \N$ par récurrence par
+\begin{itemize}
+    \item $\alpha_0=0$, $k_0 = 0$.
+    \item Supposons que $\alpha_\gamma$ a été défini pour tout $\gamma < \beta$. Alors $X=\{\alpha_\gamma , \gamma < \beta\}$ est dénombrable, donc il ne peut pas être dense. On choisit $\alpha_\beta \in \omega_1 \setminus \bar{X}$, et on choisit $k_\beta$ tel que $B_{1/k_\beta}(\alpha_\beta) \cap X = \varnothing$. Cela implique que pour tout $\gamma \leq \beta$, $d(\alpha_\gamma,\alpha_\beta)>1/k_{\beta}$.
+\end{itemize}
+Puisque $k$ peut être considéré comme une application de $\omega_1$ vers $\omega$, alors $k$ est régressive, donc il existe $K \in \N$ tel que $C = \{\alpha_\gamma \in \omega_1  ,  k_\gamma = K \}$ est non dénombrable. Étant donné $\alpha_{\gamma_1} ,\alpha_{\gamma_2} \in C$ avec $\gamma_1 > \gamma_2$, par construction, $d(\alpha_{\gamma_1},\alpha_{\gamma_2})> 1/k_{\gamma_2} = 1/K$. On peut alors prendre $\varepsilon = 1/K$.\\
+Pour montrer le résultat, considérons une suite quelconque $\{\alpha_n , n<\omega\}$ dans $C$, puisqu'elle est dénombrable, elle converge dans la topologie de l'ordre (plus précisément $\alpha =\sup \alpha_n < \omega_1$), mais comme on suppose que la topologie métrique coïncide avec celle de l'ordre, on doit avoir
+$$\lim_{n \to \infty} d(\alpha_n,\alpha) = 0.$$
+En effet, pour tout $\epsilon > 0$ comme les topologies coïncident, $B_\epsilon(\alpha)$ contient une queue de $\alpha$, donc en particulier contient un certain $\alpha_n$. Par l'inégalité triangulaire, $d(\alpha_m,\alpha_n) \leq d(\alpha_n,\alpha) + d(\alpha_m,\alpha)$, donc on obtient
+$$\lim_{n,m \to \infty} d(\alpha_n,\alpha_m) = 0$$
+cela contredit le fait que deux membres quelconques de $C$ sont distants d'au moins $\varepsilon$. Notre hypothèse initiale était donc incorrecte, $\omega_1$ ne peut pas être métrisable.
+
+\textbf{Exercice 2.} Soit $\alpha$ un ordinal dénombrable.
+\begin{enumerate}
+    \item Montrer que la topologie de l'ordre sur $\alpha$ coïncide avec la topologie induite $\alpha \subseteq \omega_1$.
+    \item Montrer que la topologie de l'ordre sur $\alpha$ est métrisable.
+    \item En déduire que si $X \subseteq \omega_1$, $X$ est métrisable avec la topologie de l'ordre induite.
+\end{enumerate}
+
+\textbf{Solution. }
+\begin{enumerate}
+    \item Soient $\tau_o,\tau_s$ les topologies de l'ordre et induite, respectivement. Il est clair que $\tau_o \subseteq \tau_s$ puisque tout intervalle ouvert dans $\alpha$ est aussi ouvert dans $\omega_1$. Pour voir l'autre direction, considérons l'ensemble $\tau_s$-ouvert $U=\alpha \cap (\beta,\gamma)$ pour un intervalle ouvert $(\beta,\gamma)$ dans $\omega_1$. Si $\beta \geq \alpha$, alors $U\cap \alpha=\varnothing$ donc il est ouvert, sinon $U\cap \alpha = (\beta , \min (\alpha,\gamma))$, qui est $\tau_o$-ouvert.
+    \item Soit $\phi:\alpha \to \Q$ un plongement d'ordre. On va montrer que $\alpha$ est homéomorphe à son image par $\phi$. Puisque $\phi$ est injectif, on n'a pas besoin de prouver la bijectivité. Remarquons que pour tous $\gamma_1 <\gamma_2<\alpha$, on a $\phi [ (\gamma_1,\gamma_2)] = (\phi(\gamma_1),\phi(\gamma_2))$ (parce que $\phi$ préserve l'ordre), et pour tous $p<q \in \Q$, $\phi^{-1}((p,q)\cap \operatorname{Im}(\phi)) = (\gamma_p,\delta_p)$
+          où $\gamma_p = \min \{ \beta < \alpha, \phi(\beta) > p\}$ et $\delta_p = \sup \{ \beta < \alpha, \phi(\beta) < q \}$. Donc, on a que $\phi$ et $\phi^{-1}$ préservent tous deux les ensembles ouverts par image réciproque. Alors, on peut métriser $\alpha$ comme $d(\beta,\gamma) = |\phi(\beta) - \phi(\gamma)|$ (on copie la métrique de l'image homéomorphe de $\alpha$ dans $\Q$).
+    \item Enfin, si $X \subseteq \omega_1$ est borné, il est dénombrable (sinon $\sup X$ serait un ordinal non dénombrable sous $\omega_1$), et donc métrisable par les arguments précédents.
+\end{enumerate}
+\pagebreak
+\textbf{Exercice 3.} Soit $X \subseteq \omega_1$. Montrer que si $X$ est un club, alors $X \approx \omega_1$ (espaces homéomorphes). En déduire que les clubs ne sont pas métrisables.\\
+\textbf{Solution. } Considérons la fonction $f:\omega_1 \to X$ définie par récurrence par
+\begin{itemize}
+    \item $f(0) = \min X$.
+    \item $f(\alpha +1) = \min \{x \in X , x > f(\alpha) \}$.
+    \item Si $\alpha$ est limite et $f(\beta)$ est défini pour tout $\beta< \alpha$, on pose $f(\alpha)= \sup_{\beta < \alpha} f(\beta)$. Ceci est bien défini puisque $X$ est un club, donc on peut prendre le $\sup$ et rester dans $X$.
+\end{itemize}
+Remarquons que, par construction $f$ respecte les suprema, et donc $f$ est continue (cela a été prouvé au TD1). Clairement $f$ est injectif, montrons que $f$ est surjectif par contradiction : soit $x = \min( X \setminus f[\omega_1])$. Soit $A=\{ \beta <\omega_1, f(\beta)< x \}$, remarquons que $A$ est borné par $x$ puisque pour tout $\beta$, $f(\beta) \geq \beta$. Soit $\alpha = \sup A$, donc on a $f(\alpha) < x$ par monotonie, et aussi $f(\alpha+1)> x$, parce que sinon $\alpha+1$ serait dans $A$ (les inégalités sont toutes deux strictes puisque $x$ n'est pas dans l'image de $f$). On a donc $f(\alpha)<x<f(\alpha+1)$ de sorte que $x$ est inférieur à l'élément minimum de $X$ supérieur à $f(\alpha)$ (définition de $f(\alpha +1)$), donc on a atteint une contradiction, et $f$ est donc surjectif. Enfin, puisque $f$ est aussi un plongement d'ordre, pour tous $\gamma < \beta < \omega_1$, $f[(\gamma,\beta)] = (f(\gamma),f(\beta))\cap X $ ce qui signifie que $f$ est une application ouverte. Tout cela montre que $f$ est un homéomorphisme. Pour conclure, si $X$ était métrisable, alors $\omega_1$ le serait aussi, une contradiction avec ex1, puisque les homéomorphismes préservent la métrisabilité (car ils copient essentiellement la topologie).
+\\
+
+
+
+\textbf{Exercice 4.} Si $S\subseteq \omega_1$ est stationnaire, alors il n'est pas paracompact.\\
+\textbf{Solution. } Montrons d'abord que si $C$ est un club, alors $S\cap C$ est stationnaire : en effet si $C'$ est un club quelconque, puisque $C\cap C'$ est aussi un club, alors $(S\cap C) \cap C' = S\cap (C\cap C')$ est non vide, donc $S\cap C$ est un club. Cela nous permet en particulier de supposer que $S$ ne contient que des points limites, puisqu'on peut se restreindre à l'intersection de $S$ et du club des ordinaux limites. Considérons le recouvrement de $S$ donné par la famille $U_\alpha = [0,\alpha+1)$ pour $\alpha \in S$. Supposons par contradiction qu'il existe un recouvrement $\VV$ qui est un raffinement localement fini de $\UU$. Alors par définition, pour tout $\alpha \in S$ il existe un voisinage de $\alpha$ n'intersectant qu'un nombre fini d'éléments de $\VV$, plus précisément, puisque les voisinages ouverts contiennent des queues d'éléments limites, il existe $\beta(\alpha) < \alpha$ tel que $[\beta(\alpha),\alpha+1)$ n'intersecte qu'un nombre fini d'éléments de $\VV$. La fonction $\alpha \mapsto \beta(\alpha)$ est donc régressive, et par le lemme de Pressing Down de Fodor, il existe un $\beta<\omega_1$ fixé et un sous-ensemble stationnaire $T\subseteq \omega_1$ tel que pour tout $\alpha \in T$, $[\beta,\alpha+1)$ n'intersecte qu'un nombre fini d'éléments de $\VV$.
+
+On construit une suite $\{\alpha_n , n < \omega \} \subseteq T$ en prenant $\alpha_0 \in T$ un élément quelconque plus grand que $\beta$. Si $\alpha_n$ est défini, supposons que $[\beta,\alpha_n+1)$ intersecte $m_n <\omega$ éléments de $\VV$. Puisque $\VV$ est un raffinement de $\UU$, il existe $\gamma_n$ tel que l'union de ces $m_n$ ensembles dans $\VV$ est contenue dans $[0,\gamma_n)$. On choisit $\alpha_{n+1} > \gamma_n$ dans $T$. Alors l'intervalle $[0,\alpha_{n+1}+1]$ intersecte au moins $m_n + 1$ éléments dans $\VV$, parce que $\alpha_{n+1}$ doit être dans un certain $V \in \VV$ non inclus parmi les autres $m_n$ (grâce au fait que $\VV$ est aussi un recouvrement). En posant $\alpha = \sup \alpha_n$ on observe que $[\beta,\alpha +1 )$ intersecte une infinité d'ensembles dans $\VV$, mais $\alpha \in T$, c'est une contradiction.
+\\
+\textbf{Exercice 5.} Si $X$ est un espace topologique métrisable, $X$ est paracompact. En déduire que les ensembles stationnaires dans $\omega_1$ ne sont pas métrisables. \\
+\textbf{Solution. } Soit $\{U_\alpha, \alpha < \kappa \}$ un recouvrement ouvert de $X$ et supposons que $d$ est une fonction métrique. On définit pour $n>1$ (par récurrence) les ensembles $U_{\alpha,n}$ comme l'union de toutes les sphères de la forme $B_{2^{-n}}(x)$ où $x$ satisfait les conditions suivantes :
+\begin{enumerate}
+    \item $\alpha$ est le plus petit ordinal tel que $x \in U_\alpha$.
+    \item Pour tout $\beta \in \kappa$, $x \not \in U_{\beta,i}$ si $i < n$.
+    \item $B_{3 \cdot 2^{-n}}(x) \subseteq U_\alpha$.
+\end{enumerate}
+On va montrer que cette famille est un raffinement localement fini de $U$ qui est aussi un recouvrement. Remarquons aussi que $U_{\alpha,n}$ sont tous des ensembles ouverts, étant des unions de sphères.\\
+D'abord, il est clair que c'est un raffinement puisque chacune des sphères qui composent $U_{\alpha,n}$ sont contenues dans $U_\alpha$ par (3). Ensuite, pour vérifier que c'est un recouvrement, soit $x \in X$, et soit $\alpha$ minimal tel que $x \in U_\alpha$. Puisque $U_\alpha$ est ouvert, on peut choisir $n$ assez grand pour que $B_{3\cdot2^{-n}}(x) \subseteq U_\alpha$. Donc on a (1) et (3), si $x$ satisfait (2) alors automatiquement $x \in U_{\alpha,n}$, et sinon $x \in U_{\beta,i}$ pour un certain $\beta$ et un certain $i<n$. Dans tous les cas, cela montre que cette famille recouvre $X$.\\
+Pour prouver qu'elle est localement finie, soit $x \in X$ contenu dans un certain $U_{\alpha,n}$, et choisissons $k$ assez grand pour que $B_{2^{-k}}(x) \subseteq U_{\alpha,n}$. On affirme que $B_{2^{-k-n}}(x)$ n'intersecte qu'un nombre fini de $U_{\beta,i}$.
+
+\textit{(Cas 1 : $i <n+k $)}  On va montrer que dans ce cas, $B_{2^{-k-n}}(x)$ peut intersecter au plus un des $U_{\beta,i}$. On va montrer cela en prouvant que tout élément de $U_{\beta,i}$ est à distance au moins $2^{-i}$ de tout élément dans $U_{\gamma,i}$, pour tous $\beta < \gamma$ : en effet soient $x_1,x_2$ satisfaisant (1),(2),(3) tels que si $a \in B_{2^{-i}}(x_1) \subseteq U_{\beta,i}$ et $b \in B_{2^{-i}}(x_2) \subseteq U_{\gamma,i}$. Alors, par (3) $B_{3\cdot2^{-i}}(x_1) \subseteq U_{\beta,i}$ et par (1), $x_2 \not \in U_\beta$ (par minimalité de $\gamma$). Donc $d(x_1,x_2) \geq 3\cdot2^{-i}$ et par conséquent $d(a,b) \geq 2^{-i}$ : sinon si $d(a,b) < 2^{-i}$, on aurait par l'inégalité triangulaire $d(x_1,x_2) \leq d(a,x_1)+d(a,b)+d(b,x_2) < 3\cdot 2^{-i}$ (ceci se voit mieux avec un dessin). Mais $i \leq n+k - 1$, donc $d(a,b) \geq 2^{-n-k+1}$ donc notre sphère $B_{2^{-k-n}}(x)$ ne peut pas intersecter à la fois $U_{\beta,i}$ et $U_{\gamma,i}$. \\
+\textit{(Cas 2 : $i \geq n+k $)} Dans ce cas, on va montrer que $B_{2^{-k-n}}(x)$ n'intersecte aucun autre $U_{\beta,i}$. Soit $U_{\beta,i}$ l'union de sphères de la forme $B_{2^{-i}}(y)$ pour $y$ satisfaisant (1),(2),(3). Par (2), et parce que $i \geq n$, $y \not\in U_{\alpha,n}$. Maintenant, puisque $B_{2^{-k}}(x) \subseteq U_{\alpha,n}$, on a $d(x,y) \geq 2^{-k}$, cela implique que $$B_{2^{-k-n}}(x) \cap B_{2^{-i}}(y) = \varnothing$$ parce que le rayon de chaque sphère est inférieur à la moitié de la distance entre leurs centres. En prenant l'union sur tous les $y$ satisfaisant (1),(2),(3), on a montré que $B_{2^{-k-n}}(x) \cap U_{\beta,i} = \varnothing$.\\
+Enfin, pour conclure : si un ensemble stationnaire $X \subseteq \omega_1$ est métrisable, alors il est paracompact par ces arguments, mais cela contredit l'exercice 4.\\
+
+
+
+\textbf{Exercice 6.} Montrer que si $S\subseteq \omega_1$ est non stationnaire, il possède une base $\sigma$-localement finie. En déduire que $S \subseteq \omega_1$ est métrisable si et seulement si $S$ est non stationnaire.\\
+\textbf{Solution. } On commence par un lemme de topologie.\\
+\textit{Lemme :} Si $X$ est un espace topologique $T_3$, alors tout $Y \subseteq X$ est aussi $T_3$ avec la topologie induite.\\
+\textit{Preuve :} Soient $y \in Y$ et $C\cap Y$ avec $C\subseteq X$ fermé tel que $y \not\in C$. Puisque $X$ est $T_3$, on choisit des ouverts disjoints $U_1 , U_2$ contenant respectivement $y$ et $C$. Alors $U_1\cap Y$ et $U_2 \cap Y$ sont $Y$-ouverts et séparent $y$ et $C\cap Y$.\\
+D'abord, montrons que $\omega_1$ est $T_3$ (tout ordinal est $T_3$). Tout point est fermé puisque pour tout $\alpha \in \omega_1$, $\omega_1\setminus \{ \alpha\} = [0,\alpha) \cup (\alpha,\omega_1)$. Soient $\alpha \in \omega_1$ et $C\subseteq \omega_1$ fermé tel que $\alpha \not\in C$. On sait que les ordinaux successeurs sont des points isolés dans la topologie de l'ordre (cela est clair par $ \{ \gamma+1 \} =(\gamma,\gamma+2)$), donc on peut supposer que $\alpha$ est limite et écrire $C=C'\cup C''$ où $C'$ contient les éléments successeurs dans $C$ et $C''$ les éléments limites, aussi $C'$ est ouvert puisqu'il ne contient que des points isolés. Pour tout $\beta \in C''$ on peut trouver $\gamma_\beta$ tel que $\alpha \not\in (\gamma_\beta,\beta+1)$ (puisque $\{\alpha\}$ est fermé) et pour la même raison on peut trouver $\gamma_\alpha$ tel que $(\gamma_\alpha,\alpha+1) \cap C =\varnothing$. On prend alors comme ouverts séparants
+$$U_1 = \bigcup_{\beta \in C''} (\gamma_\beta,\beta+1)\cup C' \ , \ U_2 = (\gamma_\alpha,\alpha+1).$$\\
+On montre maintenant que si $S \subseteq \omega_1$ est non stationnaire, alors il possède une base $\sigma$-localement finie. Puisque $\omega_1\setminus S$ contient un club $C$, alors $S$ est contenu dans $\omega_1\setminus C$, un ensemble ouvert. On peut alors poursuivre la construction suivante dans $\omega_1\setminus C$, ou simplement supposer que $S$ est ouvert et le faire pour $S$. Supposons que $S$ est ouvert, alors par définition de notre topologie, $S = \cup_{\alpha \in \kappa}S_\alpha$ pour une famille d'intervalles ouverts $S_\alpha$. Puisque l'union d'intervalles ouverts d'intersection non vide est elle-même un intervalle ouvert, on peut supposer (quitte à fusionner certains $S_\alpha$) que $S$ est l'union d'intervalles ouverts disjoints. Aussi, si l'un des $S_\alpha$ est non borné, on obtiendrait que pour un certain $\alpha < \omega_1$, $[\alpha,\omega_1) \subseteq S$, ce qui est impossible puisque $\omega_1 \setminus S$ est non borné, donc chaque $S_\alpha$ doit être borné et donc dénombrable.\\
+Par l'ex3, chaque $S_\alpha$ est métrisable (et dénombrable par le fait d'être borné), donc considérons la base dénombrable $S_{\alpha,n}$ constituée de tous les $B_{1/n}(x)\cap S_\alpha$ pour $x \in S_\alpha$ et $n \in \N$. Cette famille est bien une base : elle recouvre clairement $S_\alpha$, et aussi si $z\in B_{r_1}(x)\cap B_{r_2}(y)\cap S_\alpha$, en choisissant $n$ tel que $1/n < \min \{r_1-d(z,x) , r_2-d(z,y)\}$, on a $B_{1/n}(z)\cap S_\alpha \subseteq B_{r_1}(x)\cap B_{r_2}(y)\cap S_\alpha$. Énumérons $S_{\alpha,n} = \{S_{\alpha,n}^1 ,S_{\alpha,n}^2 , \dots\}$. Maintenant, définissons
+$$\mathcal B = \bigcup_{k < \omega}\{S_{\alpha,n}^k , \alpha \in \kappa \}.$$
+Chacun des $\{ S_{\alpha,n}^k , \alpha \in \kappa\}$ est localement fini, puisque si $x \in S_{\alpha,n}^k$, on peut toujours trouver un voisinage ouvert de $x$ contenu dans $S_{\alpha,n}^k$ qui n'intersecte qu'un seul ensemble d'indice $k$ ($S_{\alpha,n}^k$ lui-même), parce que les $S_\alpha$ sont pris ouverts et disjoints. Puisque $\mathcal B$ contient des bases pour chaque $S_\alpha$, cela signifie que $\mathcal B$ est une base $\sigma$-localement finie pour $S$.
+Pour conclure, si $S$ est non stationnaire, alors il possède une base $\sigma$-localement finie et puisqu'on a prouvé que $S$ est aussi $T_3$, par le théorème de Nagata-Smirnov, $S$ est métrisable. Réciproquement si $S$ est métrisable mais aussi stationnaire, alors par l'ex3, $\omega_1 \approx S$ ce qui implique que $\omega_1$ est métrisable, contredisant l'ex1.
+
+
+
+\end{document}
