@@ -1,0 +1,134 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\NN}{\mathcal N}
+\doublespacing
+\begin{document}
+\homework{Théorie des ensembles, TD1}{Date: 19/07/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercice 1.} Soit $R$ une relation sur un ensemble $X$. Montrer que $R$ n'est pas bien fondée si et seulement s'il existe une suite $\{ x_n \} \subseteq X$ telle que $x_{n+1}Rx_n$ pour tout $n \in \N$.\\
+\textbf{Solution : } Supposons que $R$ n'est pas bien fondée (cela implique $X \neq \varnothing$), alors il existe un sous-ensemble non vide $Y \subseteq X$ sans élément minimal. C'est-à-dire que pour tout $y \in Y$ il existe $z \in Y$ tel que $z R y$. Prenons un $x_0 \in Y$ quelconque (\textit{choix}) et prenons $x_1 \in Y$ tel que $x_1 R x_0$. Par récurrence, si $\{x_0,\dots,x_k\} \subseteq Y$ sont tels que $x_{i+1}Rx_i$ pour $i<k$, alors par hypothèse, il existe $x_{n+1} \in Y$ tel que $x_{n+1}Rx_n$. Par l'axiome de \textit{réunion}, on peut former $S = \{x_n \}_{n \in \N}$ comme requis. Réciproquement, supposons que $\{x_n\}$ est une suite comme énoncé, alors $S = \{x_0,x_1,\dots,x_n,\dots\}$ n'a pas d'élément minimal.\\
+
+\textbf{Exercice 2.} Montrer que $\in$ est une relation bien fondée, ensembliste et extensionnelle sur $V$. Est-ce que $\in$ est transitive ? Est-ce que $\in$ est un ordre strict ?\\
+\textbf{Solution :} Si $\in$ n'était pas bien fondée, il existerait une suite $S=\{x_n\}$ d'ensembles dans $V$ avec $x_{n+1} \in x_n$. Le fait que $S$ soit un ensemble contredit l'axiome de \textit{régularité}, puisque pour tout $n$, $x_{n+1} \in x_n \cap S $. La relation $\in$ est ensembliste : prenons un ensemble $x$, alors $\in^{-1} [x] = \{ y , y \in x \} = \{y \in x , y \in x \} = x$. Elle est aussi extensionnelle puisque $\in^{-1} [x] = \in^{-1} [y]$ signifie que $x,y$ ont les mêmes éléments, donc $x=y$ par \textit{extensionalité}. Elle n'est pas transitive : prenons un ensemble $x$ et $A= \{ \{ x \} \}$, alors $x \in \{x\}$ et $\{ x \} \in \{ \{ x \} \} $ mais $x \not \in A $. Ce n'est pas non plus un ordre strict puisqu'elle n'est pas transitive.\\
+
+\textbf{Exercice 3.} Soit $x$ un ensemble. Montrer qu'il existe un ensemble transitif $y$ tel que $x \subseteq y$. Montrer qu'un tel $y$ peut être choisi de manière minimale, ce qu'on appellera la \textbf{clôture transitive de $x$}.\\
+\textbf{Solution.} Posons $x_0 =x$ et par récurrence $x_{n+1} = \cup x_{n}$. Puis prenons $y = \cup _{n \in \N} x_n$. Clairement $x = x_0 \subseteq y$, pour voir que $y$ est transitif, soit $w \in z \in y$, alors pour un certain $k$, $z \in x_k$, et puisque $x_{k+1}= \cup x_{k}$, on a $w \in x_{k+1} \subset y$. Enfin, pour voir la minimalité, soit $x \subseteq T$ pour un ensemble transitif $T$. On va montrer que $y \subseteq T$. Soit $z=z_k \in y$, de sorte que pour un certain $k$, $z_k \in x_k$. Cela signifie que pour un certain $z_{k-1} \in x_{k-1}$, $z_k \in z_{k-1}$, en répétant cet argument, on obtient une suite finie $z_k,z_{k-1},\dots, z_0$ telle que pour $i=0,\dots k$, $z_i \in x_i$ et $z_{i} \in z_{i-1}$. Puisque $z_0 \in x_0 \subseteq T$, par transitivité de $T$, $z_1 \in T, \dots , z_k = z \in T$. \\
+
+\textbf{Exercice 4.} Utiliser l'axiome de régularité et la clôture transitive pour montrer que si $C$ est une classe, alors $C$ possède un élément $\in$-minimal.\\
+\textbf{Solution : } Soit $x$ un ensemble quelconque dans $C$, si $x$ et $C$ n'ont aucun élément en commun, alors $x$ est minimal. Sinon il existe $y \in S \cap x$ (notation informelle pour $y$ est dans $C$ et dans $x$). Notons que $\op{TC}(y) \cap C$ est un ensemble non vide. Par \textit{régularité}, il existe un élément minimal $z \in \op{TC}(y) \cap C$ (sinon il y aurait une suite infinie descendante dans $w$). Vérifions que $z$ est bien $\in$-minimal dans $C$ : s'il ne l'était pas, il existerait $z' \in C$ tel que $z' \in z$. Cela signifierait $z' \in \op{TC}(y)$, et donc $z' \in \op{TC}(y) \cap C$, contredisant la minimalité de $z$ dans ce dernier ensemble.  \\
+
+\textbf{Exercice 5.} Montrer que si $M_1$ et $M_2$ sont des classes transitives et $\pi:M_1 \to M_2$ est un $\in$-isomorphisme, alors $\pi$ est l'identité.\\
+\textbf{Solution : } On définit la classe $C = \{ x , \pi(x) \neq x \}$. Par l'ex.4, choisissons un élément minimal $x \in C$. On va montrer que $\pi(x) = x$ et arriver à une contradiction. D'abord voyons que $x \subseteq \pi(x)$. Soit $y \in x \Rightarrow y \in M_1 \land \pi(y) \in \pi(x)$. Puisque $x$ est minimal dans $C$, $\pi(y) = y$ et donc $y \in \pi(x)$. Maintenant vérifions $\pi(x) \subseteq x$ : prenons $w \in \pi(x)$, alors $\pi^{-1}(w) \in x$ et par minimalité de $x$ on a $w = \pi(\pi^{-1}(w))  = \pi^{-1}(w) \Rightarrow w \in x$. Il y a une contradiction, $C$ ne peut pas avoir d'élément $\in$-minimal, donc elle doit être vide. Cela implique que $\pi \equiv id$.\\
+
+\textbf{Exercice 6. (Lemme d'effondrement de Mostowski}). Soit $C$ une classe et $R$ une relation bien fondée, ensembliste et extensionnelle. Alors il existe une unique classe transitive $M$ et un unique isomorphisme $(C,R) \rightarrow (M, \in)$.\\
+\textbf{Solution : } D'abord, notons que l'élément $R$-minimal $x \in C$ est unique, car s'il y avait un autre élément minimal $y \in C$, on aurait $R^{-1}[x] = R^{-1}[y] = \varnothing$, ce qui impliquerait $x = y$ par extensionalité. On définit maintenant $\pi(x) = \varnothing$, et pour tout autre $y \in C$, $\pi(y) = \{ \pi(z) , z R y \} = \pi ( R^{-1}[x])$. Cette fonction préserve $\in$ puisque $y R x \Rightarrow y \in R^{-1}[x] \Rightarrow \pi(y) \in \pi(R^{-1}[x])=\pi(x)$. On prend maintenant $M= \cup_{x \in C} \pi(x)$. Notons que $M$ est une classe transitive car si $z \in M$ cela signifie qu'il existe $x,y \in C$ tels que $z = \pi(y)$ avec $yRx$, ce qui implique $z \in M$. Par construction, $\pi$ est clairement surjective. Enfin, pour voir que $\pi$ est injective, prenons $x \neq y$ dans $C$, alors par extensionalité $R^{-1}[x] \neq R^{-1}[y]$ donc il existe $z \in C$ tel que $z R x \land z \cancel{R} y$, ce qui implique $\pi(x) \neq \pi(y)$. Pour vérifier l'unicité, supposons que $M_1$ et $M_2$ sont des classes transitives satisfaisant le lemme, avec les applications respectives $\pi_1,\pi_2$. On aurait alors le $\in$-isomorphisme $\pi_1 \circ \pi_2^{-1}:M_2 \rightarrow M_1$. Par l'ex.5, c'est l'identité, donc $M_1 = M_2$. \\
+
+\center
+\begin{tikzcd}
+
+    & M_1 \arrow[dd, "=", no head] \\
+    C \arrow[ru, "\pi_1"] \arrow[rd, "\pi_2"'] &                                    \\
+    & M_2
+\end{tikzcd}
+\justify
+\textbf{Exercice 7.} Soient $(X,<_1)$, $(Y,<_2)$ des ensembles ordonnés. Définir $<_3$ sur $X \times Y$ par $(x,y) < (x',y')$ si et seulement si $x <_1 x'$ et $y <_2 y'$. Montrer que c'est un ordre. Si $<_1$ et $<_2$ sont des ordres totaux, est-ce que $<_3$ est un ordre total ?\\
+\textbf{Solution : } Facile.\\
+
+\textbf{Exercice 8.} Soient $(X,<_1)$, $(Y,<_2)$ des ensembles totalement ordonnés. Montrer que $<_{lex}$ ordonne totalement $X \times Y$. Si $<_1$ et $<_2$ sont des bons ordres, est-ce que $<_{lex}$ en est un ?\\
+\textbf{Solution.} Facile, c'est un bon ordre.\\
+
+\textbf{Exercice 9.} Montrer que tout ordre total dénombrable se plonge dans $\mathbb Q$.\\
+\textbf{Solution : }\\
+\textit{Lemme : } Si $X=\{ x_0,\dots,x_n \}$ est un ordre total fini, $X' = X \cup \{x_{n+1} \}$ est un ordre total étendant celui de $X$, et $\varphi:X \to \mathbb Q$ est un plongement, alors il existe un plongement $\varphi':X' \to \mathbb Q$ tel que $\varphi' \restriction_X = \varphi$.\\
+\textit{Preuve : } On a trois cas : si $x_{n+1} > \max(X)$, prendre $\varphi'(x_{n+1}) = \varphi(\max(X))+1$, sinon si $x_{n+1} < \min(X)$, prendre $\varphi'(x_{n+1}) = \varphi(\min(X))-1$. Sinon, il existe $i,j \in \{0,1,\dots,n\}$ tels que $x_i < x_{n+1} < x_j$, alors prendre $\varphi'(x_{n+1}) = \frac{1}{2}(\varphi(x_j) + \varphi(x_i))$, ce qui complète la preuve du lemme.\\
+Pour montrer que $X=\{ x_0, \dots , x_n , \dots \}$ se plonge dans $\mathbb Q$, posons $X_0 = {x_0}$ et $X_{n+1}= X_n \cup x_{n+1}$. En prenant $\varphi_0:X_0 \to \mathbb Q$ comme $x_0 \mapsto 0$, et en utilisant le lemme pour définir $\varphi_n:X_n\to \mathbb Q$ tel que $\varphi_{n+1}\restriction{X_n} = \varphi_n$, on peut prendre notre plongement comme $\varphi = \cup_{n \in \N} \varphi_n$.\\
+
+\textbf{Exercice 10.} Soit $X$ un ensemble. Montrer que $(\mathcal P (X) , \subseteq)$ est ordonné. Montrer que $\subseteq$ est extensionnelle sur $\mathcal P (x)$.\\
+\textbf{Solution :} $\subseteq$ est clairement un ordre. Si $\subseteq^{-1}[A] = \subseteq^{-1}[B]$, puisque $\subseteq$ est réflexive, on a en particulier que $A \subseteq B$ et $B \subseteq A$. Donc, $A=B$.
+
+\textbf{Exercice 11.} Soit $(X,<)$ un ensemble ordonné. Montrer qu'il existe un morphisme d'ordre de $(X,<)$ dans $(\mathcal P (X) \subseteq )$. Explicitement, écrire un morphisme $\phi$ avec la propriété que $\phi$ est injectif si et seulement si $<$ est extensionnelle.\\
+\textbf{Solution : } $x \mapsto \{ y \in X , y < x \}$.
+
+\textbf{Exercice 12.} Pour $A,B \subseteq \N$, définir
+$$A \subseteq^* B \text{ si et seulement si } A \setminus B \text{ est fini} $$
+Montrer que $\subseteq^*$ est transitive. Est-ce un ordre ? Décrire tous les $\subseteq^*$-prédécesseurs de $\varnothing$.\\
+\textbf{Solution :} La transitivité découle du fait que $A \setminus C \subseteq A \setminus B \cup B \setminus C$. Ce n'est pas un ordre puisqu'elle n'est pas antisymétrique (prendre $\{1,2\}$ et $\{2,3\}$). L'ensemble des prédécesseurs de $\varnothing$ est constitué de tous les ensembles finis.\\
+
+\textbf{Exercice 13. } Soit $\mathcal P (\N)$ muni de $\Delta$ et $\cap$ comme addition et produit. Montrer que c'est un anneau commutatif unitaire. Montrer que l'ensemble
+$$\op{Fin} = \{ A \subseteq \N , A \text{ est fini} \}$$
+est un idéal.\\
+\textbf{Solution : } Il est de routine de montrer que $\Delta$ et $\cap$ sont commutatifs et associatifs. $\varnothing$ est l'élément neutre pour l'addition et $\N$ pour la multiplication. Étant donné $A \subseteq \N$, on a $A \Delta A = \varnothing$. Enfin, en utilisant le fait que $X \cap (Y \setminus Z) = (X\cap Z) \setminus (X \cap W)$, on obtient la distributivité :
+\begin{align*}
+    A\cap (B\Delta C) & = A \cap ((B \setminus C) \cup (C \setminus B))                           \\
+                      & = (A \cap ((B \setminus C)) \cup (A \cap ((C \setminus B))                \\
+                      & = ((A\cap B) \setminus (A \cap C)) \cup (( A \cap C) \setminus (A\cap B)) \\
+                      & = (A \cap B) \Delta (A \cap C)
+\end{align*}
+Tout ceci montre que $(\mathcal P (\N), \Delta , \cap)$ est un anneau avec identité. La famille des ensembles finis forme un idéal puisqu'elle est clairement close sous $\Delta$ et l'intersection de tout $X \subseteq \N$ avec un ensemble fini est finie.
+
+\textbf{Exercice 14. } Sur $\mathcal P (\N) / \op{Fin}$, définir $[A] \subseteq [B]$ ssi $A \subseteq^* B$. Montrer que cette relation est bien définie. Conclure que $\subset^*$ ordonne strictement $\mathcal P (\N) / \op{Fin}$, et montrer qu'elle est extensionnelle.\\
+\textbf{Solution : } Remarquons que $[A]=[B]$ ssi $A \Delta B$ est fini ssi $A \subseteq^* B$ et $B \subseteq^* A$. Supposons que $A\subseteq^* B$, $[C]=[A]$ et que $[D] = [B]$. Alors par ce qui précède, $C \subseteq^* A \subseteq^* B \subseteq^* D$, le résultat découle de la transitivité de $\subseteq^*$. Pour vérifier l'extensionalité, remarquons que $ [X] \subseteq [X]$ pour tout $X \subseteq \N$, si on suppose que $\subseteq^{-1}[A] = \subseteq^{-1}[B]$, alors en particulier $A \subseteq^* B$ et réciproquement, ce qui prouve que $[A] = [B]$.
+
+\textbf{Exercice 15. } Deux éléments d'un ensemble ordonné sont incompatibles s'il n'existe pas d'élément en dessous des deux, un sous-ensemble $C \subset X$ est une chaîne si pour tous $x,y \in C$ soit $x>y$ soit $y>x$. Montrer qu'il existe une famille infinie non dénombrable d'éléments deux à deux incompatibles de \linebreak $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing], \subset^*)$, et qu'il existe une chaîne bien fondée non dénombrable dans $(\mathcal P (\N) / \op{Fin} \setminus [\N], \subset^*)$. Conclure que $\mathcal P (\N) / \op{Fin} , \subset)$ ne se plonge pas dans $(\mathcal P(\N),\subset)$.\\
+\textbf{Solution : } Remarquons que $[\varnothing]$ et $[\N]$ représentent les classes des ensembles finis et cofinis, respectivement. Aussi, deux éléments $[A],[B]$ sont incompatibles si et seulement si $A \cap B$ est fini : supposons que $ Y = A\cap B$ est infini, alors $[Y] \subseteq [A]$ et $[Y] \subseteq [B]$, ce qui rend $[A],[B]$ compatibles, d'autre part, si $A \cap B$ est fini, si on suppose qu'il existe
+$[X] \subseteq [A],[B]$, alors $X \setminus (A\cap B) = (X \setminus A) \cup (X\setminus B)$ est fini, ce qui implique $[X] \subseteq [A\cap B] \Rightarrow X$ est fini, une contradiction puisqu'on a exclu $[\varnothing]$. \\
+Pour montrer l'existence d'une famille infinie non dénombrable d'ensembles deux à deux incompatibles, on va montrer que toute famille dénombrable peut être étendue, et qu'une famille maximale de tels ensembles ne peut pas être dénombrable.\\
+Prenons une famille dénombrable d'éléments deux à deux incompatibles de $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing]$, disons $[X_n]$, $n \in \N$. Soit
+$$Y_0 = X_0 \text{ et } Y_{n+1} = X_{n+1} \setminus \bigcup _{i \leq n} X_{n}.$$
+Tous les $Y_n$ sont deux à deux disjoints et $[Y_n] = [X_n]$ pour tout $n$, puisque $X_n \cap Y_n = X_n \cap (\bigcap_{i< n} X_n \setminus X_i)$ est fini. Choisissons un élément $x_n \in Y_n$, alors l'ensemble $Y = \{x_n , n \in \N \}$ est presque disjoint de chaque $X_n$, ce qui rend la famille originale non maximale. Par le lemme de Zorn, on peut étendre toute famille d'éléments deux à deux incompatibles à une famille maximale la contenant. Enfin, prenons pour tout $n$, $X_n = \{p_n^k , k > 0 \}$ où $p_n$ est le $n$-ème nombre premier. C'est une famille dénombrable d'ensembles deux à deux incompatibles, et on peut l'étendre à une famille maximale, qui ne peut pas être dénombrable. Ensuite, on doit montrer qu'il n'existe pas de plongement de $(\mathcal P (\N) / \op{Fin} \setminus [\varnothing ], \subseteq) $ dans $(\mathcal P( \N) , \subseteq)$.\\
+\textit{Lemme : } Toutes les chaînes bien fondées dans $(\mathcal P( \N) , \subset)$ sont dénombrables.\\
+Preuve : Supposons qu'il existe une $\subset$-chaîne non dénombrable. Pour $x$ dans $C$, soit $S(x)$ l'élément $\subset$-minimal de $C$ au-dessus de $x$ (existe grâce à la bonne fondation). Si $x \neq y$, alors \textit{sqpg} $x \subseteq y$ et donc $S(x) \subseteq y$. Cela implique que pour tous $x \neq y$ dans $C$
+$$(S(x) \setminus x) \cap (S(y)\setminus y) = \varnothing.$$
+Puisque chaque $S(x) \setminus x$ est non vide (ordre strict), l'ensemble $X = \bigcup_{x \in C} S(x) \setminus x \subseteq \N$ est infini non dénombrable, c'est une contradiction. Puisque les plongements de chaînes sont des chaînes, il suffit de trouver une chaîne bien fondée infinie non dénombrable dans $\mathcal P (\N) / \op{Fin} \setminus [\N ]$. Soit
+$$\mathcal{D} = \{ \mathcal C \subset \mathcal P (\N) / \op{Fin} \setminus [\N ] , \mathcal C \text{ est une chaîne bien fondée}\}.$$
+On peut ordonner $\mathcal D$ par extensions terminales de chaînes. En prenant par le lemme de Zorn une chaîne maximale dans $\mathcal D$, il existe une chaîne bien fondée dans $\mathcal P (\N) / \op{Fin} \setminus [\N ]$ qui ne peut pas être étendue. Une telle chaîne ne peut pas être dénombrable, pour le prouver on va montrer \textit{que toute chaîne dénombrable dans $\mathcal D$ est extensible.}\\
+\textit{Preuve : } Soit $\mathcal C = [A_n]$ une chaîne dénombrable (on suppose les $[A_n]$ distincts). On veut trouver un $C \subseteq \N$ non cofini tel que pour tout $n$, $A_n \subseteq^* C$. Soit $B_n = \bigcup_{i \leq n}A_n$, et remarquons que $B_n \subseteq B_{n+1}$ pour tout $n$. Remarquons que $B_{n+1} \setminus B_{n}$ est infini pour tout $n$ puisque $[A_n] \subsetneq [A_{n+1}]$ implique que $A_{n+1} \setminus A_n$ est infini. Notons que si $C$ est un ensemble non cofini tel que pour tout $n$, $B_n \subseteq^* C$, la même chose est vraie pour tout $A_n$. Soit $k_i = \min B_{i+1} \setminus B_i$ et $C = \N \setminus \{k_n\}_{n \in \N}$ (il est non cofini par construction). On a que si $i \geq n$, alors $k_i \notin B_n$, ce qui implique que pour tout $n$, $B_n \cap \{k_i\}_{i \in \N}$ est fini ou de manière équivalente, $B_n \subseteq^* C$. Pour conclure, on peut supposer ladite $\mathcal C$ bien fondée et l'étendre à une chaîne maximale infinie non dénombrable dans $\mathcal P (\N) / \op{Fin} \setminus [\N ]$ qui ne peut pas être plongée dans $\mathcal P (\N)$ comme conséquence d'un des lemmes. \\
+
+
+\end{document}

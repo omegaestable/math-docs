@@ -48,7 +48,7 @@
 \newcommand{\NN}{\mathcal N}
 \doublespacing
 \begin{document}
-\homework{Thèorie des ensembles, TD1}{Date: 19/07/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
+\homework{Set Theory, TD1}{Date: 19/07/2020}{A. Vignati}{}{Juan Ignacio Padilla}{M2 LMFI}
 \justify
 \textbf{Exercise 1.} Let $R$ be a relation on a set $X$. Show that $R$ is not well-founded if and only if there is a sequence $\{ x_n \} \subseteq X$ such that $x_{n+1}Rx_n$ for al $n \in \N$.\\
 \textbf{Solution: }Suppose that $R$ is not well founded (this implies $X \neq \varnothing$), then there exists some non-empty $Y \subseteq X$ with no minimal element. That is, for every $y \in Y$ there exists $z \in Y$ such that $ z R y$. Take any $x_0 \in Y$ (\textit{choice}) and take $x_1 \in Y$ such that $x_1 R x_0$. Inductively, if $\{x_0,\dots,x_k\} \subseteq Y$ are such that $x_{i+1}Rx_i$ for $i<k$, then by hypothesis, there is $x_{n+1} \in Y$ such that $x_{n+1}Rx_n$. By axiom of \textit{union}, we can form $S = \{x_n \}_{n \in \N}$ as required. Conversely, suppose $\{x_n\}$ is a sequece as stated, then $S = \{x_0,x_1,\dots,x_n,\dots\}$ has no minimal element.\\

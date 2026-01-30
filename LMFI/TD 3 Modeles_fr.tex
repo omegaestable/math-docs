@@ -1,0 +1,138 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{pifont}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[document]{ragged2e}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+\input{macros.tex}
+
+% User Definitions
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\OO}{\mathcal{O}}
+
+\doublespacing
+
+\begin{document}
+
+\homework{Théorie des modèles TD3}{Date: 08/11/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+
+\noindent\textbf{Exercice 0.1.} Soit $I$ un ensemble infini, $I_0 \subseteq I$ et $\UU$ un ultrafiltre sur $I$ tel que $I_0 \in \UU$.
+\begin{enumerate}
+    \item Montrer que $\UU\restriction_{I_0} = \{X\cap I_0 , X \in \UU \}$ est un ultrafiltre sur $I_0$.
+    \item Montrer que $\prod_{i \in I} \MM_i / \UU \simeq  \prod_{i \in I_0} \MM_i / \UU\restriction I_0$
+\end{enumerate}
+
+\noindent\textbf{Solution.}
+\begin{enumerate}
+    \item Soit $A\subseteq I_0$, alors soit $A \in \UU$ soit non. Si oui, alors puisque $A=A\cap I_0$ alors $A \in \UU\restriction_{I_0}$, sinon, alors $I\setminus A \in \UU$ et $I_0 \setminus A = I_0 \cap (I \cap A) \in \UU$.
+    \item Considérons l'application qui envoie $[a_i]_{i \in I}$ sur sa restriction $[a_i]_{i \in I_0}$ (classes d'équivalence dans $\UU$ et $\UU\restriction I_0$ respectivement). Elle est bien définie puisque si $[a_i]_{i \in I} = [b_i]_{i \in I}$, alors $\{i , a_i=b_i \} \in \UU$, donc $\{i , a_i=b_i \}\cap I_0 \in \UU\restriction I_0$, et donc $[a_i]_{i \in I_0} = [b_i]_{i \in I_0}$. Elle est aussi surjective : étant donné $[a_i]_{i \in I_0}$ on peut définir $[b_i]_{i \in I_0}$ en posant $b_i = a_i$ pour $i \in I_0$ et $b_i = $ n'importe quoi pour $i \not\in I_0$, clairement $[a_i]_{i \in I_0}$ est une restriction de $[b_i]_{i \in I}$. Soit $\varphi(\bar{x}) \in \FF(\LL)$, alors si $\bar{a} \in \prod_{i \in I} \MM_i / \UU$, on a que
+          \begin{align*}
+              \bar{a} \in \prod_{i \in I} \MM_i / \UU & \iff \{i , \MM_i \models \varphi(\bar{a_i}) \} \in \UU                          \\
+                                                      & \iff \{i , \MM_i \models \varphi(\bar{a_i}) \}\cap I_0 \in \UU \restriction I_0 \\
+                                                      & \iff  \prod_{i \in I_0} \MM_i / \UU\restriction I_0 \models \varphi(\bar{a})
+          \end{align*}
+\end{enumerate}
+
+\noindent\textbf{Exercice 0.2.} Soit $\varphi$ une phrase dans le langage des anneaux. Supposons que $\mathsf{ACF}_0 \models \varphi$. Montrer qu'il existe $N$ tel que $\mathsf{ACF}_n \models \varphi$ pour tout $n>N$.
+
+\noindent\textbf{Solution.} On utilise l'axiomatisation pour les corps algébriquement clos de caractéristique 0 donnée par
+\[
+    T = T_{\text{corps}} \cup \{\underbrace{1+1+\dots+1}_{n-\text{fois}} \neq 0 \}_{n \in \N}
+\]
+Puisque $T \models \varphi$, il existe un $\Delta \subseteq T$ fini tel que $\Delta \models \varphi$. En particulier, il existe $N$ tel que
+\[
+    \Delta \subseteq  T_{\text{corps}} \cup \{\underbrace{1+1+\dots+1}_{n-\text{fois}} \neq 0 \}_{n < N},
+\]
+donc si $F$ est un corps de caractéristique $n>N$ alors $F\models \Delta$, d'où $F\models \varphi$.
+
+\noindent\textbf{Exercice 1.} Soit $I$ un ensemble infini et $\{ \MM_i\}$ une collection de $\LL$-structures. Soient $\UU$, $\VV$ des ultrafiltres sur $I$ et considérons les ultraproduits $\MM = \prod_{i \in I} \MM_i / \UU $ et $\NN = \prod_{i \in I} \MM_i / \VV$. Discuter si $\MM \simeq \NN$ selon le choix de $\UU$, $\VV$.
+\begin{enumerate}
+    \item  Soit $I = \N$ et $M_i = \overline{\Q[x_1,\dots,x_i]}^{\text{alg}}$.
+    \item Soit $I = \{p , p \text{ premier } \}$, et soit $\MM_p = \F_p$.
+\end{enumerate}
+
+\noindent\textbf{Solution.}
+\begin{enumerate}
+    \item D'abord, si $\UU$ et $\VV$ sont tous deux principaux, alors $\MM \simeq \overline{\Q[x_1,\dots,x_i]}^{\text{alg}}$ et $\NN \simeq \overline{\Q[x_1,\dots,x_j]}^{\text{alg}}$, donc $\MM \not\simeq \NN$ sauf si $i=j$, car ils auraient des degrés de transcendance différents sur $\Q$. Maintenant, si $\UU$ et $\VV$ sont tous deux non principaux, alors par un théorème du cours, comme $M_i$ est dénombrablement infini pour tout $i$, on a que $|M| = |N| = 2^{\aleph_0}$, de sorte que $\MM,\NN$ sont des corps algébriquement clos de caractéristique $0$, et par un fait d'algèbre ceux-ci sont tous deux $\simeq \C$. Si l'un est principal et l'autre non, ils ne peuvent pas être isomorphes pour des raisons de cardinalité.
+    \item D'abord, si $\UU$ et $\VV$ sont tous deux principaux, alors $\MM \simeq \F_i$ et $\NN \simeq \F_j$, donc $\MM \not\simeq \NN$ sauf si $i=j$. D'autre part, considérons $I_0$ comme l'ensemble des nombres premiers congrus à $1$ modulo $4$. Par un fait de théorie des nombres, $I_0$ est infini et cofini, donc on peut trouver des ultrafiltres non principaux $\UU$,$\VV$ contenant $I_0$ et $I\setminus I_0$ respectivement. Considérons la phrase $\exists x \  x^2 + 1 =0$. Par un autre fait de théorie des nombres, on sait que $\F_p \models \phi$ si et seulement si $p \in I_0$, ce qui nous permet de conclure $\MM \models \phi$ et $\NN \not \models \phi$. Finalement, si l'un est principal et l'autre non, ils ne peuvent pas être isomorphes à nouveau pour des raisons de cardinalité.
+\end{enumerate}
+
+\noindent\textbf{Exercice 2.} Soit $\bar{\Q}$ le corps ordonné des rationnels et soit $\UU$ un ultrafiltre non principal sur $\N$. Considérons l'ultrapuissance $\KK = \bar{\Q}^\UU$, et soit $i$ le plongement diagonal de $\Q$ dans $\KK$.
+\begin{enumerate}
+    \item Montrer que $\KK$ est un corps ordonné, et donner au moins deux raisons pour lesquelles $\KK \not\simeq \R$.
+    \item Soit
+          \[
+              \OO = \{ a \in K , \exists q \in \Q ^{>0} \ i(-q)<a<i(q)\}
+          \]
+          et
+          \[
+              \MM =  \{ a \in K , \forall q \in \Q ^{>0}  \ i(-q)<a<i(q)\}
+          \]
+          Montrer que $\OO$ est un anneau et que $\MM$ est un idéal maximal dans $\OO$.
+
+    \item Soit $R = \OO / \MM$. Montrer que $R$ peut être muni d'une structure $\RR$ de corps ordonné.
+    \item Montrer que $\Q$ peut être identifié à un sous-ensemble dense de $\mathcal R$.
+    \item Montrer que $\RR \simeq \R$ en tant que corps ordonnés
+\end{enumerate}
+
+\noindent\textbf{Solution.}
+\begin{enumerate}
+    \item $\KK$ est un ultraproduit de structures appartenant à une classe élémentaire (corps ordonnés), donc $\KK$ appartient à la même classe. $\KK$ a des éléments infinitésimaux : par exemple soit $n\in \N$ et $\varepsilon=(1,1/2,1/3,\dots)_\UU$ positif mais plus petit que $i(1/n)$ p.p. par rapport à $\UU$, donc $\KK \models \varepsilon < i(1/n)$. Aussi $\KK$ a des éléments infiniment grands, par exemple $1/\varepsilon$.
+    \item On a que $0=i(0), 1=i(1) \in \OO$. Il suffit de montrer que $\OO$ est clos sous l'addition, la multiplication, et l'inverse additif. Soient $a$,$b \in \OO$ et choisissons $q,r \in \Q^{>0}$ tels que $i(-q) < a < i(q)$ et $i(-r)<b<i(r)$. Rappelons que $i$ est un plongement élémentaire, donc on somme $i(-q)+i(-r) < a+b < i(q)+i(r)$ et on obtient $i(-q-r) < a+b < i(q+r)$. De même on prouve que $i(-qr) < ab < i(qr)$ (il y a 3 cas à considérer), il est clair aussi que $i(-q)<-a<i(q)$, donc $\OO$ est un anneau. Maintenant considérons $a,b \in \MM$, et soit $q \in \Q$, alors \linebreak $i(-q/2)<a,b<i(q/2)$, donc en sommant les deux inégalités on obtient $i(-q)<a+b<i(-q)$, et aussi il est facile de voir que $\MM$ est clos sous $-$. Pour vérifier que $\MM$ est un idéal, soient $a\in \MM$, $b \in \OO$, et $q\in \Q^{>0}$. Puisque $b \in \OO$ il existe $q'$ tel que $i(-q')<b<i(q')$, et puisque $a\in \MM$ on a en particulier $i(-q/q')<a<i(q/q')$, donc en multipliant ces inégalités on obtient $i(-q)<ab<i(q)$ pour tout $q$, d'où $ab \in \MM$. Finalement, supposons qu'il existe un idéal $I$ tel que $\MM \subsetneq I \subseteq \OO$, et soit $j \in I \setminus \MM$, de sorte qu'il existe $q$ tel que $j \not\in (i(-q),i(q))$. Cela implique $1/j \in (i(-q),i(q)) \rightarrow 1/j \in \OO$ de sorte que $j/j = 1 \in I$, d'où $I=\OO$. Cela prouve que $\MM$ est maximal.
+    \item On note $r + \MM$ pour la classe d'équivalence de $r$ modulo $\MM$. On sait déjà que $\OO/\MM$ est un corps, puisque $\MM$ est un idéal maximal, donc il suffit de définir un ordre qui préserve sa structure de corps. On définit $r+ \MM < s+ \MM$ ssi $\KK \models r<s$. C'est bien défini, puisque étant donné $r+ \MM < s+ \MM$, en particulier $s-r \not\in \MM$ et aussi $\KK \models 0<s-r$. Soit $q$ tel que $\KK \models i(q) < s-r$ et remarquons que pour tous $\varepsilon_1,\varepsilon_2 \in \MM$, dans $\KK$ il est vrai que :
+          \begin{align*}
+              r+\varepsilon_1 & < r+ i(q/2) \\ &< s-i(q/2) \\ &< s+\varepsilon_2
+          \end{align*}
+          donc $r+\varepsilon_1 + \MM < s+\varepsilon_2 + \MM$. Vérifions que cela respecte la structure de corps : supposons $r+ \MM < s+ \MM$
+          \begin{itemize}
+              \item Soit $a+\MM \in \OO/\MM$, alors on a $\KK \models r+a < s+a$ puisque $\KK$ est un corps ordonné, donc $r+ a\MM < s+ a\MM$.
+              \item Soit $0<a+\MM \in \OO/\MM$ alors on a $\KK \models ra < sa$ puisque $\KK$ est un corps ordonné, donc $ra + \MM < sa + \MM$.
+          \end{itemize}
+          Aussi $<_{\RR}$ est une relation d'ordre total puisque $<_\KK$ l'est.
+    \item Remarquons que $\RR$ est archimédien : supposons que $\RR \models 0 \leq \varepsilon < i(1/n)$ pour tout $n \in \N$, alors $\varepsilon \leq i(q)$ pour tout $q \in \Q^{>0}$, donc $\varepsilon \in \MM$ ce qui implique $\RR \models \varepsilon=0$. %Aussi, définissons dans $\RR$ une fonction $|\cdot|$ telle que $|r| = r$ si $r\leq 0$ et $-r$ sinon, puis on définit la \textit{distance} entre $r,s\in \RR$ comme $|s-r|$.
+          Soient $r,s \in \R$ tels que $r<s$, choisissons $n$ tel que $i(1/n)< s-r$, alors pour un certain $m \in \N$ il doit se produire que $r<i(m/n)<s$, car sinon il y aurait $k$ tel que $i(k/n) \leq r $ et $i((k+1)/n) \geq s$, ce qui est une contradiction. Donc on peut identifier $\Q$ comme un sous-corps dense de $\RR$.
+    \item On considère $\R$ comme l'ensemble des classes d'équivalence de suites de Cauchy (notées $(a_i)$) sur $\Q$ sous la relation $(a_i) \sim (b_i)$ ssi $\lim_{n\to \infty}|a_i-b_i|=0$. Aussi les opérations de corps sont définies point par point et l'ordre est défini comme $(a_i)<(b_i)$ ssi il existe $N$ tel que $a_n < b_n$ pour $n \geq N$.
+
+          On définit l'application de $\R$ vers $\RR$ qui envoie $(a_i)_\sim$ sur $(a_i)_\UU + \MM$ (on omettra le $+\MM$ par commodité). Cette application est bien définie : si $(a_i) \sim (b_i)$, alors pour tout $n$ il existe $N$ tel que pour $n \geq N$, $|a_i - b_i|<1/n$, en particulier l'ensemble $\{i , -1/n < a_i-b_i<1/n \} \in \UU$ pour tout $n$, donc $(a_i)_\UU - (b_i)_\UU \in \MM$. Il est facile de voir que cette application est un plongement de corps, puisque $(a+b)_i = (a_i) + (b_i)$, de sorte que $(a_i)_\sim+(b_i)_\sim$ est envoyé sur $(a_i)_\UU + (b_i)_\UU = (a_i+b_i)_\UU$, et de même pour le produit. Cette application préserve aussi l'ordre : si $(a_i)_\sim < (b_i)_\sim$, alors il existe $N$ tel que pour $n \geq N$, $a_i < b_i$, donc à nouveau $\{i, a_i < b_i \} \in \UU$, et $(a_i)_\UU < (b_i)_\UU$. Finalement on doit seulement vérifier la surjectivité : soit $r \in \RR$, et choisissons une suite de rationnels $(q_i)$ telle que pour tout $k >0$, il existe $N$ tel que $q_n \in (r-1/k,r+1/k)$ pour $n \geq N$ (autrement dit choisissons une suite convergente), c'est possible par le point précédent. Remarquons que $\RR \models (q_i)=r$, puisque sinon, si par exemple $(q_i)<r$ alors il existe $k$ tel que l'ensemble $\{i , q_i < r_i-1/k  \} \in \UU$ donc c'est un ensemble infini, contredisant le fait que $(q_i)$ converge vers $r$. On affirme que $(q_i)$ est de Cauchy : soit $k>0$ et choisissons $N$ tel que pour tout $n \geq N$, $q_n \in (r-1/2k,r+1/2k)$, alors si $m,n > N$, on a $q_n,q_m \in (r-1/2k,r+1/2k)$ donc nécessairement $-1/k < q_n - q_m < 1/k$, donc on peut conclure que $r$ est l'image de $(q_i)$, et par conséquent $\R \simeq \RR$.
+\end{enumerate}
+
+\end{document}

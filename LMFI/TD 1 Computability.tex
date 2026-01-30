@@ -1,0 +1,552 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{lmodern}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\FF}{\mathcal F}
+\begin{document}
+\homework{Computability and Incompleteness TD1}{Date: 23/09/2020}{P. Rozière}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercise 1.} Show that the set of primitive recursive functions is countable.\\
+\textbf{Solution: } We can define by induction
+\begin{align*}
+    \FF_0     & = \{\lambda x . 0 , \lambda x. s(x)  \} \cup \{ p_k^i , 1 \leq i \leq k \}_{k \in \N} \\
+    \FF_{n+1} & = \{ f \in \N^{\N ^ k} , \exists g, h \in \FF_n ,  f = \op{Rec}(g,h)\}_{n\in\N}       \\  \cup  &\{  f \in \N^{\N ^ k} , \exists g_1,\dots,g_m , h \in \FF_n , f \equiv h (g_1,\dots,g_m) \}_{k \in \N}
+\end{align*}
+Each $\FF_n$ is countable since the operations $\op{Rec}$ and composition only require finitely many arguments. We have that the set of primitive recursive functions is
+$\FF = \bigcup_n \FF_n$, and consequently it is countable.\\
+
+\textbf{Exercise 2. (examples, special cases of the primitive recursion scheme).}\begin{enumerate}
+    \item Show that constant functions are primitive recursive.
+          By induction: the function $\lambda x . 1$ equals the composition of $s(x)$ and the zero function. Now, if $f(x) =\lambda x. k$ is primitive recursive, then $\lambda x . k+1 = s(f(x))$, which is primitive recursive by the composition scheme.
+    \item Show that $x \mapsto x+2$, $x \mapsto 2x$ and $x \mapsto 2x + 1$ are primitive recursive.
+          $f(x) = \lambda x. x+2 = s(s(p_1^1(x)))$, the doubling function is defined by primitive recursion as $g(0) = 0$ and $g(x+1) = f(p_2^1(x,g(x))$. Finally $h(x) = s(g(x))$.
+    \item Show that addition, multiplication and exponentiation are primitive recursive functions.
+          \begin{align*}
+              +(x,0)        & = x = p_1^1(x)                                      \\
+              +(x,y+1)      & = s(p_3^3(x,y,+(x,y)))                              \\
+              \times(x,0)   & = 0                                                 \\
+              \times(x,y+1) & = +(p_3^3(x,y,\times(x,y)),p_3^1(x,y,\times(x,y))   \\
+              \exp(x,0)     & = 1                                                 \\
+              \exp(x,y+1)   & = \times (p_3^3(x,y,\exp(x,y)),p_3^1(x,y,\exp(x,y))
+          \end{align*}
+
+    \item Show that the function $\op{sg}$ which maps $0$ to $0$ and all other integers to $1$, as well as the function $\bar{\op{sg}}$ which maps $0$ to $1$ and all other integers to $0$, are primitive recursive.
+          \begin{align*}
+              \op{sg}(0)   & = 0                              \\
+              \op{sg}(x+1) & = \lambda x y . 1 (x,\op{sg}(0))
+          \end{align*}
+          The other case is the same.
+    \item Show that the set of primitive functions is closed under the iteration definition scheme, which associates to a function $g$ from $\N^p \to \N$ and to a function $h:\N^{p+1} \to \N$ the function $f:\N^p \to \N$ defined by:
+          \begin{align*}
+              f(a_1,\dots,a_p,0)   & = g(a_1,\dots,a_p)                      \\
+              f(a_1,\dots,a_p,x+1) & = h(a_1,\dots,a_p,f(a_1,\dots,a_p,x))).
+          \end{align*}
+          We can write
+          \begin{align*}
+              f(a_1,\dots,a_p,0)   & = g(a_1,\dots,a_p)                                                                                                    \\
+              f(a_1,\dots,a_p,x+1) & = h(p_{p+2}^1(\bar{a},x,f(\bar{a},x)),\dots,p_{p+2}^p(\bar{a},x,f(\bar{a},x)), p_{p+2}^{p+2}(\bar{a},x,f(\bar{a},x)))
+          \end{align*}
+          to express $f$ in primitive recursive form.
+          Then show that the functions introduced so far in this exercise can be defined from the base functions and the iteration scheme.
+          We have
+          \begin{align*}
+              +(x,0)        & = x                   \\
+              +(x,y+1)      & = s(x,+(x,y))         \\
+              \times(x,0)   & = x                   \\
+              \times(x,y+1) & = +(x,\times(x,y))    \\
+              \exp(x,0)     & = x                   \\
+              \exp(x,y+1)   & = \times(x,\exp(x,y)) \\
+          \end{align*}
+    \item Show that the set of primitive recursive functions is closed \textit{by case definition} on a primitive recursive predicate: if $g$ and $h$ are primitive recursive functions from $\N^p$ to $\N$, and $P$ is a primitive recursive predicate on $\N^p$, then the function $f$ from $\N^p$ to $\N$ defined below is primitive recursive:
+          $$f(a_1,\dots,a_p) = \begin{cases}
+                  g(a_1,\dots,a_p) & \text{ if } P(a_1\dots,a_n) \\
+                  h(a_1,\dots,a_n) & \text{ otherwise}
+              \end{cases}$$
+          We have $f(\bar{a}) = g(\bar{a})\chi_P(\bar{a}) + h(\bar{a})\chi_P(\bar{a})$.
+\end{enumerate}
+\textbf{Exercise 3 (bounded sum and product).} Show that if $f:\N^{p+1} \to \N$ is primitive recursive, the functions $g$ and $h$ defined by
+$$g(\bar{a},x) = \sum_{i=0}^{x} f(\bar{a},i) \text{ and }  h(\bar{a},x) = \prod_{i=0}^{x} f(\bar{a},i)$$
+are primitive recursive.\\
+\textbf{Solution: } We have
+\begin{align*}
+    g(\bar{a},0)   & = f(\bar{a},0)                       \\
+    g(\bar{a},x+1) & = g(\bar{a},x) + f(\bar{a},x+1)      \\
+    h(\bar{a},0)   & = f(\bar{a},0)                       \\
+    h(\bar{a},x+1) & = h(\bar{a},x) \times f(\bar{a},x+1) \\
+\end{align*}
+
+\textbf{Exercise 4 (predecessor, comparison)}
+\begin{enumerate}
+    \item Show that the function $\op{pred} \N \to \N$ which equals $0$ at $0$ and $n-1$ at $n >0$ is primitive recursive.
+          \begin{align*}
+              \op{pred}(0)   & = 0 \\
+              \op{pred}(n+1) & = n
+          \end{align*}
+    \item Show that $ x \overset{.}{-} y = x-y $ if $x \geq y$ and $0$ otherwise, as well as the function $x,y \mapsto |x-y|$ are primitive recursive.
+          \begin{align*}
+              x \overset{.}{-} 0     & = x                             \\
+              x \overset{.}{-} (y+1) & = \op{pred}(x \overset{.}{-} y)
+          \end{align*}
+    \item Show that the comparison predicates $\leq , \geq ,< , < , = , \neq$ are primitive recursive.
+          We have $\chi_{\leq}(x,y) = \bar{\op{sg}}(x \overset{.}{-} y)$ , $\chi_{\geq}(x,y) = \bar{\op{sg}}(y \overset{.}{-} x)$ , $\chi_{=}(x,y) = \chi_{\leq}(x,y) \chi_{\geq}(x,y)$ , $\chi_{\neq}(x,y) = \bar{\op{sg}}(\chi_{=}(x,y)) $ , $\chi_{<}(x,y) = \chi_{\leq}(x,y)\chi_{\neq}(x,y)$, $\chi_{>}(x,y) =\chi_{\geq}(x,y)\chi_{\neq}(x,y)$.
+\end{enumerate}
+
+\textbf{Exercise 5 (Primitive recursive predicates, boolean operations)}
+\begin{enumerate}
+    \item Show that the set of primitive recursive predicates of any arity is closed under boolean operations.
+    \item Deduce that the set of primitive recursive sets is closed under union, intersection and complement.
+\end{enumerate}
+\textbf{Solution: (1) and (2)} If $P[\bar{x},\bar{y}]$ and $Q[\bar{x}',\bar{y}]$ are primitive recursive predicates, we have
+\begin{align*}
+    \chi_{P\land Q}(\bar{x},\bar{x}',\bar{y}) & = \chi_P(\bar{x},\bar{y}) \chi_Q (\bar{x}',\bar{y})               \\
+    \chi_{P\lor Q}(\bar{x},\bar{x}',\bar{y})  & = \op{sg} ( \chi_P(\bar{x},\bar{y})  + \chi_Q (\bar{x}',\bar{y})) \\
+    \chi_{\neg P} (\bar{x},\bar{y})           & = \overline{\op{sg}}(\chi_P(\bar{x},\bar{y}))
+\end{align*}
+The same applies to primitive recursive sets in $\N^p$. \\
+
+\textbf{Exercise 6.} Show that finite and cofinite subsets of $\N^p$ are primitive recursive.\\
+\textbf{Solution: } If $p=0$, $\varnothing$ has the zero function as its characteristic function. If $p>0$ and $A \subseteq \N^p$ is finite, we have $A = \{\bar{a}_1,\dots,\bar{a}_n\}$. We can write $$\chi_A(\bar{x}) = \begin{cases}
+        1 & \text{ if } \bigvee_{i=0}^n \bar{x} = \bar{a_i} \\
+        0 & \text{ otherwise}
+    \end{cases}$$
+By \textit{case definition}, $A$ is primitive recursive. Note that the predicate $P[\bar{x}] : \bar{x} =  \bar{a}$ has as its characteristic function $\chi_P(\bar{x}) = \chi_{=}(\bar{x},\bar{a})$, so it is primitive recursive. If $A$ is cofinite, we have
+$\chi_A(\bar{x}) = \overline{\op{sg}}(\chi_{\N^p \setminus A}(\bar{x})).$\\
+
+\textbf{Exercise 7 (bounded minimization)} The \textit{bounded minimization} scheme associates to a primitive recursive predicate $B \subseteq \N^{p+1}$ the function $f:\N^{p+1} \to \N$ defined by:
+\begin{alignat*}{2}
+    f(a_1,\dots,a_p,x) & = \text{ the smallest integer $t \leq x$ such that $B(\bar{a},t)$} \  &  & \text{ if such an integer exists}       \\
+    f(a_1,\dots,a_p,x) & = 0 \                                                                &  & \text{ if no such integer exists}
+\end{alignat*}
+We write $f(\bar{a},x) = \mu t \leq x B(\bar{a},t)$.
+\begin{enumerate}
+    \item Given a primitive recursive predicate $B \subseteq \N^{p+1}$, show that the function $b:\N^{p+1} \to \N$ is primitive recursive, where $b$ is defined by:
+          \begin{align*}
+              b(a_1,\dots,a_p,x) & = 0 \text{ if there exists an integer $t \leq x$ such that $B(\bar{a},t)$} \\
+              b(a_1,\dots,a_p,x) & = 1  \text{ if no such integer exists}
+          \end{align*}
+          We can write
+          $$b(\bar{a},x) = \overline{\op{sg}}\left(\sum_{t=0}^x \chi_{B}(\bar{a},t)\right)$$
+    \item Deduce that the set of primitive recursive functions is closed under the bounded minimization scheme.
+          We can write, using the helper function $b$,
+          $$f(\bar{a},x) = \sum_{t=0}^{x} b(\bar{a},x).$$
+\end{enumerate}
+\textbf{Exercise 8 (bounded quantification).} Show that the set of primitive recursive predicates is closed under bounded existential and universal quantification.\\
+\textbf{Solution:} If $P$ is a primitive recursive predicate, and we define
+\begin{align*}
+    P_e[\bar{x},y] & = \exists z \leq y P[\bar{x},z] \\
+    P_q[\bar{x},y] & = \forall z \leq y P[\bar{x},z]
+\end{align*}
+Then,
+\begin{align*}
+    \chi_{P_e}(\bar{x},y) = \op{sg} & \left(\sum_{t=0}^y \chi_{P}(\bar{x},t) \right)  \\
+    \chi_{P_q}(\bar{x},y) =         & \left(\prod_{t=0}^y \chi_{P}(\bar{x},t) \right)
+\end{align*}
+\textbf{Exercise 9 (Euclidean division).} Show that the functions $q:\NN^2 \to \N$ and $r:\N^2 \to \N$ where $q(n,p)$ is the quotient and $r(n,p)$ the remainder of the division of $n$ by $p$ are primitive recursive functions. Deduce that the binary predicate $a|b$ is primitive recursive.\\
+\textbf{Solution: }
+\begin{align*}
+    q(n,p) & = \mu t \leq n ( pt \leq n \land p(t+1) > n ) \\
+    r(n,p) & = n \overset{.}{-} (p \times q(n,p))
+\end{align*}
+And we have that
+$$\chi_{n|p}(n,p) = \begin{cases}
+        1 & \text{ if } r(n,p) =0 \\
+        0 & \text{ otherwise}
+    \end{cases}$$\\
+
+\textbf{Exercise 10 (prime numbers).} Let $p:\N \to \N$ be the function such that $p(n)$ is the $(n+1)$-th prime number.
+\begin{enumerate}
+    \item Show that the predicate ``being prime'' is primitive recursive.
+          $$p \text{ is prime iff } p>1 \land \forall x \leq p ( \neg x |p \lor x = 1 \lor x = p)$$
+    \item Show that $p(n+1) \leq p(n)! +1$ and that the factorial function is primitive recursive.\\
+          Let $q$ be prime such that $q | p(n)! + 1$, we know that $q \notin \{ p(0) ,\dots , p(n) \} $ (otherwise it would imply the absurdity $q|1$), this implies that $p(n+1)  \leq q \leq p(n)!+1$. We also have
+          \begin{align*}
+              0!     & = 1        \\
+              (n+1)! & = (n+1) n!
+          \end{align*}
+          This shows that $n!$ is primitive recursive.
+    \item Show that the function $p$ is primitive recursive.\\
+          Consider the primitive recursive function
+          $$p'(n,y_1,y_2) = \mu t \leq y_1 ( t \text{ is prime} \land y_2 \leq t). $$
+          Then,
+          \begin{align*}
+              p(0)   & = 2                  \\
+              p(n+1) & = p'(n,p(n)!+1,p(n))
+          \end{align*}
+          This shows that $p(n)$ is primitive recursive.
+\end{enumerate}
+\textbf{Exercise 11 (encoding of pairs and $k$-tuples).} Let $\alpha$ be the Cantor bijection from $\N \times \N$ to $\N$, defined by
+$$\alpha(n,p) = \left( \sum_{i=0}^{n+p}i\right) + p .$$
+\begin{enumerate}
+    \item Verify that $\alpha$ is indeed bijective and primitive recursive. Verify that $\alpha$ is increasing on each of its two components.
+          If $ m = n+n'$ we have, for all $p$
+          $$ \alpha(m,p) = \left(\sum_{i=0}^{m+p} i\right) + p = \left(\sum_{i=0}^{n+p} i\right) + \left(\sum_{i=n+p+1}^{n+n'+p} i\right) + p \geq \left( \sum_{i=0}^{n+p}i\right)+p = \alpha(n,p).$$
+          If $p \leq q$ it is evident that for all $n$
+          $$\left( \sum_{i=0}^{n+p}i\right)+p \leq \left( \sum_{i=0}^{n+q}i\right)+q.$$
+          From ex 3. it is clear that $\alpha$ is primitive recursive. We show injectivity, denote $\left( \sum_{i=0}^{n}i\right) = \Delta(n)$\\
+          Let $(n,p) \neq (m,q)$, if $n+p = m+q$ then $\Delta(n+p) = \Delta(m+q)$, and if we assume $\alpha(n,p) = \alpha(m,q)$ this would imply $p=q$ and hence $n=m$, a contradiction.
+          For surjectivity, let $m \in \N$, take the smallest $x$ such that $\Delta(x) \leq m \leq \Delta(x+1)$ and take $r = m - x$. Note that $r \leq x$, otherwise we would have $r > x \Rightarrow m= \Delta(x)+r \geq \Delta(x+1)$ which contradicts the minimality of $x$. Then, $x= r+m$ and $m=\Delta(r+m)+r = \alpha(m,r)$
+    \item Define in primitive recursive fashion the two associated projections $\pi_2^1$ and $\pi_2^2$ satisfying
+          $$\alpha(\pi_2^1(c),\pi_2^2(c))= c \ , \ \pi_2^1(\alpha(n,p))=n \ , \ \pi_2^2(\alpha(n,p))=p.$$
+          It is evident that $n,p \leq \alpha(n,p)$, we can write
+          \begin{align*}
+              \pi_2^1(c) & = (\mu z \leq c)(\exists t \leq c) (\alpha(z,t) = c) \\
+              \pi_2^2(c) & = (\mu z \leq c)(\exists t \leq c) (\alpha(t,z) = c)
+          \end{align*}
+    \item We define by induction on $k \leq 1$ the functions $\alpha_k: \N^p \to \N$ by:
+          \begin{align*}\alpha_1(n)                     & = n                                      \\
+              \alpha_{k+1}(n_1,\dots,n_{k+1}) & = \alpha(n_1,\alpha_k(n_2\dots,n_{k+1}))\end{align*}
+          Show that, for all $k \leq 1$, $\alpha_k$ is a primitive recursive bijection and define recursively the associated projections $\pi_k^i :\N \to \N$. Verify that $\alpha_k$ is increasing on each of its components. We also write $\langle x_1,\dots,x_k \rangle$ for $\alpha_k(x_1,\dots,x_k)$.\\
+          The fact that $\alpha_k$ is bijective and primitive recursive is easily shown by induction, because $\alpha_k$ is a composition of primitive recursive functions. By induction, if $\pi_k^i$ are defined for $i =1,\dots,k$, we define
+          \begin{align*}
+              \pi_{k+1}^1(n_1,\dots, n_{k+1}) & = \pi_2^1( \alpha(n_1,\alpha_k(n_2,\dots, n_{k+1})))                                                     \\
+              \pi_{k+1}^i(n_1,\dots, n_{k+1}) & = \pi_k^{i-1}(\pi_2^2( \alpha(n_1,\alpha_k(n_2,\dots, n_{k+1}))))  \ \text{ for } i \in \{2,\dots,k+1 \} \\
+          \end{align*}
+\end{enumerate}
+\textbf{Exercise 12 (Definitions by mutual recursion).} Use the function $\alpha_k$ to show that if the functions $g_1,\dots,g_k : \N^n \to \N$ and $h_1,\dots,h_k: \N^{n+k+1}$ are primitive recursive, then the functions $f_1,\dots,f_k$ defined below are primitive recursive
+\begin{align*}
+     & f_1(\bar{a},0) =g_1(\bar{a})                                          \\
+     & \vdots                                                                \\
+     & f_k(\bar{a},0) =g_k(\bar{a})                                          \\
+     & f_1(\bar{a},x+1) = h_1(\bar{a},x,f_1(\bar{a},x),\dots,f_k(\bar{a},x)) \\
+     & \vdots                                                                \\
+     & f_k(\bar{a},x+1) = h_k(\bar{a},x,f_1(\bar{a},x),\dots,f_k(\bar{a},x))
+\end{align*}
+We can simply write for $i \leq i \leq k$
+\begin{align*}
+    f_i(\bar{a},0)   & = \pi_k^i (\alpha_k (g_1(\bar{a}),\dots,g_k(\bar{a}))                                                                                                 \\
+    f_i(\bar{a},x+1) & = \pi_k^i \bigg(\alpha_k \bigg(h_1(\bar{a},x,f_1(\bar{a},x),\dots,f_k(\bar{a},x)),\dots,h_k(\bar{a},x,f_1(\bar{a},x),\dots,f_k(\bar{a},x)\bigg)\bigg) \\
+\end{align*}
+By the composition scheme, $f_i$ is primitive recursive.\\
+\textbf{Exercise 13 (A bijective encoding of finite sequences).} We obtain the function $::$
+$$x::y = 1+ \alpha_2(x,y)$$
+We thus obtain a bijective primitive recursive function $\N^2 \to \N^*$. We call $\op{hd}$ and $\op{tl}$ the functions satisfying
+\begin{alignat*}{2}
+     & \op{hd}(0)= 0 \quad    &  & \op{tl}(0) = 0    \\
+     & \op{hd}(x::y)= x \quad &  & \op{tl}(x::y) = y \\
+\end{alignat*}
+We define a function $\op{list}$ from the set $\mathcal S$ of finite sequences of integers to $\N$ as follows (we write $[a_0 ; \dots ; a_n] = \op
+    {list}(a_0,\dots,a_n)$)
+\begin{align*}
+    [ \ ]               & = 0                           \\
+    [a_0 ; \dots ; a_n] & =  a_0 :: [a_1 ; \dots ; a_n]
+\end{align*}
+Show that the function $\op{list}$ is bijective, and that the functions $\op{hd}$ and $\op{tl}$ are primitive recursive.
+We have
+\begin{align*}
+    \op{hd}(c) & = \pi_2^1(c \overset{.}{-} 1) \\
+    \op{tl}(c) & = \pi_2^2(c \overset{.}{-} 1) \\
+\end{align*}
+To show that $\op{list}$ is injective, let $[a_0;\dots;a_n) = [b_0;\dots;b_{n+k}]$ for some $k \geq 0$, then
+\begin{align*}
+                & a_0::[a_1;\dots;a_n] = b_0::[b_1;\dots;b_{n+k}]        \\
+    \Rightarrow & a_0 = b_0  \land [a_1;\dots;a_n] = [b_1;\dots;b_{n+k}]
+\end{align*}
+We can repeat this argument starting from $[a_1;\dots;a_n] = [b_1;\dots;b_{n+k}]$ and arrive at
+$$\bigwedge_{i=0}^n a_i = b_i \land [ \ ] = [b_1,;\dots;b_{k+1}]$$
+This shows that $k=0$ and $(a_0,\dots,a_n) = (b_0,\dots,b_n)$. To show surjectivity, simply note that for all $m \in \N$, there is $k \in \N$ such that $\op{tl}^k(m) = 0$ (because the sequence $\{ \op{tl}^k(m)\}_{k \in \N}$ is strictly decreasing), then
+$$m = [\op{hd}(m) ; \op{hd}(\op{tl}(m));\dots ;  \op{hd}(\op{tl}^k(m)) ] = [\op{nth}(m,0) ; \dots ; \op{nth}(m,k)].$$
+
+\textbf{Exercise 14 (recursion on the sequence of values).}
+\begin{enumerate}
+    \item Prove that the set of recursive functions is closed by the following scheme of recursion on the sequence of values: if $g:\N^{p} \to \N$ and $h:\N^{p+2} \to \N$ are primitive recursive,
+          then $f : \N^{p+1} \to \N$ defined by
+          \begin{align*}
+              f(a_1,\dots,a_p,0)   & = g(a_1,\dots,a_p)                                      \\
+              f(a_1,\dots,a_p,x+1) & = h(\bar{a},x, [f(\bar{a},x) ; \dots ; f(\bar{a},0 )]).
+          \end{align*}
+          It suffices to prove that the function $F(\bar{a},x) =  [f(\bar{a},x) ; \dots ; f(\bar{a},0 ]$ is primitive recursive. We have
+          \begin{align*}
+              F(\bar{a},0)   & = [f(\bar{a},0)] = g(\bar{a}))::0                                         \\
+              F(\bar{a},x+1) & = f(\bar{a},x+1):: F(\bar{a},x) = h(\bar{a},x,F(\bar{a},x))::F(\bar{a},x)
+          \end{align*}
+          We thus have $f(\bar{a},x) = \op{hd}(F(\bar{a},x)$
+    \item Show that the function $\op{nthl}(l,i)$ which returns the sequence encoded by $l$ starting from the $(i+1)$-th element ($0$ otherwise), and the function $\op{nth}(l,i)$ which returns the $(i+1)$-th element of the sequence encoded by $l$, are primitive recursive.
+          \begin{alignat*}{2}
+               & \op{nthl}(l,0) = l   \quad                       &  & \op{nth}(l,0) =  \op{hd}(l)               \\
+               & \op{nthl}(l,i+1) = \op{tl}(\op{nthl}(l,i)) \quad &  & \op{nth}(l,i+1) = \op{hd}(\op{nthl}(l,i))
+          \end{alignat*}
+    \item Show that if $g:\N^p \to \N$, $h:\N^{p+k+1} \to \N$ are primitive recursive, and if $p_1,\dots,p_k : \N \to \N$ are primitive recursive functions each satisfying
+          $$\forall x \in \N p_i(x) \leq x$$
+          then $f : \N^{p+1} \to \N$ defined by
+          \begin{align*}
+              f(a_1,\dots,a_p,0)   & = g(a_1,\dots,a_p)                                           \\
+              f(a_1,\dots,a_p,x+1) & = h(\bar{a},x,f(\bar{a},p_1(x)) , \dots , f(\bar{a},p_k(x) )
+          \end{align*}
+          is primitive recursive.
+          We can write
+          \begin{align*}
+              f(\bar{a},x+1) = h\bigg(\bar{a},x,\op{nth}([f(\bar{a},0);\dots;f(\bar{a},x)],x-p_1(x)), \\ \dots ,\op{nth}([f(\bar{a},0);\dots;f(\bar{a},x)],x-p_k(x))\bigg)\end{align*}
+\end{enumerate}
+\textbf{Exercise 15 (recursion on lists).}
+\begin{enumerate}
+    \item Show that $f$ is primitive recursive
+          \begin{align*}
+              f(\bar{a},[])   & = g(\bar{a})                   \\
+              f(\bar{a},x::l) & = h(\bar{a},x,l,f(\bar{a},l)).
+          \end{align*}
+          We can write
+          $$f(\bar{a},y) = h(\bar{a},\op{hd}(y),\op{tl}(y),f(\bar{a},\op{tl}(y)))$$
+          $f$ is well-defined since the list function is bijective.\\
+          mem
+          \begin{align*}
+              \op{mem}(a,[])   & = 0                         \\
+              \op{mem}(a,x::l) & = \chi_=(x,a) \op{mem}(a,l)
+          \end{align*}
+          @
+          \begin{align*}
+              \op{@}(l',[])   & = l'        \\
+              \op{@}(l',x::l) & = x::(l@l') \\
+          \end{align*}
+          length
+          \begin{align*}
+              \op{lg}([])   & = 0            \\
+              \op{lg}(x::l) & = \op{lg}(l)+1 \\
+          \end{align*}
+    \item Show that if $f$ is pr, then the function $\op{map}(f)$ which maps $l=[\bar{u}]$ to $[f(\bar{a},u_1);\dots;f(\bar{a},u_p)]$
+          \begin{align*}
+              \op{map}_f([ ])  & = 0 ;                           \\
+              \op{map}_f(x::l) & = f(\bar{a},x) :: \op{map}_f(l)
+          \end{align*}
+    \item
+          concat
+          \begin{align*}
+              \op{concat}([ \ ]) & = [ \ ];                                                \\
+              \op{concat}(x::l)  & = x :: [\op{nth}(l,0);\dots,\op{nth}(l,\op{length}(l))]
+          \end{align*}
+          subst
+          \begin{align*}
+              \op{subst}([ \ ],k,v) & = [ \ ];                                                         \\
+              \op{subst}(x::l,k,v)  & = \begin{cases}
+                                            x::\op{subst}(l)              & \text{ if } x \neq v \\
+                                            \op{concat}([k,\op{subst}(l)] & \text{ if } x = v
+                                        \end{cases}
+          \end{align*}
+\end{enumerate}
+\textbf{Extra Exercise (Encoding lists by prime number decomposition)} Let $\mathcal S$ denote the set of finite sequences of integers. The list encoding function $\op{seq}:\mathcal S \to \N$ associates to each sequence $(x_1,\dots,x_k)$ the following value
+$$\op{seq}(x_1,\dots,x_k) = p_0^k p_1^{x_1}\cdots p_k^{x_k}$$
+sending the empty sequence to 1.
+\begin{enumerate}
+    \item Show that this encoding is injective but not surjective.
+          Injectivity is clear by the fundamental theorem of arithmetic. There is no sequence sent to $3$, for example.
+    \item Show that the function which maps $(x,n)$ to the exponent of $p_n$ in the prime factorization of $x$ is primitive recursive.
+          $$\exp(x,n) = (\mu k \leq x)(p_n^{k+1} \nmid x )$$
+    \item Deduce that
+          \begin{enumerate}
+              \item There exists a primitive recursive function that computes the $n$-th element of a sequence represented by $x$, when $x$ represents a sequence of length greater than or equal to $n$.\\
+                    Take $\exp(x,n)$
+              \item There exists a pr function that computes the length of the sequence encoded by $x$.\\
+                    Take $l(x) = \exp(n,0)$.
+              \item The characteristic function of the set $C$ of sequence codes is primitive recursive.\\
+                    We have $x \in A$ iff $x \neq 0 $ and ($x=1 \lor 2 | x$).
+          \end{enumerate}
+    \item Show that there exists a primitive recursive function which, given two integers $n=\op{seq}(x_1,\dots,x_k)$ and $m=\op{seq}(y_1,\dots,y_h)$ encoding sequences, returns the number representing the concatenation of the two lists $\op{seq}(\bar{x},\bar{y})$.\\
+          Take $\op{concat}(n,m) = \op{seq}(\exp(n,1)\dots,\exp(n,k),\exp(m,1),\dots,\exp(m,h))$
+\end{enumerate}
+\textbf{Exercise 16 (recursion with parameter substitution).} This is the scheme
+\begin{align*}
+    f(a,0)   & = g(a)                   \\
+    f(a,x+1) & = h(a,x,f(\gamma(a),x)).
+\end{align*}
+\begin{enumerate}
+    \item Show that the function $F$ is PR
+          \begin{align*}
+              F(p,a,0)   & = g(\gamma^p(a))                       \\
+              F(p,a,x+1) & = h(\gamma^{p - (x+1)}(a),x,F(p,a,x)).
+          \end{align*}
+          We see that
+          $$F(p,a,x+1) = h(\op{nth}([a;\gamma(a),\dots,\gamma^p(a),p-(x+1)]),x,F(p,a,x))$$
+    \item Show that
+          $$\forall x,a,p \in \N (x \leq p \Rightarrow F(p,a,x) = f(\gamma^{p-x}(a),x))$$
+          and deduce that $f$ is primitive recursive.\\
+          By induction on $x$ (we assume $x \leq p$ always)
+          \begin{align*}
+              F(p,a,0)   & = g(\gamma^p(a))                                 \\
+              F(p,a,x+1) & = h(\gamma^{p-(x+1)}(a),x,F(p,a,x))              \\
+                         & =  h(\gamma^{p-(x+1)}(a),x,f(\gamma^{p-x}(a),x)) \\
+                         & = f(\gamma^{p-(x+1)}(a),x+1)
+          \end{align*}
+          We can deduce that $f(a,x) = F(x,a,x)$.
+    \item Application: show that the function $\op{inc}:\N^2 \to \N$ which maps $i$ and $l = [a_0 ; \dots ; a_i ; \dots ; a_n]$ to  $[a_0 ; \dots ; a_i+1 ; \dots ; a_n]$, is primitive recursive.\\
+          We can write
+          \begin{align*}
+              f(l,0)   & =(\op{hd}(l)+1)::\op{tl}(l)              \\
+              f(l,i+1) & = \begin{cases}
+                               f(\op{tl}(l),i) & \text{ if } i \leq n \\
+                               l               & \text{ otherwise}
+                           \end{cases}
+          \end{align*}
+\end{enumerate}
+\textbf{Exercise 17 (double recursion without nesting).} Show that the function $f$ defined by
+\begin{align*}
+    f(0,y)     & = a                       \\
+    f(x+1,0)   & = b                       \\
+    f(x+1,y+1) & = h(x,y,f(x,y),f(x+1,y)).
+\end{align*}
+is primitive recursive.\\
+We can use the encoding of pairs ($t = \langle x , y \rangle$), and the scheme of recursion on the sequence of values to write $f$ as follows
+\begin{align*}
+    f(t) = \begin{cases}
+               b                                                                                                                         & \text{ if } \pi_2^1(t) = 0            \\
+               a                                                                                                                         & \text{ otherwise and } \pi_2^2(t) = 0 \\
+               h \Bigg( \pi_2^1(t) -1 ,  \pi_2^2(t)-1 ,                                                                                                                     \\ \op{nth} \bigg([f(0);f(1);\dots ;f(\alpha( \pi_2^1(t) , \pi_2^2(t)-1)], \alpha(\pi_2^1(t) -1 ,  \pi_2^2(t)-1 )\bigg) , \\
+               \op{nth} \bigg([f(0);f(1);\dots ;f(\alpha( \pi_2^1(t) , \pi_2^2(t)-1)], \alpha(\pi_2^1(t) ,  \pi_2^2(t)-1 )\bigg)\Bigg) , & \text{ otherwise}                    \\
+           \end{cases}
+\end{align*}
+\textbf{Ackermann Function}
+\begin{align*}
+    \op{Ack}(0,x)     & = x+2                        \\
+    \op{Ack}(1,0)     & = 0                          \\
+    \op{Ack}(n+2,0)   & = 1                          \\
+    \op{Ack}(n+1,x+1) & =\op{Ack}(n,\op{Ack}(n+1,x))
+\end{align*}
+\textbf{Exercise 18. } Show that each function $\op{Ack}_n(x) = \op{Ack}(n,m)$ is primitive recursive and strictly increasing. Make explicit $\op{Ack}_n$, for $n =1,2,3$.
+We proceed by induction on $n$. If $n=0,1$, it is evident that $\op{Ack}_n$ is primitive recursive. We assume that $\op{Ack}_n$ is primitive recursive for $n \geq 2$. We note that
+\begin{align*}
+    \op{Ack}_{n+1}(0)   & = 1                             \\
+    \op{Ack}_{n+1}(x+1) & = \op{Ack}_n(\op{Ack}_{n+1}(x)) \\
+\end{align*}
+By the induction hypothesis, $\op{Ack}_{n+1} = \op{Rec}(1,\op{Ack}_n\circ \pi_2^2) \Rightarrow \op{Ack}_{n+1}$ is primitive recursive. We also have
+\begin{align*}
+    \op{Ack}_1(x) & = 2x                                                                                 \\
+    \op{Ack}_2(x) & = 2^x                                                                                \\
+    \op{Ack}_3(x) & = \underbrace{2 \  \hat{ \ } \cdots \hat{ \ } \  2 }_{x - \text{times } }\hat { \ } x
+\end{align*}
+The fact that the function is strictly increasing follows from an immediate application of induction on $n$.
+
+\textbf{Exercise 19 (Ackermann function)}
+\begin{enumerate}
+    \item Verify that there exists exactly one function from $\N^2 \to \N$ satisfying the Ackermann function equations.
+          Consider the recurrence
+          $$ \op{Ack}_{n+1}(x+1) = \op{Ack}_n(\op{Ack}_{n+1}(x)),$$
+          and note that, if $>_{lex}$ denotes the lexicographic order on $\N^2$, we have
+          \begin{align*}
+              (n+1,x+1) & >_{lex} (n+1,x)               \\
+              (n+1,x+1) & >_{lex} (n,\op{Ack}_{n+1}(x))\end{align*}
+          We can deduce that, to compute the value $\op{Ack}_{n+1}(x+1)$, we need the values that $\op{Ack}$ takes at pairs strictly smaller than $(x+1,n+1)$ (according to $>_{lex}$). Since $(\N^2, >_{lex})$ is a well-ordered set, it follows that the set of pairs needed to compute $\op{Ack}_{n+1}(x+1)$ is finite. Therefore, $\op{Ack}$ is well-defined on $\N^2$, and it is ``intuitively computable''.
+    \item Show that
+          $$\forall n \in \N \ \forall x > 0 \op{Ack}_{n+1}(x) = \op{Ack}_{n}^x(\op{Ack}_{n+1}(0))) $$
+          and verify the expressions of the functions $\op{Ack}_1$, $\op{Ack}_2$, $\op{Ack}_3$.
+          By induction on $x$. If $x=0$, it is trivial. For the case $x+1$, we have
+          \begin{align*}
+              \op{Ack}_{n+1}(x+1) & = \op{Ack}_{n}(\op{Ack}_{n+1}(x)) \text{ by definition }      \\
+                                  & =  \op{Ack}_{n} (\op{Ack}_{n}^x(\op{Ack}_{n+1}(0))) \text{ IH} \\
+                                  & =\op{Ack}_{n}^{x+1}(\op{Ack}_{n+1}(0)))
+          \end{align*}
+    \item Verify that each of the functions $\op{Ack}_n$ has a definition using exactly $n$ instances of the iteration definition scheme. The explicit forms of $\op{Ack}_1,\op{Ack}_2,\op{Ack}_3$ are in exercise 18.
+          This follows directly from the definition, and by induction on $n$, noting that
+          \begin{align*}
+              \op{Ack}_{n+1}(0)   & = 1                             \\
+              \op{Ack}_{n+1}(x+1) & = \op{Ack}_n(\op{Ack}_{n+1}(x)) \\
+          \end{align*}
+          Then, if $\op{Ack}_n \in \mathcal C_n$,  $\op{Ack}_{n+1} \in \mathcal C_{n+1}.$
+    \item Show that  $\op{Ack}_n(x) > x$.\\
+          By induction on $n$. If $x > 0$,
+          \begin{align*}
+              \op{Ack}_0(x) & = x+2 >x \\
+              \op{Ack}_1(x) & = 2x >x
+          \end{align*}
+          If $n \geq 2$ and we assume that for all $x > 0$, $\op{Ack}_n(x)>x$,
+          \begin{align*}
+              \op{Ack}_{n+1}(1) & = \op{Ack}_n( \op{Ack}_{n+1}(0)) =  \op{Ack}_n(1) > 1 \\
+          \end{align*}
+          If $x > 1$, since $\op{Ack}$ is strictly increasing, $\op{Ack}_{n+1}(x) > 1 \neq 0$, and we can apply induction on $x$,
+          \begin{align*}
+              \op{Ack}_{n+1}(x+1) & = \op{Ack}_n( \op{Ack}_{n+1}(x))      \\
+                                  & \geq\op{Ack}_{n+1}(x)+1 \text{ (IH1)} \\
+                                  & >x+1 \text{ (IH2)}
+          \end{align*}
+    \item Deduce that for all integers $m$,  $\op{Ack}_m$ is strictly increasing.\\
+          This has already been demonstrated in the previous exercise.
+    \item Deduce from question $4$, that, from $2$ onwards, $\op{Ack}$ is non-decreasing on its first argument, the second being fixed:
+          $$ \forall x \geq 2 \ \forall n \in \N \ \op{Ack}(n,x) \leq \op{Ack}(n+1,x).$$
+          We have
+          $$\op{Ack}_{n+1}(x) = \op{Ack}_n(\underbrace{\op{Ack_{n+1}}(x-1)}_{\geq x}) \geq \op{Ack}_{n}(x)$$
+    \item Show that $\forall k , n \in \N \op{Ack}_n^k \in \mathcal C _n$.\\
+          This is clear in view of exercise 19.3 and since $\mathcal C_n$ is closed under composition.
+    \item Show that  $\forall k , n \in \N \op{Ack}_n^k(x) \leq \op{Ack}_{n+1}(x+k)$.
+          By induction on $k$, the case $k=0$ is trivial, then
+          \begin{align*}
+              \op{Ack}_n^{k+1}(x) & = \op{Ack}_n(\op{Ack}_n^k(x))                    \\
+                                  & \leq \op{Ack}_n(\op{Ack}_{n+1}(x+k)) \text{ IH } \\
+                                  & = \op{Ack}_{n+1}(x+k+1) \text{ def }
+          \end{align*}
+    \item Show by induction on the definition of the set of primitive recursive functions that if $f \in \mathcal C_n$, then $\exists k \op{Ack}_n^k$ dominates $f$. \\
+          It is easy to see that the base functions are dominated by $\op{Ack}_3(x)$.\newline If $h,g_1,\dots,g_m \in \mathcal C _n$, $h(\bar{x}) \leq \op{Ack}_n^{k}\sup(\bar{x},K)$ and  $g_i(\bar{x}) \leq \op{Ack}_n^{k_i}\sup(\bar{x},K_i)$, we set $M = \sup (K_1,\dots,K_m,K)$, $l = \sup_i k_i$, and $M(\bar{x}) = \sup( \bar{x} , M)$.
+          \begin{align*}
+              h(g_1(\bar{x}),\dots,g_m(\bar{x})) & \leq \op{Ack}_n^{k}\sup_i(g_i(\bar{x}),K)               \\ &\leq \op{Ack}_n^{k}\sup_i(\op{Ack}_n^{k_i}\sup(\bar{x},K_i),K) \\
+                                                 & \leq \op{Ack}_n^{k}\sup_i(\op{Ack}_n^{k_i}(M(\bar{x}))) \\
+                                                 & = \op{Ack}_n^{k}(\op{Ack}_n^{l}(M(\bar{x})))            \\
+                                                 & = \op{Ack}_n^{k+l}\sup (\bar{x},M)
+          \end{align*}
+          Now, if $g(\bar{x}) \leq \op{Ack}_n^{k_1}\sup(\bar{x},N_1)$, and $h(\bar{x},y,z) \leq \op{Ack}_n^{k_2}\sup(\bar{x},y,z,N_2)$, the function obtained by primitive recursion $f \in \mathcal C_{n+1}$ satisfies
+          $$f(\bar{x},y) \leq \op{Ack}_n^{k_1+k_2y}(\sup(\bar{x},y,N_1,N_2)$$
+          We prove by induction on $y$,
+          \begin{align*}
+              f(\bar{x},0)   & = g(\bar{x}) \leq \op{Ack}_n^{k_1}\sup(\bar{x},N_1)                                    \\
+              f(\bar{x},y+1) & = h(\bar{x},y,f(\bar{x},y))                                                            \\
+                             & \leq \op{Ack}_n^{k_2}(\sup(\bar{x},y,f(\bar{x},y),N_2)                                 \\
+                             & \leq \op{Ack}_n^{k_2}(\sup(\bar{x},y,\op{Ack}_n^{k_1+k_2y}\sup(\bar{x},y,N_1,N_2),N_2) \\
+                             & =\op{Ack}_n^{k_2}(\op{Ack}_n^{k_1+k_2y}\sup(\bar{x},y,N_1,N_2))                        \\
+                             & =  \op{Ack}_n^{k_1+k_2(y+1)}\sup(\bar{x},y,N_1,N_2)                                    \\
+                             & \leq \op{Ack}_{n+1}(\sup(\bar{x},y,N_1,N_2) + k_1+k_2y)
+          \end{align*}
+          This last function is a composition of $C_{n+1}$ functions and therefore is dominated by some $\op{Ack}_{n+1}^l$.
+    \item Show that $\op{Ack}_n^k$ is dominated by $\op{Ack}_{n+1}$.\\
+          Note that if $y>0$, $\op{Ack}_{n+1}(y) \geq \op{Ack}_{1}(y) =2y$, and we can deduce that if  $x>2k$, \\ $\op{Ack}_{n+1}(x-k) \geq 2x - 2k > x$. Then, for all $x > 2k$,
+          \begin{alignat*}{2}
+                          &  & \op{Ack}_{n+1}(x-k)                 & > x                                     \\
+              \Rightarrow &  & \op{Ack}_{n}^k(\op{Ack}_{n+1}(x-k)) & >\op{Ack}_{n}^k(x)                      \\
+              \Rightarrow &  & \op{Ack}_{n+1}(x)                   & >  \op{Ack}_{n}^k(x)  \text{ (ex 19.2)}
+          \end{alignat*}
+          This shows that $\op{Ack}_n^k$ is dominated by $\op{Ack}_{n+1}$.
+    \item Deduce that if $f \in \mathcal C_n$, then $\op{Ack}_{n+1}$ dominates $f$.\\
+          If $f\in \mathcal C_n$, $\exists k$ such that $f$ is dominated by $\op{Ack}_n^k$, and by the previous exercise, $\op{Ack}_n^k$ is dominated by $\op{Ack}_{n+1}$. Moreover, $\op{Ack}_{n+1} \notin \mathcal C_n$.
+    \item Deduce that the Ackermann function is not primitive recursive. Show that the diagonal function $\op{Ack}(n,n)$ dominates all primitive recursive functions. \\
+          If $\op{Ack}(n,n) \in \mathcal C_k$,
+          $$\exists N  \ \forall n  > N \ \op{Ack}(n,n) \leq \op{Ack}_k(n),$$
+          which is impossible if $n > N,k$.
+          If $f$ is primitive recursive, $f \in \mathcal C_n$ for some $n$, so using the previous exercises, except for finitely many values of $\bar{x}$
+          $$f(\bar{x}) \leq \op{Ack}_{n}^k(\sup(\bar{x})) \leq \op{Ack}_{n+1}(\sup(\bar{x})) \leq \op{Ack}_{\sup(\bar{x})}(\sup(\bar{x}))$$
+\end{enumerate}
+\end{document}

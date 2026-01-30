@@ -1,0 +1,210 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{mathtools} % Loads amsmath
+\usepackage{amssymb}   % Loads amsfonts
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{pifont}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[document]{ragged2e}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+\input{macros.tex}
+
+% User Definitions
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\UU}{\mathcal{U}}
+
+\doublespacing
+
+\begin{document}
+
+\homework{Théorie des modèles TD1}{Date: 21/09/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+
+\noindent\textbf{Exercice 0.1.} Soit $\MM$ une $\LL$-structure, $m,n \in \N$ et $A \subseteq M^{n+m}$ définissable dans $\MM$. Pour $\bar{b} \in M^m$, soit $A_{\bar{b}} = \{\bar{a} \in M^n , (\bar{a},\bar{b}) \in A \}$ la fibre de $A$ au-dessus de $b$. Soit $k \in \N$. Montrer que l'ensemble $\{ \bar{b} \in M^n , |A_{\bar{b}}|< k \}$ est définissable. (*) Est-ce que l'ensemble $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ est définissable ?\\
+
+\noindent\textbf{Solution 0.1.} Si $A \subseteq M^{n+m}$ est définissable, alors il existe $\bar{s} \in M$, et une formule $\phi(\bar{x},\bar{y},\bar{z})$ telle que $A = \{(\bar{x},\bar{y}) \in M^{n+m} , \MM \models \phi(\bar{x},\bar{y},\bar{s}) \}$. La formule suivante exprime que la fibre $A_{\bar{b}}$ a moins de $k$ éléments.
+\[
+    \phi_{k}(y_1,\dots,y_m) = \forall \bar{x_1}\dots \bar{x_k} \left(\bigwedge_{i=1}^{k}\phi(\bar{x_i},\bar{y}) \Rightarrow \bigvee_{1\leq i\neq j \leq k} \bar{x_i} = \bar{x_j} \right).
+\]
+On voit que $\MM \models \phi_k(\bar{b})$ si et seulement si $A_{\bar{b}}$ a moins de $k$ éléments.
+
+\noindent (*) Considérons $\NN = (\N,<)$, et soit $\UU$ un ultrafiltre non principal sur $\N$. Soit $\MM = \NN ^{\UU}$. On peut identifier chaque $n \in \N$ avec $[n,n,\dots,]_{\UU} \in \MM$. Remarquons que pour tout $n \in \N$,
+\[
+    \omega = [0,1,2,\dots,n,n+1,\dots]_{\UU} > n
+\]
+On appelle les éléments plus grands que tout $n$, \textit{infinis.} Supposons maintenant que l'ensemble $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ est définissable par une formule $\phi(x,\bar{m})$ avec paramètres $\bar{m} \in \MM$. Autrement dit, $\MM \models \phi(x, \bar{m})$ si et seulement s'il y a un nombre fini d'éléments en dessous de $x$ (au sens fini usuel), on montre que cela implique que $x$ est nécessairement fini : supposons le contraire, alors pour tout $n$, $\UU$-presque partout, $x_i \neq n$. On veut prouver qu'en fait $x_i \geq n$ : si ce n'était pas le cas, alors à nouveau, $\UU$-presque partout $x_i < n \Rightarrow x_i \in  \{ 0,1,\dots,n-1\} = \bigcup_{j=0}^{n-1} \{j\}$. Autrement dit, cela signifie que
+\[
+    \bigcup_{j=0}^{n-1} \{i  , x_i = j \} \in \UU.
+\]
+Par les propriétés des ultrafiltres, (si $A \cup B \in \UU$ alors soit $A \in \UU$ soit $B \in \UU$) on conclut que pour un certain $k$, $[x] = [k]$, ce qui est une contradiction puisque $x$ est infini. Considérons maintenant $\Sigma(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k \in \N} \cup \{ \phi(x,\bar{m}) \}$. Elle est finiment consistante, puisque si  $\Sigma_N(x,\bar{m}) = \{ \neg \phi_k(x,\bar{m}) \}_{k < N} \cup \{ \phi(x,\bar{m}) \}$ est une partie finie de $\Sigma$, alors $\MM \models \Sigma_N(N,\bar{m})$ ($N$ a au moins $k$ éléments en dessous pour tout $k>N$, et a aussi un nombre fini d'éléments en dessous puisqu'il est fini). Par compacité, il existe $N' \in \MM$ tel que $\MM \models \Sigma_N(N',\bar{m})$. On conclut que $N'$ a au moins $k$ éléments en dessous pour tout $k$, et que $N$ est fini par ce qui précède. C'est une contradiction, donc $\{ \bar{b} \in M^n , |A_{\bar{b}}|< \infty\}$ n'est pas définissable. \\
+
+\noindent\textbf{Exercice 2.} Soit $M$ un ensemble et $\mathcal D = \bigcup_n D_n$ une collection de sous-ensembles de $\bigcup_n M^n$ contenant $\varnothing$, $M^n$ pour tout $n$, les diagonales, et close par permutation des coordonnées, produits cartésiens, les opérations booléennes sur les ensembles et les projections linéaires. Montrer que $\mathcal D = \op{Def}(\MM , \varnothing)$, pour un certain langage $\LL$ et une certaine $\LL$-structure $\MM$.\\
+
+\noindent\textbf{Solution 0.2.} Prendre $\mathcal C = \varnothing$, et $\mathcal R = \bigcup_{n \in \N} \{(x_1,\dots,x_n), (x_1,\dots,x_n) \in D_n  \}$.
+Autrement dit, ne prendre aucune constante et définir chacun des $D_n$ comme un prédicat. Pour chaque $n$, si pour tout $(x_1,\dots,x_n) \in M^n$, il existe $y \in M$ tel que $(x_1,\dots,x_n,y) \in D_{n+1}$, on définit $f:M^{n} \to M$ qui envoie $(x_1,\dots,x_n)$ sur $y$. On peut avoir à faire cela (possiblement une infinité de) fois puisqu'un tel $y$ peut ne pas être unique. \\
+
+\noindent\textbf{Exercice 0.3.} Soit $\MM$ une expansion d'un ordre total muni de la \textit{topologie de l'ordre}. Soit $A \subseteq M^n$ et $f:A \to M$ tous deux définissables.
+\begin{enumerate}
+    \item Montrer que $A^\circ, \overline{A}$ et $\op{bd}(A)$ sont tous définissables.
+    \item Montrer que l'ensemble des points de discontinuité de $f$ est définissable.
+    \item Montrer que les propriétés suivantes sont définissables : $A$ est discret, $A$ est borné.
+    \item Qu'en est-il de $A$ est compact et connexe ?
+\end{enumerate}
+
+\noindent\textbf{Solution 0.3.} On utilise les abréviations suivantes : $\bar{x} < \bar{y}$ pour $x_i < y_i$ pour chaque $i$ et si $\phi$ est une formule alors $Q x \in A \  (\phi)$ (où $Q$ est un quantificateur) pour $Q x ( x \in A \Rightarrow \phi$).
+\begin{enumerate}
+    \item $ \bar{x} \in A^\circ$ si et seulement si $\exists \bar{y}, \bar{z}  \in A \ ( \bar{z}< \bar{x} < \bar{y})$.\\
+    $\bar{x} \in \bar{A}$ si et seulement si $\forall \bar{y} , \bar{z} ((\bar{z}< \bar{x} < \bar{y})  \Rightarrow \exists \bar{w} \in A  (\bar{z}< \bar{w} < \bar{y}))$ \\
+          $\bar{x} \in \op{bd}(A)$ si et seulement si $\bar{x} \notin A^\circ \land \bar{x} \in \bar{A}$.
+    \item $\bar{x}$ est un point de discontinuité de $f$ si et seulement si
+          \[
+              \exists r \exists s ((r < f(\bar{x}) < s) \land \forall \bar{y},\bar{z} \in A ((\bar{z}< \bar{x} < \bar{y}) \Rightarrow \exists \bar{w} ((\bar{z}< \bar{w} < \bar{y})\land (f(\bar{w})<r \lor f(\bar{w}) > s))
+          \]
+    \item On dit que $A$ est discret si $\forall \bar{x} \in A \  \exists \bar{y} \in A (\bar{x} < \bar{y} \Rightarrow \not \exists \bar{z} \in A  ( \bar{x} < \bar{z} < \bar{y}))$. On dit que $A$ est borné si $\forall \bar{x} \in A  \ \exists \bar{y} ,  \bar{z} ( \bar{x} < \bar{y} \land \bar{x} > \bar{z})$.
+    \item Considérons $\UU$ un ultrafiltre non principal sur $\NN$ et soit $\R^* = \R ^\UU$. Considérons
+          \[
+              \varepsilon = [1,1/2,1/3,\dots, 1/n , \dots ]_\UU.
+          \]
+          Remarquons que pour $i \geq n$, $\varepsilon_i < 1/n$, et puisque $\{ n, n+1 , \dots \} \in \UU$ (il est cofini), on conclut que pour tout $n$, $\varepsilon < 1/n$. Cela prouve que $\R^*$ n'est pas archimédien, et en particulier cela prouve aussi que l'archimédianité pour un corps n'est pas axiomatisable, car si elle l'était par, disons, une théorie $T$, on aurait $\R \models T$ et $\R^* \not \models T$, contredisant le théorème de \L os. On va montrer que la connexité et la compacité ne sont pas exprimables au premier ordre : considérons $E$ l'ensemble des éléments \textit{infinitésimaux} dans $\R^*$, i.e l'ensemble des éléments plus petits que tout $1/n$.\\
+          $E$ est fermé : Soit $\varepsilon \in \bar{E}$, alors pour tout $x,y \in \R^*$ tels que $x<\varepsilon<y$ il existe $\epsilon \in E$ tel que $x < \epsilon < y$. Si $\varepsilon \geq 1/n$ pour un certain $n$, alors on peut trouver un infinitésimal $1/n < \epsilon < 1$, une contradiction.\\
+          $E$ est ouvert : Pour tout $\varepsilon \in E$ on a $\varepsilon/2 < \varepsilon < 2\varepsilon$. On doit montrer que ceux-ci sont infinitésimaux : pour $\varepsilon/2$ c'est trivial puisqu'il est en dessous d'un infinitésimal. Maintenant si $2\varepsilon \notin E$, on peut trouver $n$ tel que $1/n < 2\varepsilon \Rightarrow 1/2n < \varepsilon$, ce qui est impossible.\\
+          $E$ n'a pas de supremum : Soit $r = \sup E$. On a que $r \notin E$ (sinon $r<2r \in E$), maintenant soit $\epsilon \in E$, et on affirme que $r-\epsilon$ borne $E$ : supposons le contraire, alors il existe $\varepsilon \in E$ tel que \[ r-\epsilon < \varepsilon < r \Rightarrow r < \varepsilon +\epsilon < r  +\epsilon. \] Remarquons aussi que $\epsilon + \varepsilon \in E$ car, pour tout $n \in \N$ puisque $\epsilon,\varepsilon < 1/2n$, alors $\epsilon + \varepsilon < 1/n$. On a que $r \leq $ un infinitésimal, une contradiction. $E$ ne peut pas avoir de supremum.\\
+          E n'est pas compact : la suite
+          \[
+              \varepsilon < 2\varepsilon < \dots < n\varepsilon < \dots
+          \]
+          est contenue dans $E$ (par l'argument précédent), elle est strictement croissante et est bornée supérieurement par $1$. L'argument précédent peut être utilisé pour montrer qu'elle n'a pas de point limite. Cela prouve que $E$ n'est pas compact. Si la compacité d'un ensemble $A$ était donnée par une phrase $\phi_A$, alors on aurait $\R \models \phi_{[0,1]}$ mais  $\R^* \not\models \phi_{[0,1]}$, contredisant le théorème de \L os.\\
+          Finalement, puisque $E$ est ouvert-fermé et n'est ni $\varnothing$ ni $[0,1]$, on conclut que $[0,1]$ n'est pas connexe dans $\R^*$, et on peut en déduire que la connexité n'est pas non plus exprimable au premier ordre.
+\end{enumerate}
+
+\noindent\textbf{Exercice 1.} Soit $\LL = \varnothing$ et $\MM$ une $\LL$-structure. Montrer que $A \subseteq M$ est définissable dans $\MM$ si et seulement si $A$ est soit fini soit cofini.\\
+
+\noindent\textbf{Solution 1.}
+\begin{lem}
+    Si $A$ est $S$-définissable, alors tout automorphisme $\sigma$ qui fixe $S$ point par point fixe $A$ point par point.
+\end{lem}
+\begin{proof}
+    Soit $\psi(x,\bar{s})$ une formule définissant $A$, puisque les automorphismes préservent les formules, on a
+    \[
+        \MM \models \psi(x,\bar{s}) \iff \MM \models \psi(\sigma(x) ,\sigma(\bar{s})) \iff  \MM \models \psi(\sigma(x) ,s)
+    \]
+    de sorte que $\sigma(X) = X$.
+\end{proof}
+S'il existait un $A$ définissable qui n'est ni fini ni cofini, alors on pourrait choisir des ensembles infinis
+\begin{align*}
+    \{a_0 , a_1 \dots , a_n , \dots \} & \in A\setminus S               \\
+    \{b_0 , b_1 \dots , b_n , \dots \} & \in (M\setminus A) \setminus S
+\end{align*}
+Alors la bijection qui envoie $a_i$ sur $b_i$ et fixe tout le reste (en particulier $S$) est un automorphisme qui ne fixe pas $A$, une contradiction.
+Réciproquement, si $A = \{ a_0 \dots, a_n \}$ est fini, la formule
+\[
+    \phi (x, \bar{a} ) = \bigvee_{i=0} ^n x = a_i
+\]
+définit $A$. Si $A$ est cofini on répète cet argument pour $M \setminus A$. \\
+
+\noindent\textbf{Exercice 2.} Soit $\MM$ une $\LL$-structure, soit $m,n \in \N$. Une collection $\mathcal A = \{A_{\bar{b} }\}_{\bar{b} \in M^m}$ de sous-ensembles de $M^n$ est une \textit{famille définissable} s'il existe $S \subseteq M$ et une formule $\phi \in \mathcal F_{n+m}(\LL_S)$ telle que $A_{\bar{b}}= \{\bar{a} \in M^n , \MM_S \models \phi(\bar{a},\bar{b}) \}$. Soit $D \subseteq M$ un ensemble fini. Étant donné une famille $D$-définissable $\mathcal A= \{A_{\bar{b} }\}_{\bar{b} \in M^m}$, soit $A=\cup \mathcal A$ et soit $f:A \to M$ une fonction.
+\begin{enumerate}
+    \item Montrer que $f$ est $D$-définissable si et seulement si toutes les restrictions $f\restriction A_{\bar{b}}$ sont $D$-définissables.
+    \item Que peut-on dire si $D$ est infini ?
+\end{enumerate}
+
+\noindent\textbf{Solution 2.} Supposons qu'il existe $\phi \in \mathcal F_{n+1} ( \LL_D) $ tel que $f(a_1,\dots,a_n) = y$ si et seulement si $\mathcal M_D \models \phi(\bar{a},y)$. Alors $f \restriction_{A_{\bar{b}}}(\bar{a}) = y$ si et seulement si $\MM_D \models \varphi(\bar{a},\bar{b}) \land \phi(\bar{a},y)$, où $\varphi$ est la formule qui définit la famille $\{ A_{\bar{b}}\}_{\bar{b} \in D^m}$. Réciproquement, s'il existe $\phi_{\bar{b}}$ qui définit chaque $f\restriction_{A_{\bar{b}}}$, on a que $f(\bar{a}) = y$ si et seulement si
+\[
+    \MM_D \models \bigvee_{\bar{b} \in D^m} \varphi(\bar{a},\bar{b}) \land \phi_{\bar{b}}(\bar{a},y).
+\]
+Dans le cas où $D$ est infini, la première direction est vraie, mais la réciproque peut ne pas l'être, par exemple prendre $\MM = \langle  \C ,+,-,\times,0,1 \rangle$ et $D=\R$. Prendre $A_b = \{ a \in \R , a=b \} = \{ b \}$, et $f:A_b \to \C$ comme l'identité. Puisque $A = \R$, et l'inclusion $\R \subseteq \C$ n'est pas définissable, même si ses restrictions le sont. \\
+
+\noindent\textbf{Exercice 3.} Soit $\bar{\R} = \langle \R,0,1,-,+,\cdot,< \rangle$ le corps ordonné des réels. Soit $f$ un symbole unaire et $\LL = \LL_{OR} \cup \{ f\}$.
+\begin{enumerate}
+    \item Montrer que les $\LL$-structures $\langle \bar{\R}, \sin{\left( \frac{1}{1+x^2}\right)}  \rangle$ et $\langle \bar{\R},  \arctan{x} \rangle$ sont interdéfinissables.
+    \item Montrer que $\bar{\R}$ est définissable dans la structure $\langle  \R, + , \exp(x) \rangle$.
+    \item Soit $\R_{\exp} = \langle \bar{\R} , \exp \rangle$ le corps ordonné exponentiel réel. Un \textit{polynôme exponentiel} est une fonction $F:\R^n \to \R$ telle qu'il existe un polynôme $P \in \R[X_1,\dots,X_n,Y_1,\dots,Y_m]$ tel que $F(x_1,\dots, x_n) = P(x_1,\dots,x_n,e^{x_1},\dots,e^{x_n})$. Montrer que tout ensemble $A \in \R^m$ existentiellement définissable dans $\R_{\exp}$ est une projection linéaire de l'ensemble des zéros d'un certain polynôme exponentiel $F_A$.
+\end{enumerate}
+
+\noindent\textbf{Solution 3.}
+\begin{enumerate}
+    \item On définit d'abord $\sin(x)\restriction_{[0,1]}$ à partir de $\sin{\left( \frac{1}{1+x^2}\right)}$ :
+          \[
+              \op{graph}\sin(x)\restriction_{[0,1]} = \left\{(x,y) , (x=0 \land y=0) \lor \exists z (x(1+x^2)=1 \land y = \sin{\left( \frac{1}{1+z^2}\right)} \right\}.
+          \]\\
+          On peut maintenant définir
+          \[
+              x = \frac{\pi}{2} \iff2 \sin^2\restriction_{[0,1]}(x/2) = 2
+          \]
+          Et définir pour $0<x <\pi/2$,
+          \[
+              \tan(x) = \frac{2 \sin\restriction_{[0,1]}(x/2)\sqrt{1-\sin^2\restriction_{[0,1]}(x/2)}}{1-2\sin^2\restriction_{[0,1]}(x/2)}.
+          \]
+          Et pour $-\pi/2 <x < 0$
+          \[
+              \tan(x) = -\tan(-x).
+          \]
+          Puis finalement poser
+          \[
+              y = \arctan(x) \iff \tan(x) = y.
+          \]
+          Pour l'autre direction, on peut définir $\tan x $ à partir de $\arctan x$ et poser
+          \[
+              \sin\restriction_{[0,1]} x  = \frac{\tan x}{\sqrt{1+\tan^2 x}}
+          \]
+          définir $\sin ( 1/(1+x^2))$ comme ci-dessus.
+    \item
+          \begin{enumerate}
+              \item $ x = 0 \iff x + x = x$
+              \item $ 1 = e^0$
+              \item $y = -x \iff x+y=0$
+              \item $x>0 \iff \exists y e^y = x$
+              \item $xy = \exp( \log x + \log y)$
+          \end{enumerate}
+    \item Soit $\varphi(\bar{x},\bar{c})$ une formule existentielle dans $\LL_{\exp}$ avec paramètres $\bar{c} \in \R$. On peut supposer que $\varphi$ a la forme
+          \[
+              \varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s \theta_{ij}(\bar{x},\bar{z},\bar{c})
+          \]
+          où $\theta_{ij}$ est atomique ou $\neg$-atomique. On sait que les formules atomiques ont la forme $t_1=t_2, t_1 < t_2 , t_1 = 0$ ou $t_1<0$ pour $t_1,t_2$ des termes avec paramètres $\bar{c}$. On peut remplacer dans $\theta_{ij}$, $t\neq0$ par $t<0 \land -t<0$ et $t<0$ par $\exists y ty^2 + 1 = 0$ $t \neq 0 $, et $t_1=t_2$ par $t_1-t_2=0$. Autrement dit, on peut supposer que $\theta_{ij}$ est de la forme $t=0$. On montre maintenant par récurrence sur $t(\bar{x},\bar{c})$ que tout terme peut être remplacé par une conjonction de formules existentielles ne contenant que des termes de la forme $F(\bar{x},\bar{y},\bar{c})$, où $F$ est un polynôme exponentiel et $\bar{y}$ sont de nouvelles variables. Autrement dit, $t(\bar{x},\bar{c})=0$ devient un système d'équations polynomiales exponentielles sur les variables $\bar{y}$.\\
+          Si $t=c$ alors $c=0$ est déjà de la forme voulue.\\
+          Si $t = t_1 + t_2$ alors, puisque la somme de polynômes exponentiels est aussi un polynôme exponentiel, on peut simplement additionner chacune des lignes de chaque système d'équations pour en obtenir un pour $t=0$.\\
+          Le cas $t_1t_2$ est similaire.\\
+          Si $t(\bar{x},\bar{c}) = e^{t_1(\bar{x},\bar{c})}$, alors on peut remplacer
+          \[
+              t(\bar{x},\bar{c})=0 \iff \exists w e^w = 0 \land w = t_1(\bar{x},\bar{c})
+          \]
+          et ensuite on peut appliquer la récurrence sur $t_1$, en ajoutant la variable $w$ à notre polynôme exponentiel.\\
+          On peut alors supposer (en renommant les variables et réindexant) que $\theta_{ij}$ a la forme $F_{ij}(\bar{x},\bar{z},\bar{c})=0$ pour un certain polynôme exponentiel. De sorte que
+          \[
+              \varphi(\bar{x},\bar{c}) = \exists z_1, \dots , \exists z_n \bigvee_{i=1}^l \bigwedge_{j=1}^s F_{ij}(\bar{x},\bar{z},\bar{c})=0.
+          \]
+          Il est clair que l'ensemble des zéros de
+          \[
+              F = \sum_{i=1}^l \left( \prod_{j=1}^s F_{ij}(\bar{x},\bar{c}) \right)^2
+          \]
+          définit le même ensemble que $\varphi(\bar{x},\bar{c})$.
+\end{enumerate}
+
+\end{document}

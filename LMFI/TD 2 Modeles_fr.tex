@@ -1,0 +1,232 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{fullpage} 
+\usepackage{fancyvrb}
+\usepackage{tikz-cd}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage[document]{ragged2e}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb}
+%\usetikzlibrary{through,backgrounds}
+
+%\usetikzlibrary{shadows}
+\usepackage{booktabs}
+\input{macros.tex}
+\newcommand{\op}[1]{ \operatorname{#1} }
+\newcommand{\LL}{\mathcal L}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\UU}{\mathcal U}
+\doublespacing
+\begin{document}
+\homework{Théorie des modèles TD2}{Date: 04/10/2020}{T. Servi}{}{Juan Ignacio Padilla}{M2 LMFI}
+\justify
+\textbf{Exercice 0.1} Considérer les classes suivantes. Pour chaque classe, décider si elle est élémentaire. Si oui, trouver un langage approprié et une axiomatisation. La classe est-elle finiment axiomatisable ? La théorie de la classe est-elle complète ?
+\begin{enumerate}
+    \item La classe des ensembles totalement ordonnés.
+    \item La classe des ensembles bien ordonnés.
+    \item La classe des groupes abéliens finis.
+    \item La classe des corps algébriquement clos.
+    \item La classe des graphes non orientés connexes sans boucles.
+          \\
+\end{enumerate}
+\textbf{Solution 0.1}
+\begin{enumerate}
+    \item La classe des ensembles totalement ordonnés. Prendre $\LL= \{ < \}$. Les axiomes sont
+          \begin{itemize}
+              \item $\forall x \forall y \forall z (x<y \land y< z \Rightarrow x < z)$
+              \item $\forall x x \not< x$.
+              \item $\forall x \forall y (x=y \lor x<y \lor y<x)$.
+                    Cette théorie n'est pas complète, $(\N,<)$ et $(\R,<)$ sont des ordres totaux mais le second satisfait la densité :
+                    $$\forall x \forall y (x<y \Rightarrow \exists z \ x<z<y)$$
+          \end{itemize}
+    \item La classe des ensembles bien ordonnés. Elle n'est pas axiomatisable : comme au TD1, prendre $(\N , < )$ et $\N^\UU$ pour un certain ultrafiltre $\UU$ sur $\N$. La première structure est un bon ordre alors que la seconde ne l'est pas. Considérons l'ensemble $I$ des éléments infinis dans $\N^\UU$, il n'est pas vide mais n'a pas de minimum, car sinon on aurait pour $x= \min I$,
+          $$\underbrace{\op{pred}(x)}_{fini} < \underbrace{x}_{infini}$$
+          ce qui impliquerait que $\N$ a un élément maximum. $\op{pred}(x)$ est défini par
+          $$y = \op{pred}(x) \iff y<x \land \forall z (z<x \implies z \leq y).$$
+    \item La classe des groupes abéliens finis. Les groupes abéliens peuvent être axiomatisés par les axiomes de groupe et $\forall x,y \  x+y=y+x$ dans le langage $\LL = \{0, + \}$. Les groupes abéliens finis, cependant, ne le peuvent pas. Supposons qu'une théorie $T$ les axiomatise. Prenons
+          $$T' = T_{gr.ab} \cup T \cup \{\phi_k \}_{k \in \N}$$
+          Où $\phi_k$ est une formule énonçant « a au moins $k$ éléments ». Pour tout
+          $$\Delta \subseteq T_{gr.ab} \cup T \cup \{\phi_k \}_{k < N}$$
+          fini, on peut donner un modèle : $(\Z / N\Z , +)$. Par compacité, $T'$ est satisfaisable. Un modèle de $T'$ est un groupe abélien fini avec plus de $k$ éléments pour tout $k$, et c'est impossible.
+    \item La classe des corps algébriquement clos. On peut prendre $\LL$ comme le langage des anneaux $\{0,1,+,\cdot,- \}$ et $T_{corps}$ comme les axiomes des corps. On ajoute à $T$, pour chaque $n$, la formule
+          $$\varphi_n = \forall a_1, \forall a_2 \dots \forall a_{n-1} \exists x \  x^n + a_{n-1}x^{n-1} + \dots + a_1x_1 + a_0 = 0.$$
+          Cette théorie n'est pas complète : $\C$ et $\bar{\mathbb F_p}^{alg}$ sont tous deux algébriquement clos mais ont des caractéristiques différentes. Cette théorie n'est pas non plus finiment axiomatisable : supposons qu'elle le soit, alors il existe une formule $\phi$ qui l'axiomatise. Par un lemme vu en cours, il existe un sous-ensemble fini $\Delta \subseteq T \cup \{ \varphi_n\}_{n \in \N}$ tel que $\Delta \models \phi$. Puisque $\Delta$ est fini, pour un certain $n$, $\varphi_n \not\in \Delta$. On va montrer que $\Delta \cup \{\neg \varphi_n  \}$ est satisfaisable.\\
+          Considérons $\Q$ et soit $\Q_n$ le corps obtenu en adjoignant toutes les racines de tous les polynômes de degré strictement inférieur à $n$. Soit $p>n$ un nombre premier, alors le polynôme $x^p = 1$ n'a pas de racines dans $\Q_n$ (car pour tout $\alpha \in \Q_n$, le degré de son polynôme minimal sur $\Q$ est au plus $n$). On a que
+          $$\Q_n \models \Delta  \cup \{\neg \varphi_n  \} \models \phi$$
+          de sorte que $\Q_n$ serait algébriquement clos, une contradiction.
+    \item La classe des graphes non orientés connexes sans boucles. Considérons $\LL = \{ R\}$ où $R$ est un symbole de prédicat binaire. Un graphe est une $\LL$-structure dont le domaine est considéré comme un ensemble de sommets et on considère $x R y$ comme $x,y$ étant reliés par une arête. Les axiomes pour les graphes non orientés sans boucles sont
+          \begin{itemize}
+              \item $\forall x \ \neg  x  R x$
+              \item $\forall x, y \ xRy \Rightarrow y R x$
+          \end{itemize}
+\end{enumerate}
+La connexité n'est pas axiomatisable, considérons la formule
+$$\varphi_n(x,y) = \neg  \exists z_1,\dots,z_n \left(z_1 = x , z_n = y , \bigwedge_{k=1}^{n-1}z_k R z_{k+1} \right)$$
+Qui dit « il n'y a pas de chemin de longueur $n$ reliant $x$ et $y$ ».\\
+Supposons par contradiction qu'une théorie $T$ axiomatise les graphes connexes. Alors, considérons pour $c_1,c_2$ de nouvelles constantes la théorie
+$$T' = T \cup \{ \phi_k(c_1,c_2\}_{k \in \N}.$$
+Pour un
+$$\Delta \subseteq T \cup \{ \phi_k(c_1,c_2\}_{k < N}$$
+fini, on construit le graphe avec des sommets étiquetés $\{0,1,\dots,N+1\}$, tel que pour $0 \leq k \leq N$, $k R k+1$. Ce graphe satisfait $\phi_k(0,N+1)$ pour tout $k<N$ donc c'est un modèle de $\Delta$. Par le théorème de compacité, il existe un graphe connexe avec deux sommets qui ne sont reliés par aucun chemin fini, c'est impossible.\\
+
+
+
+
+\textbf{Exercice 0.2} Soit $\LL$ un langage et $I$ un ensemble infini. Soient $\{ \MM\}_{i \in I}$, et $\{ \NN\}_{i \in I}$ deux familles de $\LL$-structures. Montrer que les conditions suivantes sont équivalentes :
+\begin{enumerate}
+    \item pour tout ultrafiltre non principal $\UU$ sur $I$, on a $\prod_{i \in I} \MM_i / \UU \equiv \prod_{i \in I} \NN_i / \UU$.
+    \item Pour toute $\LL$-phrase $\varphi$, $\MM_i \models \varphi \iff \NN_i \models \varphi$ est vraie pour tous les $i \in I$ sauf un nombre fini.
+\end{enumerate}
+\textbf{Solution 0.2}\\
+D'abord, supposons (1). Par le théorème de Łos,
+\begin{align*}
+    \{ i, \MM_i \models \varphi \} \in \UU & \iff \prod_{i \in I} \MM_i / \UU \models \varphi                        \\
+                                           & \iff \prod_{i \in I} \NN_i / \UU \models \varphi \ \text{par hypothèse} \\
+                                           & \iff \{ i, \NN_i \models \varphi \} \in \UU
+\end{align*}
+Remarquons que $C= \{i, \MM_i \models \varphi , \NN_i \not\models \varphi \}$ est contenu dans les deux ensembles $A=\{i, \MM_i \models \varphi\}$ et $B=\{i, \NN_i \not\models \varphi  \}$, donc si $A \in \UU$ alors $  B \not\in \UU$ par ce qui précède, et $C \not \in \UU$, sinon, si $A \not\in \UU$ alors à nouveau $C \not\in \UU$. On peut répéter cet argument pour montrer que $C'=\{i, \MM_i \not\models \varphi , \NN_i \models \varphi \} \not\in \UU$ et conclure que $$C \cup C' = \{ i, \neg( \MM_i \models \varphi \iff \NN_i \models \varphi) \} \not\in \UU.$$ Cela montre que pour tout ultrafiltre $\UU$, $\{ i,  \MM_i \models \varphi \iff \NN_i \models \varphi \} \in \UU$. Puisque cela est vrai pour tout choix de $\UU$, cela est vrai pour tout $i \in\cap_{ \ \UU \text{ultrafiltre} \ } \UU \subseteq Frechet$, donc cela est vrai pour un ensemble cofini d'indices.\\
+On suppose maintenant (2). Soit $\UU$ un ultrafiltre quelconque sur $I$ et supposons par contradiction que $\{i, \MM_i \models \varphi \} \in \UU$ et $\{i, \NN_i \models \varphi \} \not\in \UU$. Alors leur intersection, $ \{i, \MM_i \models \varphi , \NN_i \not\models \varphi \} \in \UU$ est contenue dans $$\{ i, \neg( \MM_i \models \varphi \iff \NN_i \models \varphi) \},$$
+mais cet ensemble ne peut pas être dans $\UU$ car cela contredirait notre hypothèse (si une condition est vraie pour un ensemble cofini d'indices alors cet ensemble appartient au filtre de Fréchet qui est contenu dans $\UU$). On conclut de cela que $\{i , \MM_i \models \varphi \} \in \UU$ si et seulement si $\{i , \N_i \models \varphi \} \in \UU$. On peut maintenant appliquer le théorème de Łos :
+\begin{align*}
+    \prod_{i \in I} \MM_i / \UU \models \varphi & \iff  \{ i, \MM_i \models \varphi \} \in \UU                        \\
+                                                & \iff \{ i, \NN_i \models \varphi \} \in \UU  \ \text{par hypothèse} \\
+                                                & \iff   \prod_{i \in I} \NN_i / \UU \models \varphi
+\end{align*}
+
+
+\newpage
+
+\textbf{Exercice 1.} Montrer qu'un groupe abélien est ordonnable si et seulement si tous ses sous-groupes de type fini le sont.\\
+\textbf{Solution 1.} Soit $G$ un groupe abélien. Une direction est claire, si $(G,<)$ est ordonnable alors pour tout sous-groupe $H$, la restriction de $<$ à $H$ l'ordonne et respecte la structure de groupe. Maintenant, supposons que tout sous-groupe de type fini de $G$ est ordonnable. Soit $\LL$ le langage des groupes et considérons le langage $\LL(G)$. Définissons $\Psi$ comme la théorie contenant les $\LL(G)$-phrases suivantes pour tous $a,b,c \in G$ :
+\begin{enumerate}
+    \item $a \not < a$.
+    \item $a<b \lor a=b \lor a>b$.
+    \item $a<b \land b<c \Rightarrow a<c$.
+    \item $a<b \land a+c <b+c$.
+\end{enumerate}
+Considérons aussi l'ensemble
+$$D(G) = \{ \varphi \text{ une $\LL(G)$-phrase}  , G^* \models \varphi\}$$
+où $G^*$ est l'expansion de $G$ obtenue en interprétant chaque symbole de constante comme lui-même dans $G$. On considère maintenant la $\LL(G)$-théorie
+$$T' =  \Psi \cup D(G).$$
+Cette théorie est finiment satisfaisable : si $\Delta \subseteq T'$ est fini, alors il y a un nombre fini $a_1,\dots,a_n \in G$ apparaissant comme symboles dans $T'$, et puisque $H=\langle a_1,\dots a_n \rangle$ (le groupe engendré par les $a_i$) est une sous-structure de $G^*$, il satisfait toute phrase sans quantificateur qui les « mentionne » et qui est vraie dans $G^*$, donc ils satisfont toute partie finie de $D(G)$ qui peut être dans $\Delta$. Par notre hypothèse, $H$ peut être ordonné, ce qui signifie $H \models \Psi$. Par le théorème de compacité, il existe $G'$, un modèle de $T'$. On doit montrer que $G$ est contenu dans $G'$, donc considérons l'application $f:G \to G' $, qui envoie $a \mapsto a^{G'}$ (envoie un élément de $G$ sur l'interprétation de son symbole dans $G'$). C'est un plongement puisque clairement $f(0)=0$ et si, pour $a,b,c \in G$, $a+b=c$ alors $G' \models a+b=c$ ou de manière équivalente $G' \models a^{G'} + b^{G'} = c^{G'}$ de sorte que $f(c) = f(a)+f(b)$. De même on prouve que $f(-a) = -f(a)$. Finalement, on peut conclure que $G$ est isomorphe à un sous-groupe de $G' \restriction{\LL}$, et puisque $G'$ est ordonnable, alors $G$ l'est.\\
+
+\pagebreak
+\textbf{Exercice 2.} Soit $\MM$ une $\LL$-structure, et soit $\NN \equiv \MM$.
+\begin{enumerate}
+    \item Montrer que $|M| = |N|$.
+    \item Soit $k \in \N$. Montrer qu'il existe des formules finies $\varphi_1,\dots,\varphi_N$ avec $k$ variables libres telles que pour toute $\varphi \in \mathcal F(\LL)$, et tout $\bar{b} \in M^k$, pour un certain $\varphi_i$
+          $$\MM \models \varphi(\bar{b}) \leftrightarrow \varphi_i(b).$$
+    \item Soit $k = |M|$ et soient $\varphi_1,\dots,\varphi_N$ comme dans la question précédente. Écrire $M = \{ a_1,\dots,a_n\}$. Montrer qu'il existe une bijection $\sigma: M \to N$ telle que pour tout $i$,
+          $$\MM \models \varphi_i(a_1,\dots,a_n) \iff \NN \models  \varphi_i(\sigma(a_1),\dots,\sigma(a_n)). $$
+    \item Montrer que $\MM \simeq \NN$.
+\end{enumerate}
+\textbf{Solution 2.}
+\begin{enumerate}
+    \item Pour les structures finies, on sait déjà que leur cardinalité peut être exprimée par une phrase du premier ordre. Puisque $\NN \equiv \MM$, alors elles satisfont toutes deux cette phrase.
+    \item Soit $M = \{a_1 , \dots , a_n\}$. On va étiqueter toutes les variables libres qu'on va utiliser comme $x_1,\dots,x_n,\dots$. Pour chaque symbole dans le langage, on considère l'ensemble des formules composé de
+          \begin{itemize}
+              \item Si $c$ est un symbole de constante et $c^\MM = a_i$, alors ajouter la formule $x_i=c$. Sinon, ajouter sa négation.
+              \item Si $f$ est un symbole de fonction $p$-aire, et si $f(a_{i_1},\dots,a_{i_p})=a_{i_j}$, alors ajouter la formule $f(x_{i_1},\dots,x_{i_p})=x_{i_j}$. Sinon, ajouter sa négation.
+              \item Si $R$ est un symbole de prédicat $p$-aire, et si $R(a_{i_1},\dots,a_{i_p})$, alors ajouter la formule $R(x_{i_1},\dots,x_{i_p})$. Sinon, ajouter sa négation.
+          \end{itemize}
+          Définir $F$ comme l'ensemble formé par les formules de la forme
+          $$\phi(x_1,\dots,x_n) = \bigvee_{S_1}\bigwedge_{S_2} \varphi(x_1,\dots,x_n)$$
+          et leurs négations, où $\varphi$ est l'une des formules ci-dessus et $M_1,M_2$ sont des sous-ensembles finis quelconques de $\{1,2,\dots,n\}$.
+          On va montrer par récurrence que toute autre formule $\phi(x_1,\dots,x_k)$ est équivalente à l'une d'elles (peut-être en ajoutant au plus un nombre fini de formules supplémentaires). Remarquons que notre ensemble fini de formules ont toutes leurs variables libres parmi $x_1,\dots,x_n$, cela n'a pas beaucoup d'importance car on compare deux formules avec un nombre différent de variables libres, on peut ajouter à l'une quelque chose de la forme $x_{n+1} = x_{n+1}$ pour la faire dépendre de plus de variables. On supposera alors $k=n$.\\
+          Soit $t(\bar{x})$ un terme, alors si $t^\MM(\bar{a})= a_i$ pour un certain $i$, il existe une formule $\varphi(\bar{x})$ dans $F$ telle que $t^\MM(\bar{a})= a_i$ ssi $\MM \models \varphi(\bar{a})$, on le montre par récurrence : si $t$ est une constante $c$, alors $t^\MM(\bar{a})= a_i$ ssi $c = a_i$, et on a une formule pour exprimer cela. Si $t$ est $x_j$ alors $t^\MM(\bar{a})= a_i$ ssi $a_j=a_i$, donc on peut ajouter $x_i = x_j$ à $F$. Et si $t(\bar{x}) = f(u_1(\bar{x}),\dots,u_p(\bar{x})$, alors $t^\MM(\bar{a})= a_i$ ssi pour $i=1,2,\dots p$ et pour certains $a_{j_1},\dots a_{j_p} \in M$, $u_i(\bar{a})=a_{j_i}$ et $t(a_{j_1},\dots a_{j_p} ) = a_i$, mais par hypothèse de récurrence on a une formule dans $F$ pour chaque $u_i$ et aussi la formule $t(x_{j_1},\dots x_{j_p} ) = x_i$.\\
+          On peut maintenant appliquer la récurrence sur les formules. Si $\phi(\bar{x})$ a la forme $t_1(\bar{x}) = t_2(\bar{x})$, alors $t_1^\MM(\bar{a})=t_2^\MM(\bar{a})=a$ si et seulement si $\bigvee_{a\in M} t_1^\MM(\bar{a})=a \land t_2^\MM(\bar{a})=a$, on peut alors trouver une formule dans $F$ équivalente à chacune des $t_1^\MM(\bar{a})=a , t_2^\MM(\bar{a})=a$ les connecter par $\land$ et distribuer pour en obtenir une dans $F$. Si $\phi(\bar{x})$ a la forme $R(t_1(\bar{x}),\dots,t_p(\bar{x}))$, alors $R^\MM(t_1^\MM(\bar{a}),\dots,t_p^\MM(\bar{a}))$ si et seulement si pour chaque $1\leq i \leq p$ il existe $b_i$ dans $M$ tel que $t_i(\bar{a}) = b_i$ et $  R^\MM(b_1,\dots,b_p)$, et on a une formule dans $F$ pour chacune d'elles.\\
+          Pour le cas booléen, si $\phi(\bar{x}) = \psi(\bar{x}) \land \theta(\bar{x})$, alors on peut trouver une formule dans $F$ pour chaque $\psi$ et $\theta$ et considérer leur conjonction, puis distribuer pour en obtenir une dans $F$. Pour le cas de la négation, c'est une preuve similaire (rappelons que par construction, $F$ est close sous $\neg$).\\
+          Si $\phi(\bar{x})=\exists y \psi(y,\bar{x})$ alors on trouve une formule dans $F$ équivalente à $\psi(y,\bar{x})$ et on remarque que puisque $M$ est fini, $\phi(\bar{b})$ est équivalent à $\bigvee_{a \in M}\psi(a,\bar{b})$.
+    \item Soit $\bar{a} = \{a_1,\dots, a_n \}$, pour chaque $i = 1,\dots,N$, soit $\MM \models \varphi_i(\bar{a})$ soit non, donc on définit $\varphi'(\bar{x})$ comme $\varphi(\bar{x})$ si c'est le cas, et comme $\neg \varphi(\bar{x})$ sinon. Considérons
+          $$\Phi = \exists x_1 ,\dots x_n \bigwedge_{i=1}^{N} \varphi'_i(\bar{x})$$
+          Par construction $\MM \models \Phi$, donc $\NN \models \Phi$ par équivalence élémentaire. Soient $b_1,\dots,b_n$ le $n$-uplet qui satisfait cette formule. Alors on peut prendre $a_i \mapsto b_i$, cette application vérifie ce qu'on veut.
+    \item On vient de trouver une bijection qui respecte chaque $\varphi_i$. Puisque ces formules (par construction) expriment effectivement ce que sont les constantes, prédicats et fonctions, cette bijection est un plongement. Par conséquent $\MM \simeq \NN$.
+\end{enumerate}
+
+
+
+\pagebreak
+\textbf{Exercice 3.} Soit $\mathcal K$ une classe de $\LL$-structures finies et soit $T=\op{Th}(\mathcal K)$.
+\begin{enumerate}
+    \item Donner une condition nécessaire et suffisante pour que $T$ ait un modèle infini.
+    \item Supposons que $T$ a des modèles infinis. Trouver une axiomatisation $T^{\infty}$ de la classe de tous les modèles infinis de $T$.
+    \item Montrer que pour toute phrase $\varphi$, $\varphi$ est une conséquence de $T^{\infty}$ si et seulement s'il existe $n \in \N$ tel que $\varphi$ est vraie dans tout $\MM \in \mathcal K$ tel que $|M|>n$.
+\end{enumerate}
+\textbf{Solution 3. }
+\begin{enumerate}
+    \item $T$ a un modèle infini ssi il a des modèles finis arbitrairement grands.\\
+          \textbf{Preuve :} Supposons d'abord que $T$ a des modèles arbitrairement grands, et considérons la théorie
+          $$T'  = T \cup \{\phi_k \}_{k \in \N }$$
+          Où $\phi_k$ est l'énoncé « a plus de $k$ éléments ». $T'$ est finiment satisfaisable par hypothèse, donc par le théorème de compacité il existe un modèle de $T'$, ce modèle est infini. Supposons que $T$ n'a pas de modèle infini, alors la théorie $T'$ n'est pas satisfaisable, donc par compacité il existe un fragment fini de $T'$ qui n'est pas satisfaisable, donc pour un certain $N \in \N$,
+          $$T \cup \{\phi_k \}_{k \leq N}$$
+          n'a pas de modèle. Cela signifie qu'il n'y a pas de membre de $\mathcal K$ avec $N$ éléments ou plus.
+    \item Prendre $T^\infty = T'$ comme ci-dessus.
+    \item Supposons $T^{\infty} \models \varphi$. Alors par compacité, pour un certain $\Delta \subseteq T^{\infty}$ fini, $\Delta \models \varphi$. Alors pour un certain $N \in \N$, $T \cup \{\phi_k \}_{k \leq N} \models \phi$, mais tout $\MM \models T \cup \{\phi_k \}_{k \leq N}$ est un membre de $\mathcal K$ avec $|M| > n$. Réciproquement, si $T^\infty \not \models \varphi$, cela signifie que $T^\infty \cup \{ \neg \varphi \}$ est satisfaisable, donc cela signifie qu'il existe des modèles infinis de $T$ qui ne satisfont pas $\varphi$, et par (1), il existe des membres de $\mathcal K$ arbitrairement grands où $\varphi$ est fausse.
+\end{enumerate} \pagebreak
+\textbf{Exercice 4.} Soit $G$ un groupe qui a des éléments d'ordre fini arbitrairement grand et soit $T= \op{Th}(G)$. Donner deux preuves de ce qui suit (l'une utilisant les ultraproduits et l'autre utilisant la compacité).
+\begin{enumerate}
+    \item Il existe $H\models T$ tel que $H$ a une infinité d'éléments d'ordre infini.
+    \item Il n'existe pas de $\LL_G$-formule qui définit l'ensemble des éléments d'ordre fini.
+\end{enumerate}
+\textbf{Solution 4.}
+\begin{enumerate}
+    \item \textit{Ultraproduits : } Soit $\UU$ un ultrafiltre non principal sur $\N$ et considérons l'ultrapuissance $G^\UU$. Soit $\{ g_1,g_2,\dots \} \subseteq G $ où l'ordre de $g_i$ est $i$. Considérons $x= [g_i]_\UU$, cet élément est d'ordre infini puisque pour tout $k$, $\{i , g_k^i \neq 1 \} $ est fini, donc $x^k \neq 1$. Par conséquent on peut considérer l'ensemble des éléments d'ordre infini $\{x,x^2,x^3,\dots \}$\\
+          \textit{Compacité : } Soit $c$ un nouveau symbole de constante et considérons la théorie
+          $$T' = T \cup \{c^n \neq 1 \}_{n \in \N}.$$
+          Pour tout fragment fini $T_0 \subseteq T$, il existe $N$ tel que
+          $$T_0 \subseteq T \cup \{c^n \neq 1 \}_{n < N}.$$
+          Donc $G$ peut modéliser $T_0$ en interprétant $c$ comme $g_{N+1}$. Par compacité, on peut trouver $\mathcal H  \models T'$, où $x=c^{\mathcal  H}$ est un élément d'ordre infini. Par conséquent on peut considérer l'ensemble des éléments d'ordre infini $\{x,x^2,x^3,\dots \}$.
+
+    \item Supposons qu'une telle formule existe, appelons-la $\phi(y)$.\\
+          \textit{Ultraproduits : } Dans la même construction que ci-dessus, on a que $G^\UU \models \phi(g_i)$ pour tout $i$, mais $G^\UU \not\models \phi(x)$, ce qui est une contradiction.\\
+          \textit{Compacité : } Considérons la théorie
+          $$T'' = T' \cup \{\phi(c) \}.$$
+          Elle est satisfaisable par le même argument ci-dessus et un modèle de $T''$ a un élément $c$ d'ordre fini plus grand que tout naturel, ce qui est impossible. \newpage
+\end{enumerate}
+\textbf{Exercice 5. } Une $\LL$-structure infinie $\MM$ est dite \textit{minimale} si tout $A\subseteq M$ définissable est soit fini soit cofini. Supposons que $\LL$ contient un prédicat unaire $P$. Montrer que la classe des $\LL$-structures minimales n'est pas élémentaire. Qu'en est-il pour un langage arbitraire ?\\
+\textbf{Solution : } On va montrer que cette classe n'est pas close sous les ultraproduits. Considérons la famille de $\LL$-structures indexée par $\N$ donnée par $\mathcal N _i = \langle \N , P \rangle$, où $P^{\NN_i} = \{0, \dots,i-1 \}$. Remarquons que $\NN_i$ est minimale pour tout $i$, car être définissable dans $\NN_i$ revient à être définissable dans $\N$ avec le langage vide \footnote{On a montré au TD1 que dans le langage vide toute structure est minimale}, puisque $P$ peut être défini comme
+$$P(x) \iff \bigvee_{k<n} k=x.$$
+Considérons un ultrafiltre non principal $\UU$ sur $\N$, et définissons l'ultraproduit $$\NN = (\prod_{i \in \N} \NN_i)/ \UU.$$ $P^\NN$ est infini et cofini : observons que pour tout $n$, $[n,n,\dots] \in P^\NN$ et $[n,n+1,n+2,\dots ] \not\in P^\NN$. On conclut que $\NN$ n'est pas minimale.\\
+Pour les langages arbitraires, on peut considérer les cas :
+\begin{itemize}
+    \item Si $P$ est $k$-aire alors on peut définir un prédicat unaire $P'(x) \iff P(x,\dots,x)$, et répéter ce qui précède.
+    \item Si $f$ est un symbole de fonction $k$-aire, on peut définir un prédicat $k+1$-aire $\op{Graph}(f)$ et répéter ce qui précède.
+    \item Les constantes n'affectent pas la définissabilité puisqu'on peut utiliser des paramètres.
+\end{itemize}
+
+\end{document}
