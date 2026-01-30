@@ -199,20 +199,20 @@ donde $A$ es una constante a determinar (la cual podría ser incluso $0$). En el
     $$y = C_1\frac{x}{(1-x)^2} + C_2 \frac{1+x\ln(x)}{(1-x)^2}.$$
 \end{ejemplo}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Recorte8.png}
+    \caption{Funciones de Bessel $J_0(t)$ y $J_1(t)$.}
+    \label{fig:bessel}
+\end{figure}
+
 \begin{ejercicios}
     \begin{enumerate}
         \item Encuentre la solución general de $y' = 3y$ usando un desarrollo en serie de potencias centrado en $x=0$.
         \item Encuentre las dos soluciones fundamentales de la ecuación de \textit{Airy} $y'' = xy$.
         \item Encuentre la solución general de $(x^2+1)y'' + xy' - y = 0$.
         \item Demuestre que la función $$J_0(t) = \sum_{m=0}^\infty \frac{(-1)^m}{(m!)^2}\left( \frac{t}{2}\right)^m$$
-              es solución de la ecuación $t^2x''(t) + tx'(t) + t^2x(t) =0$. Esta función se conoce como \textit{función de Bessel de orden } 0.
-              
-              \begin{figure}[H]
-                  \centering
-                  \includegraphics[width=0.8\textwidth]{Recorte8.png}
-                  \caption{Funciones de Bessel $J_0(t)$ y $J_1(t)$.}
-                  \label{fig:bessel}
-              \end{figure}
+              es solución de la ecuación $t^2x''(t) + tx'(t) + t^2x(t) =0$. Esta función se conoce como \textit{función de Bessel de orden } 0. (Ver Figura \ref{fig:bessel})
         \item Demuestre utilizando series de potencias, que la solución general de $y'' + y =0$ viene dada por $y = A\cos(x) + B\sen(x)$.
         \item Encuentre los primeros $5$ términos del desarrollo en series de potencias de cada solución fundamental de la ecuación
               $y'' + \sen(x) + e^x y = 0$.
