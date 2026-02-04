@@ -31,7 +31,7 @@ A collection of projects and papers from my undergraduate years, covering variou
 ### [Books](Books/)
 Longer-form content, teaching notes, and book drafts.
 
-*   **[Padilla Notes 1005](Books/Notas%201005%20Padilla.pdf)**: A comprehensive set of notes, including source LaTeX and generated figures.
+*   **[Padilla Notes 1005](Books/MA%201005_en.pdf)**: A comprehensive set of notes, including source LaTeX and generated figures.
 
 ## Usage
 
