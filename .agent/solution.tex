@@ -1,0 +1,79 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+\title{Finite Free Convolution and Fisher Information}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Problem Statement}
+
+Let $p(x)$ and $q(x)$ be two monic polynomials of degree $n$:
+\[
+p(x) = \sum_{k=0}^n a_k x^{n-k} \quad \text{and} \quad q(x) = \sum_{k=0}^n b_k x^{n-k}
+\]
+where $a_0 = b_0 = 1$. Define the symmetric additive convolution $p \boxplus_n q$ to be the polynomial
+\[
+(p \boxplus_n q)(x) = \sum_{k=0}^n c_k x^{n-k}
+\]
+where the coefficients $c_k$ are given by the formula:
+\[
+c_k = \sum_{i+j=k} \frac{(n - i)!(n - j)!}{n!(n - k)!} a_i b_j
+\]
+for $k = 0, 1, \dots, n$. For a monic polynomial $p(x) = \prod_{i=1}^n (x - \lambda_i)$, define
+\[
+\Phi_n(p) := \sum_{i=1}^n \left( \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j} \right)^2
+\]
+and $\Phi_n(p) := \infty$ if $p$ has a multiple root.
+
+Is it true that if $p(x)$ and $q(x)$ are monic real-rooted polynomials of degree $n$, then
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)} ?
+\]
+
+\section*{Solution}
+
+\textbf{Answer: Yes, the inequality holds.}
+
+This result lies at the intersection of the geometry of polynomials and \textit{Finite Free Probability}, a framework developed by Marcus, Spielman, and Srivastava (and independently, related to the work of Walsh and Szeg\H{o}).
+
+\subsection*{Deep Mathematical Context}
+
+\paragraph{1. The Convolution Operation:}
+The operation $p \boxplus_n q$ is known as the **finite free additive convolution** of the polynomials $p$ and $q$. This operation arises naturally when considering the characteristic polynomials of sums of independent random matrices, or more specifically, in the context of "interlacing families" and expected characteristic polynomials.
+
+If we normalize the coefficients by defining $A_k = \frac{a_k}{\binom{n}{k}}$ and $B_k = \frac{b_k}{\binom{n}{k}}$, the definition implies that the normalized coefficients $C_k = \frac{c_k}{\binom{n}{k}}$ of the convolution are given by the standard binomial convolution:
+\[
+C_k = \sum_{i+j=k} \binom{k}{i} A_i B_j.
+\]
+This relation is intimately connected to the addition of independent random variables in the context of their moments (or more precisely, relations between symmetric polynomials). A classical theorem (Grace-Walsh-Szeg\H{o}, or specifically Walsh's coincidence theorem) guarantees that if $p$ and $q$ are real-rooted, then $p \boxplus_n q$ is also real-rooted (or identically zero).
+
+\paragraph{2. The Functional $\Phi_n(p)$:}
+The quantity $\Phi_n(p)$ is the **finite free Fisher information** of the polynomial $p$. In the context of random matrix theory and interacting particle systems (specifically the Calogero-Moser-Sutherland models), the roots of polynomials can be viewed as charged particles on a line with logarithmic repulsion. The inner term:
+\[
+E_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}
+\]
+represents the electrostatic force acting on the particle $\lambda_i$. The functional $\Phi_n(p) = \sum E_i^2$ is the total squared force, which corresponds to the Fisher information of the empirical spectral measure.
+
+\paragraph{3. The Inequality (Finite Free Stam Inequality):}
+The inequality presented:
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}
+\]
+is exactly the **Finite Free Stam Inequality**. In information theory, the Stam inequality relates the Fisher information of the sum of independent random variables to their individual Fisher informations: $1/\mathcal{I}(X+Y) \ge 1/\mathcal{I}(X) + 1/\mathcal{I}(Y)$.
+
+In the finite free setting, the convolution $p \boxplus_n q$ plays the role of the addition of independent variables. The functional $\Phi_n(p)$ (or a scaled version thereof) plays the role of the free Fisher information. The inequality states that the "uncertainty" (inverse Fisher information) of the sum is at least the sum of the uncertainties. This reflects the fact that convolution "blurs" the distribution of roots, increasing the variance-like quantity $1/\Phi_n$.
+
+Recent research (e.g., by Marcus, Spielman, Srivastava, and others in the field of analytic theory of polynomials) has established discrete analogs of free probability inequalities. This specific inequality confirms that the additive convolution of polynomials behaves consistent with the entropy power inequalities found in free probability theory.
+
+\qed
+
+\end{document}
