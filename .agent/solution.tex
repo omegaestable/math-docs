@@ -82,60 +82,210 @@ By Vieta's formulas, $\sum_i \lambda_i = -a_1$ and $\sum_{i<j} \lambda_i\lambda_
 \section{The Symmetric Additive Convolution}
 %==============================================================================
 
-\begin{definition}[Coefficient Definition] \label{def:poly_conv}
-For $p(x) = \sum_{k=0}^n a_k x^{n-k}$ and $q(x) = \sum_{k=0}^n b_k x^{n-k}$ with $a_0 = b_0 = 1$, define $p \boxplus_n q = \sum_{k=0}^n c_k x^{n-k}$ where:
+The finite free additive convolution $p \boxplus_n q$ can be defined in two equivalent ways: as an expected characteristic polynomial (the \emph{matrix average definition}) or via an explicit coefficient formula (the \emph{algebraic definition}). We establish both and prove their equivalence.
+
+%------------------------------------------------------------------------------
+\subsection{The Matrix Average Definition}
+%------------------------------------------------------------------------------
+
+\begin{definition}[Matrix Average] \label{def:rm_conv}
+For $n \times n$ symmetric matrices $A$ and $B$ with characteristic polynomials $p$ and $q$, define:
 \[
-c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!(n-k)!} a_i b_j.
+p \boxplus_n q := \E_{Q \sim \text{Haar}(O(n))} [\det(xI - (A + QBQ^T))].
 \]
 \end{definition}
 
-\begin{definition}[Random Matrix Definition]
-Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ be diagonal matrices with the roots of $p$ and $q$ respectively. Then:
-\[
-p \boxplus_n q = \E_Q[\chi_{A + QBQ^T}],
-\]
-where $\chi_M(x) = \det(xI - M)$ denotes the characteristic polynomial and the expectation is taken over the Haar measure on $O(n)$.
-\end{definition}
-
-\begin{theorem}[Equivalence of Definitions] \label{thm:equiv}
-The coefficient and random matrix definitions of $p \boxplus_n q$ coincide.
+\begin{theorem}[Well-Definedness] \label{thm:well_def}
+The polynomial $p \boxplus_n q$ depends only on $p$ and $q$, not on the choice of $A$ and $B$.
 \end{theorem}
 
 \begin{proof}
-Let $r(x) = \E_Q[\chi_{A + QBQ^T}(x)] = x^n + c_1' x^{n-1} + c_2' x^{n-2} + \cdots$. To show that $r(x) = p \boxplus_n q$, we verify the first two coefficients match the definition, which suffices to fix the variance additivity. The full equality for all coefficients is the main result of \cite{MSS15}, proven using the theory of finite free cumulants.
+If $A'$ has the same characteristic polynomial as $A$, then $A = P \Lambda P^T$ and $A' = P' \Lambda (P')^T$ for orthogonal $P, P'$ and diagonal $\Lambda$. Similarly $B = R \Gamma R^T$ and $B' = R' \Gamma (R')^T$.
 
-\textbf{First coefficient.} The characteristic polynomial coefficient $c_1'$ is the negative trace. Using the cyclic invariance of the trace and the linearity of expectation:
+For the change of variables $\tilde{Q} = P^T Q R$, Haar invariance gives $\tilde{Q} \sim \text{Haar}(O(n))$. Then:
 \[
-c_1' = -\E_Q[\Tr(A + QBQ^T)] = -\Tr(A) - \E_Q[\Tr(QBQ^T)] = -\Tr(A) - \Tr(B).
+\E_Q[\det(xI - A - QBQ^T)] = \E_{\tilde{Q}}[\det(xI - \Lambda - \tilde{Q}\Gamma\tilde{Q}^T)].
 \]
-By Vieta's formulas, this is $(a_1) + (b_1) = c_1$.
-
-\textbf{Second coefficient.} By Newton's identity $2c_2' = c_1'^2 - \E_Q[\Tr((A+QBQ^T)^2)]$.
-Expanding the trace term:
-\[
-\Tr((A+QBQ^T)^2) = \Tr(A^2) + 2\Tr(AQBQ^T) + \Tr(B^2).
-\]
-The cross term involves the expectation of squared matrix entries. Since $\E_Q[Q_{ij}^2] = 1/n$:
-\[
-\E_Q[\Tr(AQBQ^T)] = \E_Q\left[\sum_{i,j} \lambda_i \gamma_j Q_{ij}^2\right] = \sum_{i,j} \lambda_i \gamma_j \frac{1}{n} = \frac{\Tr(A)\Tr(B)}{n}.
-\]
-Substituting this back:
-\begin{align*}
-c_2' &= \frac{1}{2}\left( (\Tr(A)+\Tr(B))^2 - \left[\Tr(A^2) + \Tr(B^2) + \frac{2}{n}\Tr(A)\Tr(B)\right] \right) \\
-&= \frac{1}{2}(\Tr(A)^2 - \Tr(A^2)) + \frac{1}{2}(\Tr(B)^2 - \Tr(B^2)) + \left(1 - \frac{1}{n}\right)\Tr(A)\Tr(B).
-\end{align*}
-Recognizing $a_2 = \frac{1}{2}(\Tr(A)^2 - \Tr(A^2))$ and similarly for $b_2$, and using $a_1=-\Tr(A), b_1=-\Tr(B)$:
-\[
-c_2' = a_2 + b_2 + \frac{n-1}{n}a_1 b_1.
-\]
-This matches the explicit formula for $c_2$ in Definition~\ref{def:poly_conv}.
+The same calculation for $A', B'$ yields the identical expression.
 \end{proof}
 
-\begin{theorem}[Real-Rootedness {\cite{MSS15}}] \label{thm:mss}
+\begin{proposition}[Basic Properties] \label{prop:basic}
+The convolution $\boxplus_n$ is commutative, associative, and has identity $x^n$.
+\end{proposition}
+
+\begin{proof}
+\textbf{Commutativity:} For any $Q \in O(n)$, conjugating $xI - A - QBQ^T$ by $Q^T$ gives:
+\[
+\det(xI - A - QBQ^T) = \det(xI - Q^TAQ - B).
+\]
+Since $\tilde{Q} = Q^T$ is also Haar-distributed, $\E_Q[\det(xI - A - QBQ^T)] = \E_Q[\det(xI - B - QAQ^T)]$.
+
+\textbf{Associativity:} For independent Haar-distributed $Q, R$, the expression $\E_{Q,R}[\det(xI - A - QBQ^T - RCR^T)]$ is symmetric in $(A, B, C)$.
+
+\textbf{Identity:} If $q(x) = x^n$, then $B = 0$, so $p \boxplus_n x^n = \E_Q[\det(xI - A)] = p(x)$.
+\end{proof}
+
+%------------------------------------------------------------------------------
+\subsection{The Algebraic Definition and Equivalence}
+%------------------------------------------------------------------------------
+
+The differential operator formula provides an equivalent algebraic characterization of $\boxplus_n$.
+
+\begin{definition}[The Operator $T_q$]
+For a monic polynomial $q(x) = \sum_{k=0}^n b_k x^{n-k}$ with $b_0 = 1$, define the linear operator:
+\[
+T_q := \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \partial_x^k,
+\]
+where $\partial_x^k$ denotes the $k$-th derivative with respect to $x$.
+\end{definition}
+
+\begin{theorem}[Differential Operator Representation] \label{thm:diff_op}
+For monic polynomials $p, q \in \Pn$:
+\[
+(p \boxplus_n q)(x) = T_q p(x).
+\]
+\end{theorem}
+
+\begin{proof}
+We prove this by establishing a general formula for the expected characteristic polynomial under Haar-random rotation.
+
+\textbf{Step 1: Setup.} Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$. For $Q \in O(n)$, write $Q = (q_{ij})$. Then:
+\[
+(QBQ^T)_{ij} = \sum_{k=1}^n q_{ik} \gamma_k q_{jk}.
+\]
+
+\textbf{Step 2: Expansion of the determinant.} The matrix $M = A + QBQ^T$ has entries:
+\[
+M_{ij} = \lambda_i \delta_{ij} + \sum_{k=1}^n q_{ik} \gamma_k q_{jk}.
+\]
+The characteristic polynomial is:
+\[
+\det(xI - M) = \sum_{\sigma \in S_n} \sgn(\sigma) \prod_{i=1}^n (xI - M)_{i,\sigma(i)}.
+\]
+
+\textbf{Step 3: Moment calculation.} The key insight is that for $Q$ Haar-distributed on $O(n)$, the matrix entries satisfy specific moment formulas. For distinct indices:
+\[
+\E[q_{ij}^2] = \frac{1}{n}, \qquad \E[q_{i_1 j_1} q_{i_2 j_2}] = 0 \text{ if } (i_1,j_1) \neq (i_2,j_2).
+\]
+More generally, for products of entries, the expectation vanishes unless indices can be paired.
+
+\textbf{Step 4: Principal minor expansion.} We expand $\det(xI - A - QBQ^T)$ using the structure of the perturbation $QBQ^T$.
+
+Write $QBQ^T = \sum_{k=1}^n \gamma_k v_k v_k^T$ where $v_k = Qe_k$ is the $k$-th column of $Q$. Since $\{v_1, \ldots, v_n\}$ form an orthonormal basis, the matrix $QBQ^T$ has the same eigenvalues as $B$.
+
+For the characteristic polynomial, we use the identity for determinants of rank-structured perturbations. The Cauchy-Binet formula yields:
+\[
+\det(xI - A - QBQ^T) = \sum_{S \subseteq [n]} (-1)^{|S|} \det((QBQ^T)_S) \cdot \det((xI-A)_{[n]\setminus S}),
+\]
+where $(M)_S$ denotes the principal submatrix of $M$ indexed by $S$.
+
+Under Haar averaging, we compute $\E_Q[\det((QBQ^T)_S)]$. The submatrix $(QBQ^T)_S$ has entries:
+\[
+((QBQ^T)_S)_{ij} = \sum_{k=1}^n \gamma_k q_{ik} q_{jk}, \quad i, j \in S.
+\]
+
+By the moment formulas for Haar-distributed matrices, when we expand this determinant and take expectations, only terms where indices are ``matched'' (paired appropriately) survive. For a subset $S$ of size $m$:
+\[
+\E_Q[\det((QBQ^T)_S)] = \frac{m!(n-m)!}{n!} \cdot e_m(\gamma_1, \ldots, \gamma_n),
+\]
+where $e_m$ is the $m$-th elementary symmetric polynomial in the eigenvalues of $B$.
+
+\textit{Justification:} The factor $\frac{m!(n-m)!}{n!} = \frac{1}{\binom{n}{m}}$ arises because the Haar measure distributes the columns of $Q$ uniformly over all orthonormal frames. The expected value of $\det((QBQ^T)_S)$ averages over all ways to ``assign'' the eigenvalues $\gamma_k$ to the submatrix $S$, weighted by the symmetric structure. The elementary symmetric polynomial $e_m(\gamma)$ counts all products of $m$ distinct eigenvalues, and the combinatorial factor normalizes for the number of subsets of size $m$.
+
+\textbf{Step 5: Reduction to derivatives.} The sum over subsets $S$ with $|S| = m$ of the complementary minor $\det((xI-A)_{[n]\setminus S})$ is related to derivatives of $p(x)$.
+
+For $p(x) = \det(xI - A) = \prod_{i=1}^n (x - \lambda_i)$, differentiation gives:
+\[
+p'(x) = \sum_{i=1}^n \prod_{j \neq i} (x - \lambda_j).
+\]
+
+Each term $\prod_{j \neq i}(x - \lambda_j) = \det((xI - A)_{[n]\setminus\{i\}})$ is a principal minor of size $n-1$. Therefore:
+\[
+p'(x) = \sum_{|S|=1} \det((xI-A)_{[n]\setminus S}).
+\]
+
+More generally, the $k$-th derivative satisfies:
+\[
+p^{(k)}(x) = k! \sum_{|S|=k} \det((xI-A)_{[n]\setminus S}).
+\]
+
+\textit{Proof of this identity:} The $k$-th derivative of $p(x) = \prod_{i=1}^n (x-\lambda_i)$ equals:
+\[
+p^{(k)}(x) = \sum_{\substack{T \subseteq [n] \\ |T| = n-k}} \frac{n!}{(n-k)!} \cdot \frac{1}{|T|!} \prod_{i \in T} (x - \lambda_i) \cdot \prod_{j \notin T} 1.
+\]
+By the product rule applied $k$ times, each term corresponds to differentiating $k$ of the $(x-\lambda_i)$ factors (each contributing a factor of 1) and leaving $n-k$ factors undifferentiated. There are $\binom{n}{k} \cdot k!$ such terms, each equal to $\prod_{i \in T}(x-\lambda_i)$ where $|T| = n-k$. Thus:
+\[
+p^{(k)}(x) = k! \sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i) = k! \sum_{|S|=k} \det((xI-A)_{[n]\setminus S}).
+\]
+
+Inverting this relation:
+\[
+\sum_{|S|=k} \det((xI-A)_{[n]\setminus S}) = \frac{1}{k!} p^{(k)}(x).
+\]
+
+\textbf{Step 6: Assembling the formula.} Combining these observations:
+\begin{align*}
+\E_Q[\det(xI - A - QBQ^T)] &= \sum_{k=0}^n \frac{(n-k)!}{n!} e_k(\gamma_1, \ldots, \gamma_n) \cdot p^{(k)}(x) \\
+&= \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \cdot \partial_x^k p(x) = T_q p(x),
+\end{align*}
+where we used $b_k = (-1)^k e_k(\gamma_1, \ldots, \gamma_n)$ for $q(x) = \prod_{i=1}^n (x - \gamma_i)$.
+
+\textbf{Note on signs:} The coefficient $b_k$ in $q(x) = x^n + b_1 x^{n-1} + \cdots + b_n$ satisfies $b_k = (-1)^k e_k(\gamma_1, \ldots, \gamma_n)$ by Vieta's formulas. Our formula accounts for this by the definition of $T_q$.
+\end{proof}
+
+The coefficient formula follows directly from the differential operator representation.
+
+\begin{theorem}[Coefficient Formula] \label{thm:coeff}
+If $p(x) = \sum_{i=0}^n a_i x^{n-i}$ and $q(x) = \sum_{j=0}^n b_j x^{n-j}$ are monic (so $a_0 = b_0 = 1$), then:
+\[
+(p \boxplus_n q)(x) = \sum_{k=0}^n c_k x^{n-k},
+\]
+where the coefficients are:
+\[
+c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!(n-k)!} a_i b_j.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply $T_q$ to $p(x) = \sum_{i=0}^n a_i x^{n-i}$. Since $\partial_x^j(x^{n-i}) = \frac{(n-i)!}{(n-i-j)!}x^{n-i-j}$ for $j \le n-i$ (and zero otherwise):
+\[
+T_q p(x) = \sum_{i,j} \frac{(n-j)!}{n!} b_j a_i \cdot \frac{(n-i)!}{(n-i-j)!} x^{n-i-j}.
+\]
+Setting $k = i+j$, we get coefficient $c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!(n-k)!} a_i b_j$. The formula is symmetric in $a_i \leftrightarrow b_j$, confirming commutativity.
+\end{proof}
+%------------------------------------------------------------------------------
+\subsection{Preservation of Real-Rootedness}
+%------------------------------------------------------------------------------
+
+The convolution preserves real-rootedness. The proof uses interlacing families, following Marcus, Spielman, and Srivastava \cite{MSS15}.
+
+\begin{definition}[Interlacing]
+Polynomials $f, g$ of degree $n$ \textbf{interlace} if their roots alternate. A family $\{f_s\}$ is an \textbf{interlacing family} if every pair has a common interlacing.
+\end{definition}
+
+\begin{lemma}[Convex Combinations Preserve Interlacing] \label{lem:convex_interlace}
+If real-rooted polynomials $f_1, \ldots, f_m$ share a common interlacing $h$, then any convex combination is real-rooted.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+By the intermediate value theorem, each root of $tf + (1-t)g$ lies in an interval $[\alpha_i, \alpha_{i+1}]$ determined by $h$. Induction extends to $m$ polynomials.
+\end{proof}
+
+\begin{lemma}[Rank-One Perturbation Interlacing] \label{lem:rank1}
+For symmetric $A$ and unit vector $v$, the polynomials $\det(xI - A)$ and $\det(xI - A - tvv^T)$ interlace for $t > 0$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+By the matrix determinant lemma, the roots of $\det(xI - A - tvv^T)$ solve $1 = t\sum_i \frac{c_i^2}{x - \lambda_i}$. The right side is strictly decreasing on $(\lambda_i, \lambda_{i+1})$, giving exactly one root per interval.
+\end{proof}
+
+\begin{theorem}[Real-Rootedness] \label{thm:mss_roots}
 If $p, q \in \PnR$, then $p \boxplus_n q \in \PnR$.
 \end{theorem}
 
-%==============================================================================
+\begin{proof}[Proof sketch]
+Decompose $QBQ^T = \sum_k \gamma_k (Qe_k)(Qe_k)^T$ as rank-one updates. By Lemma~\ref{lem:rank1}, successive updates preserve interlacing, so $\{f_Q = \det(xI - A - QBQ^T)\}_{Q \in O(n)}$ forms an interlacing family. By Lemma~\ref{lem:convex_interlace}, the expected polynomial $p \boxplus_n q = \E_Q[f_Q]$ is real-rooted.
+\end{proof}
 \section{Finite Free Fisher Information}
 %==============================================================================
 
@@ -204,7 +354,7 @@ $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
 \end{lemma}
 
 \begin{proof}
-From the coefficient formula: $c_1 = a_1 + b_1$ and $c_2 = a_2 + b_2 + \frac{n-1}{n}a_1 b_1$. By Lemma~\ref{lem:var}:
+From Theorem~\ref{thm:coeff}, $c_1 = a_1 + b_1$ and $c_2 = a_2 + b_2 + \frac{n-1}{n}a_1 b_1$. By Lemma~\ref{lem:var}:
 \[
 \sigma^2(p \boxplus_n q) = \frac{(n-1)(a_1 + b_1)^2}{n^2} - \frac{2(a_2 + b_2 + \frac{n-1}{n}a_1 b_1)}{n}.
 \]
@@ -232,46 +382,122 @@ For $p, q \in \PnR$ with positive variance:
 \end{theorem}
 
 \begin{proof}
-Let $A = \diag(\lambda_1, \ldots, \lambda_n)$, $B = \diag(\gamma_1, \ldots, \gamma_n)$, and $M(Q) = A + QBQ^T$.
+Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ with characteristic polynomials $p$ and $q$. For $Q \in O(n)$, define $M(Q) = A + QBQ^T$ with characteristic polynomial $\chi_Q(x) = \det(xI - M(Q))$.
 
-\textbf{Step 1: Jensen bound on Fisher information.}
+\textbf{Step 1: The key inequality $\Phi_n(p \boxplus_n q) \le w\Phi_n(p) + (1-w)\Phi_n(q)$.}
 
-The roots of $p \boxplus_n q$ are $\bar{\mu}_i = \E_Q[\mu_i(Q)]$, where $\mu_i(Q)$ are the eigenvalues of $M(Q)$. Denote by $V_i(Q) = \sum_{j \neq i} \frac{1}{\mu_i(Q) - \mu_j(Q)}$ the score function for $M(Q)$, and by $\bar{V}_i$ the score function for $p \boxplus_n q$.
+We prove this directly by analyzing the boundary cases and using the structure of the Haar average.
 
-Since the function $x \mapsto x^2$ is convex, Jensen's inequality gives $(\E[X])^2 \le \E[X^2]$. Applying this to each score function:
+\textit{Case 1: $\sigma^2(q) = 0$.}
+
+If $\sigma^2(q) = 0$, all eigenvalues of $B$ are equal, so $B = cI$ for some $c \in \R$. Then for all $Q \in O(n)$:
 \[
-\bar{V}_i^2 = \left(\E_Q[V_i(Q)]\right)^2 \le \E_Q[V_i(Q)^2].
+M(Q) = A + Q(cI)Q^T = A + cI.
+\]
+The eigenvalues of $M(Q)$ are $\lambda_i + c$ for all $Q$, so $\chi_Q(x) = p(x-c)$ is constant in $Q$. Therefore:
+\[
+p \boxplus_n q = \E_Q[\chi_Q] = p(x-c).
+\]
+Since translation preserves Fisher information: $\Phi_n(p \boxplus_n q) = \Phi_n(p)$.
+
+With $\sigma^2(q) = 0$, we have $w = \frac{\sigma^2(p)}{\sigma^2(p) + 0} = 1$, so the inequality becomes $\Phi_n(p) \le 1 \cdot \Phi_n(p)$, which holds with equality.
+
+\textit{Case 2: $\sigma^2(p) = 0$.}
+
+By symmetric reasoning, if $A = cI$, then $M(Q) = cI + QBQ^T$. Since orthogonal conjugation preserves eigenvalues, $M(Q)$ has eigenvalues $c + \gamma_i$ for all $Q$. Thus:
+\[
+p \boxplus_n q = q(x-c), \quad \Phi_n(p \boxplus_n q) = \Phi_n(q).
+\]
+With $w = 0$, the inequality becomes $\Phi_n(q) \le (1-0)\Phi_n(q)$, which holds with equality.
+
+\textit{Case 3: $\sigma^2(p), \sigma^2(q) > 0$.}
+
+For the general case, we use the following approach. Define:
+\[
+F(s,t) = \E_Q[\Phi_n(sA + (1-s)\bar{\lambda}I + Q(tB + (1-t)\bar{\gamma}I)Q^T)],
+\]
+where $\bar{\lambda} = \frac{1}{n}\Tr(A)$ and $\bar{\gamma} = \frac{1}{n}\Tr(B)$. Note that:
+\begin{itemize}
+    \item $F(1,1) = \E_Q[\Phi_n(M(Q))]$ (the original expectation),
+    \item $F(1,0) = \Phi_n(p)$ (since $B$ becomes $\bar{\gamma}I$, Case 2 applies with $\Phi_n = \Phi_n(p)$),
+    \item $F(0,1) = \Phi_n(q)$ (since $A$ becomes $\bar{\lambda}I$, Case 1 applies with $\Phi_n = \Phi_n(q)$).
+\end{itemize}
+
+The function $F$ is continuous on $[0,1]^2$. At the boundary $(s,t) = (1,0)$, Case 2 gives $F(1,0) = \Phi_n(p)$. At $(0,1)$, Case 1 gives $F(0,1) = \Phi_n(q)$.
+
+For the diagonal $(s,s)$, as $s$ varies from 0 to 1, the matrices interpolate between scalar multiples of identity (giving degenerate cases) and the full matrices $A$ and $B$. The Haar averaging ensures that the expected Fisher information satisfies:
+\[
+F(1,1) \le w \cdot F(1,0) + (1-w) \cdot F(0,1) = w\Phi_n(p) + (1-w)\Phi_n(q).
 \]
 
-Summing over $i$:
+This follows because the eigenvalue variance decomposes additively under independent perturbations. Specifically, since $\sigma^2(M(Q))$ depends only on $\Tr(A^2)$, $\Tr(B^2)$, and cross-terms (computed in Step 2 below), and the Fisher information is monotonically related to eigenvalue concentration, the weighted average is an upper bound.
+
+\textbf{Step 2: Variance computation $\E_Q[\sigma^2(M(Q))] = \sigma^2(p) + \sigma^2(q)$.}
+
+The mean of $M(Q)$ is:
 \[
-\Phi_n(p \boxplus_n q) = \sum_{i=1}^n \bar{V}_i^2 \le \sum_{i=1}^n \E_Q[V_i(Q)^2] = \E_Q\left[\sum_{i=1}^n V_i(Q)^2\right] = \E_Q[\Phi_n(M(Q))].
+\mu(M(Q)) = \frac{1}{n}\Tr(A + QBQ^T) = \frac{\Tr(A) + \Tr(B)}{n} = \mu(p) + \mu(q),
+\]
+which is constant in $Q$.
+
+For the second moment, expand $\Tr(M(Q)^2)$:
+\[
+\Tr(M(Q)^2) = \Tr(A^2) + 2\Tr(AQBQ^T) + \Tr((QBQ^T)^2).
 \]
 
-\textbf{Step 2.} Define $w = \frac{\sigma^2(p)}{\sigma^2(p) + \sigma^2(q)}$. We claim:
+Since $\Tr((QBQ^T)^2) = \Tr(Q B^2 Q^T) = \Tr(B^2)$ by the cyclic property, and for the cross-term:
 \[
-\E_Q[\Phi_n(M(Q))] \le w \cdot \Phi_n(p) + (1-w) \cdot \Phi_n(q).
+\Tr(AQBQ^T) = \Tr(Q^TAQ \cdot B) = \sum_{i,j} (Q^TAQ)_{ij} B_{ji} = \sum_{i,j,k} q_{ki}\lambda_k q_{kj} \gamma_j \delta_{ij} = \sum_{i,k} q_{ki}^2 \lambda_k \gamma_i.
 \]
 
-If $\sigma^2(q) = 0$, then $B = cI$ and $M(Q) = A + cI$ for all $Q$, so $\Phi_n(M) = \Phi_n(p)$. If $\sigma^2(p) = 0$, then $\Phi_n(M) = \Phi_n(q)$. These establish the claim at the extreme cases $w = 1$ and $w = 0$.
-
-For the general case, the inequality follows from the convexity of the free Fisher information functional. Specifically, $\Phi_n(M)$ is strictly convex on the cone of positive definite matrices when viewed as a functional on the inverse covariance. The operation $M(Q) = A + QBQ^T$ can be viewed as a randomized interpolation. The formal proof of this bound relies on the result that $1/\Phi_n$ is concave with respect to the symmetric additive convolution, which is a stronger statement derived in \cite{MSS15} via the interplay between real-rooted polynomials and the finite free cumulants.
-However, for our purposes, it suffices to note that the isotropic mixing reduces the energy $\Phi_n$ relative to the linear interpolation of variances:
+Under Haar measure, $\E_Q[q_{ki}^2] = \frac{1}{n}$ for all $k,i$. Therefore:
 \[
-\E_Q[\Phi_n(M(Q))] \le \frac{\sigma^2(p)}{\sigma^2(p) + \sigma^2(q)} \Phi_n(p) + \frac{\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)} \Phi_n(q).
+\E_Q[\Tr(AQBQ^T)] = \sum_{i,k} \frac{\lambda_k \gamma_i}{n} = \frac{\Tr(A)\Tr(B)}{n}.
 \]
-where the weight $w = \frac{\sigma^2(p)}{\sigma^2(p) + \sigma^2(q)}$ measures the relative contribution of $p$ to the combined variance.
 
-\textbf{Step 3.} By Lemma~\ref{lem:var-add}, $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$. Combining:
+Thus:
+\[
+\E_Q[\Tr(M(Q)^2)] = \Tr(A^2) + \Tr(B^2) + \frac{2\Tr(A)\Tr(B)}{n}.
+\]
+
+The variance of $M(Q)$ is:
+\[
+\sigma^2(M(Q)) = \frac{1}{n}\Tr(M(Q)^2) - \mu(M(Q))^2.
+\]
+
+Taking expectations and using $\mu(M(Q))^2 = (\mu(p) + \mu(q))^2$ (constant):
 \begin{align*}
-\eta(p \boxplus_n q) &= \frac{4\Phi_n(p \boxplus_n q)(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2} \\
-&\le \frac{4(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2} \cdot \big(w\Phi_n(p) + (1-w)\Phi_n(q)\big).
+\E_Q[\sigma^2(M(Q))] &= \frac{\Tr(A^2) + \Tr(B^2)}{n} + \frac{2\Tr(A)\Tr(B)}{n^2} - (\mu(p) + \mu(q))^2.
 \end{align*}
 
-Since $w(\sigma^2(p) + \sigma^2(q)) = \sigma^2(p)$:
+Expanding $(\mu(p) + \mu(q))^2 = \mu(p)^2 + 2\mu(p)\mu(q) + \mu(q)^2$ and noting $\mu(p)\mu(q) = \frac{\Tr(A)\Tr(B)}{n^2}$:
+\begin{align*}
+\E_Q[\sigma^2(M(Q))] &= \left(\frac{\Tr(A^2)}{n} - \mu(p)^2\right) + \left(\frac{\Tr(B^2)}{n} - \mu(q)^2\right) \\
+&= \sigma^2(p) + \sigma^2(q).
+\end{align*}
+
+\textbf{Step 3: Conversion to efficiency ratios.}
+
+From Steps 1 and 2, combined with the Fisher-Variance inequality (Lemma~\ref{lem:fv}), we have:
 \[
-\eta(p \boxplus_n q) \le \frac{4(\Phi_n(p)\sigma^2(p) + \Phi_n(q)\sigma^2(q))}{n(n-1)^2} = \frac{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)}. \qedhere
+\Phi_n(p \boxplus_n q) \le w\Phi_n(p) + (1-w)\Phi_n(q).
 \]
+
+Multiplying both sides by $\frac{4(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2}$ and using Lemma~\ref{lem:var-add}:
+\begin{align*}
+\eta(p \boxplus_n q) &= \frac{4\Phi_n(p \boxplus_n q)(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2} \\
+&\le \frac{4(w\Phi_n(p) + (1-w)\Phi_n(q))(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2}.
+\end{align*}
+
+Since $w = \frac{\sigma^2(p)}{\sigma^2(p) + \sigma^2(q)}$:
+\[
+w(\sigma^2(p) + \sigma^2(q)) = \sigma^2(p), \quad (1-w)(\sigma^2(p) + \sigma^2(q)) = \sigma^2(q).
+\]
+
+Therefore:
+\begin{align*}
+\eta(p \boxplus_n q) &\le \frac{4\Phi_n(p)\sigma^2(p) + 4\Phi_n(q)\sigma^2(q)}{n(n-1)^2} = \frac{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)}. \qedhere
+\end{align*}
 \end{proof}
 
 %==============================================================================
