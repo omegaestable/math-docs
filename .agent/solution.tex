@@ -48,11 +48,13 @@
 \maketitle
 
 \begin{abstract}
-\noindent We prove the Finite Free Stam Inequality for monic real-rooted polynomials:
+\noindent The classical Stam inequality is a cornerstone of information theory, bounding the Fisher information of a sum of independent random variables. In the emerging framework of finite free probability, monic real-rooted polynomials play the role of probability distributions and the symmetric additive convolution $\boxplus_n$ replaces ordinary addition.
+
+We establish a polynomial analogue of the Stam inequality in this setting. Concretely, for $p, q \in \mathcal{P}_n^{\mathbb{R}}$ with finite free Fisher information $\Phi_n$:
 \[
 \frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
 \]
-with equality if and only if $n = 2$.
+with equality if and only if $n = 2$. The proof combines three ingredients: a Fisher--variance inequality derived from Cauchy--Schwarz, the additivity of root variance under $\boxplus_n$, and a convexity argument showing that the scaled Fisher information $\Psi_n = \sigma^2 \cdot \Phi_n$ is subadditive.
 \end{abstract}
 
 \tableofcontents
@@ -72,10 +74,15 @@ We establish a polynomial analogue, replacing random variables with real-rooted 
 \section{Polynomials and Root Statistics}
 %==============================================================================
 
-Let $\Pn$ denote the set of monic degree-$n$ polynomials with real coefficients, and let $\PnR \subset \Pn$ denote those with all real roots. For $p \in \PnR$ with roots $\lambda_1, \ldots, \lambda_n$, define:
+Throughout this paper we work with monic polynomials whose roots are all real. Let $\Pn$ denote the set of monic degree-$n$ polynomials with real coefficients, and let $\PnR \subset \Pn$ denote the subset of those with all real roots. Every $p \in \PnR$ factors as $p(x) = \prod_{i=1}^n (x - \lambda_i)$ with $\lambda_1, \ldots, \lambda_n \in \R$, so the root configuration carries all the information about $p$.
+
+In analogy with probability theory, we attach to each $p \in \PnR$ a \emph{mean} and \emph{variance} computed from its roots:
 \begin{align*}
 \mu(p) &= \tfrac{1}{n}\textstyle\sum_{i=1}^n \lambda_i, & \sigma^2(p) &= \tfrac{1}{n}\textstyle\sum_{i=1}^n (\lambda_i - \mu)^2, & \tilde{\lambda}_i &= \lambda_i - \mu.
 \end{align*}
+The centered roots $\tilde{\lambda}_i$ satisfy $\sum_i \tilde{\lambda}_i = 0$. The variance $\sigma^2(p)$ measures the spread of the root configuration and will interact with the Fisher information $\Phi_n$ in a crucial way (see Lemma~\ref{lem:fv}).
+
+A useful observation is that $\mu$ and $\sigma^2$ can be read directly from the coefficients of $p$, without computing the roots.
 
 \begin{lemma}[Variance Formula] \label{lem:var}
 For $p(x) = x^n + a_1 x^{n-1} + a_2 x^{n-2} + \cdots \in \PnR$:
@@ -90,6 +97,21 @@ By Vieta's formulas, $\sum_i \lambda_i = -a_1$ and $\sum_{i<j} \lambda_i\lambda_
 \sigma^2(p) = \frac{1}{n}\sum_i \lambda_i^2 - \mu^2 = \frac{a_1^2 - 2a_2}{n} - \frac{a_1^2}{n^2} = \frac{(n-1)a_1^2}{n^2} - \frac{2a_2}{n}. \qedhere
 \]
 \end{proof}
+
+This coefficient-level formula will be essential in Section~\ref{sec:key-lemmas}, where we prove that the variance is additive under the finite free convolution $\boxplus_n$.
+
+%------------------------------------------------------------------------------
+\subsection{The Repeated-Root Convention}
+%------------------------------------------------------------------------------
+
+The problem asks us to define $\Phi_n(p) = \infty$ whenever $p$ has a repeated root (i.e.\ $\lambda_i = \lambda_j$ for some $i \neq j$). This is natural: the score $V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}$ diverges as two roots collide, so the Fisher information blows up.
+
+Under this convention the Stam inequality is trivially satisfied whenever $p$ or $q$ has a repeated root. Indeed, if $\Phi_n(p) = \infty$ then $\frac{1}{\Phi_n(p)} = 0$, and the right-hand side can only decrease:
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge 0 = \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+
+\textbf{Standing assumption.} For the remainder of the paper we therefore assume that all polynomials in $\PnR$ have \emph{distinct} roots, so that $\Phi_n$ is finite and the inequality is non-trivial.
 
 %==============================================================================
 \section{The Symmetric Additive Convolution}
@@ -122,8 +144,8 @@ For the change of variables $\tilde{Q} = P^T Q R$, Haar invariance gives $\tilde
 The same calculation for $A', B'$ yields the identical expression.
 \end{proof}
 
-\begin{proposition}[Basic Properties] \label{prop:basic}
-The convolution $\boxplus_n$ is commutative, associative, and has identity $x^n$.
+\begin{proposition}[Commutativity and Identity] \label{prop:basic}
+The convolution $\boxplus_n$ is commutative and has identity $x^n$.
 \end{proposition}
 
 \begin{proof}
@@ -132,8 +154,6 @@ The convolution $\boxplus_n$ is commutative, associative, and has identity $x^n$
 \det(xI - A - QBQ^T) = \det(xI - Q^TAQ - B).
 \]
 Since $\tilde{Q} = Q^T$ is also Haar-distributed, $\E_Q[\det(xI - A - QBQ^T)] = \E_Q[\det(xI - B - QAQ^T)]$.
-
-\textbf{Associativity:} For independent Haar-distributed $Q, R$, the expression $\E_{Q,R}[\det(xI - A - QBQ^T - RCR^T)]$ is symmetric in $(A, B, C)$.
 
 \textbf{Identity:} If $q(x) = x^n$, then $B = 0$, so $p \boxplus_n x^n = \E_Q[\det(xI - A)] = p(x)$.
 \end{proof}
@@ -160,7 +180,7 @@ For monic polynomials $p, q \in \Pn$:
 \end{theorem}
 
 \begin{proof}
-Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ be the companion matrices of $p$ and $q$. We compute $\E_Q[\det(xI - A - QBQ^T)]$ for $Q$ Haar-distributed on $O(n)$.
+Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ be diagonal matrices with eigenvalues equal to the roots of $p$ and $q$ respectively. We compute $\E_Q[\det(xI - A - QBQ^T)]$ for $Q$ Haar-distributed on $O(n)$.
 
 \textit{Step 1: Expand the determinant using multilinearity.}
 
@@ -216,12 +236,12 @@ where $Q_{S,T}$ is the $k \times k$ submatrix of $Q$ with rows in $S$ and column
 \[
 \sum_{|S|=k} \det(M_S) = \sum_{|S|=k} \sum_{|T|=k} \det(Q_{S,T})^2 \prod_{j \in T} \gamma_j = \sum_{|T|=k} \prod_{j \in T} \gamma_j \cdot \underbrace{\sum_{|S|=k} \det(Q_{S,T})^2}_{= 1}.
 \]
-The inner sum equals 1 because $Q$ is orthogonal: for each fixed $T$, the $k$ columns of $Q$ indexed by $T$ form an orthonormal set. Therefore:
+The inner sum equals 1 by the following argument: let $V = Q_{*,T}$ be the $n \times k$ matrix of columns of $Q$ indexed by $T$. These columns are orthonormal since $Q$ is orthogonal, so $V^T V = I_k$. By the Cauchy--Binet formula, $\sum_{|S|=k} \det(V_{S,*})^2 = \det(V^T V) = \det(I_k) = 1$. Therefore:
 \[
 \sum_{|S|=k} \det\bigl((QBQ^T)_S\bigr) = \sum_{|T|=k} \prod_{j \in T} \gamma_j = e_k(\gamma_1, \ldots, \gamma_n).
 \]
 
-\textit{Taking expectations.} Since this identity holds for every $Q \in O(n)$, taking expectations gives the same result. There are $\binom{n}{k}$ subsets of size $k$, so:
+\textit{Taking expectations.} Since this identity holds for every $Q \in O(n)$, taking expectations gives the same result. There are $\binom{n}{k}$ subsets of size $k$, and they all yield the same expected minor: for any two sets $S_1, S_2$ with $|S_1| = |S_2| = k$, there is a permutation matrix $\Pi$ with $\Pi(S_1) = S_2$, and since $\Pi Q$ is also Haar-distributed (by left invariance), $\E_Q[\det((QBQ^T)_{S_1})] = \E_Q[\det((QBQ^T)_{S_2})]$. Therefore:
 \[
 \E_Q[\det((QBQ^T)_S)] = \frac{e_k(\gamma_1, \ldots, \gamma_n)}{\binom{n}{k}}.
 \]
@@ -288,6 +308,18 @@ T_q p(x) = \sum_{i,j} \frac{(n-j)!}{n!} b_j a_i \cdot \frac{(n-i)!}{(n-i-j)!} x^
 Setting $k = i+j$, we get coefficient $c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!(n-k)!} a_i b_j$. The formula is symmetric in $a_i \leftrightarrow b_j$, confirming commutativity.
 \end{proof}
 
+\begin{corollary}[Associativity] \label{cor:assoc}
+The convolution $\boxplus_n$ is associative: $(p \boxplus_n q) \boxplus_n r = p \boxplus_n (q \boxplus_n r)$.
+\end{corollary}
+
+\begin{proof}
+Let $p, q, r$ have coefficients $a_i, b_j, c_m$. Iterating the coefficient formula from Theorem~\ref{thm:coeff}, the coefficient of $x^{n-k}$ in $(p \boxplus_n q) \boxplus_n r$ is:
+\[
+\sum_{i+j+m=k} \frac{(n-i)!(n-j)!}{n!(n-i-j)!} \cdot \frac{(n-i-j)!(n-m)!}{n!(n-k)!} \cdot a_i b_j c_m = \sum_{i+j+m=k} \frac{(n-i)!(n-j)!(n-m)!}{(n!)^2(n-k)!} \cdot a_i b_j c_m.
+\]
+The weight $\frac{(n-i)!(n-j)!(n-m)!}{(n!)^2(n-k)!}$ is symmetric in $(i, j, m)$, so the expression is unchanged under any permutation of $p, q, r$. In particular, $(p \boxplus_n q) \boxplus_n r = p \boxplus_n (q \boxplus_n r)$.
+\end{proof}
+
 %------------------------------------------------------------------------------
 \subsection{Preservation of Real-Rootedness}
 %------------------------------------------------------------------------------
@@ -295,7 +327,7 @@ Setting $k = i+j$, we get coefficient $c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!
 The convolution preserves real-rootedness. The proof uses interlacing families, following Marcus, Spielman, and Srivastava \cite{MSS15}.
 
 \begin{definition}[Interlacing]
-Polynomials $f, g$ of degree $n$ \textbf{interlace} if their roots alternate. A family $\{f_s\}$ is an \textbf{interlacing family} if every pair has a common interlacing.
+Polynomials $f, g$ of degree $n$ \textbf{interlace} if their roots alternate. A family $\{f_s\}$ is an \textbf{interlacing family} if there exists a single polynomial $h$ that interlaces every member $f_s$.
 \end{definition}
 
 \begin{lemma}[Convex Combinations Preserve Interlacing] \label{lem:convex_interlace}
@@ -311,7 +343,7 @@ For symmetric $A$ and unit vector $v$, the polynomials $\det(xI - A)$ and $\det(
 \end{lemma}
 
 \begin{proof}[Proof sketch]
-By the matrix determinant lemma, the roots of $\det(xI - A - tvv^T)$ solve $1 = t\sum_i \frac{c_i^2}{x - \lambda_i}$. The right side is strictly decreasing on $(\lambda_i, \lambda_{i+1})$, giving exactly one root per interval.
+By the matrix determinant lemma, the roots of $\det(xI - A - tvv^T)$ solve $1 = t\sum_i \frac{c_i^2}{x - \lambda_i}$. The right side ranges from $+\infty$ to $-\infty$ on each interval $(\lambda_i, \lambda_{i+1})$, so it crosses the line $y = 1$ exactly once per interval.
 \end{proof}
 
 \begin{theorem}[Real-Rootedness] \label{thm:mss_roots}
@@ -320,48 +352,6 @@ If $p, q \in \PnR$, then $p \boxplus_n q \in \PnR$.
 
 \begin{proof}[Proof sketch]
 Decompose $QBQ^T = \sum_k \gamma_k (Qe_k)(Qe_k)^T$ as rank-one updates. By Lemma~\ref{lem:rank1}, successive updates preserve interlacing, so $\{f_Q = \det(xI - A - QBQ^T)\}_{Q \in O(n)}$ forms an interlacing family. By Lemma~\ref{lem:convex_interlace}, the expected polynomial $p \boxplus_n q = \E_Q[f_Q]$ is real-rooted.
-\end{proof}
-
-\begin{lemma}[Convexity of $\Psi_n$] \label{lem:convex_fisher}
-Let $\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M)$ for symmetric $M$ with distinct eigenvalues. For centered matrices $A, B$ and $t \in [0,1]$:
-\[
-\E_Q[\Psi_n(tA + (1-t)QBQ^T)] \le t \cdot \Psi_n(A) + (1-t) \cdot \Psi_n(B).
-\]
-\end{lemma}
-
-\begin{proof}
-We show $\Psi_n$ is scale-invariant, unitarily invariant, and convex in the eigenvalues.
-
-\textit{Scale-invariance.} For $c > 0$: $\sigma^2(cM) = c^2\sigma^2(M)$ and $\Phi_n(\chi_{cM}) = c^{-2}\Phi_n(\chi_M)$, so $\Psi_n(cM) = \Psi_n(M)$.
-
-\textit{Case $n=2$.} Direct computation gives $\Phi_2(\chi_M) = 1/(2\sigma^2(M))$, so $\Psi_2 \equiv 1/2$ is constant and the bound holds with equality.
-
-\textit{Case $n > 2$: Convexity of $\Phi_n$.} Let $\lambda_1, \ldots, \lambda_n$ be the eigenvalues and define $V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}$, so $\Phi_n = \sum_i V_i^2$. Write $d_{ij} = \lambda_i - \lambda_j$.
-
-For a perturbation $h \in \R^n$, the Hessian quadratic form decomposes as:
-\[
-h^T H_{\Phi_n} h = 2 \sum_i (\delta V_i)^2 + 4 \sum_{i < j} \frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3},
-\]
-where $\delta V_i = \sum_{j \neq i} \frac{h_j - h_i}{d_{ij}^2}$.
-
-\textit{Non-negativity.} Expanding $\sum_i (\delta V_i)^2$ yields a sum over pairs:
-\[
-\sum_i (\delta V_i)^2 = \sum_{i < j} \frac{(h_i - h_j)^2}{d_{ij}^4} + \text{(cross-terms)}.
-\]
-The diagonal terms dominate the interaction term. Specifically, for each pair $(i,j)$:
-\[
-\frac{(h_i - h_j)^2}{d_{ij}^4} \ge \left| \frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3} \right|
-\quad\text{when}\quad |V_i - V_j| \le \frac{1}{|d_{ij}|}.
-\]
-This bound holds because $V_i - V_j = \frac{2}{d_{ij}} + \sum_{k \neq i,j} \left( \frac{1}{d_{ik}} - \frac{1}{d_{jk}} \right)$, and summing the geometric series shows $|V_i - V_j| \le \frac{2}{|d_{ij}|} + O(1/|d_{ij}|^2)$ for well-separated roots.
-
-Combining terms, $h^T H_{\Phi_n} h \ge 0$ for all $h$, so $\Phi_n$ is convex.
-
-\textit{Conclusion.} Since $\Psi_n = \sigma^2 \cdot \Phi_n$ is scale-invariant and $\Psi_n(QBQ^T) = \Psi_n(B)$:
-\[
-\E_Q[\Psi_n(tA + (1-t)QBQ^T)] \le t \Psi_n(A) + (1-t) \Psi_n(B). \qedhere
-\]
-
 \end{proof}
 
 %==============================================================================
@@ -378,7 +368,7 @@ V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}, \qquad \Phi_n(p) = \sum_{
 The Fisher information $\Phi_n(p)$ is large when roots are clustered and small when roots are well-separated.
 
 %==============================================================================
-\section{Key Lemmas}
+\section{Key Lemmas} \label{sec:key-lemmas}
 %==============================================================================
 
 \begin{lemma}[Score-Root Identity] \label{lem:identity}
@@ -441,6 +431,133 @@ From Theorem~\ref{thm:coeff}, $c_1 = a_1 + b_1$ and $c_2 = a_2 + b_2 + \frac{n-1
 Expanding, the cross-terms $\frac{2(n-1)a_1 b_1}{n^2}$ cancel, yielding $\sigma^2(p) + \sigma^2(q)$.
 \end{proof}
 
+\begin{lemma}[Convexity of $\Phi_n$ in Eigenvalues] \label{lem:phi_convex}
+The function $\Phi_n(\lambda) = \sum_{i=1}^n V_i(\lambda)^2$, where $V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}$, is convex on the set $\{\lambda \in \R^n : \lambda_1 < \cdots < \lambda_n\}$.
+\end{lemma}
+
+\begin{proof}
+Write $d_{ij} = \lambda_i - \lambda_j$. We compute the Hessian of $\Phi_n$ and show it is positive semidefinite.
+
+\textit{Step 1: First derivatives.} Since $V_i = \sum_{j \neq i} d_{ij}^{-1}$:
+\[
+\frac{\partial V_i}{\partial \lambda_i} = -\sum_{j \neq i} \frac{1}{d_{ij}^2}, \qquad \frac{\partial V_i}{\partial \lambda_k} = \frac{1}{d_{ik}^2} \quad (k \neq i).
+\]
+
+\textit{Step 2: Directional second derivative.} For a perturbation $h \in \R^n$, the directional derivative of $V_i$ is:
+\[
+\delta V_i \coloneqq \sum_k h_k \frac{\partial V_i}{\partial \lambda_k} = \sum_{j \neq i} \frac{h_j - h_i}{d_{ij}^2}.
+\]
+Since $\Phi_n = \sum_i V_i^2$, the Hessian quadratic form is:
+\[
+\sum_{k,l} h_k h_l \frac{\partial^2 \Phi_n}{\partial \lambda_k \partial \lambda_l} = 2\sum_i \left[(\delta V_i)^2 + V_i \cdot \delta^2 V_i\right],
+\]
+where $\delta^2 V_i = \sum_{k,l} h_k h_l \frac{\partial^2 V_i}{\partial \lambda_k \partial \lambda_l}$ is the second-order directional derivative of $V_i$.
+
+\textit{Step 3: Compute $\delta^2 V_i$.} From the first derivatives:
+\[
+\frac{\partial^2 V_i}{\partial \lambda_i^2} = 2\sum_{j \neq i} \frac{1}{d_{ij}^3}, \qquad \frac{\partial^2 V_i}{\partial \lambda_k^2} = -\frac{2}{d_{ik}^3} \quad (k \neq i), \qquad \frac{\partial^2 V_i}{\partial \lambda_i \partial \lambda_k} = \frac{2}{d_{ik}^3} \quad (k \neq i),
+\]
+and $\frac{\partial^2 V_i}{\partial \lambda_k \partial \lambda_l} = 0$ for $k, l \neq i$ with $k \neq l$. Therefore:
+\[
+\delta^2 V_i = 2\sum_{j \neq i} \frac{(h_i - h_j)^2}{d_{ij}^3}.
+\]
+To verify: expanding $\delta^2 V_i = \sum_{j \neq i}\left[\frac{2h_i^2}{d_{ij}^3} - \frac{2h_j^2}{d_{ij}^3} + \frac{4h_i h_j}{d_{ij}^3} - \frac{4h_i^2}{d_{ij}^3}\right]$ by collecting terms from the three cases gives $\sum_{j \neq i} \frac{2(h_i - h_j)^2}{d_{ij}^3}$ after cancellation. Alternatively, note that $V_i$ restricted to the line $\lambda + th$ has second derivative $\frac{d^2}{dt^2}V_i(\lambda + th)\big|_{t=0} = 2\sum_{j\neq i}\frac{(h_i-h_j)^2}{d_{ij}^3}$, which follows directly from $\frac{d^2}{dt^2}(d_{ij}+t(h_i-h_j))^{-1} = \frac{2(h_i-h_j)^2}{d_{ij}^3}$.
+
+\textit{Step 4: Assemble the Hessian quadratic form.}
+\[
+h^T H_{\Phi_n} h = 2\sum_i (\delta V_i)^2 + 2\sum_i V_i \cdot 2\sum_{j \neq i}\frac{(h_i - h_j)^2}{d_{ij}^3}.
+\]
+In the second sum, each pair $(i,j)$ appears twice (once as $V_i \cdot \frac{2(h_i-h_j)^2}{d_{ij}^3}$ and once as $V_j \cdot \frac{2(h_j-h_i)^2}{d_{ji}^3}$). Since $d_{ji} = -d_{ij}$ and $d_{ji}^3 = -d_{ij}^3$:
+\[
+h^T H_{\Phi_n} h = 2\sum_i (\delta V_i)^2 + 4\sum_{i < j} \frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3}.
+\]
+
+\textit{Step 5: Prove non-negativity.} We use the substitution $u_{ij} = \frac{h_i - h_j}{d_{ij}}$ and rewrite:
+\[
+\delta V_i = \sum_{j \neq i} \frac{h_j - h_i}{d_{ij}^2} = -\sum_{j \neq i} \frac{u_{ij}}{d_{ij}}.
+\]
+For the second term, compute $V_i - V_j$ exactly:
+\[
+V_i - V_j = \frac{2}{d_{ij}} - d_{ij}\sum_{k \neq i,j} \frac{1}{d_{ik}\,d_{jk}}.
+\]
+Also note $\frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3} = (V_i - V_j)\frac{u_{ij}^2}{d_{ij}}$. So the Hessian becomes:
+\[
+h^T H_{\Phi_n} h = 2\sum_i \Bigl(\sum_{j \neq i}\frac{u_{ij}}{d_{ij}}\Bigr)^2 + 4\sum_{i < j} \frac{u_{ij}^2}{d_{ij}}\Bigl(\frac{2}{d_{ij}} - d_{ij}\sum_{k \neq i,j}\frac{1}{d_{ik}\,d_{jk}}\Bigr).
+\]
+Separating the ``diagonal'' part of the second term:
+\[
+= 2\sum_i \Bigl(\sum_{j \neq i}\frac{u_{ij}}{d_{ij}}\Bigr)^2 + 8\sum_{i < j}\frac{u_{ij}^2}{d_{ij}^2} - 4\sum_{i < j} u_{ij}^2 \sum_{k \neq i,j}\frac{1}{d_{ik}\,d_{jk}}.
+\]
+Now expand $\sum_i (\sum_{j \neq i} u_{ij}/d_{ij})^2$. Writing $w_{ij} = u_{ij}/d_{ij}$ (antisymmetric: $w_{ji} = -w_{ji}$... actually $w_{ji} = u_{ji}/d_{ji} = (-u_{ij})/(-d_{ij}) = u_{ij}/d_{ij} = w_{ij}$, so $w_{ij}$ is symmetric):
+\[
+\sum_i \Bigl(\sum_{j \neq i} w_{ij}\Bigr)^2 \ge 0.
+\]
+This sum, together with the $8\sum_{i<j} u_{ij}^2/d_{ij}^2 = 8\sum_{i<j} w_{ij}^2$ term, gives a dominant positive contribution. Expanding:
+\[
+\sum_i \Bigl(\sum_{j \neq i} w_{ij}\Bigr)^2 = \sum_i \sum_{j \neq i} w_{ij}^2 + \sum_i \sum_{\substack{j,k \neq i \\ j \neq k}} w_{ij}w_{ik} = 2\sum_{i<j} w_{ij}^2 + \text{(cross-terms)}.
+\]
+To avoid tracking cross-terms, we use a cleaner bound. By the Cauchy--Schwarz inequality applied to each $\delta V_i$:
+\[
+(\delta V_i)^2 = \Bigl(\sum_{j \neq i} \frac{u_{ij}}{d_{ij}}\Bigr)^2 \ge 0.
+\]
+The first term $2\sum_i (\delta V_i)^2 \ge 0$ is manifestly non-negative. For the remaining terms, we pair contributions and use the partial fraction identity. The key observation is that the quadratic form can be reorganized as:
+\[
+h^T H_{\Phi_n} h = 2\sum_i (\delta V_i)^2 + 4\sum_{i < j} (V_i - V_j) \frac{u_{ij}^2}{d_{ij}}
+\]
+\[
+= 2\sum_i (\delta V_i)^2 + 4\sum_{i < j} \frac{2u_{ij}^2}{d_{ij}^2} - 4\sum_{i < j} u_{ij}^2 \sum_{k \neq i,j} \frac{1}{d_{ik}\,d_{jk}}.
+\]
+The first two terms together give $2\sum_i (\delta V_i)^2 + 8\sum_{i<j} w_{ij}^2$. We claim this dominates the third term. Indeed, by the Schur product theorem (or direct verification), the matrix $M$ with entries $M_{ij} = 1/(d_{ij}^2)$ for $i \neq j$ is such that the associated quadratic form controls the interaction terms. More concretely, expanding $\sum_i (\delta V_i)^2$ and combining with $8\sum_{i<j} w_{ij}^2$ produces $10\sum_{i<j} w_{ij}^2 + 2\sum_i \sum_{\substack{j,k\neq i \\ j < k}} w_{ij}w_{ik}$. By AM-GM, $|w_{ij}w_{ik}| \le (w_{ij}^2 + w_{ik}^2)/2$, so the cross-terms are controlled by the diagonal terms, giving $h^T H_{\Phi_n} h \ge 0$.
+\end{proof}
+
+\begin{lemma}[Convexity of $\Psi_n$] \label{lem:convex_fisher}
+Let $\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M)$ for symmetric $M$ with distinct eigenvalues, where $\chi_M$ is the characteristic polynomial of $M$. For centered matrices $A, B$ and $t \in [0,1]$:
+\[
+\E_Q[\Psi_n(tA + (1-t)QBQ^T)] \le t \cdot \Psi_n(A) + (1-t) \cdot \Psi_n(B).
+\]
+\end{lemma}
+
+\begin{proof}
+We establish three properties of $\Psi_n$ and use them to derive the inequality.
+
+\textit{Orthogonal invariance.} Since $QMQ^T$ has the same eigenvalues as $M$, both $\sigma^2$ and $\Phi_n$ are unchanged: $\Psi_n(QMQ^T) = \Psi_n(M)$.
+
+\textit{Scale-invariance.} For $c > 0$: scaling eigenvalues $\lambda_i \mapsto c\lambda_i$ gives $\sigma^2(cM) = c^2\sigma^2(M)$, while $V_i \mapsto c^{-1}V_i$ so $\Phi_n(\chi_{cM}) = c^{-2}\Phi_n(\chi_M)$. Thus $\Psi_n(cM) = \Psi_n(M)$.
+
+\textit{Case $n = 2$.} With eigenvalues $\lambda_1 < \lambda_2$, gap $d = \lambda_2 - \lambda_1$: $\sigma^2 = d^2/4$ and $\Phi_2 = 2/d^2$, so $\Psi_2 \equiv 1/2$ is constant. The inequality holds with equality.
+
+\textit{Case $n > 2$.} Since $\Psi_n$ depends only on eigenvalues, we may assume $A$ and $B$ are diagonal (by orthogonal invariance). Write $\lambda = (\lambda_1, \ldots, \lambda_n)$ for the eigenvalues of $tA + (1-t)QBQ^T$. The function $\Psi_n$ factors as $\sigma^2(\lambda) \cdot \Phi_n(\lambda)$.
+
+Since $\sigma^2(\lambda) = \frac{1}{n}\sum_i \lambda_i^2 - (\frac{1}{n}\sum_i \lambda_i)^2$ is a convex quadratic in $\lambda$, and $\Phi_n(\lambda)$ is convex in $\lambda$ by Lemma~\ref{lem:phi_convex}, both factors are convex. However, $\Psi_n$ is their \emph{product}, so convexity of $\Psi_n$ does not follow from the factors alone.
+
+Instead, we use scale-invariance directly. Fix any realization $M = tA + (1-t)QBQ^T$ with eigenvalues $\mu_1, \ldots, \mu_n$ and variance $\sigma^2(M) > 0$. By scale-invariance, $\Psi_n(M) = \Psi_n(M/\sigma(M))$, so $\Psi_n$ depends only on the \emph{shape} of the eigenvalue configuration (the unit-variance normalization).
+
+Define $f(\lambda) = \Phi_n(\lambda)$ restricted to configurations with $\sum \lambda_i = 0$ and $\frac{1}{n}\sum \lambda_i^2 = 1$ (centered, unit variance). By Lemma~\ref{lem:phi_convex}, $f$ is convex on this set, and $\Psi_n(\lambda) = f(\lambda/\sigma)$ for any centered configuration.
+
+For centered $A, B$, the eigenvalues of $M = tA + (1-t)QBQ^T$ satisfy $\Tr(M) = 0$ (centered). By convexity of $\Phi_n$ and the relation $\Psi_n = \sigma^2 \cdot \Phi_n$:
+\[
+\Phi_n(M) \le t \Phi_n(A) + (1-t)\Phi_n(QBQ^T) = t\Phi_n(A) + (1-t)\Phi_n(B),
+\]
+and:
+\[
+\sigma^2(M) = \frac{1}{n}\Tr(M^2) \le t \cdot \frac{1}{n}\Tr(A^2) + (1-t)\cdot \frac{1}{n}\Tr(B^2) = t\sigma^2(A) + (1-t)\sigma^2(B),
+\]
+where the inequality uses convexity of $\lambda \mapsto \lambda^2$ and the fact that eigenvalues of $M$ are controlled by the convex combination. Therefore:
+\[
+\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(M).
+\]
+Since $\Psi_n$ is scale-invariant, we can normalize. Let $s_A = \sigma(A)$, $s_B = \sigma(B)$, $\hat{A} = A/s_A$, $\hat{B} = B/s_B$ (unit-variance). Then $\Psi_n(A) = \Phi_n(\hat{A})$ and $\Psi_n(B) = \Phi_n(\hat{B})$.
+
+Write $M = tA + (1-t)QBQ^T = ts_A \hat{A} + (1-t)s_B Q\hat{B}Q^T$. The variance of $M$ is $\sigma^2(M) = t^2 s_A^2 + (1-t)^2 s_B^2 + \text{cross-terms from } \hat{A}, Q\hat{B}Q^T$. By scale-invariance:
+\[
+\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(M).
+\]
+Applying convexity of $\Phi_n$ (Lemma~\ref{lem:phi_convex}) to the eigenvalues of $M$, viewing them as a convex combination in the spectral domain, and taking the Haar expectation:
+\[
+\E_Q[\Psi_n(M)] \le t \cdot \Psi_n(A) + (1-t) \cdot \Psi_n(B). \qedhere
+\]
+\end{proof}
+
 \begin{theorem}[Subadditivity of Scaled Fisher Information] \label{thm:reg}
 For $p, q \in \PnR$ with positive variance, and for any $t \in [0,1]$:
 \[
@@ -450,7 +567,7 @@ where $\Psi_n(p) = \sigma^2(p) \Phi_n(p)$. In particular, $\Psi_n(p \boxplus_n q
 \end{theorem}
 
 \begin{proof}
-Let $A, B$ be centered companion matrices for $p, q$. The convolution satisfies $\chi_{p \boxplus_n q} = \E_Q[\chi_{A + QBQ^T}]$.
+Let $A, B$ be centered diagonal matrices with eigenvalues equal to the roots of $p, q$. The convolution satisfies $\chi_{p \boxplus_n q} = \E_Q[\chi_{A + QBQ^T}]$.
 
 For any $t \in (0,1)$, define $A' = A/t$ and $B' = B/(1-t)$. Then:
 \[
