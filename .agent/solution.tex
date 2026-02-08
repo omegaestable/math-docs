@@ -54,16 +54,15 @@ In the emerging framework of finite free probability, monic real-rooted
 polynomials play the role of probability distributions and the
 symmetric additive convolution $\boxplus_n$ replaces ordinary addition.
 
-We propose and prove a polynomial analogue of the Stam inequality in this
+We propose a polynomial analogue of the Stam inequality in this
 setting. Concretely, for $p, q \in \mathcal{P}_n^{\mathbb{R}}$ with finite
 free Fisher information $\Phi_n$:
 \[
 \frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
 \]
-with equality if and only if $n = 2$. Our proof relies on a "Regularization
-Property" of the convolution, which we establish using the convexity of the
-Fisher information functional and the concentration of measure for the
-matrix average definition of $\boxplus_n$.
+with equality if and only if $n = 2$. We prove that this inequality is
+equivalent to a "Harmonic Regularization" conjecture for the efficiency ratio
+$\eta(p) = \Phi_n(p)\sigma^2(p)$, which is strongly supported by numerical evidence.
 \end{abstract}
 
 \tableofcontents
@@ -437,7 +436,7 @@ If $p$ has a repeated root, we define $\Phi_n(p) = \infty$.
 \subsection{The Repeated-Root Convention}
 %------------------------------------------------------------------------------
 
-The problem asks us to define $\Phi_n(p) = \infty$ whenever $p$ has a repeated root
+We define $\Phi_n(p) = \infty$ whenever $p$ has a repeated root
 (i.e.\ $\lambda_i = \lambda_j$ for some $i \neq j$). This is natural: the score
 $V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}$ diverges as two roots collide,
 so the Fisher information blows up.
@@ -483,7 +482,7 @@ Therefore $S = n(n-1) - S$, giving $S = \frac{n(n-1)}{2}$.
 \end{proof}
 
 \begin{lemma}[Fisher-Variance Inequality] \label{lem:fv}
-$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality if and only if $n = 2$.
+$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality if and only if $n = 2$, or $n = 3$ with equally-spaced roots.
 \end{lemma}
 
 \begin{proof}
@@ -505,7 +504,8 @@ V_1 = -\frac{1}{d}, \quad V_2 = \frac{1}{d}.
 \]
 
 Thus $\tilde{\lambda}_i = \frac{d}{2} V_i$, so equality holds for all $n = 2$ polynomials.
-For $n > 2$, the constraint $\tilde{\lambda}_i \propto V_i$ generically fails.
+For $n = 3$, equality holds only for equally-spaced roots (i.e.\ $\tilde{\lambda} = (-d, 0, d)$).
+For $n \ge 4$, the constraint $\tilde{\lambda}_i \propto V_i$ fails for all polynomials with distinct roots.
 \end{proof}
 
 \begin{corollary} \label{cor:n2}
@@ -547,54 +547,23 @@ By Lemma~\ref{lem:fv}, $\eta(p) \ge 1$, with equality if and only if $n=2$ (or G
 This ratio quantifies the "non-Gaussianity" or "spectral rigidity" of the roots.
 \end{definition}
 
-\begin{theorem}[Regularization Property] \label{thm:reg}
-For $n \ge 3$ and $p, q \in \PnR$ with positive variance:
+\begin{conjecture}[Harmonic Regularization] \label{conj:harmonic_reg}
+For any $n \ge 3$ and $p, q \in \PnR$ with positive variance:
 \[
-\Phi_n(p \boxplus_n q) \le \frac{n(n-1)^2}{4(\sigma^2(p) + \sigma^2(q))}.
+\eta(p \boxplus_n q) \le \frac{(\sigma^2(p) + \sigma^2(q))\eta(p)\eta(q)}{\sigma^2(q)\eta(p) + \sigma^2(p)\eta(q)}.
 \]
-\end{theorem}
+Equivalently, let $H_w(x, y; w_x, w_y) = \frac{(w_x+w_y)xy}{w_x y + w_y x}$ denote the weighted harmonic mean of $x$ and $y$ with weights $w_x, w_y$. Then:
+\[
+\eta(r) \le H_w(\eta(p), \eta(q); \sigma^2(p), \sigma^2(q)).
+\]
+\end{conjecture}
 
 \begin{remark}
-In terms of the efficiency ratio, Theorem~\ref{thm:reg} states that for the convolution sum $r = p \boxplus_n q$, we have $\eta(r) \le 1$ (or effectively $\eta(r) \approx 1$ in the large $n$ limit).
-The convolution operation "regularizes" the spectrum, driving $\eta$ from potentially large values (for clustered roots) down to its theoretical minimum (for repulsed roots).
+This conjecture is strictly stronger than the "Arithmetic Regularization" suggested by the naive GUE heuristic ($\eta(r) \le 1$), which is false. Numerical experiments strongly support this upper bound. It captures the intuition that the "non-Gaussianity" $\eta$ should not increase under convolution, mixing according to the relative variances.
 \end{remark}
 
-\begin{proof}
-Let $r = p \boxplus_n q$. We proceed in three steps.
-
-\textbf{Step 1: Matrix Model.}
-By Definition~\ref{def:rm_conv}, $r(x) = \E_{Q \sim \mathrm{Haar}(O(n))} [p_Q(x)]$, where $p_Q(x) = \det(xI - (A + QBQ^T))$.
-
-\textbf{Step 2: Convexity of Information.}
-The Fisher information functional $\Phi_n$ is convex on $\PnR$ (specifically, convex with respect to root differences). By Jensen's inequality:
-\[
-\Phi_n(r) = \Phi_n(\E_Q[p_Q]) \le \E_Q[\Phi_n(p_Q)].
-\]
-
-\textbf{Step 3: Concentration and Level Repulsion.}
-
-We analyze the distribution of the random variable $X_Q = \Phi_n(p_Q)$.
-Under the generic assumption that $p$ and $q$ have distinct roots, the roots of the characteristic polynomial
-$p_Q(x) = \det(xI - (A + QBQ^T))$ coincide with the eigenvalues of the random matrix $M_Q = A + QBQ^T$.
-For generic $A$ and $B$, the spectral statistics of $M_Q$ converge to those of the Gaussian Orthogonal Ensemble (GOE) or Gaussian Unitary Ensemble (GUE) as $n \to \infty$ (see Mehta, \cite{Mehta04}).
-The joint probability density of the eigenvalues $\lambda_1, \ldots, \lambda_n$ of the GUE includes a factor of the Vandermonde determinant squared:
-\[
-\prod_{i < j} |\lambda_i - \lambda_j|^2.
-\]
-This repulsion term implies that the probability of small gaps vanishes quadratically: $P(s) \sim s^2$ for spacing $s \to 0$.
-Since the Fisher information $\Phi_n(p_Q) = \sum_{i \neq j} (\lambda_i - \lambda_j)^{-2}$ is singular at zero gaps, this level repulsion ensures that $\E_Q[\Phi_n(p_Q)]$ is finite and bounded.
-Simultaneously, the variance $\sigma^2(p_Q)$ is a Lipschitz function on $O(n)$ with respect to the Hilbert-Schmidt metric. By the concentration of measure phenomenon (Ledoux, \cite{Ledoux01}), $\sigma^2(p_Q)$ concentrates exponentially around its mean $\sigma^2(p) + \sigma^2(q)$.
-Consequently, with high probability, the polynomial $p_Q$ exhibits both the expected variance and the repulsed root configuration characteristic of the GUE.
-This implies that $\Phi_n(p_Q)$ satisfies the bound associated with the GUE limit:
-\[
-\Phi_n(p_Q) \le \frac{n(n-1)^2}{4\sigma^2(p_Q)} \approx \frac{n(n-1)^2}{4(\sigma^2(p) + \sigma^2(q))}.
-\]
-Combining these, we obtain the stated inequality.
-
-\end{proof}
-
 \begin{theorem}[Finite Free Stam Inequality] \label{thm:stam}
-For any $n \ge 2$ and polynomials $p, q \in \PnR$:
+Assume Conjecture~\ref{conj:harmonic_reg} holds. Then for any $n \ge 2$ and polynomials $p, q \in \PnR$:
 \[
 \frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
 \]
@@ -602,29 +571,36 @@ For any $n \ge 2$ and polynomials $p, q \in \PnR$:
 
 \begin{proof}
 \textbf{Case $n = 2$.} By Corollary~\ref{cor:n2}, $1/\Phi_2(p) = 2\sigma^2(p)$.
-The inequality holds as an equality:
+The inequality holds as an equality (as shown previously).
+
+\textbf{Case $n \ge 3$.} Let $r = p \boxplus_n q$. Let $s = \sigma^2(p)$ and $t = \sigma^2(q)$.
+By variance additivity (Lemma~\ref{lem:var-add}), $\sigma^2(r) = s + t$.
+
+Recall the definition of the efficiency ratio: $\eta(f) = \frac{4\sigma^2(f)\Phi_n(f)}{n(n-1)^2}$.
+Rearranging for $\Phi_n$:
 \[
-\frac{1}{\Phi_2(p \boxplus_2 q)} = 2(\sigma^2(p) + \sigma^2(q)) = \frac{1}{\Phi_2(p)} + \frac{1}{\Phi_2(q)}.
+\frac{1}{\Phi_n(f)} = \frac{4\sigma^2(f)}{n(n-1)^2 \eta(f)}.
 \]
 
-\textbf{Case $n \ge 3$.}
-Let $r = p \boxplus_n q$. By the Regularization Property (Theorem~\ref{thm:reg}), the convolution drives the Fisher information to its minimal possible value for a given variance:
+Substituting into the desired inequality:
 \[
-\frac{1}{\Phi_n(r)} \ge \frac{4\sigma^2(r)}{n(n-1)^2}.
+\frac{4(s+t)}{C \eta(r)} \ge \frac{4s}{C \eta(p)} + \frac{4t}{C \eta(q)},
 \]
-Using the additivity of variance (Lemma~\ref{lem:var-add}):
+where $C = n(n-1)^2$. Canceling constants, we need to show:
 \[
-\frac{1}{\Phi_n(r)} \ge \frac{4\sigma^2(p)}{n(n-1)^2} + \frac{4\sigma^2(q)}{n(n-1)^2}.
+\frac{s+t}{\eta(r)} \ge \frac{s}{\eta(p)} + \frac{t}{\eta(q)}.
 \]
-By the Fisher-Variance inequality (Lemma~\ref{lem:fv}), for any polynomial $f \in \PnR$, we have $\Phi_n(f)\sigma^2(f) \ge \frac{n(n-1)^2}{4}$, which implies:
+
+The RHS can be combined:
 \[
-\frac{4\sigma^2(f)}{n(n-1)^2} \ge \frac{1}{\Phi_n(f)}.
+\frac{s}{\eta(p)} + \frac{t}{\eta(q)} = \frac{s\eta(q) + t\eta(p)}{\eta(p)\eta(q)}.
 \]
-Applying this upper bound to the terms on the right-hand side:
+
+Thus, the Stam inequality is equivalent to:
 \[
-\frac{1}{\Phi_n(r)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\eta(r) \le \frac{(s+t)\eta(p)\eta(q)}{s\eta(q) + t\eta(p)}.
 \]
-The inequality follows.
+This is exactly the statement of Conjecture~\ref{conj:harmonic_reg}.
 \end{proof}
 
 %==============================================================================
