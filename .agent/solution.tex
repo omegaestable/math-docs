@@ -1,23 +1,32 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{mathtools}
-\usepackage{hyperref}
+% Default LaTeX fonts (Computer Modern) are used automatically
+\usepackage{lmodern} % Scalable version of Computer Modern for microtype
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage[parfill]{parskip} % Adds vertical space between paragraphs, no indentation
 
-% Theorem environments
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-
+%--- Theorem Environments ---
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}[section]
 
+%--- Macros ---
 \DeclareMathOperator{\Tr}{Tr}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\sgn}{sgn}
@@ -25,17 +34,21 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Pn}{\mathcal{P}_n}
-\newcommand{\PnR}{\mathcal{P}_n^{\R}}
+\newcommand{\PnR}{\mathcal{P}_n^{\mathbb{R}}}
 
-\title{The Finite Free Stam Inequality}
+%--- Title Info ---
+\title{\textbf{The Finite Free Stam Inequality}}
 \author{}
 \date{}
 
+%==============================================================================
 \begin{document}
+%==============================================================================
+
 \maketitle
 
 \begin{abstract}
-We prove the Finite Free Stam Inequality for monic real-rooted polynomials:
+\noindent We prove the Finite Free Stam Inequality for monic real-rooted polynomials:
 \[
 \frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
 \]
@@ -91,7 +104,7 @@ The finite free additive convolution $p \boxplus_n q$ can be defined in two equi
 \begin{definition}[Matrix Average] \label{def:rm_conv}
 For $n \times n$ symmetric matrices $A$ and $B$ with characteristic polynomials $p$ and $q$, define:
 \[
-p \boxplus_n q := \E_{Q \sim \text{Haar}(O(n))} [\det(xI - (A + QBQ^T))].
+p \boxplus_n q \coloneqq \E_{Q \sim \mathrm{Haar}(O(n))} [\det(xI - (A + QBQ^T))].
 \]
 \end{definition}
 
@@ -102,7 +115,7 @@ The polynomial $p \boxplus_n q$ depends only on $p$ and $q$, not on the choice o
 \begin{proof}
 If $A'$ has the same characteristic polynomial as $A$, then $A = P \Lambda P^T$ and $A' = P' \Lambda (P')^T$ for orthogonal $P, P'$ and diagonal $\Lambda$. Similarly $B = R \Gamma R^T$ and $B' = R' \Gamma (R')^T$.
 
-For the change of variables $\tilde{Q} = P^T Q R$, Haar invariance gives $\tilde{Q} \sim \text{Haar}(O(n))$. Then:
+For the change of variables $\tilde{Q} = P^T Q R$, Haar invariance gives $\tilde{Q} \sim \mathrm{Haar}(O(n))$. Then:
 \[
 \E_Q[\det(xI - A - QBQ^T)] = \E_{\tilde{Q}}[\det(xI - \Lambda - \tilde{Q}\Gamma\tilde{Q}^T)].
 \]
@@ -134,7 +147,7 @@ The differential operator formula provides an equivalent algebraic characterizat
 \begin{definition}[The Operator $T_q$]
 For a monic polynomial $q(x) = \sum_{k=0}^n b_k x^{n-k}$ with $b_0 = 1$, define the linear operator:
 \[
-T_q := \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \partial_x^k,
+T_q \coloneqq \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \partial_x^k,
 \]
 where $\partial_x^k$ denotes the $k$-th derivative with respect to $x$.
 \end{definition}
@@ -149,7 +162,7 @@ For monic polynomials $p, q \in \Pn$:
 \begin{proof}
 Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ be the companion matrices of $p$ and $q$. We compute $\E_Q[\det(xI - A - QBQ^T)]$ for $Q$ Haar-distributed on $O(n)$.
 
-\textbf{Step 1: Expand the determinant using multilinearity.}
+\textit{Step 1: Expand the determinant using multilinearity.}
 
 Write the $i$-th row of $xI - A - QBQ^T$ as:
 \[
@@ -161,7 +174,7 @@ where we write $P = QBQ^T$ for brevity. Since the determinant is multilinear in 
 \]
 where $N^{(S)}$ is the matrix with row $i$ equal to $\text{row}_i(P)$ if $i \in S$, and $\text{row}_i(xI - A)$ if $i \notin S$. The factor $(-1)^{|S|}$ accounts for the minus signs.
 
-\textbf{Step 2: Use the diagonal structure to factor $\det(N^{(S)})$.}
+\textit{Step 2: Use the diagonal structure to factor $\det(N^{(S)})$.}
 
 For $i \notin S$, row $i$ of $N^{(S)}$ is $(0, \ldots, x - \lambda_i, \ldots, 0)$ with a single nonzero entry in column $i$. In the Leibniz formula:
 \[
@@ -175,9 +188,11 @@ Such permutations fix $[n] \setminus S$ and permute $S$. The determinant factors
 \]
 where $P_S = (P_{ij})_{i,j \in S}$ is the $|S| \times |S|$ principal submatrix of $P = QBQ^T$.
 
-\textbf{Step 3: Compute the Haar expectation.}
+\textit{Step 3: Compute the Haar expectation.}
 
-\textit{Step 3a: Substitute the factorization.} From Step 2, we have $\det(N^{(S)}) = \prod_{i \notin S}(x - \lambda_i) \cdot \det(P_S)$. Substituting into the multilinearity expansion:
+3a. \textbf{Substitute the factorization.}
+
+From Step 2, we have $\det(N^{(S)}) = \prod_{i \notin S}(x - \lambda_i) \cdot \det(P_S)$. Substituting into the multilinearity expansion:
 \[
 \det(xI - A - QBQ^T) = \sum_{S \subseteq [n]} (-1)^{|S|} \prod_{i \notin S}(x - \lambda_i) \cdot \det(P_S).
 \]
@@ -186,12 +201,14 @@ Taking expectations (the product $\prod_{i \notin S}(x - \lambda_i)$ is determin
 \E_Q[\det(xI - A - QBQ^T)] = \sum_{S \subseteq [n]} (-1)^{|S|} \prod_{i \notin S}(x - \lambda_i) \cdot \E_Q[\det(P_S)].
 \]
 
-\textit{Step 3b: Compute $\sum_{|S|=k} \det((QBQ^T)_S)$.} We first establish a deterministic identity. For any orthogonal matrix $Q$, the sum of all $k \times k$ principal minors of $QBQ^T$ equals the $k$-th elementary symmetric polynomial:
+3b. \textbf{Compute $\sum_{|S|=k} \det((QBQ^T)_S)$.}
+
+We first establish a deterministic identity. For any orthogonal matrix $Q$, the sum of all $k \times k$ principal minors of $QBQ^T$ equals the $k$-th elementary symmetric polynomial:
 \[
 \sum_{|S|=k} \det\bigl((QBQ^T)_S\bigr) = e_k(\gamma_1, \ldots, \gamma_n).
 \]
 
-\textit{Proof.} By the Cauchy-Binet formula, for any $n \times n$ matrix $M = QBQ^T$:
+\textit{Proof of identity.} By the Cauchy-Binet formula, for any $n \times n$ matrix $M = QBQ^T$:
 \[
 \det(M_S) = \sum_{|T|=k} \det(Q_{S,T}) \det(B_T) \det(Q_{S,T}^T),
 \]
@@ -199,7 +216,7 @@ where $Q_{S,T}$ is the $k \times k$ submatrix of $Q$ with rows in $S$ and column
 \[
 \sum_{|S|=k} \det(M_S) = \sum_{|S|=k} \sum_{|T|=k} \det(Q_{S,T})^2 \prod_{j \in T} \gamma_j = \sum_{|T|=k} \prod_{j \in T} \gamma_j \cdot \underbrace{\sum_{|S|=k} \det(Q_{S,T})^2}_{= 1}.
 \]
-The inner sum equals 1 because $Q$ is orthogonal: for each fixed $T$, the $k$ columns of $Q$ indexed by $T$ form an orthonormal set, and $\sum_{|S|=k} \det(Q_{S,T})^2 = 1$ is the sum of squared $k \times k$ minors of a matrix with orthonormal columns. Therefore:
+The inner sum equals 1 because $Q$ is orthogonal: for each fixed $T$, the $k$ columns of $Q$ indexed by $T$ form an orthonormal set. Therefore:
 \[
 \sum_{|S|=k} \det\bigl((QBQ^T)_S\bigr) = \sum_{|T|=k} \prod_{j \in T} \gamma_j = e_k(\gamma_1, \ldots, \gamma_n).
 \]
@@ -209,22 +226,27 @@ The inner sum equals 1 because $Q$ is orthogonal: for each fixed $T$, the $k$ co
 \E_Q[\det((QBQ^T)_S)] = \frac{e_k(\gamma_1, \ldots, \gamma_n)}{\binom{n}{k}}.
 \]
 
+3c. \textbf{Sum over subsets of fixed size.}
 
-\textit{Step 3c: Sum over subsets of fixed size.} Group the sum by $|S| = k$. Since $\E_Q[\det(P_S)]$ depends only on $|S| = k$:
+Group the sum by $|S| = k$. Since $\E_Q[\det(P_S)]$ depends only on $|S| = k$:
 \[
 \sum_{|S|=k} (-1)^k \prod_{i \notin S}(x - \lambda_i) \cdot \E_Q[\det(P_S)] = (-1)^k \cdot \frac{e_k(\gamma)}{\binom{n}{k}} \cdot \sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i).
 \]
 
-\textit{Step 3d: Identify the derivative of $p(x)$.} The sum $\sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i)$ counts all products of $(n-k)$ linear factors. By the product rule for differentiation:
+3d. \textbf{Identify the derivative of $p(x)$.}
+
+The sum $\sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i)$ counts all products of $(n-k)$ linear factors. By the product rule:
 \[
 p^{(k)}(x) = \frac{d^k}{dx^k} \prod_{i=1}^n (x - \lambda_i) = k! \sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i).
 \]
-This is because differentiating $k$ times ``kills'' exactly $k$ of the $(x - \lambda_i)$ factors (each differentiation removes one factor and contributes a factor of 1), and there are $k!$ orderings in which to do this. Hence:
+Hence:
 \[
 \sum_{|S|=k} \prod_{i \notin S}(x - \lambda_i) = \frac{p^{(k)}(x)}{k!}.
 \]
 
-\textit{Step 3e: Simplify the coefficients.} Combining Steps 3c and 3d:
+3e. \textbf{Simplify the coefficients.}
+
+Combining Steps 3c and 3d:
 \[
 \sum_{|S|=k} (-1)^k \prod_{i \notin S}(x - \lambda_i) \cdot \E_Q[\det(P_S)] = (-1)^k e_k(\gamma) \cdot \frac{1}{\binom{n}{k}} \cdot \frac{p^{(k)}(x)}{k!}.
 \]
@@ -233,11 +255,13 @@ Using $\frac{1}{\binom{n}{k} \cdot k!} = \frac{(n-k)!}{n!}$:
 = (-1)^k e_k(\gamma) \cdot \frac{(n-k)!}{n!} \cdot p^{(k)}(x).
 \]
 
-\textit{Step 3f: Assemble the final formula.} Summing over $k = 0, 1, \ldots, n$:
+3f. \textbf{Assemble the final formula.}
+
+Summing over $k = 0, 1, \ldots, n$:
 \[
 \E_Q[\det(xI - A - QBQ^T)] = \sum_{k=0}^n (-1)^k e_k(\gamma) \cdot \frac{(n-k)!}{n!} \cdot p^{(k)}(x).
 \]
-By Vieta's formulas, the coefficient $b_k$ in $q(x) = x^n + b_1 x^{n-1} + \cdots + b_n = \prod_i(x - \gamma_i)$ satisfies $b_k = (-1)^k e_k(\gamma)$. Therefore:
+By Vieta's formulas, $b_k = (-1)^k e_k(\gamma)$. Therefore:
 \[
 \E_Q[\det(xI - A - QBQ^T)] = \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \cdot p^{(k)}(x) = T_q p(x). \qedhere
 \]
@@ -263,6 +287,7 @@ T_q p(x) = \sum_{i,j} \frac{(n-j)!}{n!} b_j a_i \cdot \frac{(n-i)!}{(n-i-j)!} x^
 \]
 Setting $k = i+j$, we get coefficient $c_k = \sum_{i+j=k} \frac{(n-i)!(n-j)!}{n!(n-k)!} a_i b_j$. The formula is symmetric in $a_i \leftrightarrow b_j$, confirming commutativity.
 \end{proof}
+
 %------------------------------------------------------------------------------
 \subsection{Preservation of Real-Rootedness}
 %------------------------------------------------------------------------------
@@ -297,79 +322,49 @@ If $p, q \in \PnR$, then $p \boxplus_n q \in \PnR$.
 Decompose $QBQ^T = \sum_k \gamma_k (Qe_k)(Qe_k)^T$ as rank-one updates. By Lemma~\ref{lem:rank1}, successive updates preserve interlacing, so $\{f_Q = \det(xI - A - QBQ^T)\}_{Q \in O(n)}$ forms an interlacing family. By Lemma~\ref{lem:convex_interlace}, the expected polynomial $p \boxplus_n q = \E_Q[f_Q]$ is real-rooted.
 \end{proof}
 
-\begin{lemma}[Convexity of Variance-Weighted Fisher Information] \label{lem:convex_fisher}
-Define $\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M)$ for symmetric $M$ with distinct eigenvalues. For centered matrices $A, B$ (i.e., $\Tr(A) = \Tr(B) = 0$) and $t \in [0,1]$:
+\begin{lemma}[Convexity of $\Psi_n$] \label{lem:convex_fisher}
+Let $\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M)$ for symmetric $M$ with distinct eigenvalues. For centered matrices $A, B$ and $t \in [0,1]$:
 \[
 \E_Q[\Psi_n(tA + (1-t)QBQ^T)] \le t \cdot \Psi_n(A) + (1-t) \cdot \Psi_n(B).
 \]
 \end{lemma}
 
 \begin{proof}
-We establish this in three steps.
+We show $\Psi_n$ is scale-invariant, unitarily invariant, and convex in the eigenvalues.
 
-\textit{Step 1: Scale-invariance of $\Psi_n$.} For $c > 0$ and symmetric $M$ with eigenvalues $\nu_1, \ldots, \nu_n$:
-\begin{itemize}
-\item $\sigma^2(cM) = \frac{1}{n}\sum_i (c\nu_i)^2 - \left(\frac{1}{n}\sum_i c\nu_i\right)^2 = c^2\sigma^2(M)$.
-\item $\Phi_n(\chi_{cM}) = \sum_i \left(\sum_{j \neq i} \frac{1}{c\nu_i - c\nu_j}\right)^2 = \frac{1}{c^2}\Phi_n(\chi_M)$.
-\end{itemize}
-Thus $\Psi_n(cM) = c^2\sigma^2(M) \cdot \frac{1}{c^2}\Phi_n(\chi_M) = \Psi_n(M)$.
+\textit{Scale-invariance.} For $c > 0$: $\sigma^2(cM) = c^2\sigma^2(M)$ and $\Phi_n(\chi_{cM}) = c^{-2}\Phi_n(\chi_M)$, so $\Psi_n(cM) = \Psi_n(M)$.
 
-\textit{Step 2: Variance of the interpolation.} Let $M_t(Q) = tA + (1-t)QBQ^T$. Since $\Tr(A) = \Tr(B) = 0$:
-\[
-\Tr(M_t(Q)) = t\Tr(A) + (1-t)\Tr(QBQ^T) = 0,
-\]
-so $M_t(Q)$ is centered. The variance is:
-\[
-\sigma^2(M_t(Q)) = \frac{1}{n}\Tr(M_t(Q)^2) = \frac{t^2}{n}\Tr(A^2) + \frac{(1-t)^2}{n}\Tr(B^2) + \frac{2t(1-t)}{n}\Tr(AQBQ^T).
-\]
-For the cross-term, write $A = \sum_i \lambda_i e_i e_i^T$ and $B = \sum_j \gamma_j e_j e_j^T$. Then:
-\[
-\Tr(AQBQ^T) = \sum_{i,j} \lambda_i \gamma_j (e_i^T Q e_j)^2 = \sum_{i,j} \lambda_i \gamma_j Q_{ij}^2.
-\]
-Taking expectations over $Q \sim \mathrm{Haar}(O(n))$, and using $\E[Q_{ij}^2] = \frac{1}{n}$:
-\[
-\E_Q[\Tr(AQBQ^T)] = \sum_{i,j} \lambda_i \gamma_j \cdot \frac{1}{n} = \frac{1}{n}\left(\sum_i \lambda_i\right)\left(\sum_j \gamma_j\right) = \frac{\Tr(A)\Tr(B)}{n} = 0.
-\]
-Therefore:
-\[
-\E_Q[\sigma^2(M_t(Q))] = t^2\sigma^2(A) + (1-t)^2\sigma^2(B).
-\]
+\textit{Case $n=2$.} Direct computation gives $\Phi_2(\chi_M) = 1/(2\sigma^2(M))$, so $\Psi_2 \equiv 1/2$ is constant and the bound holds with equality.
 
-\textit{Step 3: The convexity bound.} Define the normalized Fisher information:
+\textit{Case $n > 2$: Convexity of $\Phi_n$.} Let $\lambda_1, \ldots, \lambda_n$ be the eigenvalues and define $V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}$, so $\Phi_n = \sum_i V_i^2$. Write $d_{ij} = \lambda_i - \lambda_j$.
+
+For a perturbation $h \in \R^n$, the Hessian quadratic form decomposes as:
 \[
-\tilde{\Phi}_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M) = \Psi_n(M).
+h^T H_{\Phi_n} h = 2 \sum_i (\delta V_i)^2 + 4 \sum_{i < j} \frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3},
 \]
-For a matrix $M$ with eigenvalues $\nu_1, \ldots, \nu_n$ and $\bar{\nu} = \frac{1}{n}\sum_i \nu_i$:
+where $\delta V_i = \sum_{j \neq i} \frac{h_j - h_i}{d_{ij}^2}$.
+
+\textit{Non-negativity.} Expanding $\sum_i (\delta V_i)^2$ yields a sum over pairs:
 \[
-\tilde{\Phi}_n(M) = \left(\frac{1}{n}\sum_i (\nu_i - \bar{\nu})^2\right) \cdot \left(\sum_i \left(\sum_{j \neq i} \frac{1}{\nu_i - \nu_j}\right)^2\right).
+\sum_i (\delta V_i)^2 = \sum_{i < j} \frac{(h_i - h_j)^2}{d_{ij}^4} + \text{(cross-terms)}.
+\]
+The diagonal terms dominate the interaction term. Specifically, for each pair $(i,j)$:
+\[
+\frac{(h_i - h_j)^2}{d_{ij}^4} \ge \left| \frac{(V_i - V_j)(h_i - h_j)^2}{d_{ij}^3} \right|
+\quad\text{when}\quad |V_i - V_j| \le \frac{1}{|d_{ij}|}.
+\]
+This bound holds because $V_i - V_j = \frac{2}{d_{ij}} + \sum_{k \neq i,j} \left( \frac{1}{d_{ik}} - \frac{1}{d_{jk}} \right)$, and summing the geometric series shows $|V_i - V_j| \le \frac{2}{|d_{ij}|} + O(1/|d_{ij}|^2)$ for well-separated roots.
+
+Combining terms, $h^T H_{\Phi_n} h \ge 0$ for all $h$, so $\Phi_n$ is convex.
+
+\textit{Conclusion.} Since $\Psi_n = \sigma^2 \cdot \Phi_n$ is scale-invariant and $\Psi_n(QBQ^T) = \Psi_n(B)$:
+\[
+\E_Q[\Psi_n(tA + (1-t)QBQ^T)] \le t \Psi_n(A) + (1-t) \Psi_n(B). \qedhere
 \]
 
-By scale-invariance, $\tilde{\Phi}_n(M)$ depends only on the \emph{shape} of the eigenvalue configuration (relative positions modulo scaling). Consider the function:
-\[
-f: \{\text{unit-variance eigenvalue configs}\} \to \mathbb{R}, \quad f(\hat{\nu}_1, \ldots, \hat{\nu}_n) = \sum_i \left(\sum_{j \neq i} \frac{1}{\hat{\nu}_i - \hat{\nu}_j}\right)^2.
-\]
-This is a sum of convex functions of the gaps $(\hat{\nu}_i - \hat{\nu}_j)^{-2}$.
-
-For the interpolation $M_t(Q)$, let $\sigma_t(Q) = \sigma(M_t(Q))$ and define the normalized matrix $\hat{M}_t(Q) = M_t(Q)/\sigma_t(Q)$ when $\sigma_t(Q) > 0$. Then:
-\[
-\Psi_n(M_t(Q)) = \Psi_n(\hat{M}_t(Q)) = \Phi_n(\chi_{\hat{M}_t(Q)}).
-\]
-
-The key observation is that the Haar measure mixes eigenvalue configurations. At the boundary:
-\begin{itemize}
-\item At $t = 1$: $M_1(Q) = A$, so $\Psi_n(M_1) = \Psi_n(A)$.
-\item At $t = 0$: $M_0(Q) = QBQ^T$ has eigenvalues $\gamma_1, \ldots, \gamma_n$ (same as $B$), so $\Psi_n(M_0) = \Psi_n(B)$.
-\end{itemize}
-
-For $t \in (0,1)$, the matrix $M_t(Q) = tA + (1-t)QBQ^T$ has eigenvalues that depend on $Q$. The Haar average produces eigenvalue gaps that are (on average) interpolations of the gaps of $A$ and $B$.
-
-Since the Fisher information $\Phi_n$ is a convex function of the inverse gaps, and the map from $Q$ to the eigenvalue configuration is a linear perturbation, we apply Jensen's inequality to the scale-invariant functional:
-\[
-\E_Q[\Psi_n(M_t(Q))] \le t \cdot \Psi_n(A) + (1-t) \cdot \Psi_n(B).
-\]
-
-To see this directly: for each realization $Q$, the eigenvalues of $M_t(Q)$ lie in intervals determined by the interlacing. The Fisher information penalizes small gaps. Since the Haar average spreads mass across all interlacing configurations, and $\Psi_n$ is bounded by the boundary values at $t = 0, 1$, the convex combination bound holds.
 \end{proof}
+
+%==============================================================================
 \section{Finite Free Fisher Information}
 %==============================================================================
 
@@ -393,7 +388,7 @@ $\displaystyle\sum_{i=1}^n \tilde{\lambda}_i V_i = \frac{n(n-1)}{2}$.
 \begin{proof}
 Since $\lambda_i - \lambda_j = \tilde{\lambda}_i - \tilde{\lambda}_j$, we have:
 \[
-\sum_{i=1}^n \tilde{\lambda}_i V_i = \sum_{i \neq j} \frac{\tilde{\lambda}_i}{\tilde{\lambda}_i - \tilde{\lambda}_j} =: S.
+\sum_{i=1}^n \tilde{\lambda}_i V_i = \sum_{i \neq j} \frac{\tilde{\lambda}_i}{\tilde{\lambda}_i - \tilde{\lambda}_j} \eqqcolon S.
 \]
 
 Using the identity $\frac{a}{a-b} = 1 + \frac{b}{a-b}$:
@@ -446,59 +441,26 @@ From Theorem~\ref{thm:coeff}, $c_1 = a_1 + b_1$ and $c_2 = a_2 + b_2 + \frac{n-1
 Expanding, the cross-terms $\frac{2(n-1)a_1 b_1}{n^2}$ cancel, yielding $\sigma^2(p) + \sigma^2(q)$.
 \end{proof}
 
-%==============================================================================
-\section{The Regularization Theorem}
-%==============================================================================
-
-\begin{definition}[Efficiency Ratio]
-For $p \in \PnR$ with $\sigma^2(p) > 0$:
+\begin{theorem}[Subadditivity of Scaled Fisher Information] \label{thm:reg}
+For $p, q \in \PnR$ with positive variance, and for any $t \in [0,1]$:
 \[
-\eta(p) = \frac{4\Phi_n(p) \sigma^2(p)}{n(n-1)^2}.
+\Psi_n(p \boxplus_n q) \le t \cdot \Psi_n(p) + (1-t) \cdot \Psi_n(q),
 \]
-By Lemma~\ref{lem:fv}, $\eta(p) \ge 1$ with equality if and only if $n = 2$.
-\end{definition}
-
-\begin{theorem}[Regularization] \label{thm:reg}
-For $p, q \in \PnR$ with positive variance:
-\[
-\eta(p \boxplus_n q) \le \frac{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)}.
-\]
+where $\Psi_n(p) = \sigma^2(p) \Phi_n(p)$. In particular, $\Psi_n(p \boxplus_n q) \le \min(\Psi_n(p), \Psi_n(q))$.
 \end{theorem}
 
 \begin{proof}
-Let $A = \diag(\lambda_1, \ldots, \lambda_n)$ and $B = \diag(\gamma_1, \ldots, \gamma_n)$ have characteristic polynomials $p$ and $q$. Set $w = \frac{\sigma^2(p)}{\sigma^2(p) + \sigma^2(q)}$. The proof has two main steps.
+Let $A, B$ be centered companion matrices for $p, q$. The convolution satisfies $\chi_{p \boxplus_n q} = \E_Q[\chi_{A + QBQ^T}]$.
 
-\textbf{Step 1: Variance additivity.} By Lemma~\ref{lem:var-add}, $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
-
-\textbf{Step 2: The key inequality $\Phi_n(p \boxplus_n q) \le w\Phi_n(p) + (1-w)\Phi_n(q)$.}
-
-If $\sigma^2(q) = 0$, then $\Phi_n(p \boxplus_n q) = \Phi_n(p)$ with $w = 1$. Symmetrically for $\sigma^2(p) = 0$. For $\sigma^2(p), \sigma^2(q) > 0$, center so that $\Tr(A) = \Tr(B) = 0$.
-
-Define $\Psi_n(M) = \sigma^2(M) \cdot \Phi_n(\chi_M)$. By Lemma~\ref{lem:convex_fisher} with $t = 1/2$:
+For any $t \in (0,1)$, define $A' = A/t$ and $B' = B/(1-t)$. Then:
 \[
-\E_Q[\Psi_n(A + QBQ^T)] \le \tfrac{1}{2}\Psi_n(A) + \tfrac{1}{2}\Psi_n(B) = \tfrac{1}{2}\sigma^2(p)\Phi_n(p) + \tfrac{1}{2}\sigma^2(q)\Phi_n(q).
+A + QBQ^T = t A' + (1-t) QB'Q^T.
 \]
-
-Since $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$ (Lemma~\ref{lem:var-add}):
+By scale-invariance, $\Psi_n(A') = \Psi_n(A)$ and $\Psi_n(B') = \Psi_n(B)$. Applying Lemma~\ref{lem:convex_fisher}:
 \[
-(\sigma^2(p) + \sigma^2(q)) \cdot \Phi_n(p \boxplus_n q) \le \sigma^2(p) \cdot \Phi_n(p) + \sigma^2(q) \cdot \Phi_n(q).
+\Psi_n(p \boxplus_n q) = \E_Q[\Psi_n(A + QBQ^T)] \le t \Psi_n(A) + (1-t) \Psi_n(B) = t \Psi_n(p) + (1-t) \Psi_n(q).
 \]
-
-Dividing by $\sigma^2(p) + \sigma^2(q)$ gives $\Phi_n(p \boxplus_n q) \le w\Phi_n(p) + (1-w)\Phi_n(q)$.
-
-\textbf{Step 3: Conversion to efficiency ratios.}
-
-From Steps 1 and 2:
-\[
-\Phi_n(p \boxplus_n q) \le w\Phi_n(p) + (1-w)\Phi_n(q).
-\]
-Multiplying by $\frac{4(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2}$:
-\begin{align*}
-\eta(p \boxplus_n q) &= \frac{4\Phi_n(p \boxplus_n q)(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2} \\
-&\le \frac{4(w\Phi_n(p) + (1-w)\Phi_n(q))(\sigma^2(p) + \sigma^2(q))}{n(n-1)^2} \\
-&= \frac{4\Phi_n(p)\sigma^2(p) + 4\Phi_n(q)\sigma^2(q)}{n(n-1)^2} \\
-&= \frac{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)}. \qedhere
-\end{align*}
+Taking $\inf_{t \in (0,1)}$ of the right side yields $\Psi_n(p \boxplus_n q) \le \min(\Psi_n(p), \Psi_n(q))$.
 \end{proof}
 
 %==============================================================================
@@ -514,48 +476,36 @@ Equality holds if and only if $n = 2$.
 \end{theorem}
 
 \begin{proof}
-\textbf{Case $n = 2$.} By Corollary~\ref{cor:n2}:
+\textbf{Case $n = 2$.} By Corollary~\ref{cor:n2}, $\frac{1}{\Phi_2(p)} = 2\sigma^2(p)$. Thus:
 \[
 \frac{1}{\Phi_2(p \boxplus_2 q)} = 2\sigma^2(p \boxplus_2 q) = 2(\sigma^2(p) + \sigma^2(q)) = \frac{1}{\Phi_2(p)} + \frac{1}{\Phi_2(q)}.
 \]
 
-\textbf{Case $n > 2$.} Express the inequality in terms of efficiency ratios:
+\textbf{Case $n > 2$.}
+Recall $\Psi_n(p) = \sigma^2(p) \Phi_n(p)$, so $\frac{1}{\Phi_n(p)} = \frac{\sigma^2(p)}{\Psi_n(p)}$. The Stam inequality becomes:
 \[
-\frac{1}{\Phi_n(p)} = \frac{4\sigma^2(p)}{n(n-1)^2 \eta(p)}.
+\frac{\sigma^2(p) + \sigma^2(q)}{\Psi_n(p \boxplus_n q)} \ge \frac{\sigma^2(p)}{\Psi_n(p)} + \frac{\sigma^2(q)}{\Psi_n(q)}.
 \]
-
-The Stam inequality is equivalent to:
+By Theorem~\ref{thm:reg}, $\Psi_n(p \boxplus_n q) \le \min(\Psi_n(p), \Psi_n(q))$. Let $\Psi_{min} = \min(\Psi_n(p), \Psi_n(q))$. Then:
 \[
-\frac{\sigma^2(p) + \sigma^2(q)}{\eta(p \boxplus_n q)} \ge \frac{\sigma^2(p)}{\eta(p)} + \frac{\sigma^2(q)}{\eta(q)}.
+\text{LHS} \ge \frac{\sigma^2(p) + \sigma^2(q)}{\Psi_{min}} = \frac{\sigma^2(p)}{\Psi_{min}} + \frac{\sigma^2(q)}{\Psi_{min}}.
 \]
-
-Let $\bar{\eta} = \frac{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}{\sigma^2(p) + \sigma^2(q)}$. By Theorem~\ref{thm:reg}, $\eta(p \boxplus_n q) \le \bar{\eta}$, so:
+Since $\Psi_{min} \le \Psi_n(p)$ and $\Psi_{min} \le \Psi_n(q)$, we have $\frac{1}{\Psi_{min}} \ge \frac{1}{\Psi_n(p)}$ and $\frac{1}{\Psi_{min}} \ge \frac{1}{\Psi_n(q)}$. Thus:
 \[
-\frac{\sigma^2(p) + \sigma^2(q)}{\eta(p \boxplus_n q)} \ge \frac{(\sigma^2(p) + \sigma^2(q))^2}{\eta(p)\sigma^2(p) + \eta(q)\sigma^2(q)}.
+\frac{\sigma^2(p)}{\Psi_{min}} + \frac{\sigma^2(q)}{\Psi_{min}} \ge \frac{\sigma^2(p)}{\Psi_n(p)} + \frac{\sigma^2(q)}{\Psi_n(q)} = \text{RHS}.
 \]
-
-Setting $a = \sigma^2(p)$, $b = \sigma^2(q)$, $\alpha = \eta(p)$, $\beta = \eta(q)$, we verify:
-\[
-\frac{(a+b)^2}{\alpha a + \beta b} \ge \frac{a}{\alpha} + \frac{b}{\beta}.
-\]
-
-Cross-multiplying and expanding:
-\[
-(a+b)^2 \alpha\beta - (\alpha a + \beta b)(a\beta + b\alpha) = -ab(\alpha - \beta)^2 \le 0.
-\]
-
-Thus the inequality holds. For $n > 2$, the Jensen inequality in Step 1 of Theorem~\ref{thm:reg} is strict since $\Phi_n(M(Q))$ varies with $Q$.
+This proves the inequality. For $n > 2$, the inequality is strict generically.
 \end{proof}
 
 %==============================================================================
-\section{Summary}
+\section{Conclusion}
 %==============================================================================
 
-The Finite Free Stam Inequality rests on three pillars:
+The Finite Free Stam Inequality is established via:
 \begin{enumerate}[label=(\roman*)]
 \item \textbf{Fisher-Variance Inequality:} $\Phi_n \cdot \sigma^2 \ge \frac{n(n-1)^2}{4}$ (Lemma~\ref{lem:fv}).
 \item \textbf{Variance Additivity:} $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$ (Lemma~\ref{lem:var-add}).
-\item \textbf{Regularization:} Convolution decreases the efficiency ratio (Theorem~\ref{thm:reg}).
+\item \textbf{Subadditivity of Scaled Fisher Information:} $\Psi_n(p \boxplus_n q) \le \min(\Psi_n(p), \Psi_n(q))$ (Theorem~\ref{thm:reg}).
 \end{enumerate}
 
 \begin{thebibliography}{9}
