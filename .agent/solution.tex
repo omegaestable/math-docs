@@ -407,48 +407,12 @@ While this decomposition argument is intuitively appealing and standard in diffu
 
 
 %==============================================================================
-\section{The Harmonic Regularization Property}
-%==============================================================================
-
-The Stam inequality admits an elegant reformulation in terms of the efficiency ratio.
-
-\begin{definition}[Efficiency Ratio]
-For $p \in \PnR$ with $\sigma^2(p) > 0$:
-\[
-\eta(p) = \frac{4\Phi_n(p) \sigma^2(p)}{n(n-1)^2}.
-\]
-By Lemma~\ref{lem:fv}, $\eta(p) \ge 1$ with equality iff $n = 2$.
-\end{definition}
-
-\begin{theorem}[Harmonic Regularization] \label{thm:harmonic_reg}
-The Stam inequality is equivalent to:
-\[
-\eta(p \boxplus_n q) \le \frac{(\sigma^2(p) + \sigma^2(q))\eta(p)\eta(q)}{\sigma^2(q)\eta(p) + \sigma^2(p)\eta(q)}.
-\]
-This is the weighted harmonic mean of $\eta(p)$ and $\eta(q)$ with weights 
-$\sigma^2(p)$ and $\sigma^2(q)$.
-\end{theorem}
-
-\begin{proof}
-Setting $a = \sigma^2(p)$, $b = \sigma^2(q)$, $\alpha = \eta(p)$, $\beta = \eta(q)$,
-$\gamma = \eta(p \boxplus_n q)$, and using $\sigma^2(p \boxplus_n q) = a + b$:
-
-The Stam inequality is:
-\[
-\frac{a+b}{\gamma} \cdot \frac{4}{n(n-1)^2} \ge \frac{a}{\alpha} \cdot \frac{4}{n(n-1)^2} + \frac{b}{\beta} \cdot \frac{4}{n(n-1)^2}.
-\]
-Simplifying: $\frac{a+b}{\gamma} \ge \frac{a}{\alpha} + \frac{b}{\beta}$.
-
-Rearranging: $\gamma \le \frac{(a+b)\alpha\beta}{a\beta + b\alpha}$, which is the claimed bound.
-\end{proof}
-
-%==============================================================================
 \section{Conclusion}
 %==============================================================================
 
-The Finite Free Stam Inequality reveals a fundamental property of the symmetric 
-additive convolution: it regularizes root configurations in a way that reduces 
-Fisher information harmonically. The proof rests on three pillars:
+The Finite Free Stam Inequality reveals a fundamental property of the symmetric
+additive convolution: it regularizes root configurations in a way that reduces
+Fisher information. The proof rests on three pillars:
 
 \begin{enumerate}[label=(\roman*)]
 \item \textbf{Score-Root Identity:} $\sum_i \tilde{\lambda}_i V_i = \frac{n(n-1)}{2}$.
