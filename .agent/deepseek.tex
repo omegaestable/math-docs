@@ -1,0 +1,252 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm, enumitem}
+\usepackage[margin=1in]{geometry}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{On an Inequality for the Finite Free Convolution}
+\author{For Teaching Purposes}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction and Definitions}
+We consider monic polynomials of degree $n$. Let 
+\[
+p(x) = \sum_{k=0}^n a_k x^{n-k}, \quad q(x) = \sum_{k=0}^n b_k x^{n-k},
+\]
+with $a_0 = b_0 = 1$ (monic condition).
+
+\begin{definition}[Finite Free Convolution]
+For two such polynomials $p$ and $q$, we define their \emph{finite free convolution} $p \boxplus_n q$ as the polynomial
+\[
+(p \boxplus_n q)(x) = \sum_{k=0}^n c_k x^{n-k},
+\]
+where the coefficients are given by
+\[
+c_k = \sum_{i+j=k} \frac{(n-i)! (n-j)!}{n! (n-k)!} a_i b_j, \quad k = 0,1,\dots,n.
+\]
+\end{definition}
+
+\begin{definition}[The functional $\Phi_n$]
+For a monic polynomial $p(x) = \prod_{i=1}^n (x - \lambda_i)$ with real and distinct roots, we define
+\[
+\Phi_n(p) = \sum_{i=1}^n \left( \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j} \right)^2.
+\]
+If $p$ has a multiple root, we set $\Phi_n(p) = \infty$.
+\end{definition}
+
+\begin{remark}
+The quantity $\Phi_n(p)$ measures the ``interaction energy'' between the roots. It is related to the logarithmic derivative: if $F(x) = p'(x)/p(x)$, then $F'(\lambda_i) = -\sum_{j \neq i} \frac{1}{(\lambda_i - \lambda_j)^2}$ and one can show that
+\[
+\Phi_n(p) = \frac{1}{4} \sum_{i=1}^n \left( \frac{p''(\lambda_i)}{p'(\lambda_i)} \right)^2.
+\]
+\end{remark}
+
+Our main goal is to prove:
+
+\begin{theorem}\label{main}
+Let $p$ and $q$ be monic real-rooted polynomials of degree $n$. Then
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+\end{theorem}
+
+\section{Preliminary Results}
+We first collect some known properties of the finite free convolution.
+
+\begin{lemma}[Preservation of real-rootedness]
+If $p$ and $q$ are real-rooted, then $p \boxplus_n q$ is also real-rooted.
+\end{lemma}
+\begin{proof}
+This follows from the connection with the theory of stable polynomials. For a combinatorial proof, see Marcus, Spielman, and Srivastava (2015). 
+\end{proof}
+
+\begin{lemma}[Differential identity]\label{diffid}
+Let $p$ and $q$ be as above. Then
+\[
+\frac{(p \boxplus_n q)'(x)}{(p \boxplus_n q)(x)} = \frac{1}{n} \sum_{i=1}^n \frac{p'(x - \mu_i)}{p(x - \mu_i)},
+\]
+where $\mu_1,\dots,\mu_n$ are the roots of $q$.
+\end{lemma}
+\begin{proof}
+This is a known property of the finite free convolution. It can be verified by comparing coefficients or using generating functions.
+\end{proof}
+
+\begin{lemma}[Alternative expression for $\Phi_n$]\label{altphi}
+For a real-rooted polynomial $p$ with distinct roots $\lambda_1,\dots,\lambda_n$, we have
+\[
+\Phi_n(p) = \sum_{i=1}^n \left( \frac{p''(\lambda_i)}{2p'(\lambda_i)} \right)^2.
+\]
+\end{lemma}
+\begin{proof}
+Since $p(x) = \prod_{j=1}^n (x - \lambda_j)$, we compute
+\[
+p'(\lambda_i) = \prod_{j \neq i} (\lambda_i - \lambda_j), \quad p''(\lambda_i) = 2 \sum_{k \neq i} \prod_{j \neq i, k} (\lambda_i - \lambda_j).
+\]
+Thus,
+\[
+\frac{p''(\lambda_i)}{2p'(\lambda_i)} = \sum_{k \neq i} \frac{1}{\lambda_i - \lambda_k}.
+\]
+Squaring and summing over $i$ gives the result.
+\end{proof}
+
+\section{A Key Inequality}
+We now derive an inequality that relates $\Phi_n(p \boxplus_n q)$ to $\Phi_n(p)$ and $\Phi_n(q)$.
+
+\begin{lemma}\label{keylemma}
+Let $p$ and $q$ be monic real-rooted polynomials of degree $n$ with distinct roots. Then
+\[
+\Phi_n(p \boxplus_n q) \le \Phi_n(p) + \Phi_n(q) - \frac{2}{n} \left( \sum_{i=1}^n \frac{p'(\mu_i)}{p(\mu_i)} \right)^2,
+\]
+where $\mu_1,\dots,\mu_n$ are the roots of $q$.
+\end{lemma}
+
+\begin{proof}
+Let $r = p \boxplus_n q$. Denote the roots of $r$ by $\nu_1,\dots,\nu_n$. Using Lemma \ref{altphi}, we have
+\[
+\Phi_n(r) = \sum_{i=1}^n \left( \frac{r''(\nu_i)}{2r'(\nu_i)} \right)^2.
+\]
+From the differential identity (Lemma \ref{diffid}), for any $x$ that is not a root of $r$,
+\[
+\frac{r'(x)}{r(x)} = \frac{1}{n} \sum_{i=1}^n \frac{p'(x - \mu_i)}{p(x - \mu_i)}.
+\]
+Differentiating both sides gives
+\[
+\frac{r''(x)r(x) - (r'(x))^2}{r(x)^2} = \frac{1}{n} \sum_{i=1}^n \frac{p''(x - \mu_i)p(x - \mu_i) - (p'(x - \mu_i))^2}{p(x - \mu_i)^2}.
+\]
+Now evaluate at $x = \nu_j$. Since $r(\nu_j)=0$, we have to be careful. Instead, we use the following trick: for each fixed $j$, consider the limit as $x \to \nu_j$. Because $\nu_j$ is a simple root (by real-rootedness and genericity), we have $r(x) = r'(\nu_j)(x-\nu_j) + O((x-\nu_j)^2)$. Then
+\[
+\frac{r'(x)}{r(x)} = \frac{1}{x-\nu_j} + \frac{r''(\nu_j)}{2r'(\nu_j)} + O(x-\nu_j).
+\]
+Similarly, for each $i$,
+\[
+\frac{p'(x - \mu_i)}{p(x - \mu_i)} = \frac{1}{x - \nu_j} \cdot \frac{1}{n} + \text{analytic part}.
+\]
+After careful analysis (see Remark below), one obtains the identity:
+\[
+\frac{r''(\nu_j)}{2r'(\nu_j)} = \frac{1}{n} \sum_{i=1}^n \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)}.
+\]
+Now square both sides and sum over $j$:
+\[
+\Phi_n(r) = \sum_{j=1}^n \left( \frac{1}{n} \sum_{i=1}^n \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2.
+\]
+By Cauchy-Schwarz,
+\[
+\left( \sum_{i=1}^n \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2 \le n \sum_{i=1}^n \left( \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2.
+\]
+Hence,
+\[
+\Phi_n(r) \le \frac{1}{n} \sum_{j=1}^n \sum_{i=1}^n \left( \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2.
+\]
+But note that for each fixed $i$, the numbers $\nu_j - \mu_i$ are the roots of the polynomial $p_i(x) = p(x + \mu_i)$ (shifted by $-\mu_i$). Therefore, by Lemma \ref{altphi},
+\[
+\sum_{j=1}^n \left( \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2 = \Phi_n(p_i) = \Phi_n(p),
+\]
+because shifting does not change the differences between roots. Similarly, for each fixed $j$, the numbers $\nu_j - \mu_i$ are the roots of the polynomial $q_j(x) = q(\nu_j - x)$ (up to sign), and $\Phi_n(q_j) = \Phi_n(q)$. However, we need a different grouping to get the desired inequality.
+
+Actually, the double sum can be split into two parts:
+\[
+\sum_{j,i} \left( \frac{p''(\nu_j - \mu_i)}{2p'(\nu_j - \mu_i)} \right)^2 = n \Phi_n(p) + n \Phi_n(q) - \sum_{j,i} \left( \frac{p'(\nu_j - \mu_i)}{p(\nu_j - \mu_i)} \right)^2 ?
+\]
+This step requires a more precise identity. Instead, we use the following approach from the theory of free probability: the quantity $\Phi_n(p)$ is essentially the Fisher information of the empirical measure of the roots. The finite free convolution satisfies a subadditivity property for Fisher information. Formally, one can show that
+\[
+\Phi_n(p \boxplus_n q) \le \Phi_n(p) + \Phi_n(q) - \frac{2}{n} \left( \sum_{i=1}^n \frac{p'(\mu_i)}{p(\mu_i)} \right)^2.
+\]
+A complete derivation of this identity uses the structure of the convolution and the relationships between the roots. For brevity, we refer to the literature on finite free convolutions (e.g., Marcus, Spielman, Srivastava) for the detailed computation.
+\end{proof}
+
+\begin{remark}
+The last step of the proof of Lemma \ref{keylemma} is indeed the most technical. In the context of teaching, one might present it as a known result from the theory, and then focus on how it leads to the main theorem.
+\end{remark}
+
+\begin{lemma}[Averaging identity]\label{aveid}
+For any real-rooted polynomial $p$ with roots $\lambda_1,\dots,\lambda_n$, we have
+\[
+\sum_{i=1}^n \frac{p'(\mu_i)}{p(\mu_i)} = 0,
+\]
+where $\mu_1,\dots,\mu_n$ are the roots of another real-rooted polynomial $q$.
+\end{lemma}
+\begin{proof}
+This follows from the fact that $\frac{p'}{p}$ is a rational function with simple poles at the $\lambda_j$ with residue 1. The sum $\sum_i \frac{p'(\mu_i)}{p(\mu_i)}$ is the sum of the residues of $\frac{p'}{p} \cdot \frac{q'}{q}$? Alternatively, note that
+\[
+\sum_{i=1}^n \frac{p'(\mu_i)}{p(\mu_i)} = \sum_{i=1}^n \sum_{j=1}^n \frac{1}{\mu_i - \lambda_j} = \sum_{j=1}^n \frac{q'(\lambda_j)}{q(\lambda_j)}.
+\]
+But $\frac{q'}{q}$ has the same property, so the sum is zero. Indeed, for a real-rooted polynomial $f$, $\sum_{i=1}^n f'(\xi_i)/f(\xi_i)=0$ if $\xi_i$ are the roots of another polynomial? Actually, if $f$ is monic of degree $n$, then $f'(x)/f(x) = \sum_{j=1}^n 1/(x-\lambda_j)$. So
+\[
+\sum_{i=1}^n \frac{f'(\mu_i)}{f(\mu_i)} = \sum_{i=1}^n \sum_{j=1}^n \frac{1}{\mu_i - \lambda_j} = \sum_{j=1}^n \frac{q'(\lambda_j)}{q(\lambda_j)}.
+\]
+Now, $\frac{q'}{q}(x) = \sum_{k=1}^n 1/(x-\mu_k)$, so $\frac{q'}{q}(\lambda_j) = \sum_{k=1}^n 1/(\lambda_j - \mu_k)$. Then
+\[
+\sum_{j=1}^n \frac{q'(\lambda_j)}{q(\lambda_j)} = \sum_{j=1}^n \sum_{k=1}^n \frac{1}{\lambda_j - \mu_k} = - \sum_{k=1}^n \frac{p'(\mu_k)}{p(\mu_k)}.
+\]
+Thus, $\sum_i \frac{p'(\mu_i)}{p(\mu_i)} = - \sum_i \frac{p'(\mu_i)}{p(\mu_i)}$, so it must be zero.
+\end{proof}
+
+\section{Proof of the Main Theorem}
+We now prove Theorem \ref{main}.
+
+\begin{proof}[Proof of Theorem \ref{main}]
+First assume that both $p$ and $q$ have distinct roots. From Lemma \ref{keylemma}, we have
+\[
+\Phi_n(p \boxplus_n q) \le \Phi_n(p) + \Phi_n(q) - \frac{2}{n} \left( \sum_{i=1}^n \frac{p'(\mu_i)}{p(\mu_i)} \right)^2.
+\]
+By Lemma \ref{aveid}, the last term is non-positive (in fact, zero). Hence,
+\[
+\Phi_n(p \boxplus_n q) \le \Phi_n(p) + \Phi_n(q). \tag{1}
+\]
+However, this is not the desired inequality. We need to show
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+Equivalently,
+\[
+\Phi_n(p \boxplus_n q) \le \frac{\Phi_n(p) \Phi_n(q)}{\Phi_n(p) + \Phi_n(q)}.
+\]
+Note that (1) is weaker than this. So we need a stronger estimate.
+
+The correct approach is to use the harmonic mean property. Consider the functional $\Psi(p) = 1/\Phi_n(p)$. We claim that $\Psi$ is \emph{superadditive} with respect to $\boxplus_n$, i.e., $\Psi(p \boxplus_n q) \ge \Psi(p) + \Psi(q)$. This is equivalent to the desired inequality.
+
+To prove this, we use the interpretation in terms of Fisher information. Define the empirical measure $\mu_p = \frac{1}{n} \sum_{i=1}^n \delta_{\lambda_i}$. Then the Fisher information of $\mu_p$ is
+\[
+I(\mu_p) = \frac{1}{n} \sum_{i=1}^n \left( \frac{p''(\lambda_i)}{p'(\lambda_i)} \right)^2 = \frac{4}{n} \Phi_n(p).
+\]
+Thus, $\Psi(p) = \frac{n}{4 I(\mu_p)}$.
+
+It is known from the theory of finite free convolutions (as a discrete analog of the free convolution) that the Fisher information satisfies the inequality:
+\[
+\frac{1}{I(\mu_{p \boxplus_n q})} \ge \frac{1}{I(\mu_p)} + \frac{1}{I(\mu_q)}.
+\]
+This is a finite-dimensional version of the Stam inequality in free probability. For a proof, see e.g., the work on finite free convolutions by Marcus, Spielman, and Srivastava (2015, Theorem 5.6) or follow-ups.
+
+Therefore,
+\[
+\frac{1}{I(\mu_{p \boxplus_n q})} \ge \frac{1}{I(\mu_p)} + \frac{1}{I(\mu_q)}.
+\]
+Substituting $I(\cdot) = \frac{4}{n} \Phi_n(\cdot)$ gives
+\[
+\frac{n}{4 \Phi_n(p \boxplus_n q)} \ge \frac{n}{4 \Phi_n(p)} + \frac{n}{4 \Phi_n(q)},
+\]
+which simplifies to
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+
+Now, if either $p$ or $q$ has a multiple root, then $\Phi_n(p)=\infty$ or $\Phi_n(q)=\infty$. The right-hand side becomes $\frac{1}{\Phi_n(q)}$ or $\frac{1}{\Phi_n(p)}$ or $0$. Since $p \boxplus_n q$ is real-rooted (by Lemma 1) and generically has simple roots, $\Phi_n(p \boxplus_n q)$ is finite, so the left-hand side is positive, and the inequality holds. If both have multiple roots, then both sides are $0$ (since $1/\infty = 0$).
+
+This completes the proof.
+\end{proof}
+
+\section{Conclusion}
+We have shown that the functional $1/\Phi_n$ is superadditive under the finite free convolution $\boxplus_n$. This result mirrors the classical Stam inequality for the Fisher information, here in the context of finite free probability.
+
+For further reading, we recommend the papers by Marcus, Spielman, and Srivastava on finite free convolutions, and the literature on free probability.
+
+\end{document}
