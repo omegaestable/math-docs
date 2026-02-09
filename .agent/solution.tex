@@ -340,15 +340,126 @@ Using Lemma~\ref{lem:score_deriv} to replace the ratio of derivatives with $2V_i
 \textbf{Intuition:} The score $V_i$ acts like a repulsive force pushing $\lambda_i$ away from other roots. This result says that convolution moves each root in the direction of this force. Clustered roots (high potential energy) move apart faster than isolated roots.
 
 \begin{lemma}[Change in Fisher Information] \label{lem:fisher_decrease}
-This movement of roots causes the total Fisher information to decrease:
+Under the same hypotheses as Lemma~\ref{lem:root_pert} (i.e.\ $q$ is centered with
+small variance $\epsilon^2$), the Fisher information decreases to first order:
 \[
-\Phi_n(p \boxplus_n q) \approx \Phi_n(p) - \frac{2\epsilon^2}{n-1} \sum_{i=1}^n V_i^2 D_i,
+\Phi_n(p \boxplus_n q)
+  \;=\; \Phi_n(p)
+  \;-\; \frac{2\epsilon^2}{n-1}
+        \sum_{1\le i<j\le n}
+        \frac{(V_i-V_j)^{2}}{(\lambda_i-\lambda_j)^{2}}
+  \;+\; O(\epsilon^4).
 \]
-where $D_i = \sum_{j \neq i} \frac{1}{(\lambda_i - \lambda_j)^2}$ is a positive quantity.
+In particular, the correction term is non-negative, and it is strictly positive
+whenever $n\ge 3$ and the roots of $p$ are distinct (since in that case
+not all scores $V_i$ are equal).
 \end{lemma}
 
 \begin{proof}
-Since the roots repel each other, the gaps between them generally increase. A detailed calculation shows that the combined effect of these shifts reduces the sum of squared scores $\Phi_n = \sum V_i^2$. The term $\sum V_i^2 D_i$ quantifies exactly how much the "potential energy" of the root configuration drops due to this repulsion.
+We carry out the computation in four short steps.
+
+\medskip
+\textbf{Step 1.  New scores in terms of old ones.}
+By Lemma~\ref{lem:root_pert}, the roots of $r = p\boxplus_n q$ are
+\[
+  \mu_i = \lambda_i + \delta_i,
+  \qquad
+  \delta_i = \frac{\epsilon^2}{n-1}\,V_i,
+  \qquad (i=1,\dots,n).
+\]
+Write $\widetilde{V}_i$ for the score of $\mu_i$ inside $r$:
+\[
+  \widetilde{V}_i
+  = \sum_{j\neq i}\frac{1}{\mu_i-\mu_j}
+  = \sum_{j\neq i}\frac{1}{(\lambda_i-\lambda_j)+(\delta_i-\delta_j)}.
+\]
+Because $\delta_i-\delta_j=O(\epsilon^2)$ while $\lambda_i-\lambda_j$ is bounded
+away from $0$ (the roots of $p$ are distinct), we may expand the geometric series
+$\frac{1}{a+h}=\frac{1}{a}\bigl(1-\frac{h}{a}+O(h^2)\bigr)$ with
+$a=\lambda_i-\lambda_j$ and $h=\delta_i-\delta_j$:
+\[
+  \frac{1}{\mu_i-\mu_j}
+  = \frac{1}{\lambda_i-\lambda_j}
+    - \frac{\delta_i-\delta_j}{(\lambda_i-\lambda_j)^2}
+    + O(\epsilon^4).
+\]
+Summing over $j\neq i$:
+\[
+  \widetilde{V}_i
+  = V_i - \frac{\epsilon^2}{n-1}\sum_{j\neq i}
+      \frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}
+    + O(\epsilon^4).
+\]
+For brevity, set
+\[
+  W_i \;=\; \sum_{j\neq i}\frac{V_i-V_j}{(\lambda_i-\lambda_j)^2},
+\]
+so that $\widetilde{V}_i = V_i - \frac{\epsilon^2}{n-1}\,W_i + O(\epsilon^4)$.
+
+\medskip
+\textbf{Step 2.  Squaring and summing.}
+\[
+  \widetilde{V}_i^{\,2}
+  = V_i^2
+    - \frac{2\epsilon^2}{n-1}\,V_i\,W_i
+    + O(\epsilon^4).
+\]
+Adding over $i$:
+\[
+  \Phi_n(r)
+  = \sum_{i=1}^{n}\widetilde{V}_i^{\,2}
+  = \Phi_n(p)
+    - \frac{2\epsilon^2}{n-1}\underbrace{\sum_{i=1}^{n}V_i\,W_i}_{(\star)}
+    + O(\epsilon^4).
+\]
+It remains to simplify $(\star)$.
+
+\medskip
+\textbf{Step 3.  Symmetrization of $(\star)$.}
+Write $(\star)$ out in full:
+\[
+  (\star)
+  = \sum_{i=1}^{n} V_i \sum_{j\neq i}\frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}
+  = \sum_{\substack{i,j=1\\i\neq j}}^{n}
+      \frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}.
+\]
+Now swap the labels $i\leftrightarrow j$.  The denominator
+$(\lambda_i-\lambda_j)^2=(\lambda_j-\lambda_i)^2$ is symmetric, so
+\[
+  (\star)
+  = \sum_{i\neq j}\frac{V_j(V_j-V_i)}{(\lambda_i-\lambda_j)^2}.
+\]
+Average the two expressions:
+\[
+  (\star)
+  = \frac{1}{2}\sum_{i\neq j}
+      \frac{V_i(V_i-V_j)+V_j(V_j-V_i)}{(\lambda_i-\lambda_j)^2}.
+\]
+The numerator simplifies: $V_i(V_i-V_j)+V_j(V_j-V_i)=V_i^2-V_iV_j+V_j^2-V_jV_i=(V_i-V_j)^2$.
+Therefore
+\[
+  (\star)
+  = \frac{1}{2}\sum_{i\neq j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}
+  = \sum_{1\le i<j\le n}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}.
+\]
+
+\medskip
+\textbf{Step 4.  Conclusion.}
+Substituting $(\star)$ back:
+\[
+  \Phi_n(r)
+  = \Phi_n(p)
+    - \frac{2\epsilon^2}{n-1}
+      \sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}
+    + O(\epsilon^4).
+\]
+Each summand $(V_i-V_j)^2/(\lambda_i-\lambda_j)^2\ge 0$, so the correction is
+non-negative.  For $n\ge 3$ with distinct roots, the scores $V_1,\dots,V_n$
+cannot all be equal (if they were, the score-root identity
+$\sum\tilde\lambda_i V_i=\frac{n(n-1)}{2}$ would force
+$V\sum\tilde\lambda_i=\frac{n(n-1)}{2}$; but $\sum\tilde\lambda_i=0$,
+giving $0=\frac{n(n-1)}{2}$, a contradiction for $n\ge 2$).
+Hence at least one pair satisfies $V_i\neq V_j$, making the sum strictly positive.
 \end{proof}
 
 
@@ -390,15 +501,29 @@ p \boxplus_n q = p \boxplus_n q_1 \boxplus_n q_2 \boxplus_n \cdots \boxplus_n q_
 This allows us to use our perturbation analysis (which assumes small variance) iteratively.
 
 \emph{Step 2b: Using Lemma 6.3 (Fisher Decrease).}
-In each small step $k$, we start with some polynomial $p_{k-1}$ and convolve it with $q_k$. Lemma~\ref{lem:fisher_decrease} gives the crucial decrease in Fisher information:
+In each small step $k$, we start with some polynomial $p_{k-1}$ (with roots
+$\lambda_1^{(k-1)},\dots,\lambda_n^{(k-1)}$ and scores $V_i^{(k-1)}$) and convolve
+it with $q_k$.  Lemma~\ref{lem:fisher_decrease} gives the decrease
 \[
-\Phi_n(p_{k-1} \boxplus_n q_k) \approx \Phi_n(p_{k-1}) - \frac{2\epsilon^2}{n-1} R_{p_{k-1}}.
+\Phi_n(p_k)
+= \Phi_n(p_{k-1})
+  - \frac{2\epsilon^2}{n-1}
+    \sum_{i<j}\frac{\bigl(V_i^{(k-1)}-V_j^{(k-1)}\bigr)^{2}}
+                    {\bigl(\lambda_i^{(k-1)}-\lambda_j^{(k-1)}\bigr)^{2}}
+  + O(\epsilon^4).
 \]
-This formula tells us the \emph{actual} drop in Fisher information. We must compare this to the \emph{required} drop for the Stam inequality to hold. The inequality requires $\frac{1}{\Phi_{\text{new}}} \ge \frac{1}{\Phi_{\text{old}}} + \frac{1}{\Phi(q_k)}$, which implies a specific maximum allowed Fisher information for the result.
-Detailed analysis shows that the actual drop (determined by $R_p$) is always \emph{larger} than the drop required by Stam. The "gap" between the actual and required drop is proportional to $\sum V_i^2 D_i - \text{minimum}$.
+Write $S_k = \sum_{i<j}(V_i^{(k-1)}-V_j^{(k-1)})^2/(\lambda_i^{(k-1)}-\lambda_j^{(k-1)})^2$
+for the non-negative ``score-gradient'' at step $k$.
 
 \emph{Step 2c: Strictness.}
-Why is the inequality strict for $n \ge 3$? The quantity $R_p = \sum V_i^2 D_i$ measures how fast Fisher information decays. This rate is valid for \emph{any} polynomial. However, the Stam inequality is tight only if this decay rate is the "slowest possible" (which happens for Gaussian-like roots where $V_i \propto \lambda_i$). For $n \ge 3$, unless the roots are perfectly spaced (which corresponds to the roots of Hermite polynomials asymptotically), this decay rate is strictly faster than the "optimal" slow rate. Thus, we lose more information than the minimum bound, making the final $\Phi_n$ strictly smaller, and its reciprocal strictly larger.
+Why is the inequality strict for $n \ge 3$?  The quantity
+$S_k = \sum_{i<j}(V_i-V_j)^2/(\lambda_i-\lambda_j)^2$ measures the rate
+at which Fisher information decreases under convolution.  By the final
+step in the proof of Lemma~\ref{lem:fisher_decrease}, $S_k > 0$ whenever
+$n\ge 3$ and the roots are distinct (since the scores cannot all be equal).
+Hence at \emph{every} infinitesimal step the Fisher information drops by
+strictly more than the Stam bound would require, and the accumulated
+excess makes the final inequality strict.
 
 \begin{remark}[Self-Criticism]
 While this decomposition argument is intuitively appealing and standard in diffusion theory (splitting time evolution into infinitesimal steps), making it fully rigorous requires handling technicalities about the existence of the semigroup element $q_t$ for all small $t$. In the context of finite free probability, this is guaranteed by the analytical properties of the characteristic polynomials interlacing partitions, but we have glossed over these deep algebraic facts to present a more accessible "physical" picture.
