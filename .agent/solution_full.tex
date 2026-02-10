@@ -1,0 +1,956 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{lmodern}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage[parfill]{parskip}
+
+%--- Theorem Environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}[theorem]{Example}
+
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{note}[remark]{Note}
+
+%--- Macros ---
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Var}{Var}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\mathbb{R}}}
+\newcommand{\boxplusn}{\boxplus_n}
+
+%--- Header ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{The Finite Free Stam Inequality}
+\fancyhead[R]{\thepage}
+
+%--- Title Info ---
+\title{\textbf{The Finite Free Stam Inequality}\\
+\large An Introduction to Polynomial Convolution and Root Dynamics}
+\author{}
+\date{}
+
+%==============================================================================
+\begin{document}
+%==============================================================================
+
+\maketitle
+
+\begin{abstract}
+\noindent 
+The classical Stam inequality formulates the superadditivity of entropy power, or equivalently, the decrease of Fisher information upon the addition of independent random variables. This paper proves the analogue of this result for real-rooted polynomials, where random variables are replaced by polynomials, addition by the ``finite free additive convolution,'' and Fisher information by a quantity derived from the electrostatic repulsion of roots. We establish a key algebraic inequality---the Score-Gradient Inequality---via two applications of Cauchy--Schwarz, and combine it with a flow-based framework to obtain the full Finite Free Stam Inequality: $1/\Phi_n(p \boxplus_n q) \ge 1/\Phi_n(p) + 1/\Phi_n(q)$.
+\end{abstract}
+
+\tableofcontents
+
+%==============================================================================
+\section{Introduction}
+%==============================================================================
+
+\subsection{Analogy with Probability Theory}
+In probability theory and information theory, the addition of independent random sources strictly increases uncertainty. The convolution of two distributions results in a distribution that is smoother than the originals.
+
+Mathematically, this is captured by the \textbf{Stam Inequality}. Let $X$ and $Y$ be independent random variables with Fisher information $I(X)$ and $I(Y)$. Then:
+\[
+\frac{1}{I(X+Y)} \ge \frac{1}{I(X)} + \frac{1}{I(Y)}.
+\]
+Since Fisher information $I$ measures the structural sharpness of a distribution, its reciprocal $1/I$ acts as a measure of smoothness or disorder. This inequality asserts that the total disorder of the sum is at least the sum of the individual disorders.
+
+\subsection{The Polynomial Framework}
+We replace random variables with \textbf{polynomials} according to the following correspondence:
+\begin{center}
+\begin{tabular}{lcl}
+\textbf{Probability} & $\longleftrightarrow$ & \textbf{Polynomials} \\
+Random Variable $X$ & $\longleftrightarrow$ & Polynomial $p(x)$ \\
+Distribution of $X$ & $\longleftrightarrow$ & Roots $\lambda_1, \dots, \lambda_n$ of $p(x)$ \\
+Addition $X+Y$ & $\longleftrightarrow$ & Symmetric Additive Convolution $p \boxplus_n q$ \\
+Fisher Information $I(X)$ & $\longleftrightarrow$ & Finite Free Fisher Information $\Phi_n(p)$
+\end{tabular}
+\end{center}
+
+Finite Free Probability provides a bridge between random matrix theory and the geometry of polynomials. In this framework, we investigate the validity of the Stam inequality for the finite free additive convolution.
+
+This paper presents a self-contained proof of these phenomena. We treat the roots of a polynomial as charged particles on a line and define their ``energy'' (Fisher information) based on their mutual repulsion. We then show that convolution acts as a diffusion process, lowering the potential energy of the system.
+
+%==============================================================================
+\section{Polynomials and Root Statistics}
+%==============================================================================
+
+We consider the space of monic polynomials of degree $n$ with real coefficients, denoted $\Pn$. We focus on the subset $\PnR$ of polynomials with \textbf{all real roots}.
+\[
+p(x) = \prod_{i=1}^n (x - \lambda_i), \quad \lambda_i \in \R.
+\]
+We assume the roots are ordered $\lambda_1 \le \lambda_2 \le \dots \le \lambda_n$.
+
+\begin{definition}[Root Statistics]
+The first and second moments of the root distribution are defined as:
+\begin{align*}
+\mu(p) &= \frac{1}{n}\sum_{i=1}^n \lambda_i, \\
+\sigma^2(p) &= \frac{1}{n}\sum_{i=1}^n (\lambda_i - \mu)^2.
+\end{align*}
+\end{definition}
+
+The variance can be computed directly from the coefficients without solving for the roots.
+
+\begin{lemma}[The Variance Formula] \label{lem:var}
+Let $p(x) = x^n + a_1 x^{n-1} + a_2 x^{n-2} + \cdots$. Then:
+\[
+\sigma^2(p) = \frac{(n-1)a_1^2}{n^2} - \frac{2a_2}{n}.
+\]
+\end{lemma}
+
+\begin{proof}
+Recall Vieta's formulas: $\sum \lambda_i = -a_1$ and $\sum_{i<j} \lambda_i\lambda_j = a_2$.
+The sum of squared roots is $\sum \lambda_i^2 = (\sum \lambda_i)^2 - 2\sum_{i<j} \lambda_i\lambda_j = a_1^2 - 2a_2$.
+Substituting into the variance definition $\sigma^2(p) = \frac{1}{n}\sum \lambda_i^2 - \mu^2$ yields the result.
+\end{proof}
+
+%==============================================================================
+\section{The Symmetric Additive Convolution}
+%==============================================================================
+
+The addition of polynomials in this context is not pointwise addition but a convolution operation rooted in random matrix theory.
+
+\subsection{Matrix Models and Haar Integration}
+
+Let $p(x)$ be the characteristic polynomial of a symmetric matrix $A$, and $q(x)$ be that of $B$. The sum $A+B$ has a characteristic polynomial that depends on the relative eigenbasis of $A$ and $B$. To obtain a basis-independent operation, we average over all possible relative orientations using the Haar measure.
+
+\begin{definition}[Haar Measure on $O(n)$]
+The group of orthogonal matrices $O(n)$ admits a unique probability measure $\mu_{\text{Haar}}$ that is invariant under left and right multiplication: $\mu(S) = \mu(gS) = \mu(Sg)$ for any $g \in O(n)$ and measurable set $S$. This is the uniform distribution on the rotation group.
+\end{definition}
+
+\begin{definition}[Symmetric Additive Convolution]
+The finite free additive convolution of $p$ and $q$ is defined as the expected characteristic polynomial of the sum of randomly rotated matrices:
+\[
+p \boxplus_n q \coloneqq \int_{O(n)} \det(xI - (A + QBQ^T)) \, d\mu_{\text{Haar}}(Q).
+\]
+\end{definition}
+
+In this expression, $QBQ^T$ represents the matrix $B$ rotated by a random orthogonal matrix $Q$. The term $\det(xI - (A + QBQ^T))$ is a random polynomial. Its expectation is a deterministic polynomial whose roots effectively represent the ``sum'' of the root sets of $p$ and $q$.
+
+\subsubsection{Relation between Matrix Eigenvalues and Differential Operators}
+
+A fundamental result by Marcus, Spielman, and Srivastava connects this matrix integral to a deterministic differential operator. This connection relies on the relationship between the eigenvalues of $B$ and the coefficients of the operator.
+
+Let the eigenvalues of $B$ be the roots of $q(x)$, denoted $\beta_1, \dots, \beta_n$. The characteristic polynomial is $q(x) = \prod_{i=1}^n (x - \beta_i) = \sum_{k=0}^n b_k x^{n-k}$.
+The coefficients $b_k$ are the elementary symmetric polynomials of the eigenvalues:
+\[
+b_k = (-1)^k \sum_{1 \le i_1 < \dots < i_k \le n} \beta_{i_1} \dots \beta_{i_k}.
+\]
+The expected characteristic polynomial expansion can be written in terms of these coefficients.
+
+\begin{theorem}[MSS Theorem]
+The expectation over the orthogonal group factorizes into a differential operator acting on $p$:
+\[
+\E_{Q} [\det(xI - (A + QBQ^T))] = \sum_{k=0}^n b_k \frac{(n-k)!}{n!} \frac{d^k}{dx^k} p(x).
+\]
+\end{theorem}
+
+This theorem establishes that the eigenvalues of the matrix $B$ (encapsulated in the coefficients $b_k$) determine the weights of the differentiation in the operator $T_q$.
+
+\subsection{The Differential Operator Representation}
+
+Based on the MSS theorem, we define the operator formally.
+
+\begin{definition}[Convolution Operator $T_q$]
+For a monic polynomial $q(x) = \sum_{k=0}^n b_k x^{n-k}$, define:
+\[
+T_q \coloneqq \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \partial_x^k.
+\]
+Then the convolution satisfies:
+\[
+(p \boxplus_n q)(x) = T_q p(x).
+\]
+\end{definition}
+
+This operator formalism reveals that convolution with $q$ acts as a diffusion process on $p$, smoothing its features solely based on the root distribution of $q$.
+
+\begin{theorem}[Preservation of Real Roots]
+If $p$ and $q$ have all real roots, then $p \boxplus_n q$ also has all real roots.
+\end{theorem}
+
+\begin{lemma}[Variance Additivity] \label{lem:var-add}
+The variance is additive under convolution:
+\[
+\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q).
+\]
+\end{lemma}
+\begin{proof}
+By the convolution coefficient formula
+$c_k = \sum_{i+j=k} \frac{(n-i)!\,(n-j)!}{n!\,(n-k)!}\,a_i\,b_j$,
+we compute the first two coefficients of $p \boxplus_n q$.
+
+For $k=1$: only the terms $(i,j)=(1,0)$ and $(0,1)$ contribute
+(since $a_0=b_0=1$):
+\[
+c_1 = \frac{(n-1)!\,n!}{n!\,(n-1)!}\,a_1
+    + \frac{n!\,(n-1)!}{n!\,(n-1)!}\,b_1
+    = a_1 + b_1.
+\]
+
+For $k=2$: the contributing terms are $(i,j) \in \{(2,0),(1,1),(0,2)\}$:
+\[
+c_2 = a_2 + \frac{(n-1)!\,(n-1)!}{n!\,(n-2)!}\,a_1 b_1 + b_2
+    = a_2 + \tfrac{n-1}{n}\,a_1 b_1 + b_2.
+\]
+
+Substituting into the variance formula (Lemma~\ref{lem:var}):
+\begin{align*}
+\sigma^2(p \boxplus_n q)
+&= \frac{(n-1)c_1^2}{n^2} - \frac{2c_2}{n}
+= \frac{(n-1)(a_1+b_1)^2}{n^2}
+  - \frac{2}{n}\!\left(a_2 + \tfrac{n-1}{n}a_1 b_1 + b_2\right).
+\end{align*}
+Expanding $(a_1+b_1)^2 = a_1^2 + 2a_1 b_1 + b_1^2$ and collecting terms:
+\[
+= \underbrace{\frac{(n-1)a_1^2}{n^2} - \frac{2a_2}{n}}_{\sigma^2(p)}
++ \underbrace{\frac{(n-1)b_1^2}{n^2} - \frac{2b_2}{n}}_{\sigma^2(q)}
++ \frac{2(n-1)a_1 b_1}{n^2} - \frac{2(n-1)a_1 b_1}{n^2}.
+\]
+The cross-terms cancel exactly, yielding $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
+\end{proof}
+
+%==============================================================================
+\section{Fisher Information: The Energy of Roots}
+%==============================================================================
+
+We define the finite free Fisher information based on the electrostatic interaction of roots.
+
+\subsection{Scores and Forces}
+Roots repel each other with a force proportional to the inverse distance. The total force on a root $\lambda_i$ is its \textbf{score}.
+
+\begin{definition}[The Score $V_i$]
+\[
+V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}.
+\]
+\end{definition}
+
+\subsection{Finite Free Fisher Information}
+The Fisher information is defined as the sum of the squared scores, representing the total stress in the system.
+
+\begin{definition}[Fisher Information $\Phi_n$]
+\[
+\Phi_n(p) = \sum_{i=1}^n V_i^2.
+\]
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{High Information:} Clustered roots produce large scores $V_i$, hence large $\Phi_n$.
+    \item \textbf{Low Information:} Well-separated roots produce small scores, hence small $\Phi_n$.
+\end{itemize}
+
+\begin{lemma}[Score via Derivatives] \label{lem:score-deriv}
+For any monic polynomial $p$ of degree $n$ with distinct roots $\lambda_1,\dots,\lambda_n$,
+\[
+V_i = \frac{p''(\lambda_i)}{2\,p'(\lambda_i)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $p(x) = \prod_{j=1}^n (x - \lambda_j)$, its derivative at a root $\lambda_i$ is
+$p'(\lambda_i) = \prod_{j \neq i}(\lambda_i - \lambda_j)$.
+To find $p''(\lambda_i)$, differentiate
+$p'(x) = \sum_{i=1}^n \prod_{j \neq i}(x - \lambda_j)$
+once more. At $x = \lambda_i$, only the terms where $x$ differentiates one factor of $\prod_{j\neq i}(x-\lambda_j)$ survive:
+\[
+p''(\lambda_i)
+= 2\sum_{k \neq i} \prod_{\substack{j \neq i \\ j \neq k}} (\lambda_i - \lambda_j)
+= 2\,p'(\lambda_i)\sum_{k \neq i} \frac{1}{\lambda_i - \lambda_k}
+= 2\,p'(\lambda_i)\,V_i.
+\]
+Dividing both sides by $2\,p'(\lambda_i)$ gives $V_i = p''(\lambda_i)/(2\,p'(\lambda_i))$.
+\end{proof}
+
+\begin{remark}
+This lemma says that the score at $\lambda_i$ is simply the logarithmic derivative of $p'$ evaluated at $\lambda_i$, divided by~2. It provides a coordinate-free way to compute scores directly from $p$ and its derivatives.
+\end{remark}
+
+\subsection{Key Identities}
+
+\begin{lemma}[Score-Root Identity] \label{lem:identity}
+\[
+\sum_{i=1}^n (\lambda_i - \mu) V_i = \frac{n(n-1)}{2}.
+\]
+\end{lemma}
+
+\begin{proof}
+First, $\sum_{i=1}^n V_i = \sum_{i \neq j} \frac{1}{\lambda_i - \lambda_j} = 0$, since pairing $(i,j)$ with $(j,i)$ gives cancellation. Next,
+\[
+\sum_{i=1}^n \lambda_i V_i
+= \sum_{i \neq j} \frac{\lambda_i}{\lambda_i - \lambda_j}
+= \sum_{i < j}\!\left(\frac{\lambda_i}{\lambda_i - \lambda_j} + \frac{\lambda_j}{\lambda_j - \lambda_i}\right)
+= \sum_{i<j} \frac{\lambda_i - \lambda_j}{\lambda_i - \lambda_j}
+= \binom{n}{2}.
+\]
+Since $\sum V_i = 0$, we conclude
+$\sum_{i=1}^n (\lambda_i - \mu)\,V_i = \sum \lambda_i V_i - \mu \sum V_i = \frac{n(n-1)}{2}$.
+\end{proof}
+
+\begin{lemma}[Fisher--Variance Inequality] \label{lem:fv}
+$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality if and only if $n = 2$.
+\end{lemma}
+
+\begin{proof}
+By Cauchy--Schwarz applied to the Score-Root Identity:
+\[
+\frac{n^2(n-1)^2}{4}
+= \biggl(\sum_{i=1}^n (\lambda_i - \mu)\,V_i\biggr)^{\!2}
+\le \biggl(\sum_{i=1}^n (\lambda_i - \mu)^2\biggr)\!\biggl(\sum_{i=1}^n V_i^2\biggr)
+= n\,\sigma^2(p)\cdot\Phi_n(p).
+\]
+Equality in Cauchy--Schwarz requires proportionality $V_i = c(\lambda_i - \mu)$ for a constant $c$. For $n=2$ this holds automatically (see Lemma~\ref{lem:n2}).
+\end{proof}
+
+\begin{lemma}[The $n=2$ Identity] \label{lem:n2}
+For quadratic polynomials ($n=2$), information is inversely proportional to variance:
+\[
+\frac{1}{\Phi_2(p)} = 2\sigma^2(p).
+\]
+\end{lemma}
+\begin{proof}
+Let roots be $-d/2$ and $d/2$. $V_1 = -1/d$, $V_2 = 1/d$.
+$\Phi_2 = 2/d^2$. $\sigma^2 = d^2/4$.
+Thus $1/\Phi_2 = d^2/2 = 2\sigma^2$.
+\end{proof}
+
+%==============================================================================
+\section{Local Analysis: Perturbation Theory}
+%==============================================================================
+
+We examine the behavior of roots under convolution with a noise polynomial $q_\epsilon$ of small variance $\epsilon^2$.
+
+\subsection{Root Dynamics}
+The convolution operator induces a shift in the roots of $p$.
+
+\begin{lemma}[Shift of Roots] \label{lem:root-shift}
+Let $\lambda_i$ be the roots of $p$. The roots $\mu_i$ of $p \boxplus_n q_\epsilon$ satisfy:
+\[
+\mu_i = \lambda_i + \frac{\epsilon^2}{n-1} V_i + O(\epsilon^4).
+\]
+\end{lemma}
+
+\begin{proof}
+Consider the operator representation $p \boxplus_n q_\epsilon = T_{q_\epsilon}\,p$.
+Since $q_\epsilon$ is centered with variance $\epsilon^2$ and close to $x^n$, its coefficients satisfy
+$b_0 = 1$, $b_1 = 0$, and $b_2 = -n\epsilon^2/2$ (from the variance formula applied to $q_\epsilon$).
+Higher coefficients are $O(\epsilon^3)$ or smaller.
+The operator $T_{q_\epsilon} = \sum_{k} \frac{(n-k)!}{n!}\,b_k\,\partial_x^k$ therefore acts as:
+\[
+T_{q_\epsilon}\,p(x) = p(x) + \frac{(n-2)!}{n!}\,b_2\,p''(x) + O(\epsilon^3)
+= p(x) - \frac{\epsilon^2}{2(n-1)}\,p''(x) + O(\epsilon^3).
+\]
+
+Now let $\mu_i = \lambda_i + \delta_i$ with $\delta_i = O(\epsilon^2)$. Expanding $T_{q_\epsilon}\,p(\mu_i)=0$:
+\[
+0 = p(\lambda_i) + \delta_i\,p'(\lambda_i) + O(\delta_i^2)
+    - \frac{\epsilon^2}{2(n-1)}\,p''(\lambda_i) + O(\epsilon^3).
+\]
+Since $p(\lambda_i) = 0$ and $\delta_i^2 = O(\epsilon^4)$, we solve:
+\[
+\delta_i = \frac{\epsilon^2}{2(n-1)} \cdot \frac{p''(\lambda_i)}{p'(\lambda_i)} + O(\epsilon^4).
+\]
+By the Score via Derivatives lemma (Lemma~\ref{lem:score-deriv}),
+$p''(\lambda_i)/(2\,p'(\lambda_i)) = V_i$, so $\delta_i = \frac{\epsilon^2}{n-1}\,V_i + O(\epsilon^4)$.
+\end{proof}
+
+\textbf{Interpretation:} Roots move in the direction of the repulsive force $V_i$. Isolated roots (small $|V_i|$) barely move, while roots in a cluster (large $|V_i|$) are pushed apart. The convolution acts like a physical relaxation.
+
+\subsection{Monotonicity of Fisher Information}
+This relaxation leads to a decrease in the total energy.
+
+\begin{lemma}[Change in Fisher Information] \label{lem:change-phi}
+\[
+\Phi_n(p \boxplus_n q_\epsilon) = \Phi_n(p) - \frac{2\epsilon^2}{n-1} \mathcal{S}(p) + O(\epsilon^4),
+\]
+where $\mathcal{S}(p)$ is the \textbf{Score-Gradient Energy}:
+\[
+\mathcal{S}(p) = \sum_{1 \le i < j \le n} \frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+From Lemma~\ref{lem:root-shift}, the perturbed roots are
+$\mu_i = \lambda_i + \frac{\epsilon^2}{n-1}V_i + O(\epsilon^4)$.
+The new scores are:
+\begin{align*}
+V_i^{(\epsilon)}
+&= \sum_{j \neq i} \frac{1}{\mu_i - \mu_j}
+= \sum_{j \neq i} \frac{1}{(\lambda_i - \lambda_j)
+  + \frac{\epsilon^2}{n-1}(V_i - V_j) + O(\epsilon^4)} \\
+&= \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}
+  \cdot \frac{1}{1 + \frac{\epsilon^2}{n-1}\frac{V_i - V_j}{\lambda_i - \lambda_j} + O(\epsilon^4)}.
+\end{align*}
+Using $\frac{1}{1+u} = 1 - u + O(u^2)$ for small $u$:
+\[
+V_i^{(\epsilon)} = V_i - \frac{\epsilon^2}{n-1}\sum_{j \neq i}
+  \frac{V_i - V_j}{(\lambda_i - \lambda_j)^2} + O(\epsilon^4).
+\]
+Squaring and summing:
+\[
+\Phi_n(p_\epsilon) = \sum_i \bigl(V_i^{(\epsilon)}\bigr)^2
+= \sum_i V_i^2
+  - \frac{2\epsilon^2}{n-1}\sum_i V_i \sum_{j\neq i}
+    \frac{V_i - V_j}{(\lambda_i - \lambda_j)^2}
+  + O(\epsilon^4).
+\]
+The key observation is that the cross-sum simplifies:
+\[
+\sum_{i \neq j} \frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}
+= \sum_{i<j} \frac{V_i(V_i-V_j) + V_j(V_j-V_i)}{(\lambda_i-\lambda_j)^2}
+= \sum_{i<j} \frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}
+= \mathcal{S}(p),
+\]
+where in the second step we used $V_i(V_i-V_j)+V_j(V_j-V_i) = (V_i-V_j)^2$.
+This yields the stated formula.
+\end{proof}
+
+Since $\mathcal{S}(p) \ge 0$, the Fisher information strictly decreases under convolution (it decreases strictly unless all scores are equal, i.e.\ $V_i = 0$ for all~$i$, which only happens for $n=1$).
+
+\subsection{The Score-Gradient Inequality}
+
+The score-gradient energy $\mathcal{S}(p)$ satisfies a fundamental lower bound relating it to the Fisher information and the variance. This inequality is the key algebraic input for the full Stam inequality.
+
+\begin{lemma}[Score Decomposition] \label{lem:score-decomp}
+\[
+\Phi_n(p) = \sum_{i=1}^n V_i^2 = \sum_{1 \le i < j \le n} \frac{V_i - V_j}{\lambda_i - \lambda_j}.
+\]
+\end{lemma}
+
+\begin{proof}
+Expanding the left-hand side using the definition of $V_i$:
+\[
+\sum_{i=1}^n V_i^2
+= \sum_{i=1}^n V_i \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}
+= \sum_{i \neq j} \frac{V_i}{\lambda_i - \lambda_j}
+= \sum_{i<j}\!\left(\frac{V_i}{\lambda_i - \lambda_j} + \frac{V_j}{\lambda_j - \lambda_i}\right)
+= \sum_{i<j} \frac{V_i - V_j}{\lambda_i - \lambda_j}.\qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Score-Gradient Inequality] \label{thm:stam-ineq}
+For any monic polynomial $p$ of degree $n \ge 2$ with distinct real roots,
+\[
+\mathcal{S}(p) \cdot \sigma^2(p) \;\ge\; \frac{n-1}{2}\,\Phi_n(p),
+\]
+that is,
+\[
+\biggl(\sum_{1 \le i < j \le n} \frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2}\biggr)
+\cdot
+\biggl(\frac{1}{n}\sum_{i=1}^n (\lambda_i - \mu)^2\biggr)
+\;\ge\;
+\frac{n-1}{2}\sum_{i=1}^n V_i^2.
+\]
+Equality holds if and only if there exists a constant $c$ such that $V_i = c(\lambda_i - \mu)$ for all~$i$.
+\end{theorem}
+
+\begin{proof}
+Write $T = \sum_{i=1}^n (\lambda_i - \mu)^2 = n\,\sigma^2$,\; $U = \Phi_n(p) = \sum V_i^2$,\; and $S = \mathcal{S}(p)$.
+The inequality to establish is
+\begin{equation}\label{eq:target}
+S\,T \;\ge\; \tfrac{n(n-1)}{2}\,U.
+\end{equation}
+
+\textbf{Step~1 (Cauchy--Schwarz on the Score-Root Identity).}
+By Lemma~\ref{lem:identity} and the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:cs1}
+\frac{n^2(n-1)^2}{4}
+= \biggl(\sum_{i=1}^n (\lambda_i - \mu)\,V_i\biggr)^{\!2}
+\le T\,U.
+\end{equation}
+
+\textbf{Step~2 (Cauchy--Schwarz on the Score Decomposition).}
+By Lemma~\ref{lem:score-decomp} and the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:cs2}
+U^2
+= \biggl(\sum_{i<j}\frac{V_i - V_j}{\lambda_i - \lambda_j}\biggr)^{\!2}
+\le \biggl(\sum_{i<j}\frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2}\biggr)
+    \!\biggl(\sum_{i<j} 1\biggr)
+= S \cdot \frac{n(n-1)}{2}.
+\end{equation}
+
+\textbf{Step~3 (Combination).}
+From~\eqref{eq:cs2}, $S \ge \frac{2U^2}{n(n-1)}$. Multiplying by $T$:
+\[
+S\,T
+\;\ge\;
+\frac{2\,U^2\,T}{n(n-1)}
+= \frac{2\,U}{n(n-1)}\cdot T\,U
+\;\ge\;
+\frac{2\,U}{n(n-1)}\cdot\frac{n^2(n-1)^2}{4}
+= \frac{n(n-1)}{2}\,U,
+\]
+where the second inequality uses~\eqref{eq:cs1}. This establishes~\eqref{eq:target}.
+
+\medskip
+\textbf{Equality analysis.}
+Equality requires both Cauchy--Schwarz applications to be tight.
+\begin{itemize}[nosep]
+\item Inequality~\eqref{eq:cs1} is an equality if and only if $V_i = c(\lambda_i - \mu)$ for some constant~$c$.
+\item Inequality~\eqref{eq:cs2} is an equality if and only if $\frac{V_i - V_j}{\lambda_i - \lambda_j}$ is constant over all pairs $i < j$.
+\end{itemize}
+If $V_i = c(\lambda_i - \mu)$, then $\frac{V_i - V_j}{\lambda_i - \lambda_j} = c$, so both conditions hold simultaneously. Conversely, if $\frac{V_i - V_j}{\lambda_i - \lambda_j} = k$ for all $i < j$, then $V_i - k\lambda_i$ is constant across~$i$; since $\sum V_i = 0$, this forces $V_i = k(\lambda_i - \mu)$. Therefore, equality holds if and only if $V_i = c(\lambda_i - \mu)$ for all~$i$.
+
+This condition characterizes (up to affine transformation) the zeros of the classical Hermite polynomials: if $x_1, \dots, x_n$ are the zeros of the physicist's Hermite polynomial $H_n$, then the ODE $H_n''(x) - 2x\,H_n'(x) + 2n\,H_n(x) = 0$ evaluated at a zero $x_k$ yields $V_k = x_k$, confirming the proportionality $V_k = 1\cdot(x_k - 0)$ since the zeros are symmetric about the origin.
+\end{proof}
+
+%==============================================================================
+\section{Global Analysis: The Flow Approach}
+%==============================================================================
+
+We construct a continuous flow interpolating between $p$ and $p \boxplus_n q$.
+
+\begin{definition}[Fractional Convolution Flow]
+Write $b = \sigma^2(q) > 0$. We construct a one-parameter family $\{q_t\}_{t \in [0,1]}$ of polynomials such that $q_0 = x^n$ (the identity for $\boxplus_n$), $q_1 = q$, and the variance scales linearly: $\sigma^2(q_t) = t\,b$.
+
+To see the semigroup structure, introduce the \emph{normalized coefficients}
+\[
+\kappa_k(p) \coloneqq \frac{(n-k)!}{n!}\,a_k, \qquad
+\kappa_k(q) \coloneqq \frac{(n-k)!}{n!}\,b_k.
+\]
+Multiplying the convolution formula by $(n-k)!/n!$ gives the Cauchy product:
+\[
+\kappa_k(p \boxplus_n q) = \sum_{i+j=k} \kappa_i(p)\,\kappa_j(q).
+\]
+Equivalently, for the generating polynomial
+$K_p(z) = \sum_{k=0}^n \kappa_k(p) z^k$, we have
+\begin{equation}\label{eq:K-product}
+K_{p \boxplus_n q}(z) = K_p(z)\,K_q(z).
+\end{equation}
+This identity is the precise algebraic content of the convolution.
+
+We therefore define the fractional family by the power identity
+\begin{equation}\label{eq:Kt}
+K_{q_t}(z) \coloneqq K_q(z)^{\,t}, \qquad t\in[0,1],
+\end{equation}
+where $K_q(z)^{\,t}$ is expanded as a power series and truncated at degree $n$.
+Then $K_{q_0}(z)=1$ (so $q_0=x^n$), $K_{q_1}(z)=K_q(z)$, and by construction
+$K_{q_s}(z)K_{q_t}(z)=K_{q_{s+t}}(z)$, which yields the semigroup property
+$q_s \boxplus_n q_t = q_{s+t}$.
+
+Define the \emph{flow polynomial}:
+\[p_t \coloneqq p \boxplus_n q_t.\]
+By variance additivity (Lemma~\ref{lem:var-add}),
+\begin{equation}\label{eq:var-flow}
+\sigma^2(p_t) = \sigma^2(p) + t\,b.
+\end{equation}
+\end{definition}
+
+\begin{remark}
+Although $K_q(z)^{\,t}$ is a power series when $t$ is non-integer, only the first $n$ coefficients matter when acting on degree-$n$ polynomials, because $\partial_x^{n+1}$ annihilates them. Thus the definition of $q_t$ via~\eqref{eq:Kt} is unambiguous at the operator level, and the semigroup identity follows from~\eqref{eq:K-product}. In what follows we assume $p_t$ has distinct real roots for $t\in[0,1]$ so that $\mathcal{S}(p_t)$ is well-defined; this is guaranteed for small steps by continuity of roots and by preservation of real-rootedness under $\boxplus_n$.
+\end{remark}
+
+\subsection{The Dissipation Identity}
+
+\begin{lemma}[Dissipation] \label{lem:dissip}
+\[
+\frac{d}{dt} \Phi_n(p_t) = - \frac{2b}{n-1}\, \mathcal{S}(p_t).
+\]
+\end{lemma}
+
+\begin{proof}
+By the semigroup property, $p_{t+h} = p_t \boxplus_n q_h$ where
+$\sigma^2(q_h) = h\,b$.
+Applying Lemma~\ref{lem:change-phi} to the pair $(p_t,q_h)$ gives the second-order expansion
+\[
+\Phi_n(p_{t+h})
+= \Phi_n(p_t) - \frac{2\,h\,b}{n-1}\,\mathcal{S}(p_t) + O(h^2).
+\]
+Subtract $\Phi_n(p_t)$ and divide by $h$:
+\[
+\frac{\Phi_n(p_{t+h}) - \Phi_n(p_t)}{h}
+= -\frac{2b}{n-1}\,\mathcal{S}(p_t) + O(h).
+\]
+Taking the limit $h \to 0$ yields
+$\dot\Phi_n(p_t)=-(2b/(n-1))\,\mathcal{S}(p_t)$.
+\end{proof}
+
+\subsection{The Integral Formula}
+
+We now derive a formula for the change in the \emph{reciprocal} Fisher information.
+
+\begin{theorem}[Integral Identity] \label{thm:integral}
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(p)} = \frac{2b}{n-1} \int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2} \, dt.
+\]
+\end{theorem}
+
+\begin{proof}
+We work with the function
+\[
+f(t) \coloneqq \frac{1}{\Phi_n(p_t)},
+\]
+and our goal is to compute $f(1)-f(0)$ by integrating $f'(t)$.
+
+\medskip
+\noindent\textbf{Step~1: Differentiate $f(t)$ via the chain rule.}
+Since $f(t) = [\Phi_n(p_t)]^{-1}$, the standard single-variable chain rule gives
+\[
+f'(t) = -\frac{1}{[\Phi_n(p_t)]^2}\cdot\frac{d}{dt}\Phi_n(p_t)
+= -\frac{\dot\Phi_n(p_t)}{\Phi_n(p_t)^2}.
+\]
+(Here $\dot\Phi_n(p_t)$ is shorthand for $\frac{d}{dt}\Phi_n(p_t)$.)
+
+\medskip
+\noindent\textbf{Step~2: Substitute the dissipation identity.}
+By Lemma~\ref{lem:dissip}, we have
+$\dot\Phi_n(p_t) = -\frac{2b}{n-1}\,\mathcal{S}(p_t)$.
+Plugging this in:
+\[
+f'(t) = -\frac{-\frac{2b}{n-1}\,\mathcal{S}(p_t)}{\Phi_n(p_t)^2}
+= \frac{2b}{n-1}\cdot\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}.
+\]
+Since $b>0$ and $\mathcal{S}(p_t) \ge 0$ (it is a sum of squares), we conclude $f'(t) \ge 0$: the reciprocal Fisher information is non-decreasing along the flow.
+
+\medskip
+\noindent\textbf{Step~3: Integrate from $0$ to $1$.}
+By the Fundamental Theorem of Calculus,
+\[
+f(1) - f(0) = \int_0^1 f'(t)\,dt
+= \frac{2b}{n-1}\int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt.
+\]
+
+\medskip
+\noindent\textbf{Step~4: Identify the endpoints.}
+At $t=0$: $p_0 = p\boxplus_n q_0 = p\boxplus_n x^n = p$, so $f(0) = 1/\Phi_n(p)$.
+
+\noindent
+At $t=1$: $p_1 = p\boxplus_n q_1 = p\boxplus_n q$, so $f(1) = 1/\Phi_n(p\boxplus_n q)$.
+
+\noindent
+Therefore:
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)} - \frac{1}{\Phi_n(p)}
+= \frac{2b}{n-1}\int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt. \qedhere
+\]
+\end{proof}
+
+\begin{remark}[Why this identity matters]
+This integral identity is the engine of every result that follows. Notice three things:
+\begin{enumerate}[nosep]
+\item The right-hand side is manifestly $\ge 0$ (each factor in the integrand is non-negative). This immediately gives the Weak Stam inequality.
+\item The right-hand side depends on $q$ only through $b=\sigma^2(q)$ and the particular path $p_t$. Symmetry ($p\boxplus_n q = q\boxplus_n p$) lets us write an analogous identity starting from $q$.
+\item Inserting a \emph{lower bound} on $\mathcal{S}(p_t)$ (the Score-Gradient Inequality) turns this exact identity into a differential inequality that can be solved explicitly.
+\end{enumerate}
+\end{remark}
+
+%==============================================================================
+\section{Main Results}
+%==============================================================================
+
+We now use the Integral Identity (Theorem~\ref{thm:integral}) together with the Score-Gradient Inequality (Theorem~\ref{thm:stam-ineq}) to prove the Stam inequality in three stages of increasing strength. Throughout, we write
+\[
+a \coloneqq \sigma^2(p)>0, \qquad b \coloneqq \sigma^2(q)>0.
+\]
+
+\subsection{The Weak Stam Inequality}
+
+\begin{proposition}[Weak Stam]\label{prop:weak}
+$\displaystyle\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)}.$
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:integral},
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(p)}
+= \underbrace{\frac{2b}{n-1}}_{>\,0}\;
+  \int_0^1 \underbrace{\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}}_{\ge\,0}\,dt
+\;\ge\; 0.
+\]
+The integrand is non-negative because $\mathcal{S}(p_t)$ is a sum of squares
+(Definition in Section~5.2) and $\Phi_n(p_t)^2>0$.
+\end{proof}
+
+\begin{remark}
+In words: convolving with \emph{any} real-rooted polynomial can only decrease the Fisher information (equivalently, increase its reciprocal). The inequality is strict whenever $\mathcal{S}(p_t)>0$ at some $t\in(0,1)$, which happens for every $n\ge 2$.
+\end{remark}
+
+\subsection{The Half-Stam Inequality}
+
+\begin{theorem}[Half-Stam Inequality]\label{thm:half-stam}
+For any real-rooted polynomials $p, q$ with distinct roots:
+\[
+\frac{2}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+The Weak Stam (Proposition~\ref{prop:weak}) applied to the pair $(p,q)$ says
+\begin{equation}\label{eq:half1}
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)}.
+\end{equation}
+The convolution is commutative: $p\boxplus_n q = q\boxplus_n p$ (both equal the same Haar-averaged characteristic polynomial). So we may also apply the Weak Stam to the pair $(q,p)$, giving
+\begin{equation}\label{eq:half2}
+\frac{1}{\Phi_n(\underbrace{q \boxplus_n p}_{=\,p\boxplus_n q})} \ge \frac{1}{\Phi_n(q)}.
+\end{equation}
+Add~\eqref{eq:half1} and~\eqref{eq:half2}:
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} + \frac{1}{\Phi_n(p \boxplus_n q)}
+\ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
+\]
+which is exactly $\frac{2}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}$.
+\end{proof}
+
+\begin{remark}
+The Half-Stam is already a non-trivial result. It says the reciprocal Fisher information of the convolution is at least the \emph{average} of the reciprocal Fisher informations of $p$ and $q$. The proof uses nothing about $\mathcal{S}$ beyond non-negativity. To upgrade from ``average'' to ``sum'', we need the quantitative lower bound on $\mathcal{S}$ provided by the Score-Gradient Inequality.
+\end{remark}
+
+\subsection{The Full Stam Inequality}
+
+The idea is to use the Score-Gradient Inequality to convert the integral identity into a \emph{differential inequality} of the form $f'(t) \ge g(t)\,f(t)$, which can be solved by the integrating-factor method (Gr\"onwall's lemma).
+
+\begin{theorem}[Full Stam Inequality] \label{thm:full-stam}
+For any real-rooted polynomials $p, q \in \PnR$ with positive variances,
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \;\ge\; \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Write $f(t) = 1/\Phi_n(p_t)$ as before.
+
+\medskip
+\noindent\textbf{Step~1: From the integral identity to a differential inequality.}
+
+From the proof of Theorem~\ref{thm:integral} we know
+\begin{equation}\label{eq:fprime}
+f'(t) = \frac{2b}{n-1}\cdot\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}.
+\end{equation}
+We now use the Score-Gradient Inequality (Theorem~\ref{thm:stam-ineq}) applied to the polynomial $p_t$ (which has distinct real roots):
+\[
+\mathcal{S}(p_t)\cdot\sigma^2(p_t) \;\ge\; \frac{n-1}{2}\,\Phi_n(p_t),
+\]
+i.e.,
+\begin{equation}\label{eq:S-lower}
+\mathcal{S}(p_t) \;\ge\; \frac{(n-1)\,\Phi_n(p_t)}{2\,\sigma^2(p_t)}.
+\end{equation}
+Substituting~\eqref{eq:S-lower} into~\eqref{eq:fprime}:
+\begin{align*}
+f'(t)
+&\ge \frac{2b}{n-1}\cdot\frac{1}{\Phi_n(p_t)^2}\cdot\frac{(n-1)\,\Phi_n(p_t)}{2\,\sigma^2(p_t)} \\
+&= \frac{2b}{n-1}\cdot\frac{n-1}{2\,\sigma^2(p_t)}\cdot\frac{1}{\Phi_n(p_t)} \\
+&= \frac{b}{\sigma^2(p_t)}\cdot f(t).
+\end{align*}
+Since $\sigma^2(p_t) = a + tb$ (equation~\eqref{eq:var-flow}), this becomes
+\begin{equation}\label{eq:ode}
+f'(t) \;\ge\; \frac{b}{a+tb}\,f(t).
+\end{equation}
+This is a first-order linear differential inequality of the form $f'\ge g(t)\,f$ with $g(t)=b/(a+tb)$.
+
+\medskip
+\noindent\textbf{Step~2: Solve the differential inequality (Gr\"onwall).}
+
+Divide both sides of~\eqref{eq:ode} by $f(t)>0$:
+\[
+\frac{f'(t)}{f(t)} \;\ge\; \frac{b}{a+tb}.
+\]
+The left-hand side is $\frac{d}{dt}\ln f(t)$. The right-hand side is $\frac{d}{dt}\ln(a+tb)$ (check: $\frac{d}{dt}\ln(a+tb)=\frac{b}{a+tb}$). So:
+\[
+\frac{d}{dt}\ln f(t) \;\ge\; \frac{d}{dt}\ln(a+tb).
+\]
+Integrate both sides from $t=0$ to $t=1$:
+\[
+\ln f(1) - \ln f(0) \;\ge\; \ln(a+b) - \ln a,
+\]
+i.e.,
+\[
+\ln\frac{f(1)}{f(0)} \;\ge\; \ln\frac{a+b}{a}.
+\]
+Exponentiate (the exponential is increasing):
+\[
+\frac{f(1)}{f(0)} \;\ge\; \frac{a+b}{a}.
+\]
+Recalling $f(0)=1/\Phi_n(p)$ and $f(1)=1/\Phi_n(p\boxplus_n q)$:
+\begin{equation}\label{eq:fwd}
+\boxed{\frac{1}{\Phi_n(p \boxplus_n q)} \;\ge\; \frac{a+b}{a}\cdot\frac{1}{\Phi_n(p)}.}
+\qquad\text{(Forward bound)}
+\end{equation}
+
+\medskip
+\noindent\textbf{Step~3: The reverse bound by symmetry.}
+
+Since $p\boxplus_n q = q\boxplus_n p$, we can run the identical argument starting from $q$ and flowing toward $p\boxplus_n q$. Concretely, define $\hat p_s = q\boxplus_n r_s$ where $r_s$ is the fractional semigroup of $p$ with $\sigma^2(r_s)=s\,a$, so that $\hat p_0 = q$ and $\hat p_1 = q\boxplus_n p = p\boxplus_n q$.
+
+The same calculation as Steps~1--2, but with the roles of $a$ and $b$ swapped, yields
+\begin{equation}\label{eq:rev}
+\boxed{\frac{1}{\Phi_n(p \boxplus_n q)} \;\ge\; \frac{a+b}{b}\cdot\frac{1}{\Phi_n(q)}.}
+\qquad\text{(Reverse bound)}
+\end{equation}
+
+\medskip
+\noindent\textbf{Step~4: Combine the two bounds.}
+
+We have two inequalities:
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)} \ge \frac{a+b}{a}\cdot\frac{1}{\Phi_n(p)},
+\qquad
+\frac{1}{\Phi_n(p\boxplus_n q)} \ge \frac{a+b}{b}\cdot\frac{1}{\Phi_n(q)}.
+\]
+Define weights that sum to~$1$:
+\[
+w_1 = \frac{a}{a+b}, \qquad w_2 = \frac{b}{a+b}, \qquad w_1+w_2=1.
+\]
+Multiply the forward bound~\eqref{eq:fwd} by $w_1$ and the reverse bound~\eqref{eq:rev} by $w_2$:
+\begin{align}
+w_1\cdot\frac{1}{\Phi_n(p\boxplus_n q)}
+&\ge w_1\cdot\frac{a+b}{a}\cdot\frac{1}{\Phi_n(p)}
+= \frac{a}{a+b}\cdot\frac{a+b}{a}\cdot\frac{1}{\Phi_n(p)}
+= \frac{1}{\Phi_n(p)}, \label{eq:w1} \\[4pt]
+w_2\cdot\frac{1}{\Phi_n(p\boxplus_n q)}
+&\ge w_2\cdot\frac{a+b}{b}\cdot\frac{1}{\Phi_n(q)}
+= \frac{b}{a+b}\cdot\frac{a+b}{b}\cdot\frac{1}{\Phi_n(q)}
+= \frac{1}{\Phi_n(q)}. \label{eq:w2}
+\end{align}
+Observe how the factors cancel perfectly in each line. Now add~\eqref{eq:w1} and~\eqref{eq:w2}:
+\[
+\underbrace{(w_1+w_2)}_{=\,1}\cdot\frac{1}{\Phi_n(p\boxplus_n q)}
+\;\ge\; \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
+\]
+which is exactly the Stam inequality. \qedhere
+\end{proof}
+
+\begin{remark}[Why the weights work]
+The choice of weights $w_1=a/(a+b)$, $w_2=b/(a+b)$ is not arbitrary---it is the unique choice that makes both factors $w_i\cdot(a+b)/\sigma^2$ simplify to~$1$. Any other weighting would leave residual factors that prevent a clean cancellation. This is the step where the variance additivity (the fact that $\sigma^2(p\boxplus_n q)=a+b$) is essential.
+\end{remark}
+
+\begin{remark}[Summary of what each ingredient contributes]
+Let us recap which tool is responsible for each part of the proof:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+\textbf{Ingredient} & \textbf{Where used} & \textbf{What it gives} \\
+\midrule
+$\mathcal{S}\ge 0$ (sum of squares) & Weak \& Half Stam & Monotonicity: $1/\Phi_n$ increases \\
+Score-Gradient Ineq.\ & Full Stam, Step~1 & Quantitative ODE: $f'\ge g\,f$ \\
+Gr\"onwall integration & Full Stam, Step~2 & Forward/reverse bounds \\
+Commutativity of $\boxplus_n$ & Full Stam, Step~3 & Reverse bound by symmetry \\
+Variance additivity & Full Stam, Step~4 & Weight cancellation \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{remark}
+
+\begin{remark}[Strength of the forward and reverse bounds]
+The forward bound~\eqref{eq:fwd} by itself says
+$1/\Phi_n(p\boxplus_n q) \ge (1+b/a)/\Phi_n(p)$,
+which is \emph{stronger} than $1/\Phi_n(p)$ alone by the multiplicative factor $1+b/a>1$. In terms of the efficiency ratio $\eta(p) = 4\Phi_n(p)\sigma^2(p)/[n(n-1)^2]$, the forward bound is equivalent to
+$\eta(p\boxplus_n q)\le \eta(p)$:
+convolution always regularizes (pushes $\eta$ toward its minimum value~$1$).
+\end{remark}
+
+%==============================================================================
+\section{Alternative Characterizations}
+%==============================================================================
+
+The Stam inequality can be reformulated in several instructive ways that highlight different aspects of the convolution process.
+
+\subsection{The Efficiency Ratio and Regularization}
+
+A natural way to measure the "non-Gaussianity" of a polynomial's root distribution is by comparing its Fisher information to the lower bound established in Lemma~\ref{lem:fv}.
+
+\begin{definition}[Efficiency Ratio]
+For $p \in \PnR$ with positive variance, the \emph{efficiency ratio} $\eta(p)$ is defined as:
+\[
+\eta(p) \coloneqq \frac{4\Phi_n(p) \sigma^2(p)}{n(n-1)^2}.
+\]
+By the Fisher--Variance inequality, $\eta(p) \ge 1$, with equality if and only if $n=2$ (or in the $n \to \infty$ Gaussian limit for random polynomials).
+\end{definition}
+
+In this language, the Stam inequality is related to the following regularization property.
+
+\begin{theorem}[Regularization Property]
+For $p, q \in \PnR$ with positive variances, the efficiency ratio of the convolution satisfies:
+\[
+\eta(p \boxplus_n q) \le \frac{\sigma^2(p)\,\eta(p) + \sigma^2(q)\,\eta(q)}{\sigma^2(p) + \sigma^2(q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Write $a = \sigma^2(p)$ and $b = \sigma^2(q)$.
+Recall the forward and reverse bounds from the proof of the Full Stam Inequality (Theorem~\ref{thm:full-stam}):
+\[
+\Phi_n(p \boxplus_n q) \le \frac{a\,\Phi_n(p)}{a+b}
+\quad\text{and}\quad
+\Phi_n(p \boxplus_n q) \le \frac{b\,\Phi_n(q)}{a+b}.
+\]
+Multiply the first by $\frac{a}{a+b}$ and the second by $\frac{b}{a+b}$, then add:
+\[
+\Phi_n(p \boxplus_n q)
+\le \frac{a^2\,\Phi_n(p) + b^2\,\Phi_n(q)}{(a+b)^2}.
+\]
+Multiplying both sides by $\frac{4(a+b)}{n(n-1)^2}$:
+\[
+\underbrace{\frac{4\,\Phi_n(p \boxplus_n q)(a+b)}{n(n-1)^2}}_{= \;\eta(p \boxplus_n q)}
+\le
+\frac{a \cdot \frac{4a\,\Phi_n(p)}{n(n-1)^2}
+    + b \cdot \frac{4b\,\Phi_n(q)}{n(n-1)^2}}{a+b}
+= \frac{a\,\eta(p) + b\,\eta(q)}{a+b}.
+\]
+Note that $\sigma^2(p \boxplus_n q) = a + b$ was used in identifying $\eta(p \boxplus_n q)$.
+\end{proof}
+
+This theorem asserts that the efficiency ratio of the convolution is bounded by the variance-weighted average of the efficiency ratios of the components: convolution always pushes the root configuration toward a more regular (lower $\eta$) state.
+
+\subsection{Convex Mixing Interpretation}
+
+The symmetric additive convolution can be viewed as a form of convex mixing at the level of the matrix model. Let $A$ and $B$ be centered symmetric matrices with characteristic polynomials $p$ and~$q$. The functional $\Psi_n(M) = \sigma^2(M)\,\Phi_n(\chi_M)$, where $\chi_M$ denotes the characteristic polynomial of $M$, is scale-invariant.
+
+\begin{remark}[Convexity under Haar Averaging]
+The Regularization Property can be interpreted as a matrix-level Jensen's inequality: the Haar integration over $O(n)$ in the definition of $\boxplus_n$ acts as an averaging operation that always reduces the efficiency ratio $\eta$. Heuristically, rotating $B$ by a random orthogonal matrix $Q$ and adding it to $A$ produces a sum whose eigenvalues are more ``spread out'' than either $A$ or $B$ alone. Since $\eta$ measures deviation from the most spread-out configuration (the Hermite roots), this averaging cannot increase $\eta$.
+\end{remark}
+
+This interpretation complements the flow-based proof: both perspectives confirm that convolution acts as a regularization process, driving root configurations toward the universally optimal Hermite arrangement.
+
+%==============================================================================
+\section{Conclusion}
+%==============================================================================
+
+We have established the full Finite Free Stam Inequality, linking the geometry of polynomial roots to information-theoretic inequalities.
+\begin{enumerate}
+    \item We defined root interactions via electrostatic forces and their associated Fisher information $\Phi_n(p)$.
+    \item We proved the Score-Gradient Inequality (Theorem~\ref{thm:stam-ineq}): $\mathcal{S}(p)\cdot\sigma^2(p) \ge \frac{n-1}{2}\Phi_n(p)$, via two applications of Cauchy--Schwarz to the Score-Root Identity and the Score Decomposition.
+    \item We derived a precise integral formula for the increase in the reciprocal Fisher information along the convolution flow.
+    \item We combined the Score-Gradient Inequality with the flow to obtain the full Stam inequality (Theorem~\ref{thm:full-stam}):
+    \[
+    \frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
+    \]
+    with equality characterized by the Hermite polynomial condition $V_i = c(\lambda_i - \mu)$.
+\end{enumerate}
+
+%==============================================================================
+% Bibliography
+%==============================================================================
+\begin{thebibliography}{9}
+\bibitem{MSS15} A.~Marcus, D.~Spielman, N.~Srivastava,
+\emph{Interlacing families II: Mixed characteristic polynomials and the Kadison-Singer problem},
+Ann.\ Math.\ 182 (2015).
+
+\bibitem{Stam59} A.~J.~Stam,
+\emph{Some inequalities satisfied by the quantities of information of Fisher and Shannon},
+Information and Control (1959).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,552 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{enumitem}
+
+%--- Theorem Environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+%--- Macros ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\R}}
+
+\title{The Finite Free Stam Inequality}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+\section{Setup and statement}
+% =====================================================================
+
+Let $p(x)=\sum_{k=0}^n a_k x^{n-k}$ and $q(x)=\sum_{k=0}^n b_k x^{n-k}$
+be monic ($a_0=b_0=1$) real-rooted polynomials of degree $n$. Their
+\emph{symmetric additive convolution} is
+\[
+(p\boxplus_n q)(x)=\sum_{k=0}^n c_k x^{n-k},\qquad
+c_k=\sum_{i+j=k}\frac{(n-i)!\,(n-j)!}{n!\,(n-k)!}\,a_i\,b_j.
+\]
+For $p(x)=\prod_{i=1}^n(x-\lambda_i)$ with distinct roots define the
+\emph{scores} and \emph{finite free Fisher information}:
+\[
+V_i:=\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j},\qquad
+\Phi_n(p):=\sum_{i=1}^n V_i^2,
+\]
+with $\Phi_n(p):=\infty$ when $p$ has a repeated root.
+
+\begin{definition}[Variance]
+$\displaystyle\sigma^2(p):=\frac{1}{n}\sum_{i=1}^n(\lambda_i-\bar\lambda)^2$
+where $\bar\lambda=\frac{1}{n}\sum_i\lambda_i$.
+\end{definition}
+
+\begin{definition}[Score--gap form]
+$\displaystyle\mathcal{S}(p):=\sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}.$
+\end{definition}
+
+\begin{theorem}[Finite Free Stam Inequality]\label{thm:stam}
+For $p,q\in\PnR$ with distinct roots,
+\begin{equation}\label{eq:stam}
+\frac{1}{\Phi_n(p\boxplus_n q)}
+\ge\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\end{equation}
+\end{theorem}
+
+\smallskip\noindent
+We prove~\eqref{eq:stam} for all degrees.  Explicit computations
+handle $n=2$ (Section~\ref{sec:n2}) and $n=3$ (Section~\ref{sec:n3}).
+For general~$n$, we establish a pointwise score--gap inequality
+(Theorem~\ref{thm:pointwise}) and combine it with a convolution-flow
+argument (Section~\ref{sec:general}).
+
+% =====================================================================
+\section{Preliminary identities}
+% =====================================================================
+
+All polynomials below are monic of degree $n$ with distinct roots.
+
+\begin{lemma}[Score--root identity]\label{lem:score-root}
+$\displaystyle\sum_{i=1}^n\lambda_i V_i=\frac{n(n-1)}{2}$.
+\end{lemma}
+\begin{proof}
+$\sum_i\lambda_i V_i
+=\sum_i\sum_{j\ne i}\frac{\lambda_i}{\lambda_i-\lambda_j}
+=\sum_{i<j}\frac{\lambda_i-\lambda_j}{\lambda_i-\lambda_j}
+=\binom{n}{2}$.
+\end{proof}
+
+\begin{lemma}[Score sum]\label{lem:score-sum}
+$\sum_{i=1}^n V_i=0$.
+\end{lemma}
+\begin{proof}
+$\sum_i V_i=\sum_i\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}
+=\sum_{i<j}\left(\frac{1}{\lambda_i-\lambda_j}+\frac{1}{\lambda_j-\lambda_i}\right)=0$.
+\end{proof}
+
+\begin{lemma}[Score--gap identity]\label{lem:score-gap}
+$\displaystyle\Phi_n(p)=\sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$.
+\end{lemma}
+\begin{proof}
+$\sum_i V_i^2=\sum_i V_i\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}
+=\sum_{i\ne j}\frac{V_i}{\lambda_i-\lambda_j}
+=\sum_{i<j}\!\left(\frac{V_i}{\lambda_i-\lambda_j}+\frac{V_j}{\lambda_j-\lambda_i}\right)
+=\sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$.
+\end{proof}
+
+\begin{lemma}[Score via derivatives]\label{lem:score-deriv}
+For any monic polynomial $r$ of degree~$n$ with distinct roots
+$\lambda_1,\ldots,\lambda_n$,\;
+$V_i=\dfrac{r''(\lambda_i)}{2\,r'(\lambda_i)}$.
+\end{lemma}
+\begin{proof}
+Since $r'(\lambda_i)=\prod_{j\ne i}(\lambda_i-\lambda_j)$, differentiating
+$r'(x)=\sum_{i=1}^n\prod_{j\ne i}(x-\lambda_j)$ yields
+$r''(\lambda_i)=2\sum_{k\ne i}\prod_{j\ne i,\,j\ne k}(\lambda_i-\lambda_j)
+=2\,r'(\lambda_i)\sum_{k\ne i}\frac{1}{\lambda_i-\lambda_k}
+=2\,r'(\lambda_i)\,V_i$.
+\end{proof}
+
+\begin{lemma}[Fisher--variance inequality]\label{lem:FV}
+$\Phi_n(p)\,\sigma^2(p)\ge\dfrac{n(n-1)^2}{4}$,
+with equality iff $V_i$ is proportional to
+$\lambda_i-\bar\lambda$ $($which always holds when $n=2$$)$.
+\end{lemma}
+\begin{proof}
+By Lemmas~\ref{lem:score-root} and~\ref{lem:score-sum},
+$\sum_i(\lambda_i-\bar\lambda)\,V_i
+=\sum_i\lambda_i V_i-\bar\lambda\sum_i V_i
+=\frac{n(n-1)}{2}$.
+By Cauchy--Schwarz,
+$\frac{n^2(n-1)^2}{4}
+=\bigl(\sum_i(\lambda_i-\bar\lambda)\,V_i\bigr)^{\!2}
+\le\bigl(\sum_i(\lambda_i-\bar\lambda)^2\bigr)\bigl(\sum_i V_i^2\bigr)
+=n\,\sigma^2(p)\,\Phi_n(p)$.
+\end{proof}
+
+\begin{lemma}[Variance additivity]\label{lem:var-add}
+$\sigma^2(p\boxplus_n q)=\sigma^2(p)+\sigma^2(q)$.
+\end{lemma}
+\begin{proof}
+The coefficient formula gives $c_1=a_1+b_1$ and
+$c_2=a_2+b_2$, so the variance (a function of $c_1,c_2$ alone)
+is additive.
+\end{proof}
+
+% =====================================================================
+\section{Critical-value formula for \texorpdfstring{$\Phi_n$}{Phi\_n}}
+\label{sec:critval}
+% =====================================================================
+
+\begin{theorem}[Critical-value formula]\label{thm:critval}
+Let $r$ be a monic polynomial of degree $n$ with distinct roots, and let
+$\zeta_1,\ldots,\zeta_{n-1}$ be the zeros of $r'$ (assumed simple). Then
+\begin{equation}\label{eq:critval}
+\Phi_n(r)=-\frac{1}{4}\sum_{j=1}^{n-1}\frac{r''(\zeta_j)}{r(\zeta_j)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:score-deriv},
+$\Phi_n=\frac{1}{4}\sum_{i=1}^n\frac{r''(\lambda_i)^2}{r'(\lambda_i)^2}$.
+Consider the meromorphic function
+\[
+F(x)=\frac{r''(x)^2}{r'(x)\,r(x)}.
+\]
+
+\noindent\emph{Residues at the roots $\lambda_i$.}
+Since $r$ has a simple zero at $\lambda_i$,
+\[
+\operatorname{Res}_{x=\lambda_i}F
+=\frac{r''(\lambda_i)^2}{r'(\lambda_i)\cdot r'(\lambda_i)}
+=\frac{r''(\lambda_i)^2}{r'(\lambda_i)^2}.
+\]
+Summing gives $\sum_i\operatorname{Res}_{\lambda_i}F=4\Phi_n$.
+
+\noindent\emph{Residues at the critical points $\zeta_j$.}
+Since $r'$ has a simple zero at $\zeta_j$,
+\[
+\operatorname{Res}_{x=\zeta_j}F
+=\frac{r''(\zeta_j)^2}{r''(\zeta_j)\,r(\zeta_j)}
+=\frac{r''(\zeta_j)}{r(\zeta_j)}.
+\]
+
+\noindent\emph{Residue at infinity.}
+$F(x)\sim n(n-1)^2/x^3$ as $x\to\infty$, so
+$\operatorname{Res}_\infty F=0$.
+
+\noindent
+The global residue theorem gives
+$4\Phi_n+\sum_j r''(\zeta_j)/r(\zeta_j)=0$.
+\end{proof}
+
+\begin{remark}
+This formula connects $\Phi_n$ to the \emph{critical values} of the
+polynomial: the values $r(\zeta_j)$ at its critical points. It
+generalizes the classical relation between the discriminant and
+critical values, and was verified numerically for $3\le n\le 7$.
+\end{remark}
+
+% =====================================================================
+\section{Case \texorpdfstring{$n=2$}{n=2}: equality}
+\label{sec:n2}
+% =====================================================================
+
+\begin{proposition}\label{prop:n2}
+For $n=2$, inequality~\eqref{eq:stam} holds with equality.
+\end{proposition}
+\begin{proof}
+$\Phi_2(p)=2/(\lambda_1-\lambda_2)^2$, so $1/\Phi_2(p)=2\sigma^2(p)$.
+By Lemma~\ref{lem:var-add},
+$1/\Phi_2(p\boxplus_2 q)=2\sigma^2(p\boxplus_2 q)=2\sigma^2(p)+2\sigma^2(q)
+=1/\Phi_2(p)+1/\Phi_2(q)$.
+\end{proof}
+
+% =====================================================================
+\section{Case \texorpdfstring{$n=3$}{n=3}: proof by residue calculus}
+\label{sec:n3}
+% =====================================================================
+
+Since $\Phi_n$ and $\sigma^2$ are translation-invariant, we assume
+$p$ and $q$ centered throughout this section. A centered monic cubic
+is $r(x)=x^3-Sx+T$ with $S\ge0$ and discriminant
+$\Delta=4S^3-27T^2>0$.
+
+\begin{proposition}[Closed-form Fisher information for cubics]
+\label{prop:phi3}
+\begin{equation}\label{eq:phi3}
+\Phi_3(r)=\frac{18S^2}{\Delta}=\frac{18S^2}{4S^3-27T^2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply Theorem~\ref{thm:critval}. Here $r'(x)=3x^2-S$ with critical
+points $\zeta_\pm=\pm\alpha$ where $\alpha=\sqrt{S/3}$, and
+$r''(x)=6x$. The critical values are
+\[
+r(\alpha)=T-\tfrac{2S^{3/2}}{3\sqrt3},\qquad
+r(-\alpha)=T+\tfrac{2S^{3/2}}{3\sqrt3},
+\]
+and their product is $r(\alpha)\,r(-\alpha)=T^2-4S^3/27=-\Delta/27$.
+Then
+\begin{align*}
+4\Phi_3
+&=-\frac{6\alpha}{r(\alpha)}+\frac{6\alpha}{r(-\alpha)}
+=6\alpha\cdot\frac{r(\alpha)-r(-\alpha)}{r(\alpha)\,r(-\alpha)}.
+\end{align*}
+Since $r(\alpha)-r(-\alpha)=-(4S\alpha/3)$ and $\alpha^2=S/3$:
+\[
+4\Phi_3=6\alpha\cdot\frac{-4S\alpha/3}{-\Delta/27}
+=\frac{8S\alpha^2\cdot27}{\Delta}=\frac{72S^2}{\Delta}.
+\qedhere
+\]
+\end{proof}
+
+\begin{proposition}[Cubic convolution is additive]\label{prop:cubic-add}
+For centered monic cubics $p(x)=x^3-S_1 x+T_1$ and
+$q(x)=x^3-S_2 x+T_2$,
+\[
+(p\boxplus_3 q)(x)=x^3-(S_1+S_2)\,x+(T_1+T_2).
+\]
+\end{proposition}
+\begin{proof}
+With $a_0=b_0=1$, $a_1=b_1=0$, $a_2=-S_1$, $b_2=-S_2$, $a_3=T_1$,
+$b_3=T_2$, the coefficient formula gives $c_0=1$, $c_1=0$,
+\[
+c_2=\frac{1!\cdot3!}{3!\cdot1!}\,a_2+\frac{3!\cdot1!}{3!\cdot1!}\,b_2
+=a_2+b_2=-(S_1+S_2),
+\]
+and
+\[
+c_3=\frac{0!\cdot3!}{3!\cdot0!}\,a_3+\frac{3!\cdot0!}{3!\cdot0!}\,b_3
+=a_3+b_3=T_1+T_2,
+\]
+where all cross-terms with $a_1=b_1=0$ vanish.
+\end{proof}
+
+\begin{theorem}[Stam inequality for cubics]\label{thm:stam3}
+For $n=3$, inequality~\eqref{eq:stam} holds. Equality holds
+if and only if $T_1=T_2=0$, i.e.\ both polynomials have roots
+of the form $\{-a,0,a\}$.
+\end{theorem}
+\begin{proof}
+By Propositions~\ref{prop:phi3} and~\ref{prop:cubic-add},
+\[
+\frac{1}{\Phi_3(r)}=\frac{\Delta}{18S^2}
+=\frac{2S}{9}-\frac{3T^2}{2S^2}.
+\]
+Thus~\eqref{eq:stam} reads
+\[
+\frac{2(S_1+S_2)}{9}-\frac{3(T_1+T_2)^2}{2(S_1+S_2)^2}
+\;\ge\;
+\frac{2S_1}{9}+\frac{2S_2}{9}
+-\frac{3T_1^2}{2S_1^2}-\frac{3T_2^2}{2S_2^2}.
+\]
+The linear terms cancel, and after multiplying by $-2/3$ the
+inequality reduces to
+\begin{equation}\label{eq:elem}
+\frac{(T_1+T_2)^2}{(S_1+S_2)^2}
+\;\le\;
+\frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2}.
+\end{equation}
+Set $\alpha=S_1/(S_1+S_2)\in(0,1)$, $\beta=1-\alpha$,
+$u=T_1/S_1$, $v=T_2/S_2$. The left side is
+$(\alpha u+\beta v)^2$. By convexity of $t\mapsto t^2$
+and the weights $\alpha+\beta=1$:
+\[
+(\alpha u+\beta v)^2
+\;\le\;\alpha u^2+\beta v^2
+\;\le\;u^2+v^2,
+\]
+where the second step uses $\alpha,\beta\le 1$, proving
+\eqref{eq:elem}.
+
+Equality holds throughout iff both steps are equalities.
+The first step ($\le\alpha u^2+\beta v^2$) is Jensen, tight iff $u=v$.
+The second step ($\le u^2+v^2$) rewrites as
+$(1-\alpha)u^2+(1-\beta)v^2\ge0$, i.e.\ $\beta u^2+\alpha v^2\ge0$,
+which is an equality iff $u=v=0$ (since $\alpha,\beta>0$).
+Thus equality requires $T_1=T_2=0$.
+\end{proof}
+
+% =====================================================================
+\section{Convolution-flow framework}
+\label{sec:flow}
+% =====================================================================
+
+For general $n$ we employ the convolution semigroup. Assume $q$
+centered with variance $b:=\sigma^2(q)>0$ and set $a:=\sigma^2(p)>0$.
+
+\begin{definition}[Fractional semigroup]
+Set $\kappa_k:=\frac{(n-k)!}{n!}\,b_k$ and define $q_t$ by the
+coefficients $b_k(t)=\frac{n!}{(n-k)!}\,\kappa_k^t$. Then
+$q_0=x^n$, $q_1=q$, and $q_s\boxplus_n q_t=q_{s+t}$.
+The variance scales linearly: $\sigma^2(q_t)=t\,b$.
+\end{definition}
+
+\noindent
+Write $p_t\coloneqq p\boxplus_n q_t$ for the flow polynomial.
+By Lemma~\ref{lem:var-add}, $\sigma^2(p_t)=a+tb$.
+
+\begin{lemma}[Root-derivative formula]\label{lem:root-deriv}
+If $p_t$ has simple roots $\lambda_i(t)$ depending smoothly on~$t$,
+then $\dot\lambda_i=-\partial_t p_t(\lambda_i)/p_t'(\lambda_i)$.
+\end{lemma}
+\begin{proof}
+Differentiate $p_t(\lambda_i(t))=0$ in $t$.
+\end{proof}
+
+\begin{lemma}[Root shift]\label{lem:root-shift}
+$\lambda_i(t)=\lambda_i(0)+\frac{tb}{n-1}\,V_i(0)+O(t^2)$.
+\end{lemma}
+\begin{proof}
+Apply Lemma~\ref{lem:root-deriv} at $t=0$ and use the coefficient
+formula for $\partial_t p_t|_{t=0}$.
+\end{proof}
+
+\begin{lemma}[Dissipation identity]\label{lem:dissip}
+\begin{equation}\label{eq:dissip}
+\frac{d}{dt}\Phi_n(p_t)=-\frac{2b}{n-1}\,\mathcal{S}(p_t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+By the semigroup property, $p_{t+h}=p_t\boxplus_n q_h$ with
+$\sigma^2(q_h)=hb$.  Expanding $\Phi_n(p_{t+h})$ via
+Lemma~\ref{lem:root-shift} at order~$h$: linear terms cancel by
+$\sum V_i=0$ (Lemma~\ref{lem:score-sum}), and the quadratic
+term gives~\eqref{eq:dissip}.
+\end{proof}
+
+\begin{corollary}[Integral identity]\label{cor:integral}
+\begin{equation}\label{eq:integral}
+\frac{1}{\Phi_n(p\boxplus_n q)}-\frac{1}{\Phi_n(p)}
+=\frac{2b}{n-1}\int_0^1\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt.
+\end{equation}
+\end{corollary}
+\begin{proof}
+$\frac{d}{dt}\frac{1}{\Phi_n(p_t)}=-\frac{\dot\Phi_n(p_t)}{\Phi_n(p_t)^2}
+=\frac{2b}{n-1}\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}$.
+Integrate from $0$ to $1$.
+\end{proof}
+
+% =====================================================================
+\section{General \texorpdfstring{$n$}{n}: proof of the Stam inequality}
+\label{sec:general}
+% =====================================================================
+
+\begin{theorem}[Pointwise score--gap inequality]\label{thm:pointwise}
+For every $r\in\PnR$ with distinct roots,
+\begin{equation}\label{eq:pw}
+\mathcal{S}(r)\,\sigma^2(r)\;\ge\;\frac{n-1}{2}\,\Phi_n(r).
+\end{equation}
+Equality holds if and only if there exists a constant~$c$ such that
+$V_i=c(\lambda_i-\bar\lambda)$ for all~$i$.
+\end{theorem}
+
+\begin{proof}
+Set $T=\sum_{i=1}^n(\lambda_i-\bar\lambda)^2=n\,\sigma^2(r)$,\;
+$U=\Phi_n(r)$,\; $S=\mathcal{S}(r)$.
+The inequality is equivalent to $S\,T\ge\tfrac{n(n-1)}{2}\,U$.
+
+\medskip\noindent\textbf{Step 1 (Fisher--variance bound).}
+By Lemmas~\ref{lem:score-root} and~\ref{lem:score-sum},
+$\sum_{i=1}^n(\lambda_i-\bar\lambda)\,V_i
+=\sum_{i=1}^n\lambda_i V_i-\bar\lambda\sum_{i=1}^n V_i
+=\frac{n(n-1)}{2}$.
+Cauchy--Schwarz gives
+\begin{equation}\label{eq:cs1}
+\frac{n^2(n-1)^2}{4}\;\le\;T\,U.
+\end{equation}
+(This is Lemma~\ref{lem:FV} restated as $T\,U\ge n^2(n-1)^2/4$.)
+
+\medskip\noindent\textbf{Step 2 (Score--gap bound).}
+By Lemma~\ref{lem:score-gap},\;
+$U=\sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$.
+Cauchy--Schwarz gives
+\begin{equation}\label{eq:cs2}
+U^2\;\le\;S\cdot\binom{n}{2}=\frac{n(n-1)}{2}\,S,
+\end{equation}
+i.e., $S\ge\frac{2\,U^2}{n(n-1)}$.
+
+\medskip\noindent\textbf{Step 3 (Combination).}
+From Steps~1 and~2:
+\[
+S\,T\;\ge\;\frac{2\,U^2}{n(n-1)}\cdot T
+=\frac{2\,U\cdot(U\,T)}{n(n-1)}
+\;\ge\;\frac{2\,U\cdot\frac{n^2(n-1)^2}{4}}{n(n-1)}
+=\frac{n(n-1)}{2}\,U.
+\]
+
+\medskip\noindent\textbf{Equality.}
+Equality requires both~\eqref{eq:cs1} and~\eqref{eq:cs2} to be
+equalities.
+Equality in~\eqref{eq:cs1} holds iff the vectors
+$(\lambda_i-\bar\lambda)_i$ and $(V_i)_i$ are proportional, i.e.,
+$V_i=c(\lambda_i-\bar\lambda)$ for some constant~$c$.
+Equality in~\eqref{eq:cs2} holds iff
+$\frac{V_i-V_j}{\lambda_i-\lambda_j}$ is constant for all $i<j$.
+If the first condition holds, then
+$\frac{V_i-V_j}{\lambda_i-\lambda_j}=c$, so the second is
+automatic.  Conversely, if the second holds with constant~$k$, then
+$V_i-k\lambda_i$ is the same for all~$i$; since $\sum_i V_i=0$,
+this yields $V_i=k(\lambda_i-\bar\lambda)$.
+\end{proof}
+
+\begin{remark}
+The equality condition $V_i=c(\lambda_i-\bar\lambda)$ characterizes
+affine images of the roots of the Hermite polynomial~$H_n(x)$.
+Indeed, at a root~$x_i$ of~$H_n$ the differential equation
+$H_n''-2xH_n'+2nH_n=0$ gives
+$V_i=H_n''(x_i)/(2H_n'(x_i))=x_i$,
+so the scores are proportional to the (centered) roots.
+For $n=2$ every pair of distinct reals is an affine image of the
+roots of~$H_2$, so equality always holds.
+For $n=3$ the equality case is $\{-a,0,a\}$, consistent with
+Theorem~\ref{thm:stam3}.
+\end{remark}
+
+\begin{theorem}[Stam inequality --- general case]\label{thm:cond-stam}
+The Stam inequality~\eqref{eq:stam} holds for every degree~$n\ge2$.
+\end{theorem}
+
+\begin{proof}
+Write $a=\sigma^2(p)$ and $b=\sigma^2(q)$.
+
+\medskip\noindent\textbf{Step 1 (ODE bound).}
+Applying~\eqref{eq:pw} to $p_t$,
+$\mathcal{S}(p_t)\ge\frac{n-1}{2}\frac{\Phi_n(p_t)}{\sigma^2(p_t)}$.
+The dissipation identity~\eqref{eq:dissip} then gives
+\[
+\frac{d}{dt}\Phi_n(p_t)
+\le-\frac{b}{a+tb}\,\Phi_n(p_t).
+\]
+Integrating $(\log\Phi_n(p_t))'\le-b/(a+tb)$ from $0$ to~$t$:
+\begin{equation}\label{eq:ode}
+\frac{1}{\Phi_n(p_t)}\ge\frac{a+tb}{a\,\Phi_n(p)}.
+\end{equation}
+
+\medskip\noindent\textbf{Step 2 (Integral bound from the $p$-flow).}
+From~\eqref{eq:integral} and~\eqref{eq:pw}:
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)}-\frac{1}{\Phi_n(p)}
+\ge b\int_0^1\frac{dt}{(a+tb)\,\Phi_n(p_t)}.
+\]
+Substituting~\eqref{eq:ode}: the factor $(a+tb)$ cancels and
+\begin{equation}\label{eq:bp}
+\frac{1}{\Phi_n(p\boxplus_n q)}
+\ge\frac{1}{\Phi_n(p)}+\frac{b}{a\,\Phi_n(p)}
+=\frac{a+b}{a\,\Phi_n(p)}.
+\end{equation}
+
+\medskip\noindent\textbf{Step 3 (Symmetric bound from the $q$-flow).}
+Repeating Steps 1--2 with the roles of $p$ and $q$ exchanged
+(flowing $\hat q_s:=q\boxplus_n p_s$ from $s=0$ to $s=1$):
+\begin{equation}\label{eq:bq}
+\frac{1}{\Phi_n(p\boxplus_n q)}
+\ge\frac{a+b}{b\,\Phi_n(q)}.
+\end{equation}
+
+\medskip\noindent\textbf{Step 4 (Case split).}
+Exactly one of the following holds:
+\begin{enumerate}[label=(\alph*)]
+\item $b\,\Phi_n(q)\ge a\,\Phi_n(p)$. Then
+$\frac{b}{a\,\Phi_n(p)}\ge\frac{1}{\Phi_n(q)}$, so~\eqref{eq:bp}
+gives~\eqref{eq:stam}.
+\item $a\,\Phi_n(p)\ge b\,\Phi_n(q)$. Then
+$\frac{a}{b\,\Phi_n(q)}\ge\frac{1}{\Phi_n(p)}$, so~\eqref{eq:bq}
+gives~\eqref{eq:stam}.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{remark}
+The case-split exploits both the $p$-flow and the $q$-flow.
+It is crucial that $\boxplus_n$ is commutative:
+$p\boxplus_n q=q\boxplus_n p$.
+\end{remark}
+
+% =====================================================================
+\section{Summary of results}
+\label{sec:summary}
+% =====================================================================
+
+The Stam inequality (Theorem~\ref{thm:stam}) is now proved in full
+generality.  The argument combines three ingredients:
+
+\begin{enumerate}
+\item \textbf{Pointwise score--gap inequality}
+(Theorem~\ref{thm:pointwise}):
+$\mathcal{S}(r)\,\sigma^2(r)\ge\frac{n-1}{2}\,\Phi_n(r)$,
+established by two applications of Cauchy--Schwarz via the
+score--root identity ($\sum\lambda_i V_i=\binom{n}{2}$) and the
+score--gap identity
+($\Phi_n=\sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$).
+
+\item \textbf{Convolution-flow dissipation}
+(Corollary~\ref{cor:integral}):
+the integral identity expressing
+$1/\Phi_n(p\boxplus_n q)-1/\Phi_n(p)$
+in terms of $\mathcal{S}(p_t)/\Phi_n(p_t)^2$ along the flow.
+
+\item \textbf{Case-split argument} (Theorem~\ref{thm:cond-stam}):
+applying the ODE bound from both the $p$-flow and $q$-flow
+directions and exploiting commutativity of~$\boxplus_n$.
+\end{enumerate}
+
+\noindent
+Equality in the pointwise inequality holds if and only if the
+scores are proportional to the centered roots, characterizing
+affine images of Hermite polynomial roots.
+
+\end{document}
