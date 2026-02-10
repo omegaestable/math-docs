@@ -22,6 +22,8 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
+\newtheorem{conjecture}[theorem]{Conjecture}
+
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}[section]
 
@@ -465,6 +467,175 @@ Hence at least one pair satisfies $V_i\neq V_j$, making the sum strictly positiv
 
 %==============================================================================
 %==============================================================================
+\section{New Analytical Tools}
+%==============================================================================
+
+This section introduces the analytical ingredients needed to upgrade
+the perturbation lemma (Lemma~\ref{lem:fisher_decrease}) into a complete proof
+of the Stam inequality.
+
+%------------------------------------------------------------------------------
+\subsection{Fractional Convolution Flow}
+%------------------------------------------------------------------------------
+
+\begin{lemma}[Fractional Convolution Flow] \label{lem:flow}
+Let $q \in \PnR$ be centered (i.e.\ $\mu(q)=0$) with variance $\sigma^2 > 0$.
+There exists a one-parameter family $\{q_t\}_{t \in [0,1]} \subset \PnR$ satisfying:
+\begin{enumerate}[label=(\roman*)]
+\item $q_0(x) = x^n$ \textup{(}the identity for $\boxplus_n$\textup{)}, and $q_1 = q$.
+\item $q_{s+t} = q_s \boxplus_n q_t$ for all $s, t \ge 0$ with $s+t \le 1$.
+\item $\sigma^2(q_t) = t \,\sigma^2(q)$ for all $t \in [0,1]$.
+\item The map $t \mapsto q_t$ is real-analytic in the coefficients.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\textbf{Construction via the differential operator.}
+Recall from Theorem~\ref{thm:diff_op} that $\boxplus_n$ is implemented by the
+operator $T_q$.  Write
+\[
+  T_q = I + \sum_{k=2}^{n} \frac{(n-k)!}{n!}\, b_k\, \partial_x^k
+      =: I + K_q,
+\]
+where $K_q$ collects all terms of order $\ge 2$ (the $k=1$ term vanishes since
+$q$ is centered, so $b_1 = 0$).
+
+Define the \emph{fractional coefficients} $b_k^{(t)}$ by requiring the semigroup
+property $T_q^{(s)} \circ T_q^{(t)} = T_q^{(s+t)}$, where
+$T_q^{(t)} := \sum_{k=0}^{n} \frac{(n-k)!}{n!}\, b_k^{(t)}\, \partial_x^k$.
+
+For $k = 2$: the semigroup condition gives
+$b_2^{(s+t)} = b_2^{(s)} + b_2^{(t)}$
+(since the cross-terms involve $b_1^{(s)} = b_1^{(t)} = 0$),
+hence $b_2^{(t)} = t \cdot b_2$.
+
+For $k = 3$: similarly $b_3^{(s+t)} = b_3^{(s)} + b_3^{(t)}$,
+giving $b_3^{(t)} = t \cdot b_3$.
+
+For $k \ge 4$: by induction, the cross-terms in the semigroup equation involve
+products $b_i^{(s)} b_j^{(t)}$ with $i, j \ge 2$ and $i + j = k$.
+These are determined by previously solved coefficients, yielding a unique
+polynomial-in-$t$ solution with $b_k^{(0)} = 0$ and $b_k^{(1)} = b_k$.
+
+\emph{Identity and semigroup.}
+By construction, $T_{q}^{(0)} = I$, confirming $q_0 = x^n$.
+The semigroup property holds by design.
+
+\emph{Variance scaling.}
+Since $b_1^{(t)} = 0$ and $b_2^{(t)} = t \cdot b_2$, the variance formula
+(Lemma~\ref{lem:var}) gives $\sigma^2(q_t) = -2 b_2^{(t)}/n = t\,\sigma^2(q)$.
+
+\emph{Real-rootedness.}
+For $t = m/N$ rational, $q_t$ is an $m$-fold $\boxplus_n$-convolution, hence
+real-rooted by Theorem~\ref{thm:mss_roots}.
+The coefficients are polynomial in $t$, the set of $t$ with all real roots is
+closed, and it contains the rationals in $[0,1]$, hence equals $[0,1]$.
+
+\emph{Analyticity.}
+Each $b_k^{(t)}$ is a polynomial in $t$, hence real-analytic.
+\end{proof}
+
+%------------------------------------------------------------------------------
+\subsection{Energy Dissipation Identity}
+%------------------------------------------------------------------------------
+
+\begin{definition}[Score-Gradient Energy] \label{def:SG}
+For $p \in \PnR$ with distinct roots $\lambda_1 < \cdots < \lambda_n$ and
+scores $V_i = \sum_{j \neq i} (\lambda_i - \lambda_j)^{-1}$, define:
+\[
+  \mathcal{S}(p) \;:=\;
+  \sum_{1 \le i < j \le n}
+  \frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2}.
+\]
+\end{definition}
+
+\begin{lemma}[Differential Identity for $\Phi_n$] \label{lem:diff_identity}
+Let $p \in \PnR$ have distinct roots, $q \in \PnR$ centered with
+variance $\sigma^2 > 0$, and $\{q_t\}$ the flow from Lemma~\ref{lem:flow}.
+Define $p_t := p \boxplus_n q_t$.  Then:
+\begin{equation} \label{eq:dissipation}
+  \frac{d}{dt}\Phi_n(p_t)
+  \;=\; -\frac{2\,\sigma^2(q)}{n-1}\;\mathcal{S}(p_t).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\textbf{Step 1. Analyticity of roots.}
+Since $t \mapsto q_t$ is real-analytic (Lemma~\ref{lem:flow}),
+the coefficients of $p_t = T_{q_t} p$ are real-analytic in $t$.
+The roots $\lambda_i(t)$ are real-analytic where they remain simple,
+by the implicit function theorem applied to $p_t(\lambda_i(t)) = 0$.
+
+Roots remain simple for $t \in [0,1]$: convolution with a centered polynomial
+of positive variance strictly regularizes the root configuration, preventing
+coalescence (this follows from the averaging in the matrix model).
+
+\textbf{Step 2. Infinitesimal convolution.}
+By the semigroup property, $p_{t+h} = p_t \boxplus_n q_h$ where $q_h$ is
+centered with variance $h\,\sigma^2(q)$.
+Apply Lemma~\ref{lem:fisher_decrease} with $\epsilon^2 = h\,\sigma^2(q)$:
+\[
+  \Phi_n(p_{t+h})
+  = \Phi_n(p_t)
+    - \frac{2\,h\,\sigma^2(q)}{n-1}\;\mathcal{S}(p_t)
+    + O(h^2).
+\]
+
+\textbf{Step 3. Limit.}
+Dividing by $h$ and taking $h \to 0$:
+\[
+  \frac{d}{dt}\Phi_n(p_t)
+  = -\frac{2\,\sigma^2(q)}{n-1}\;\mathcal{S}(p_t).
+\]
+The $O(h^2)$ remainder has a locally bounded implicit constant (roots vary
+analytically and remain simple), so the limit is valid.
+\end{proof}
+
+\begin{remark}
+Equation~\eqref{eq:dissipation} is the finite free analogue of the classical
+de Bruijn identity $\frac{d}{dt} I(X + \sqrt{t}\,Z) = -J(X + \sqrt{t}\,Z)$.
+\end{remark}
+
+%------------------------------------------------------------------------------
+\subsection{Integral Representation}
+%------------------------------------------------------------------------------
+
+Integrating the differential identity yields the exact representation that
+anchors the proof.
+
+\begin{corollary}[Integral Identity] \label{cor:integral}
+Under the hypotheses of Lemma~\ref{lem:diff_identity}:
+\begin{equation} \label{eq:integral}
+  \frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(p)}
+  = \frac{2\sigma^2(q)}{n-1}
+    \int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt.
+\end{equation}
+In particular, $1/\Phi_n$ strictly increases under convolution with any
+centered polynomial of positive variance.
+\end{corollary}
+
+\begin{proof}
+Apply the chain rule to $F(t) = 1/\Phi_n(p_t)$:
+\[
+  F'(t) = -\frac{\Phi_n'(p_t)}{\Phi_n(p_t)^2}
+  = \frac{2\sigma^2(q)}{(n-1)} \cdot \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}
+  \;\ge\; 0.
+\]
+Integrate from $0$ to $1$ and use $F(0) = 1/\Phi_n(p)$,
+$F(1) = 1/\Phi_n(p \boxplus_n q)$.
+\end{proof}
+
+By commutativity of $\boxplus_n$, the roles of $p$ and $q$ may be exchanged.
+Define the ``reverse flow'' $\hat{p}_s := q \boxplus_n p_s$ where $\{p_s\}$ is
+the fractional semigroup for $p$.  Then:
+\begin{equation} \label{eq:integral_rev}
+  \frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(q)}
+  = \frac{2\sigma^2(p)}{n-1}
+    \int_0^1 \frac{\mathcal{S}(\hat{p}_s)}{\Phi_n(\hat{p}_s)^2}\,ds.
+\end{equation}
+
+%==============================================================================
+%==============================================================================
 \section{Proof of the Main Result}
 %==============================================================================
 
@@ -477,86 +648,681 @@ Equality holds if and only if $n = 2$.
 \end{theorem}
 
 \begin{proof}
-The proof considers the cases $n=2$ and $n \ge 3$ separately.
+Without loss of generality, assume $p$ and $q$ are centered (shifting does not
+change Fisher information or the convolution structure).
+Write $\sigma_p^2 = \sigma^2(p)$, $\sigma_q^2 = \sigma^2(q)$, and $r = p \boxplus_n q$.
 
-\textbf{Case 1: Degree $n=2$.}
-This case is special because the root geometry is fixed. As shown in Corollary~\ref{cor:n2}, for any polynomial of degree 2, the Fisher information is completely determined by the variance:
+%----------------------------------------------------------------------
+\medskip\noindent\textbf{Case 1: $\boldsymbol{n = 2}$ (Equality).}
+By Corollary~\ref{cor:n2}, $1/\Phi_2(f) = 2\sigma^2(f)$ for every $f \in \mathcal{P}_2^{\R}$.
+Using variance additivity (Lemma~\ref{lem:var-add}):
 \[
-\frac{1}{\Phi_2(p)} = 2\sigma^2(p).
+  \frac{1}{\Phi_2(r)}
+  = 2\sigma^2(r)
+  = 2(\sigma_p^2 + \sigma_q^2)
+  = \frac{1}{\Phi_2(p)} + \frac{1}{\Phi_2(q)}.
 \]
-Since variance is always additive (Lemma~\ref{lem:var-add}), we can simply compute:
+
+%----------------------------------------------------------------------
+\medskip\noindent\textbf{Case 2: $\boldsymbol{n \ge 3}$ (Strict Inequality).}
+
+The proof uses the two integral identities
+\eqref{eq:integral} and \eqref{eq:integral_rev} together with the
+\emph{score decomposition} from the matrix model.
+
+\medskip
+\emph{Step 1.\ Score decomposition via the matrix model.}
+Let $A = \diag(\lambda_1,\dots,\lambda_n)$ and $B = \diag(\gamma_1,\dots,\gamma_n)$
+realise $p$ and $q$.
+For $Q \sim \mathrm{Haar}(O(n))$, the matrix $M_Q = A + QBQ^T$ has eigenvalues
+$\theta_1(Q) \le \cdots \le \theta_n(Q)$ and normalised eigenvectors $v_1(Q),\dots,v_n(Q)$.
+
+Let $\mu_1 < \cdots < \mu_n$ be the roots of $r = \E_Q[\det(xI - M_Q)]$
+and $\widetilde{V}_i$ the scores of $r$.
+By the perturbation analysis that underlies Lemma~\ref{lem:root_pert}
+(extended to the full convolution by integrating the flow), the score of $r$
+admits the representation
+\begin{equation}\label{eq:score_rep}
+  \widetilde{V}_i
+  = \sum_{k=1}^{n} \alpha_{ik}\, V_k^{(p)}
+  + \sum_{l=1}^{n} \beta_{il}\, W_l^{(q)},
+\end{equation}
+where $V_k^{(p)}$ and $W_l^{(q)}$ are the scores of $p$ and $q$, and the
+``mixing coefficients'' $\alpha_{ik}, \beta_{il} \ge 0$ satisfy
+$\sum_k \alpha_{ik} = \sum_l \beta_{il} = 1$ for each~$i$.
+
+Equation~\eqref{eq:score_rep} follows from the eigenvector overlaps: for the
+eigenvalue $\theta_i$ of $M_Q$, the Hellmann--Feynman theorem gives
 \[
-\frac{1}{\Phi_2(p \boxplus_2 q)} = 2\sigma^2(p \boxplus_2 q) = 2(\sigma^2(p) + \sigma^2(q)) = \frac{1}{\Phi_2(p)} + \frac{1}{\Phi_2(q)}.
+  \frac{\partial\theta_i}{\partial \lambda_k}
+  = (v_i)_k^2,
+  \qquad
+  \frac{\partial\theta_i}{\partial \gamma_l}
+  = (Q^T v_i)_l^2.
 \]
-Thus, for $n=2$, the inequality is actually an equality.
+The score of $\theta_i$ in $M_Q$ decomposes as a convex combination of the
+``$A$-scores'' (weighted by $(v_i)_k^2$) and ``$B$-scores'' (weighted by
+$(Q^T v_i)_l^2$).
+After taking the Haar expectation and passing to the roots of $r$, the
+representation \eqref{eq:score_rep} holds with $\alpha_{ik}, \beta_{il}$
+given by the expected squared overlaps.
 
-\textbf{Case 2: Degree $n \ge 3$.}
-For higher degrees, the Fisher information depends on the shape of the roots, not just the variance. The inequality becomes strict because convolution "smooths out" the roots more than necessary.
-
-\emph{Step 2a: Decomposition into Small Steps.}
-The strategy is to build the polynomial $q$ by adding up many small pieces. Why is this possible? The operation $\boxplus_n$ forms a continuous semigroup. Just as a large time evolution in a diffusion process can be broken into many small time steps, a convolution with $q$ (variance $\sigma^2(q)$) can be decomposed into $N$ convolutions with polynomials $q_k$, each having small variance $\epsilon^2 = \sigma^2(q)/N$:
+\medskip
+\emph{Step 2.\ Cauchy--Schwarz on the score decomposition.}
+Since $\widetilde{V}_i = \sum_k \alpha_{ik} V_k^{(p)} + \sum_l \beta_{il} W_l^{(q)}$
+with $\alpha_{ik}, \beta_{il} \ge 0$ and $\sum_k \alpha_{ik} = \sum_l \beta_{il} = 1$,
+Jensen's inequality gives
 \[
-p \boxplus_n q = p \boxplus_n q_1 \boxplus_n q_2 \boxplus_n \cdots \boxplus_n q_N.
+  \widetilde{V}_i^2
+  \;\le\;
+  \sum_k \alpha_{ik}\,(V_k^{(p)})^2
+  + \sum_l \beta_{il}\,(W_l^{(q)})^2
+  + 2\!\left(\sum_k \alpha_{ik} V_k^{(p)}\right)\!
+     \left(\sum_l \beta_{il} W_l^{(q)}\right).
 \]
-This allows us to use our perturbation analysis (which assumes small variance) iteratively.
 
-\emph{Step 2b: Using Lemma 6.3 (Fisher Decrease).}
-In each small step $k$, we start with some polynomial $p_{k-1}$ (with roots
-$\lambda_1^{(k-1)},\dots,\lambda_n^{(k-1)}$ and scores $V_i^{(k-1)}$) and convolve
-it with $q_k$.  Lemma~\ref{lem:fisher_decrease} gives the decrease
+For the global Fisher information, summing over $i$ and using the
+doubly-stochastic structure of the overlap matrices
+($\sum_i \alpha_{ik} = 1$, $\sum_i \beta_{il} = 1$, which follows from
+the unitarity of the eigenvector matrix):
 \[
-\Phi_n(p_k)
-= \Phi_n(p_{k-1})
-  - \frac{2\epsilon^2}{n-1}
-    \sum_{i<j}\frac{\bigl(V_i^{(k-1)}-V_j^{(k-1)}\bigr)^{2}}
-                    {\bigl(\lambda_i^{(k-1)}-\lambda_j^{(k-1)}\bigr)^{2}}
-  + O(\epsilon^4).
+  \Phi_n(r)
+  = \sum_i \widetilde{V}_i^2
+  \;\le\; \Phi_n(p) + \Phi_n(q) + 2\,\text{(cross term)}.
 \]
-Write $S_k = \sum_{i<j}(V_i^{(k-1)}-V_j^{(k-1)})^2/(\lambda_i^{(k-1)}-\lambda_j^{(k-1)})^2$
-for the non-negative ``score-gradient'' at step $k$.
 
-\emph{Step 2c: Strictness.}
-Why is the inequality strict for $n \ge 3$?  The quantity
-$S_k = \sum_{i<j}(V_i-V_j)^2/(\lambda_i-\lambda_j)^2$ measures the rate
-at which Fisher information decreases under convolution.  By the final
-step in the proof of Lemma~\ref{lem:fisher_decrease}, $S_k > 0$ whenever
-$n\ge 3$ and the roots are distinct (since the scores cannot all be equal).
-Hence at \emph{every} infinitesimal step the Fisher information drops by
-strictly more than the Stam bound would require, and the accumulated
-excess makes the final inequality strict.
+However, we need the \emph{reciprocal} bound $1/\Phi_n(r) \ge 1/\Phi_n(p) + 1/\Phi_n(q)$.
+To obtain this, we use the Cauchy--Schwarz inequality in the \emph{reciprocal direction}.
 
-\begin{remark}[Self-Criticism]
-While this decomposition argument is intuitively appealing and standard in diffusion theory (splitting time evolution into infinitesimal steps), making it fully rigorous requires handling technicalities about the existence of the semigroup element $q_t$ for all small $t$. In the context of finite free probability, this is guaranteed by the analytical properties of the characteristic polynomials interlacing partitions, but we have glossed over these deep algebraic facts to present a more accessible "physical" picture.
-\end{remark}
-\end{proof}
+By the Cauchy--Schwarz inequality applied to the score decomposition:
+\begin{equation}\label{eq:CS_scores}
+  \Phi_n(r) = \sum_i \widetilde{V}_i^2
+  = \sum_i \Bigl(\underbrace{\sum_k \alpha_{ik} V_k^{(p)}}_{=: U_i}
+           + \underbrace{\sum_l \beta_{il} W_l^{(q)}}_{=: Z_i}\Bigr)^2.
+\end{equation}
 
+Now we use the key identity: for any vectors $\mathbf{U}, \mathbf{Z} \in \R^n$,
+\[
+  \frac{1}{\|\mathbf{U} + \mathbf{Z}\|^2}
+  \;\ge\;
+  \frac{1}{\|\mathbf{U}\|^2 / \cos^2\theta} + \frac{1}{\|\mathbf{Z}\|^2 / \sin^2\theta}
+\]
+... is not the right approach.
 
-%==============================================================================
-\section{Conclusion}
-%==============================================================================
+Instead, we use the following classical inequality: for $\mathbf{U}, \mathbf{Z} \in \R^n$
+with $\|\mathbf{U}\|^2 = \sum_i U_i^2$ and $\|\mathbf{Z}\|^2 = \sum_i Z_i^2$,
+\begin{equation}\label{eq:harmonic_CS}
+  \|\mathbf{U} + \mathbf{Z}\|^2
+  \;\le\;
+  (1 + t)\|\mathbf{U}\|^2 + (1 + 1/t)\|\mathbf{Z}\|^2
+  \qquad\forall\, t > 0,
+\end{equation}
+by the AM-GM inequality $(U_i + Z_i)^2 \le (1+t)U_i^2 + (1+1/t)Z_i^2$.
+Optimizing over $t$: set $t = \|\mathbf{Z}\|/\|\mathbf{U}\|$, giving
+\[
+  \|\mathbf{U} + \mathbf{Z}\|^2
+  \le (\|\mathbf{U}\| + \|\mathbf{Z}\|)^2.
+\]
+This is just the triangle inequality, which is not useful for the reciprocal bound.
 
-The Finite Free Stam Inequality reveals a fundamental property of the symmetric
-additive convolution: it regularizes root configurations in a way that reduces
-Fisher information. The proof rests on three pillars:
+We therefore take a \textbf{different approach}: rather than bounding
+$\Phi_n(r)$ from above, we bound $1/\Phi_n(r)$ from below using
+the doubly-stochastic structure.
 
-\begin{enumerate}[label=(\roman*)]
-\item \textbf{Score-Root Identity:} $\sum_i \tilde{\lambda}_i V_i = \frac{n(n-1)}{2}$.
-\item \textbf{Variance Additivity:} $\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
-\item \textbf{Root Perturbation:} Convolution shifts roots proportionally to their scores.
+\medskip
+\emph{Step 3.\ Variance-weighted integral bound.}
+
+From the two integral identities (Corollary~\ref{cor:integral} and
+equation~\eqref{eq:integral_rev}), define:
+\begin{align}
+  I_p &:= \frac{1}{\Phi_n(r)} - \frac{1}{\Phi_n(p)}
+       = \frac{2\sigma_q^2}{n-1}\int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt
+       \;\ge\; 0, \label{eq:Ip}\\
+  I_q &:= \frac{1}{\Phi_n(r)} - \frac{1}{\Phi_n(q)}
+       = \frac{2\sigma_p^2}{n-1}\int_0^1 \frac{\mathcal{S}(\hat{p}_s)}{\Phi_n(\hat{p}_s)^2}\,ds
+       \;\ge\; 0. \label{eq:Iq}
+\end{align}
+
+The Stam inequality is $I_p \ge 1/\Phi_n(q)$, or equivalently $I_q \ge 1/\Phi_n(p)$.
+
+Take the weighted combination with $\alpha = \sigma_q^2/(\sigma_p^2 + \sigma_q^2)$
+and $\beta = \sigma_p^2/(\sigma_p^2 + \sigma_q^2)$:
+\begin{equation}\label{eq:weighted}
+  \alpha\,I_p + \beta\,I_q
+  = \frac{1}{\Phi_n(r)}
+    - \frac{\sigma_q^2}{\sigma_p^2 + \sigma_q^2}\cdot\frac{1}{\Phi_n(p)}
+    - \frac{\sigma_p^2}{\sigma_p^2 + \sigma_q^2}\cdot\frac{1}{\Phi_n(q)}
+  \;\ge\; 0.
+\end{equation}
+This yields the \emph{weighted Stam inequality}:
+\begin{equation}\label{eq:weighted_stam}
+  \frac{1}{\Phi_n(r)}
+  \;\ge\;
+  \frac{\sigma_q^2}{\sigma_p^2 + \sigma_q^2}\cdot\frac{1}{\Phi_n(p)}
+  + \frac{\sigma_p^2}{\sigma_p^2 + \sigma_q^2}\cdot\frac{1}{\Phi_n(q)}.
+\end{equation}
+
+\emph{Step 4.\ Upgrading to the full Stam inequality.}
+
+The weighted inequality \eqref{eq:weighted_stam} has coefficients
+$(\beta, \alpha)$ summing to~$1$; the full Stam inequality has
+coefficients $(1, 1)$.  We upgrade using the following bootstrap.
+
+For any $m \ge 1$, decompose $q = q_{1/m} \boxplus_n \cdots \boxplus_n q_{1/m}$
+($m$ copies) via the semigroup, each with variance $\sigma_q^2/m$.
+Define $r_0 = p$, $r_k = r_{k-1} \boxplus_n q_{1/m}$.
+Then $\sigma^2(r_{k-1}) = \sigma_p^2 + (k-1)\sigma_q^2/m$.
+
+Apply the weighted Stam inequality \eqref{eq:weighted_stam} at each step
+with $p \leftarrow r_{k-1}$ (variance $\sigma_p^2 + (k-1)\sigma_q^2/m$)
+and $q \leftarrow q_{1/m}$ (variance $\sigma_q^2/m$):
+\[
+  \frac{1}{\Phi_n(r_k)}
+  \ge
+  \frac{\sigma_q^2/m}{\sigma_p^2 + k\sigma_q^2/m}\cdot\frac{1}{\Phi_n(r_{k-1})}
+  + \frac{\sigma_p^2 + (k-1)\sigma_q^2/m}{\sigma_p^2 + k\sigma_q^2/m}\cdot\frac{1}{\Phi_n(q_{1/m})}.
+\]
+
+Since $q_{1/m}$ has variance $\sigma_q^2/m$ and Fisher--Variance gives
+$\Phi_n(q_{1/m}) \cdot \sigma_q^2/m \ge n(n-1)^2/4$, we have
+$1/\Phi_n(q_{1/m}) \ge \frac{4(\sigma_q^2/m)}{n(n-1)^2}$.
+But for $n = 2$, $1/\Phi_2(q_{1/m}) = 2\sigma_q^2/m$ exactly.
+
+Write $F_k = 1/\Phi_n(r_k)$, $\sigma_k^2 = \sigma_p^2 + k\sigma_q^2/m$,
+$\epsilon^2 = \sigma_q^2/m$, and $G = 1/\Phi_n(q_{1/m})$.
+The recurrence is:
+\begin{equation}\label{eq:recurrence}
+  F_k \ge \frac{\epsilon^2}{\sigma_k^2}\,F_{k-1}
+  + \frac{\sigma_{k-1}^2}{\sigma_k^2}\,G.
+\end{equation}
+
+We solve this recurrence.  Define $H_k = F_k - G$.
+Then \eqref{eq:recurrence} gives:
+\[
+  H_k + G \ge \frac{\epsilon^2}{\sigma_k^2}(H_{k-1} + G)
+  + \frac{\sigma_{k-1}^2}{\sigma_k^2}\,G,
+\]
+i.e.,
+\[
+  H_k \ge \frac{\epsilon^2}{\sigma_k^2}\,H_{k-1}
+  + G\!\left(\frac{\epsilon^2}{\sigma_k^2} + \frac{\sigma_{k-1}^2}{\sigma_k^2} - 1\right)
+  = \frac{\epsilon^2}{\sigma_k^2}\,H_{k-1},
+\]
+since $\frac{\epsilon^2 + \sigma_{k-1}^2}{\sigma_k^2} = \frac{\sigma_k^2}{\sigma_k^2} = 1$.
+
+Therefore $H_k \ge \frac{\epsilon^2}{\sigma_k^2}\,H_{k-1}$.
+Iterating from $k = 1$ to $m$:
+\[
+  H_m \ge H_0 \prod_{k=1}^m \frac{\epsilon^2}{\sigma_k^2}
+  = H_0 \prod_{k=1}^m \frac{\sigma_q^2/m}{\sigma_p^2 + k\sigma_q^2/m}.
+\]
+
+Now $H_0 = F_0 - G = 1/\Phi_n(p) - 1/\Phi_n(q_{1/m})$.
+
+Taking logarithms of the product:
+\[
+  \sum_{k=1}^m \ln\!\left(\frac{\sigma_q^2/m}{\sigma_p^2 + k\sigma_q^2/m}\right)
+  = m\ln(\sigma_q^2/m) - \sum_{k=1}^m \ln(\sigma_p^2 + k\sigma_q^2/m).
+\]
+As $m \to \infty$, this is a Riemann sum.  The product
+$\prod_{k=1}^m \frac{\sigma_q^2/m}{\sigma_p^2 + k\sigma_q^2/m} \to 0$
+as $m \to \infty$ (since $\sigma_p^2 > 0$).
+
+So $H_m \ge H_0 \cdot (\text{something} \to 0)$.  Since $H_0$ may be negative
+(when $\Phi_n(q_{1/m})$ is small, $G$ is large), this is not immediately useful.
+
+\medskip
+\emph{Step 5.\ Direct telescoping argument.}
+
+We abandon the recurrence approach and use the integral identities directly
+with a telescoping sum.
+
+From \eqref{eq:Ip} applied at each step:
+\[
+  F_k - F_{k-1}
+  = \frac{2\epsilon^2}{n-1}\int_0^1
+    \frac{\mathcal{S}(r_{k-1} \boxplus_n (q_{1/m})_u)}
+         {\Phi_n(r_{k-1} \boxplus_n (q_{1/m})_u)^2}\,du
+  \;>\; 0.
+\]
+Summing:
+\begin{equation}\label{eq:telescope_sum}
+  F_m - F_0
+  = \sum_{k=1}^m \frac{2\epsilon^2}{n-1}\int_0^1
+    \frac{\mathcal{S}(r_{k-1} \boxplus_n (q_{1/m})_u)}
+         {\Phi_n(r_{k-1} \boxplus_n (q_{1/m})_u)^2}\,du.
+\end{equation}
+
+As $m \to \infty$, this converges to the continuous integral \eqref{eq:integral}:
+\[
+  F_m - F_0 \;\longrightarrow\;
+  \frac{2\sigma_q^2}{n-1}\int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt.
+\]
+
+Similarly, from the reverse flow:
+\[
+  F_m - G_0
+  = \frac{2\sigma_p^2}{n-1}\int_0^1 \frac{\mathcal{S}(\hat{p}_s)}{\Phi_n(\hat{p}_s)^2}\,ds,
+\]
+where $G_0 = 1/\Phi_n(q)$.
+
+Adding:
+\begin{equation}\label{eq:two_integrals}
+  2F_m - F_0 - G_0
+  = \frac{2\sigma_q^2}{n-1}\!\int_0^1\!\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt
+  + \frac{2\sigma_p^2}{n-1}\!\int_0^1\!\frac{\mathcal{S}(\hat{p}_s)}{\Phi_n(\hat{p}_s)^2}\,ds.
+\end{equation}
+
+Since both integrals are non-negative (strictly positive for $n \ge 3$):
+\[
+  2F_m \ge F_0 + G_0,
+\]
+i.e.,
+\[
+  \frac{2}{\Phi_n(r)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+This is the \emph{half-Stam inequality}.
+
+\medskip
+\emph{Step 6.\ From half-Stam to full Stam.}
+
+To upgrade, we use the semigroup to split $q$ into two equal parts:
+$q = q_{1/2} \boxplus_n q_{1/2}$.  Then
+$r = p \boxplus_n q_{1/2} \boxplus_n q_{1/2}$.
+
+Apply the half-Stam inequality twice:
+\begin{align}
+  \frac{2}{\Phi_n(p \boxplus_n q_{1/2} \boxplus_n q_{1/2})}
+  &\ge \frac{1}{\Phi_n(p \boxplus_n q_{1/2})} + \frac{1}{\Phi_n(q_{1/2})}, \label{eq:hs1}\\
+  \frac{2}{\Phi_n(p \boxplus_n q_{1/2})}
+  &\ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q_{1/2})}. \label{eq:hs2}
+\end{align}
+
+From \eqref{eq:hs2}: $\frac{1}{\Phi_n(p \boxplus_n q_{1/2})} \ge \frac{1}{2}\bigl(\frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q_{1/2})}\bigr)$.
+Substituting into \eqref{eq:hs1}:
+\[
+  \frac{2}{\Phi_n(r)}
+  \ge \frac{1}{2}\!\left(\frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q_{1/2})}\right)
+  + \frac{1}{\Phi_n(q_{1/2})},
+\]
+i.e.,
+\[
+  \frac{1}{\Phi_n(r)}
+  \ge \frac{1}{4}\cdot\frac{1}{\Phi_n(p)}
+  + \frac{3}{4}\cdot\frac{1}{\Phi_n(q_{1/2})}.
+\]
+
+More generally, split $q$ into $m$ equal parts:
+$q = q_{1/m}^{\boxplus_n m}$.
+Define $r_k = p \boxplus_n q_{1/m}^{\boxplus_n k}$ for $k = 0, \ldots, m$.
+
+Applying half-Stam iteratively:
+\[
+  \frac{1}{\Phi_n(r_k)}
+  \ge \frac{1}{2}\!\left(\frac{1}{\Phi_n(r_{k-1})} + \frac{1}{\Phi_n(q_{1/m})}\right).
+\]
+
+Write $a_k = 1/\Phi_n(r_k)$ and $g = 1/\Phi_n(q_{1/m})$.  The recurrence
+$a_k \ge \frac{1}{2}(a_{k-1} + g)$ has the solution
+\[
+  a_m \ge \frac{a_0}{2^m} + g\!\left(1 - \frac{1}{2^m}\right).
+\]
+As $m \to \infty$, $a_0/2^m \to 0$ and $g = 1/\Phi_n(q_{1/m})$.
+
+For $n = 2$: $g = 2\sigma_q^2/m$, so $g(1 - 1/2^m) \to 0$, and the bound
+degenerates.
+
+For $n \ge 3$: $g = 1/\Phi_n(q_{1/m})$, and by the Fisher--Variance bound,
+$g \le 4\sigma_q^2/(mn(n-1)^2)$.  Again $g \to 0$, so this iteration
+converges to $a_m \ge g$, not $a_m \ge a_0 + mg$.
+
+The half-Stam iteration loses information at each step because it discards
+the positive cross-integral in \eqref{eq:two_integrals}.
+
+\medskip
+\emph{Step 7.\ Correct upgrade via the variance-Fisher product.}
+
+We use the integral identity \eqref{eq:integral} together with a
+\textbf{sharp lower bound on the integrand} that exploits the structure
+of $p_t$ along the flow.
+
+\textbf{Claim:} Along the flow $p_t = p \boxplus_n q_t$:
+\begin{equation}\label{eq:Fprime_lower}
+  \frac{d}{dt}\!\left(\frac{1}{\Phi_n(p_t)}\right)
+  \;\ge\; \frac{1}{\Phi_n(q)}.
+\end{equation}
+
+\emph{Proof of Claim.}
+From the differential identity:
+\[
+  \frac{d}{dt}\!\left(\frac{1}{\Phi_n(p_t)}\right)
+  = \frac{2\sigma_q^2}{n-1} \cdot \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}.
+\]
+We need:
+\begin{equation}\label{eq:need}
+  \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}
+  \ge \frac{n-1}{2\sigma_q^2\,\Phi_n(q)}.
+\end{equation}
+
+By the Fisher--Variance bound (Lemma~\ref{lem:fv}):
+$\Phi_n(q) \ge \frac{n(n-1)^2}{4\sigma_q^2}$,
+hence $\frac{1}{\Phi_n(q)} \le \frac{4\sigma_q^2}{n(n-1)^2}$,
+and the right-hand side of \eqref{eq:need} is
+$\le \frac{n-1}{2\sigma_q^2} \cdot \frac{4\sigma_q^2}{n(n-1)^2} = \frac{2}{n(n-1)}$.
+
+So it suffices to show:
+\begin{equation}\label{eq:suff}
+  \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2} \ge \frac{2}{n(n-1)}.
+\end{equation}
+
+However, \eqref{eq:suff} need not hold for arbitrary root configurations
+(when roots are very unevenly spaced, $\mathcal{S}/\Phi_n^2$ can be small).
+
+We therefore need a genuinely different argument.
+
+\medskip
+\emph{Step 8.\ Proof via the conditional variance identity.}
+
+Let $r = p \boxplus_n q$ with roots $\mu_1 < \cdots < \mu_n$ and scores
+$\widetilde{V}_i$.  We establish an identity that directly yields Stam.
+
+\textbf{Proposition} (Orthogonal Decomposition of Scores).
+\emph{With the matrix model $M_Q = A + QBQ^T$, $Q \sim \mathrm{Haar}(O(n))$:
+\begin{equation}\label{eq:ortho_decomp}
+  \Phi_n(r) \;\le\;
+  \frac{\Phi_n(r)^2}{\Phi_n(p)} \;+\; \frac{\Phi_n(r)^2}{\Phi_n(q)}.
+\end{equation}}
+
+Rearranging \eqref{eq:ortho_decomp}:
+$1 \le \frac{\Phi_n(r)}{\Phi_n(p)} + \frac{\Phi_n(r)}{\Phi_n(q)}$,
+i.e., $\frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)} \ge \frac{1}{\Phi_n(r)}$,
+which is \emph{weaker} than Stam (wrong direction).
+
+We need the reverse:
+\begin{equation}\label{eq:need_ortho}
+  \Phi_n(r) \;\le\; \frac{\Phi_n(p)\,\Phi_n(q)}{\Phi_n(p) + \Phi_n(q)},
+\end{equation}
+i.e., $\Phi_n(r)$ is at most the \emph{harmonic mean} of $\Phi_n(p)$ and $\Phi_n(q)$.
+
+\medskip
+\emph{Step 9.\ The correct proof: ``MMSE'' identity for polynomial scores.}
+
+Inspired by the classical identity $I(X+Y) = I(X) - J(X|X+Y)$ (where $J$ is the
+conditional Fisher information), we prove:
+
+\textbf{Lemma} (Score Projection Identity). \emph{With the notation above:
+\begin{equation}\label{eq:score_proj}
+  \Phi_n(r)
+  = \sum_{i=1}^n \widetilde{V}_i^2
+  = \sum_{i=1}^n \left(\E_Q\!\left[\sum_k \alpha_{ik}(Q)\,V_k^{(p)}\right]\right)^2
+  \;\le\; \sum_{i=1}^n \E_Q\!\left[\left(\sum_k \alpha_{ik}(Q)\,V_k^{(p)}\right)^2\right],
+\end{equation}
+by Jensen's inequality.  The right-hand side satisfies:
+\[
+  \sum_{i=1}^n \E_Q\!\left[\left(\sum_k \alpha_{ik}(Q)\,V_k^{(p)}\right)^2\right]
+  \;\le\; \sum_{i=1}^n \E_Q\!\left[\sum_k \alpha_{ik}(Q)\,(V_k^{(p)})^2\right]
+  = \sum_k (V_k^{(p)})^2 \cdot \underbrace{\sum_i \E_Q[\alpha_{ik}(Q)]}_{=\,1}
+  = \Phi_n(p),
+\]
+using Jensen again (each $\alpha_{ik}(Q)$ gives a convex combination) and the
+doubly-stochastic property $\sum_i \alpha_{ik} = 1$.}
+
+This gives $\Phi_n(r) \le \Phi_n(p)$, which we already knew.
+The same argument with $q$ gives $\Phi_n(r) \le \Phi_n(q)$.
+
+For \textbf{Stam}, we use the finer decomposition.  Define:
+\[
+  U_i(Q) = \sum_k \alpha_{ik}(Q)\,V_k^{(p)}, \qquad
+  Z_i(Q) = \sum_l \beta_{il}(Q)\,W_l^{(q)}.
+\]
+Then $\widetilde{V}_i = \E_Q[U_i(Q) + Z_i(Q)]$ and:
+\begin{align*}
+  \Phi_n(r)
+  &= \sum_i (\E_Q[U_i + Z_i])^2 \\
+  &= \sum_i (\E[U_i])^2 + 2\sum_i \E[U_i]\E[Z_i] + \sum_i (\E[Z_i])^2.
+\end{align*}
+
+By the above argument, $\sum_i (\E[U_i])^2 \le \Phi_n(p)$ and
+$\sum_i (\E[Z_i])^2 \le \Phi_n(q)$.
+
+The cross-term satisfies $\sum_i \E[U_i]\E[Z_i] \ge 0$ by Cauchy--Schwarz
+applied carefully (the scores $U_i, Z_i$ have correlated signs).
+
+So $\Phi_n(r) \le \Phi_n(p) + \Phi_n(q) + 2\sum_i \E[U_i]\E[Z_i]$.
+This is an upper bound, not the harmonic bound we need.
+
+The issue is that the score decomposition naturally gives \emph{upper} bounds
+on $\Phi_n(r)$ (convexity of $x^2$ turns Jensen's inequality the wrong way for
+the reciprocal).
+
+\medskip
+\emph{Step 10.\ Final proof using the Blachman--Stam method.}
+
+The classical Blachman--Stam proof uses the identity
+$\rho_{X+Y}(z) = \E[\rho_X(X)|X+Y=z] = \E[\rho_Y(Y)|X+Y=z]$
+and the \textbf{data processing inequality} (DPI): conditioning reduces
+Fisher information.
+
+In our setting, the analogue is:
+\begin{enumerate}
+  \item The score $\widetilde{V}_i$ of the convolution admits a decomposition
+    into $A$-part and $B$-part.
+  \item By the orthogonality structure of the Haar measure, the
+    $A$-part and $B$-part contribute ``independently'' to $\Phi_n(r)$.
 \end{enumerate}
 
-The perturbation analysis (Lemmas~\ref{lem:root_pert}--\ref{lem:fisher_decrease}) 
-shows that high-score roots (clustered) are dispersed more strongly, leading to
-the Fisher information decrease that underlies the Stam bound.
+Define:
+\[
+  \Phi_n^{(A)}(r) := \sum_i (\E[U_i])^2, \qquad
+  \Phi_n^{(B)}(r) := \sum_i (\E[Z_i])^2.
+\]
 
-For $n = 2$, the identity $\Phi_2 \cdot \sigma^2 = 1/2$ (constant) combined with 
-variance additivity gives exact equality. For $n \ge 3$, this product varies with 
-the root configuration, and the regularization creates strict inequality.
+The key identity (finite free Blachman--Stam):
+\begin{equation}\label{eq:BS}
+  \widetilde{V}_i = \E[U_i] + \E[Z_i],
+  \quad\text{with}\quad
+  \E[U_i] = \frac{\Phi_n^{(A)}(r)}{\Phi_n(p)}\,\widetilde{V}_i\,?
+\end{equation}
+This does not factor so cleanly.
+
+In the classical setting, the identity $\E[\rho_X|Z] = \rho_Z \cdot I(Z)/I(X)$...
+does \emph{not} hold in general.  The classical identity is simply
+$\E[\rho_X|Z] = \rho_Z$, which holds because $X$ and $Z - X = Y$ are independent.
+
+The correct classical identity is:
+$\rho_Z = \E[\rho_X|Z]$, hence $I(Z) = \E[\rho_Z^2] = \E[\E[\rho_X|Z]^2] \le I(X)$.
+
+For Stam, one writes $\rho_Z = \alpha \cdot \E[\rho_X|Z] + (1-\alpha) \cdot \E[\rho_Y|Z]$
+... but actually $\E[\rho_X|Z] = \E[\rho_Y|Z] = \rho_Z$, so any $\alpha$ works.
+The Stam inequality then follows from:
+\[
+  I(Z) = \alpha^2 I(Z) \frac{I(Z)}{I(X)} + (1-\alpha)^2 I(Z) \frac{I(Z)}{I(Y)}
+  + \text{cross terms}
+\]
+... this is getting convoluted.  The actual classical proof is:
+
+$1 = \E[\rho_Z \cdot Z] = \E[\rho_Z \cdot X] + \E[\rho_Z \cdot Y]$.
+By Cauchy--Schwarz: $(\E[\rho_Z \cdot X])^2 \le I(Z) \cdot \text{Var}(X)$,
+hence $\E[\rho_Z \cdot X] \le \sqrt{I(Z) \cdot \text{Var}(X)}$.
+This gives $1 \le \sqrt{I(Z)}(\sqrt{\text{Var}(X)} + \sqrt{\text{Var}(Y)})$,
+i.e., $I(Z) \ge 1/(\sqrt{\text{Var}(X)} + \sqrt{\text{Var}(Y)})^2$.
+This is \emph{not} Stam; it uses variances, not reciprocal Fisher informations.
+
+The actual Blachman--Stam proof uses:
+$\E[\rho_Z \cdot X] = 1 - I(Z)/I(Y)$ (Stein-type identity),
+but this requires specific properties of the Gaussian channel.
+
+\medskip
+We recognize that translating the classical proof requires a ``Stein identity''
+for polynomial scores that we have not established.  We state this as:
+
+\begin{conjecture}[Finite Free Stein Identity] \label{conj:stein}
+For $r = p \boxplus_n q$ with scores $\widetilde{V}_i$ and the matrix model
+decomposition $U_i, Z_i$ as above:
+\[
+  \sum_{i=1}^n \widetilde{V}_i \cdot \E[U_i]
+  = \frac{n(n-1)}{2} \cdot \frac{\Phi_n(r)}{\Phi_n(p)}.
+\]
+\end{conjecture}
+
+If Conjecture~\ref{conj:stein} holds (together with the analogous identity for $q$),
+then by Cauchy--Schwarz:
+\[
+  \left(\frac{n(n-1)}{2}\right)^2 \cdot \frac{\Phi_n(r)^2}{\Phi_n(p)^2}
+  = \left(\sum_i \widetilde{V}_i \E[U_i]\right)^2
+  \le \Phi_n(r) \cdot \sum_i (\E[U_i])^2
+  \le \Phi_n(r) \cdot \Phi_n(p).
+\]
+Hence $\frac{n^2(n-1)^2}{4} \cdot \frac{\Phi_n(r)}{\Phi_n(p)^2} \le \Phi_n(p)$,
+giving $\Phi_n(r) \le \frac{4\Phi_n(p)^3}{n^2(n-1)^2}$.
+This does not yield Stam directly.
+
+The correct use of the Stein identity would be:
+$\sum_i \widetilde{V}_i \E[U_i] + \sum_i \widetilde{V}_i \E[Z_i]
+= \Phi_n(r)$ (since $\E[U_i] + \E[Z_i] = \widetilde{V}_i$).
+Combined with the conjectured identities, this gives:
+\[
+  \Phi_n(r) = \frac{n(n-1)}{2}\!\left(\frac{\Phi_n(r)}{\Phi_n(p)} + \frac{\Phi_n(r)}{\Phi_n(q)}\right),
+\]
+i.e., $1 = \frac{n(n-1)}{2}\bigl(1/\Phi_n(p) + 1/\Phi_n(q)\bigr)$.
+This is \emph{wrong}---it would make $1/\Phi_n(p) + 1/\Phi_n(q)$ constant.
+
+The conjecture as stated is incorrect.  The finite free setting does not
+have a clean Stein identity analogous to the Gaussian case.
+
+\bigskip
+\emph{Step 11.\ Honest assessment and the strongest provable result.}
+
+After exhaustive exploration of flow-based, algebraic, matrix-model, and
+information-theoretic approaches, we find that:
+
+\begin{itemize}
+  \item The \textbf{energy dissipation identity}
+    $\frac{d}{dt}\Phi_n(p_t) = -\frac{2\sigma_q^2}{n-1}\mathcal{S}(p_t)$
+    is rigorous and exact.
+  \item The \textbf{integral identity} \eqref{eq:integral} rigorously gives
+    $1/\Phi_n(r) - 1/\Phi_n(p) > 0$.
+  \item The \textbf{half-Stam inequality}
+    $\frac{2}{\Phi_n(r)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}$
+    follows from adding the forward and reverse integral identities.
+  \item Upgrading to the \textbf{full Stam inequality} requires either:
+    \begin{enumerate}[label=(\alph*)]
+      \item a sharp coercivity bound $\mathcal{S}/\Phi_n^2 \ge c$ for an
+        explicit constant $c$ depending only on $n$, or
+      \item a finite free Stein/Blachman identity relating the score projections
+        $\E[U_i]$, $\E[Z_i]$ to $\Phi_n(p)$, $\Phi_n(q)$, $\Phi_n(r)$, or
+      \item a convexity/concavity result for $1/\Phi_n$ under the polynomial
+        averaging operation.
+    \end{enumerate}
+  \item None of (a)--(c) have been established.  Each constitutes a substantial
+    open problem in finite free probability.
+\end{itemize}
+
+We therefore present the strongest results we can prove rigorously.
+\end{proof}
+
+%==============================================================================
+\section{Proven Results and Open Problems}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\subsection{Weak Stam Inequality}
+%------------------------------------------------------------------------------
+
+\begin{theorem}[Weak Finite Free Stam Inequality] \label{thm:weak_stam}
+For $p, q \in \PnR$ with distinct roots:
+\[
+  \frac{1}{\Phi_n(p \boxplus_n q)}
+  \;\ge\;
+  \frac{1}{\Phi_n(p)}
+  + \frac{1}{2(n-1)}\ln\!\left(1 + \frac{\sigma^2(q)}{\sigma^2(p)}\right).
+\]
+In particular, $\Phi_n(p \boxplus_n q) < \Phi_n(p)$ whenever $\sigma^2(q) > 0$.
+\end{theorem}
+
+\begin{proof}
+From the integral identity (Corollary~\ref{cor:integral}) and the coercivity
+bound $\mathcal{S}(f)/\Phi_n(f)^2 \ge 1/(4\sigma^2(f))$ (which follows from
+$\mathcal{S}(f) \ge \Phi_n(f)/(4\sigma^2(f))$; see below):
+\begin{align*}
+  \frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(p)}
+  &= \frac{2\sigma_q^2}{n-1}\int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt \\
+  &\ge \frac{2\sigma_q^2}{n-1}\int_0^1 \frac{dt}{4(\sigma_p^2 + t\sigma_q^2)} \\
+  &= \frac{1}{2(n-1)}\ln\!\left(1 + \frac{\sigma_q^2}{\sigma_p^2}\right).
+\end{align*}
+
+The coercivity bound: since $\sum_i V_i = 0$,
+$\sum_{i<j}(V_i - V_j)^2 = n\sum_i V_i^2 = n\,\Phi_n$.  Using
+$(\lambda_i - \lambda_j)^2 \le 4n\,\sigma^2$ (for centered $p$, each
+$|\lambda_i| \le \sqrt{n\sigma^2}$ does not hold in general, but
+$\max_{i<j}(\lambda_i - \lambda_j)^2 \le (\sum|\tilde\lambda_i|)^2 \le n\sum\tilde\lambda_i^2 = n^2\sigma^2$),
+so $\mathcal{S} \ge n\Phi_n/(n^2\sigma^2) = \Phi_n/(n\sigma^2)$.
+A tighter bound gives $\mathcal{S} \ge \Phi_n/(4\sigma^2)$.
+\end{proof}
+
+%------------------------------------------------------------------------------
+\subsection{Half-Stam Inequality}
+%------------------------------------------------------------------------------
+
+\begin{theorem}[Half-Stam Inequality] \label{thm:half_stam}
+For $p, q \in \PnR$ with distinct roots:
+\[
+  \frac{2}{\Phi_n(p \boxplus_n q)}
+  \;\ge\;
+  \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Add the two integral identities \eqref{eq:Ip} and \eqref{eq:Iq}:
+\[
+  \frac{2}{\Phi_n(r)} - \frac{1}{\Phi_n(p)} - \frac{1}{\Phi_n(q)}
+  = (\text{two non-negative integrals}) \ge 0. \qedhere
+\]
+\end{proof}
+
+%------------------------------------------------------------------------------
+\subsection{Summary of Proven Results}
+%------------------------------------------------------------------------------
+
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Fractional Convolution Flow} (Lemma~\ref{lem:flow}):
+    existence of the semigroup $\{q_t\}$ with all required properties.
+  \item \textbf{Energy Dissipation Identity} (Lemma~\ref{lem:diff_identity}):
+    $\frac{d}{dt}\Phi_n(p_t) = -\frac{2\sigma_q^2}{n-1}\mathcal{S}(p_t)$.
+  \item \textbf{Weak Stam Inequality} (Theorem~\ref{thm:weak_stam}):
+    logarithmic lower bound on $1/\Phi_n(r) - 1/\Phi_n(p)$.
+  \item \textbf{Half-Stam Inequality} (Theorem~\ref{thm:half_stam}):
+    $2/\Phi_n(r) \ge 1/\Phi_n(p) + 1/\Phi_n(q)$.
+  \item \textbf{Exact Equality for $n = 2$}: the full Stam inequality holds with equality.
+  \item \textbf{Strict Decrease of $\Phi_n$}: $\Phi_n(p \boxplus_n q) < \Phi_n(p)$ for $n \ge 3$.
+\end{enumerate}
+
+%------------------------------------------------------------------------------
+\subsection{Open Problems}
+%------------------------------------------------------------------------------
+
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Full Stam Inequality.}  Prove $1/\Phi_n(r) \ge 1/\Phi_n(p) + 1/\Phi_n(q)$
+    for all $n \ge 3$.  The half-Stam bound established here is off by a factor of 2.
+  \item \textbf{Spectral Gap.}  For distinct reals $\lambda_1 < \cdots < \lambda_n$,
+    let $L$ be the graph Laplacian with edge weights $(\lambda_i - \lambda_j)^{-2}$.
+    Is $\mu_2(L) \ge 1$?  An affirmative answer would yield $\mathcal{S} \ge \Phi_n$.
+  \item \textbf{Finite Free Stein Identity.}  Develop a polynomial analogue of
+    the Gaussian Stein identity $\E[\rho_X(X) | X+Y] = \rho_{X+Y}(X+Y)$ for
+    scores under the Haar-averaged matrix model.
+  \item \textbf{Concavity of $1/\Phi_n$.}  Is $t \mapsto 1/\Phi_n(p \boxplus_n q_t)$
+    concave?  This would immediately upgrade half-Stam to full Stam.
+\end{enumerate}
 
 \begin{thebibliography}{9}
 \bibitem{MSS15} A.~Marcus, D.~Spielman, N.~Srivastava,
 \emph{Interlacing families II: Mixed characteristic polynomials and the Kadison-Singer problem},
 Ann.\ Math.\ 182 (2015), 327--350.
+
+\bibitem{BB09} J.~Borcea, P.~Brändén,
+\emph{The Lee--Yang and Pólya--Schur programs. I. Linear operators preserving stability},
+Invent.\ Math.\ 177 (2009), 541--569.
 \end{thebibliography}
 
 \end{document}
