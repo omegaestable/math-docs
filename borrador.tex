@@ -1,0 +1,119 @@
+% borrador.tex: Compressed version of solution.tex, omitting basic undergraduate material and trivial calculations.
+% Focus: Main definitions, lemmas, and arguments essential for the finite free Stam inequality.
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{enumitem}
+
+%--- Theorem Environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+%--- Macros ---
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\mathbb{R}}}
+
+\title{Compressed: The Finite Free Stam Inequality}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Main Result}
+\begin{theorem}[Finite Free Stam Inequality]
+For $p, q \in \PnR$ with distinct roots:
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+Equality holds if and only if $n = 2$.
+\end{theorem}
+
+\section{Key Definitions}
+\begin{definition}[Finite Free Fisher Information]
+For $p \in \PnR$ with distinct roots $\lambda_1,\ldots,\lambda_n$:
+\[
+V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}, \qquad \Phi_n(p) = \sum_{i=1}^n V_i^2.
+\]
+\end{definition}
+
+\begin{definition}[Symmetric Additive Convolution]
+For $n \times n$ symmetric matrices $A, B$ with characteristic polynomials $p, q$:
+\[
+p \boxplus_n q := \E_{Q \sim \mathrm{Haar}(O(n))} [\det(xI - (A + QBQ^T))].
+\]
+\end{definition}
+
+\section{Essential Lemmas and Structure}
+\begin{lemma}[Score-Root Identity]
+$\sum_{i=1}^n \tilde{\lambda}_i V_i = \frac{n(n-1)}{2}$.
+\end{lemma}
+
+\begin{lemma}[Fisher-Variance Inequality]
+$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality iff $n=2$ or $n\ge3$ and roots equally spaced.
+\end{lemma}
+
+\begin{lemma}[Variance Additivity]
+$\sigma^2(p \boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
+\end{lemma}
+
+\begin{lemma}[Root Shift Under Small Convolution]
+If $q$ is centered with small variance $\epsilon^2$, then roots shift as:
+\[
+\mu_i \approx \lambda_i + \frac{\epsilon^2}{n-1} V_i.
+\]
+\end{lemma}
+
+\begin{lemma}[Fisher Information Decreases]
+For $q$ as above:
+\[
+\Phi_n(p \boxplus_n q) = \Phi_n(p) - \frac{2\epsilon^2}{n-1} \sum_{i<j} \frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2} + O(\epsilon^4).
+\]
+\end{lemma}
+
+\section{Analytical Tools}
+\begin{lemma}[Fractional Convolution Flow]
+There exists a real-analytic semigroup $\{q_t\}$ interpolating between $x^n$ and $q$, with $\sigma^2(q_t) = t\,\sigma^2(q)$.
+\end{lemma}
+
+\begin{lemma}[Energy Dissipation]
+$\frac{d}{dt}\Phi_n(p_t) = -\frac{2\sigma^2(q)}{n-1}\mathcal{S}(p_t)$, where $\mathcal{S}(p) = \sum_{i<j} \frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}$.
+\end{lemma}
+
+\begin{corollary}[Integral Representation]
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} - \frac{1}{\Phi_n(p)} = \frac{2\sigma^2(q)}{n-1} \int_0^1 \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2} dt.
+\]
+\end{corollary}
+
+\section{Proven Results and Open Problems}
+\begin{theorem}[Half-Stam Inequality]
+$\frac{2}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}$.
+\end{theorem}
+
+\begin{theorem}[Weak Stam Inequality]
+$\frac{1}{\Phi_n(p \boxplus_n q)} \ge \frac{1}{\Phi_n(p)} + \frac{1}{2(n-1)}\ln\left(1 + \frac{\sigma^2(q)}{\sigma^2(p)}\right)$.
+\end{theorem}
+
+\textbf{Open Problems:}
+\begin{enumerate}[label=\arabic*.]
+  \item Prove the full Stam inequality for all $n \ge 3$.
+  \item Establish a finite free Stein identity for polynomial scores.
+  \item Prove concavity of $1/\Phi_n$ under convolution flow.
+\end{enumerate}
+
+\end{document}
