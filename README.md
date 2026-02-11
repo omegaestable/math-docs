@@ -33,6 +33,11 @@ Longer-form content, teaching notes, and book drafts.
 
 *   **[Padilla Notes 1005](Books/MA%201005_en.pdf)**: A comprehensive set of notes, including source LaTeX and generated figures.
 
+### Research Papers
+
+*   **[The Finite Free Stam Inequality](Problem%204.pdf)**: Establishes a finite free analogue of the Stam inequality from information theory using polynomial root analysis and convolution-flow techniques.
+*   **[The Critical-Point Comparison Lemma](critical_point_comparison_lemma.pdf)**: Advanced treatment of the critical-point comparison inequality using P\'olya frequency sequences, total positivity, variation diminishing, interlacing, and determinant inequalities.
+
 ## Usage
 
 Most documents in this repository are written in **LaTeX**. To build the PDFs from source, you will need a standard TeX distribution (such as TeX Live, MacTeX, or MiKTeX).

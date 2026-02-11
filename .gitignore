@@ -9,8 +9,9 @@
 !**/*.pdf
 !**/*.m
 
-# Keep this file tracked
+# Keep these files tracked
 !.gitignore
+!README.md
 *.fls
 *.aux
 *.log
