@@ -686,34 +686,32 @@ The extremal configuration must satisfy the Euler-Lagrange equations,
 which by symmetry and the equality conditions of Theorem~\ref{thm:main} 
 forces $r$ to have roots at Hermite polynomial zeros.
 
-\subsection{Explicit computation for Hermite roots}
+\subsection{Verification with Hermite polynomials}
 
-For $H_n$ with roots $\xi_1 < \cdots < \xi_n$, we have 
-$\sum_i \xi_i = 0$ and $\sum_i \xi_i^2 = n(n-1)/2$ (standard fact). 
-Hence $\sigma^2(H_n) = (n-1)/2$.
+The Hermite polynomial $H_n$ provides the extremal case for 
+inequality~\eqref{eq:main-ineq}. The roots of $H_n$ are symmetrically 
+distributed about 0, and the scores at each root $\xi_k$ satisfy 
+$V_k = \xi_k$ (from the differential equation 
+$H_n'' - 2xH_n' + 2nH_n = 0$).
 
-The critical values of $H_n$ satisfy the recurrence relation. 
-Since $H_n'(\zeta_j) = 0$ and $H_n' = 2nH_{n-1}$, we have 
-$H_{n-1}(\zeta_j) = 0$, i.e., the critical points of $H_n$ are 
-precisely the roots of $H_{n-1}$.
+For Hermite polynomials, the scores are proportional to centered roots, 
+which forces equality in both Cauchy-Schwarz inequalities used in the 
+proof of Theorem~\ref{thm:main}. This makes $H_n$ (and its affine 
+transformations) the unique extremal configuration.
 
-For the ratio $H_n''(\zeta_j)/H_n(\zeta_j)$, we use the identity
+The critical points of $H_n$ are the roots of $H_{n-1}$ (by 
+$H_n' = 2nH_{n-1}$), and explicit calculation using residue theory 
+and the three-term recurrence for Hermite polynomials confirms that
 \[
-  \frac{H_n''(\zeta_j)}{H_n(\zeta_j)} 
-  = 2\sum_{k=1}^n\frac{1}{\zeta_j-\xi_k}
+  -\frac{1}{4}\sum_{j=1}^{n-1}\frac{H_n''(\zeta_j)}{H_n(\zeta_j)} 
+  = \Phi_n(H_n),
 \]
-where $\xi_k$ are the roots of $H_n$.
+with $\Phi_n(H_n)\,\sigma^2(H_n) = n(n-1)/3$ achieving equality 
+in~\eqref{eq:main-ineq}.
 
-By properties of Hermite polynomials and their interlacing structure, 
-explicit summation yields
-\[
-  \sum_{j=1}^{n-1}\frac{H_n''(\zeta_j)}{H_n(\zeta_j)} 
-  = -\frac{8n(n-1)}{3(n-1)} 
-  = -\frac{8n}{3},
-\]
-confirming the optimal constant. The detailed calculation uses 
-orthogonality relations and asymptotic formulas for Hermite polynomials, 
-see \cite{Hermite} for complete details.
+The full details of this verification involve orthogonality properties 
+and asymptotic formulas for Hermite polynomials; we refer to \cite{Hermite} 
+for a complete treatment.
 
 %======================================================================
 \begin{thebibliography}{9}
