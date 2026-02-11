@@ -126,11 +126,12 @@ argument exploiting commutativity of~$\boxplus_n$
 
 \medskip
 \noindent\textbf{Convention.}
-All polynomials are assumed to have distinct real roots unless stated
-otherwise.
-Since such polynomials are dense in~$\PnR$ and all quantities involved
-are continuous, inequality~\eqref{eq:stam} extends to all
-of~$\PnR$ by a limiting argument.
+We set $\Phi_n(p) := \infty$ (equivalently $1/\Phi_n(p) := 0$)
+when $p$ has a repeated root.
+The proof below establishes~\eqref{eq:stam} under the hypothesis
+that \emph{both} $p$ and~$q$ have distinct roots;
+the extension to the boundary of~$\PnR$ is discussed in
+Remark~\ref{rem:boundary} at the end of the paper.
 
 %======================================================================
 \section{Preliminaries}\label{sec:prelim}
@@ -488,13 +489,38 @@ $S\,T
 = \frac{n(n-1)}{2}\,U$.
 
 \medskip\noindent\textbf{Equality.}
-Equality in~\eqref{eq:cs1} requires $V_i = c(\lambda_i-\bar\lambda)$.
-This implies
-$\frac{V_i-V_j}{\lambda_i-\lambda_j} = c$ for all $i<j$, which is
-precisely the equality condition for~\eqref{eq:cs2}.
+Equality in~$S\,T = \frac{n(n-1)}{2}\,U$ requires equality in
+\emph{both} Steps~2 and~1 simultaneously.
+
+\smallskip
+\noindent\emph{Step~1 equality:}
+Cauchy--Schwarz in~\eqref{eq:cs1} is
+$\bigl(\sum_i(\lambda_i{-}\bar\lambda)\,V_i\bigr)^2
+\le \bigl(\sum_i(\lambda_i{-}\bar\lambda)^2\bigr)
+    \bigl(\sum_i V_i^2\bigr)$;
+equality holds if and only if $V_i = c(\lambda_i-\bar\lambda)$ for
+some constant~$c$.
+
+\smallskip
+\noindent\emph{Step~2 equality:}
+Cauchy--Schwarz in~\eqref{eq:cs2} is
+$\bigl(\sum_{i<j}\frac{V_i{-}V_j}{\lambda_i{-}\lambda_j}\cdot 1\bigr)^2
+\le \bigl(\sum_{i<j}\frac{(V_i{-}V_j)^2}{(\lambda_i{-}\lambda_j)^2}\bigr)
+    \bigl(\sum_{i<j}1\bigr)$;
+equality holds if and only if
+$\frac{V_i-V_j}{\lambda_i-\lambda_j}$ is a constant~$k$ for all~$i<j$.
+
+\smallskip
+\noindent\emph{Consistency:}
+If $V_i = c(\lambda_i-\bar\lambda)$, then
+$\frac{V_i-V_j}{\lambda_i-\lambda_j} = c$ for all $i<j$,
+so equality in Step~1 forces equality in Step~2.
 Conversely, if $\frac{V_i-V_j}{\lambda_i-\lambda_j} = k$ for all
-$i<j$, then $V_i - k\lambda_i$ is constant; since $\sum_i V_i = 0$,
-we obtain $V_i = k(\lambda_i-\bar\lambda)$.
+$i<j$, then $V_i - k\lambda_i$ is constant in~$i$;
+since $\sum_i V_i = 0$ (Lemma~\ref{lem:score-id}\ref{it:score-sum}),
+this constant equals $-k\bar\lambda$, yielding
+$V_i = k(\lambda_i-\bar\lambda)$.
+Thus the two equality conditions are equivalent.
 \end{proof}
 
 \begin{remark}
@@ -525,9 +551,26 @@ Define the \emph{fractional family} by
   K_{q_t}(z) = K_q(z)^{\,t},
   \qquad t \in [0,1],
 \]
-expanded as a power series and truncated at degree~$n$.
-Then $q_0=x^n$, $q_1=q$, $\sigma^2(q_t)=tb$, and
-$q_s \boxplus_n q_t = q_{s+t}$.
+expanded as a formal power series and truncated at degree~$n$;
+concretely, since $K_q(0)=\kappa_0=1$, the power is defined by
+\[
+  K_q(z)^{\,t}
+  = \exp\bigl(t\log K_q(z)\bigr)
+  = \exp\!\Bigl(t\sum_{m\ge 1}\frac{(-1)^{m+1}}{m}
+    \bigl(K_q(z)-1\bigr)^m\Bigr),
+\]
+which is an absolutely convergent real power series for $|z|$
+sufficiently small.
+Because $K_q$ has real coefficients and the logarithmic and
+exponential series preserve this, the coefficients
+$\kappa_k(q_t)$ are real for every $t\in\R$.
+The semigroup identity
+$K_{q_s}(z)\,K_{q_t}(z) = K_q(z)^{s+t} = K_{q_{s+t}}(z)$
+holds at the power-series level; since we retain only the first
+$n+1$ terms and $K_q(z)^r = 1+O(z)$ for every~$r$,
+the identity persists after truncation, giving
+$q_s\boxplus_n q_t = q_{s+t}$.
+In particular $q_0=x^n$, $q_1=q$, and $\sigma^2(q_t)=tb$.
 The \emph{flow polynomial} is $p_t = p \boxplus_n q_t$, satisfying
 $\sigma^2(p_t)=a+tb$.
 \end{definition}
@@ -606,6 +649,21 @@ Pairing $(i,j)$ with $(j,i)$:
 \]
 \end{proof}
 
+\begin{remark}[Uniformity of error terms]\label{rem:error}
+The $O(h^2)$ remainders in Lemmas~\ref{lem:root-shift}
+and~\ref{lem:phi-change} depend on the minimum gap
+$\delta_{\min}(t)=\min_i(\lambda_{i+1}(t)-\lambda_i(t))$:
+the implicit constants grow as $\delta_{\min}(t)^{-m}$ for some
+$m$ depending on~$n$.
+Lemma~\ref{lem:flow-real} below establishes a uniform lower bound
+$\delta_{\min}(t)\ge\delta_*>0$ for $t\in[0,1]$,
+so the error terms are bounded uniformly in~$t$ and the
+passage to derivatives
+$\dot\lambda_i = \frac{b}{n-1}\,V_i$,
+$\dot\Phi_n = -\frac{2b}{n-1}\,\mathcal{S}$
+is justified throughout~$[0,1]$.
+\end{remark}
+
 \begin{lemma}\label{lem:flow-real}
 For every $t\in[0,1]$, $p_t$ has $n$ simple real roots.
 \end{lemma}
@@ -618,31 +676,63 @@ Since $p_0=p$ has simple real roots, there is a maximal interval
 $[0,T)$ on which $p_t$ has simple real roots; continuity gives
 $T>0$.
 
-For $t<T$, the root-shift formula (Lemma~\ref{lem:root-shift})
-implies
+\medskip\noindent\textbf{Lyapunov function.}
+On $[0,T)$ define the log-Vandermonde
 \[
-  \dot\delta_i(t)
-  = \frac{b}{n-1}\bigl(V_{i+1}(t)-V_i(t)\bigr)
+  W(t) = \sum_{i<j}\log\bigl(\lambda_j(t)-\lambda_i(t)\bigr).
 \]
-for consecutive gaps $\delta_i = \lambda_{i+1}-\lambda_i$.
-Expanding the score difference:
+By Lemma~\ref{lem:root-shift} the roots satisfy
+$\dot\lambda_i = \frac{b}{n-1}\,V_i$ on $[0,T)$, so
+\begin{align*}
+  \dot W(t)
+  &= \sum_{i<j}\frac{\dot\lambda_j-\dot\lambda_i}
+       {\lambda_j-\lambda_i}
+  = \frac{b}{n-1}\sum_{i<j}\frac{V_j-V_i}
+       {\lambda_j-\lambda_i} \\
+  &= \frac{b}{n-1}\,\Phi_n(p_t)
+  \;\ge\; 0,
+\end{align*}
+the penultimate equality by
+Lemma~\ref{lem:score-id}\ref{it:score-gap}.
+Hence $W(t) \ge W(0)$ for all $t \in [0,T)$, i.e.\
+\begin{equation}\label{eq:vand-lower}
+  \prod_{i<j}\bigl(\lambda_j(t)-\lambda_i(t)\bigr)
+  \;\ge\;
+  \prod_{i<j}\bigl(\lambda_j(0)-\lambda_i(0)\bigr)
+  =: D_0 > 0.
+\end{equation}
+
+\medskip\noindent\textbf{Uniform gap bound.}
+Since $\sigma^2(p_t)=a+tb\le a+b$, the roots satisfy
+$\sum_i(\lambda_i-\bar\lambda)^2 = n(a+tb) \le n(a+b)$,
+so every root lies within distance $R=\sqrt{n(a+b)}$
+of~$\bar\lambda(t)$.
+Each pairwise difference is therefore at most~$2R$.
+For any consecutive gap
+$\delta_k(t) = \lambda_{k+1}(t)-\lambda_k(t)$
+we may bound every other factor in~\eqref{eq:vand-lower}
+by~$2R$:
 \[
-  V_{i+1}-V_i
-  = \frac{2}{\delta_i}
-    - \delta_i\!\!\sum_{j \neq i,\,i+1}
-      \frac{1}{(\lambda_{i+1}{-}\lambda_j)(\lambda_i{-}\lambda_j)},
+  D_0
+  \;\le\;
+  \prod_{i<j}\bigl(\lambda_j(t)-\lambda_i(t)\bigr)
+  \;\le\;
+  (2R)^{\binom{n}{2}-1}\,\delta_k(t),
 \]
-so $\dot\delta_i \ge \frac{2b}{(n{-}1)\delta_i}-C$ with $C$
-bounded as long as all gaps are positive.
-Hence
+giving the uniform lower bound
 \[
-  \frac{d}{dt}\delta_i^2 = 2\delta_i\,\dot\delta_i
-  \ge \frac{4b}{n{-}1}-2C\delta_i.
+  \delta_k(t)
+  \;\ge\;
+  \delta_*
+  := D_0\,(2R)^{1-\binom{n}{2}}
+  > 0
 \]
-For $\delta_i < \delta_0 := 2b/(C(n{-}1))$, this is strictly
-positive, so no gap can reach zero in finite time.
-Since the roots at time~$T$ remain separated, continuity extends
-simple real-rootedness past~$T$, forcing $T \ge 1$.
+for every $k$ and every $t\in[0,T)$.
+
+\medskip\noindent\textbf{Extension.}
+Since all gaps are bounded below by~$\delta_*>0$ on $[0,T)$,
+the roots of~$p_T$ remain distinct by continuity.
+This contradicts the maximality of~$T$ unless $T\ge 1$.
 \end{proof}
 
 \subsection{Dissipation and the integral identity}
@@ -780,6 +870,40 @@ $t \in [0,1]$, which forces both $p$ and $q$ to have roots at
 affinely rescaled zeros of the Hermite polynomial~$H_n$.
 For $n=2$ every polynomial satisfies this.
 %for $n=3$ it reduces to $T_1=T_2=0$ (Theorem~\ref{thm:stam3}).
+\end{remark}
+
+\begin{remark}[Boundary behaviour]\label{rem:boundary}
+With the convention $1/\Phi_n:=0$ for repeated roots,
+inequality~\eqref{eq:stam} extends to the boundary of~$\PnR$
+as follows.
+When both $p$ and~$q$ have repeated roots, both sides vanish and
+the inequality is trivially true.
+When exactly one factor, say~$p$, has a repeated root, the
+inequality reduces to
+$\Phi_n(q)\ge\Phi_n(p\boxplus_n q)$,
+a monotonicity statement.
+To verify it, approximate $p$ by distinct-root polynomials
+$p_\varepsilon\to p$; the established inequality gives
+$1/\Phi_n(p_\varepsilon\boxplus_n q)
+  \ge 1/\Phi_n(p_\varepsilon)+1/\Phi_n(q)
+  \ge 1/\Phi_n(q)$.
+Since the convolution is continuous in coefficients,
+$p_\varepsilon\boxplus_n q\to p\boxplus_n q$.
+If $p\boxplus_n q$ has distinct roots then
+$\Phi_n(p_\varepsilon\boxplus_n q)\to\Phi_n(p\boxplus_n q)$
+and the bound passes to the limit.
+The remaining case---$p\boxplus_n q$ itself having a repeated
+root while $q$ has distinct roots---cannot occur:
+in the matrix model
+$(p\boxplus_n q)(x)=\int_{O(n)}\det(xI-(A+QBQ^T))\,d\mu(Q)$,
+if $B$ has at least two distinct eigenvalues the integrand
+is a polynomial with $n$ distinct real roots for
+$\mu$-almost every~$Q$, and the resulting average
+(which is real-rooted by~\cite{MSS15}) has distinct roots
+since a convex combination of univariate polynomials
+can acquire a new double root only at the boundary of
+the interlacing family, which is excluded by the
+positive-variance hypothesis $\sigma^2(q)>0$.
 \end{remark}
 
 %======================================================================
