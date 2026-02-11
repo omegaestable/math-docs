@@ -544,10 +544,13 @@ polynomial~$H_n$.
 
 Indeed, the Hermite polynomial $H_n$ satisfies the differential equation
 $H_n''-2xH_n'+2nH_n=0$.
-Evaluating at a zero~$x_k$ of~$H_n$ yields $H_n''(x_k)=2x_k H_n'(x_k)$,
-which by Lemma~\ref{lem:score-deriv} gives $V_k = x_k$.
+Evaluating at a zero~$x_k$ of~$H_n$ yields $H_n''(x_k)=2x_k H_n'(x_k)$.
+Dividing both sides by $2H_n'(x_k)$ and applying
+Lemma~\ref{lem:score-deriv} (which states $V_k = H_n''(x_k)/(2H_n'(x_k))$)
+gives $V_k = x_k$.
 Since the zeros $x_1,\ldots,x_n$ of~$H_n$ are centered
-($\sum_i x_i = 0$), we have $V_k = x_k = x_k - \bar x$.
+(i.e., $\bar x := \frac{1}{n}\sum_i x_i = 0$), we have
+$V_k = x_k = x_k - \bar x = x_k - 0$.
 Conversely, any centered real-rooted polynomial satisfying
 $V_i = c(\lambda_i-\bar\lambda)$ for a constant~$c$ has roots that,
 after affine rescaling, coincide with the zeros of~$H_n$.
