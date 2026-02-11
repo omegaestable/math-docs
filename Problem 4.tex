@@ -125,9 +125,9 @@ Inequality (Theorem~\ref{thm:sgi}), a dissipation identity for the
 convolution flow (Lemma~\ref{lem:dissip}), and a case-split
 argument exploiting commutativity of~$\boxplus_n$
 (Theorem~\ref{thm:general}).
-%En route, we obtain a critical-value formula for~$\Phi_n$ via residue
-%calculus (Theorem~\ref{thm:critval}) and use it to give an
-%explicit verification for $n=3$ (Theorem~\ref{thm:stam3}).
+En route, we obtain a critical-value formula for~$\Phi_n$ via residue
+calculus (Theorem~\ref{thm:critval}) and use it to give an
+explicit verification for $n=3$ (Theorem~\ref{thm:stam3}).
 
 \medskip
 \noindent\textbf{Convention.}
@@ -299,159 +299,164 @@ Lemma~\ref{lem:score-id}\ref{it:score-centered}:
 \]
 \end{proof}
 
-% [Commented out: critical-value formula and small-degree cases]
-% These sections are not needed for the general proof but are kept
-% for reference.
-%
-%%======================================================================
-%\section{A critical-value formula for \texorpdfstring{$\Phi_n$}{Phi\_n}}
-%\label{sec:critval}
-%%======================================================================
-%
-%\begin{theorem}\label{thm:critval}
-%Let $p \in \PnR$ have distinct roots, and let
-%$\zeta_1,\ldots,\zeta_{n-1}$ be the (simple) zeros of $p'$. Then
-%\begin{equation}\label{eq:critval}
-%  \Phi_n(p)
-%  = -\frac{1}{4}\sum_{j=1}^{n-1}\frac{p''(\zeta_j)}{p(\zeta_j)}.
-%\end{equation}
-%\end{theorem}
-%
-%\begin{proof}
-%By Lemma~\ref{lem:score-deriv},
-%$\Phi_n = \frac{1}{4}\sum_{i=1}^n
-%  \frac{p''(\lambda_i)^2}{p'(\lambda_i)^2}$.
-%Consider the meromorphic function on~$\mathbb{P}^1$
-%\[
-%  F(x) = \frac{p''(x)^2}{p'(x)\,p(x)}.
-%\]
-%
-%\noindent\emph{Poles at the roots.}
-%Since $p$ has a simple zero at~$\lambda_i$ and
-%$p'(\lambda_i)\neq 0$,
-%$\operatorname{Res}_{x=\lambda_i}F
-%= p''(\lambda_i)^2/p'(\lambda_i)^2$.
-%Summing: $\sum_i\operatorname{Res}_{\lambda_i}F = 4\Phi_n$.
-%
-%\noindent\emph{Poles at the critical points.}
-%At a simple zero~$\zeta_j$ of~$p'$, we have $p(\zeta_j)\neq 0$
-%(by the interlacing of roots and critical points), so
-%$\operatorname{Res}_{x=\zeta_j}F = p''(\zeta_j)/p(\zeta_j)$.
-%
-%\noindent\emph{Pole at infinity.}
-%$F(x) = n(n-1)^2/x^3 + O(x^{-4})$ as $x \to \infty$, whence
-%$\operatorname{Res}_\infty F = 0$.
-%
-%\noindent
-%The sum of all residues on~$\mathbb{P}^1$ vanishes:
-%$4\Phi_n + \sum_j p''(\zeta_j)/p(\zeta_j) = 0$.
-%\end{proof}
-%
-%\begin{remark}\label{rem:critval}
-%Formula~\eqref{eq:critval} expresses $\Phi_n$ in terms of the
-%critical values $p(\zeta_j)$ and the second derivatives at the
-%critical points.
-%It generalizes the classical relation between the discriminant and
-%critical values, and yields closed-form expressions in low degree.
-%\end{remark}
-%
-%%======================================================================
-%\section{Small-degree cases}\label{sec:small}
-%%======================================================================
-%
-%\subsection{The case $n=2$: equality}\label{ssec:n2}
-%
-%\begin{proposition}\label{prop:n2}
-%For $n=2$, inequality~\eqref{eq:stam} holds with equality.
-%\end{proposition}
-%
-%\begin{proof}
-%If $p(x)=(x-\lambda_1)(x-\lambda_2)$ with $d=\lambda_1-\lambda_2$,
-%then $V_1=1/d$, $V_2=-1/d$, so
-%$\Phi_2(p)=2/d^2$ and $\sigma^2(p)=d^2/4$.
-%Hence $1/\Phi_2(p) = 2\sigma^2(p)$, and the result follows from
-%variance additivity (Lemma~\ref{lem:var-add}).
-%\end{proof}
-%
-%\subsection{The case $n=3$: residue calculus}\label{ssec:n3}
-%
-%Throughout this subsection all cubics are centered
-%($\bar\lambda=0$), which entails no loss of generality since
-%$\Phi_n$ and $\sigma^2$ are translation-invariant.
-%A centered monic cubic takes the form $r(x) = x^3-Sx+T$ with $S \ge 0$.
-%It has three distinct real roots if and only if
-%its discriminant $\Delta := 4S^3-27T^2$ is positive;
-%we assume $\Delta > 0$ throughout.
-%
-%\begin{proposition}\label{prop:phi3}
-%$\Phi_3(r) = \dfrac{18S^2}{4S^3-27T^2}$.
-%\end{proposition}
-%
-%\begin{proof}
-%The critical points of~$r$ are
-%$\zeta_\pm = \pm\alpha$ with $\alpha=\sqrt{S/3}$,
-%and $r''(x)=6x$. The critical values are
-%\[
-%  r(\pm\alpha)
-%  = T \mp \tfrac{2S^{3/2}}{3\sqrt{3}},
-%  \qquad
-%  r(\alpha)\,r(-\alpha)
-%  = T^2 - \tfrac{4S^3}{27}
-%  = -\tfrac{\Delta}{27}.
-%\]
-%By Theorem~\ref{thm:critval}:
-%\[
-%  4\Phi_3
-%  = -\frac{6\alpha}{r(\alpha)}+\frac{6\alpha}{r(-\alpha)}
-%  = 6\alpha\cdot
-%    \frac{r(\alpha)-r(-\alpha)}{r(\alpha)\,r(-\alpha)}.
-%\]
-%Since $r(\alpha)-r(-\alpha) = -4S\alpha/3$ and
-%$r(\alpha)\,r(-\alpha) = -\Delta/27$:
-%$4\Phi_3 = 6\alpha\cdot\frac{-4S\alpha/3}{-\Delta/27}
-%= \frac{216S\alpha^2}{\Delta}
-%= \frac{72S^2}{\Delta}$,
-%where the last step uses $\alpha^2=S/3$.
-%\end{proof}
-%
-%\begin{proposition}\label{prop:cubic-conv}
-%For centered monic cubics $p(x)=x^3-S_1 x+T_1$ and
-%$q(x)=x^3-S_2 x+T_2$,
-%\[
-%  (p\boxplus_3 q)(x) = x^3-(S_1+S_2)\,x+(T_1+T_2).
-%\]
-%\end{proposition}
-%
-%\begin{proof}
-%Since $a_1=b_1=0$, formula~\eqref{eq:conv-coeff} gives
-%$c_1=0$, $c_2=a_2+b_2=-(S_1+S_2)$, and $c_3=a_3+b_3=T_1+T_2$
-%(all cross-terms involving $a_1$ or $b_1$ vanish).
-%\end{proof}
-%
-%\begin{theorem}\label{thm:stam3}
-%Inequality~\eqref{eq:stam} holds for $n=3$, with equality if and
-%only if $T_1=T_2=0$.
-%\end{theorem}
-%
-%\begin{proof}
-%From Propositions~\ref{prop:phi3} and~\ref{prop:cubic-conv},
-%$1/\Phi_3(r) = \Delta/(18S^2) = 2S/9-3T^2/(2S^2)$.
-%Inequality~\eqref{eq:stam} thus reduces, after cancelling the
-%linear terms, to
-%\begin{equation}\label{eq:cubic-ineq}
-%  \frac{(T_1+T_2)^2}{(S_1+S_2)^2}
-%  \;\le\;
-%  \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2}.
-%\end{equation}
-%Set $\alpha=S_1/(S_1+S_2)$, $\beta=1-\alpha$, $u=T_1/S_1$,
-%$v=T_2/S_2$.
-%The left-hand side becomes $(\alpha u+\beta v)^2$.
-%By convexity of $t \mapsto t^2$:
-%$(\alpha u+\beta v)^2 \le \alpha u^2+\beta v^2 \le u^2+v^2$,
-%establishing~\eqref{eq:cubic-ineq}.
-%Equality requires $\alpha u^2+\beta v^2 = u^2+v^2$, i.e.\
-%$\beta u^2+\alpha v^2=0$, forcing $u=v=0$.
-%\end{proof}
+%======================================================================
+\section{A critical-value formula for \texorpdfstring{$\Phi_n$}{Phi\_n}}
+\label{sec:critval}
+%======================================================================
+
+The following residue-theoretic identity provides an alternative
+expression for the Fisher information in terms of critical points
+rather than roots.
+While not strictly necessary for the general proof, it offers
+additional insight and yields closed-form expressions in low degree.
+
+\begin{theorem}[Critical-point identity]\label{thm:critval}
+Let $p \in \PnR$ have distinct roots, and let
+$\zeta_1,\ldots,\zeta_{n-1}$ be the (simple) zeros of $p'$. Then
+\begin{equation}\label{eq:critval}
+  \Phi_n(p)
+  = -\frac{1}{4}\sum_{j=1}^{n-1}\frac{p''(\zeta_j)}{p(\zeta_j)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:score-deriv},
+$\Phi_n = \frac{1}{4}\sum_{i=1}^n
+  \frac{p''(\lambda_i)^2}{p'(\lambda_i)^2}$.
+Consider the meromorphic function on~$\mathbb{P}^1$
+\[
+  F(x) = \frac{p''(x)^2}{p'(x)\,p(x)}.
+\]
+
+\medskip\noindent\emph{Poles at the roots.}
+Since $p$ has a simple zero at~$\lambda_i$ and
+$p'(\lambda_i)\neq 0$,
+$\operatorname{Res}_{x=\lambda_i}F
+= p''(\lambda_i)^2/p'(\lambda_i)^2$.
+Summing: $\sum_i\operatorname{Res}_{\lambda_i}F = 4\Phi_n$.
+
+\medskip\noindent\emph{Poles at the critical points.}
+At a simple zero~$\zeta_j$ of~$p'$, we have $p(\zeta_j)\neq 0$
+(by the interlacing of roots and critical points), so
+$\operatorname{Res}_{x=\zeta_j}F = p''(\zeta_j)/p(\zeta_j)$.
+
+\medskip\noindent\emph{Pole at infinity.}
+$F(x) = n(n-1)^2/x^3 + O(x^{-4})$ as $x \to \infty$, whence
+$\operatorname{Res}_\infty F = 0$.
+
+\medskip\noindent
+The sum of all residues on~$\mathbb{P}^1$ vanishes:
+$4\Phi_n + \sum_j p''(\zeta_j)/p(\zeta_j) = 0$.
+\end{proof}
+
+\begin{remark}\label{rem:critval}
+Formula~\eqref{eq:critval} expresses $\Phi_n$ in terms of the
+critical values $p(\zeta_j)$ and the second derivatives at the
+critical points.
+It generalizes the classical relation between the discriminant and
+critical values, and yields closed-form expressions in low degree.
+\end{remark}
+
+%======================================================================
+\section{Small-degree cases}\label{sec:small}
+%======================================================================
+
+To illustrate the main result and provide concrete verification,
+we now examine the cases $n=2$ and $n=3$ explicitly.
+
+\subsection{The case $n=2$: equality}\label{ssec:n2}
+
+\begin{proposition}\label{prop:n2}
+For $n=2$, inequality~\eqref{eq:stam} holds with equality.
+\end{proposition}
+
+\begin{proof}
+If $p(x)=(x-\lambda_1)(x-\lambda_2)$ with $d=\lambda_1-\lambda_2$,
+then $V_1=1/d$, $V_2=-1/d$, so
+$\Phi_2(p)=2/d^2$ and $\sigma^2(p)=d^2/4$.
+Hence $1/\Phi_2(p) = 2\sigma^2(p)$, and the result follows from
+variance additivity (Lemma~\ref{lem:var-add}).
+\end{proof}
+
+\subsection{The case $n=3$: residue calculus}\label{ssec:n3}
+
+Throughout this subsection all cubics are centered
+($\bar\lambda=0$), which entails no loss of generality since
+$\Phi_n$ and $\sigma^2$ are translation-invariant.
+A centered monic cubic takes the form $r(x) = x^3-Sx+T$ with $S \ge 0$.
+It has three distinct real roots if and only if
+its discriminant $\Delta := 4S^3-27T^2$ is positive;
+we assume $\Delta > 0$ throughout.
+
+\begin{proposition}\label{prop:phi3}
+$\Phi_3(r) = \dfrac{18S^2}{4S^3-27T^2}$.
+\end{proposition}
+
+\begin{proof}
+The critical points of~$r$ are
+$\zeta_\pm = \pm\alpha$ with $\alpha=\sqrt{S/3}$,
+and $r''(x)=6x$. The critical values are
+\[
+  r(\pm\alpha)
+  = T \mp \tfrac{2S^{3/2}}{3\sqrt{3}},
+  \qquad
+  r(\alpha)\,r(-\alpha)
+  = T^2 - \tfrac{4S^3}{27}
+  = -\tfrac{\Delta}{27}.
+\]
+By Theorem~\ref{thm:critval}:
+\[
+  4\Phi_3
+  = -\frac{6\alpha}{r(\alpha)}+\frac{6\alpha}{r(-\alpha)}
+  = 6\alpha\cdot
+    \frac{r(\alpha)-r(-\alpha)}{r(\alpha)\,r(-\alpha)}.
+\]
+Since $r(\alpha)-r(-\alpha) = -4S\alpha/3$ and
+$r(\alpha)\,r(-\alpha) = -\Delta/27$:
+$4\Phi_3 = 6\alpha\cdot\frac{-4S\alpha/3}{-\Delta/27}
+= \frac{216S\alpha^2}{\Delta}
+= \frac{72S^2}{\Delta}$,
+where the last step uses $\alpha^2=S/3$.
+\end{proof}
+
+\begin{proposition}\label{prop:cubic-conv}
+For centered monic cubics $p(x)=x^3-S_1 x+T_1$ and
+$q(x)=x^3-S_2 x+T_2$,
+\[
+  (p\boxplus_3 q)(x) = x^3-(S_1+S_2)\,x+(T_1+T_2).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $a_1=b_1=0$, formula~\eqref{eq:conv-coeff} gives
+$c_1=0$, $c_2=a_2+b_2=-(S_1+S_2)$, and $c_3=a_3+b_3=T_1+T_2$
+(all cross-terms involving $a_1$ or $b_1$ vanish).
+\end{proof}
+
+\begin{theorem}\label{thm:stam3}
+Inequality~\eqref{eq:stam} holds for $n=3$, with equality if and
+only if $T_1=T_2=0$.
+\end{theorem}
+
+\begin{proof}
+From Propositions~\ref{prop:phi3} and~\ref{prop:cubic-conv},
+$1/\Phi_3(r) = \Delta/(18S^2) = 2S/9-3T^2/(2S^2)$.
+Inequality~\eqref{eq:stam} thus reduces, after cancelling the
+linear terms, to
+\begin{equation}\label{eq:cubic-ineq}
+  \frac{(T_1+T_2)^2}{(S_1+S_2)^2}
+  \;\le\;
+  \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2}.
+\end{equation}
+Set $\alpha=S_1/(S_1+S_2)$, $\beta=1-\alpha$, $u=T_1/S_1$,
+$v=T_2/S_2$.
+The left-hand side becomes $(\alpha u+\beta v)^2$.
+By convexity of $t \mapsto t^2$:
+$(\alpha u+\beta v)^2 \le \alpha u^2+\beta v^2 \le u^2+v^2$,
+establishing~\eqref{eq:cubic-ineq}.
+Equality requires $\alpha u^2+\beta v^2 = u^2+v^2$, i.e.\
+$\beta u^2+\alpha v^2=0$, forcing $u=v=0$.
+\end{proof}
 
 %======================================================================
 \section{The Score-Gradient Inequality}\label{sec:sgi}
@@ -532,13 +537,23 @@ $V_i = k(\lambda_i-\bar\lambda)$.
 Thus the two equality conditions are equivalent.
 \end{proof}
 
-\begin{remark}
+\begin{remark}[Hermite polynomial characterization]\label{rem:hermite}
 The equality condition $V_i = c(\lambda_i-\bar\lambda)$ characterizes,
 up to affine transformation, the zeros of the Hermite
-polynomial~$H_n$: evaluating the ODE
-$H_n''-2xH_n'+2nH_n=0$ at a zero~$x_k$ yields $V_k = x_k$.
+polynomial~$H_n$.
+
+Indeed, the Hermite polynomial $H_n$ satisfies the differential equation
+$H_n''-2xH_n'+2nH_n=0$.
+Evaluating at a zero~$x_k$ of~$H_n$ yields $H_n''(x_k)=2x_k H_n'(x_k)$,
+which by Lemma~\ref{lem:score-deriv} gives $V_k = x_k$.
+Since the zeros $x_1,\ldots,x_n$ of~$H_n$ are centered
+($\sum_i x_i = 0$), we have $V_k = x_k = x_k - \bar x$.
+Conversely, any centered real-rooted polynomial satisfying
+$V_i = c(\lambda_i-\bar\lambda)$ for a constant~$c$ has roots that,
+after affine rescaling, coincide with the zeros of~$H_n$.
+
 For $n=2$ this holds for all distinct root configurations.
-%for $n=3$ it reduces to $T=0$, consistent with Theorem~\ref{thm:stam3}.
+For $n=3$ it reduces to $T=0$, consistent with Theorem~\ref{thm:stam3}.
 \end{remark}
 
 %======================================================================
@@ -1054,14 +1069,14 @@ $\frac{2}{\Phi_n(p\boxplus_n q)}
 from which the full inequality is recovered via the case split.
 \end{remark}
 
-\begin{remark}
+\begin{remark}[Equality characterization]\label{rem:equality}
 Strict inequality holds generically.
 Equality in~\eqref{eq:stam} requires that
 $V_i(p_t) = c(t)\bigl(\lambda_i(t)-\bar\lambda(t)\bigr)$ for all
 $t \in [0,1]$, which forces both $p$ and $q$ to have roots at
 affinely rescaled zeros of the Hermite polynomial~$H_n$.
 For $n=2$ every polynomial satisfies this.
-%for $n=3$ it reduces to $T_1=T_2=0$ (Theorem~\ref{thm:stam3}).
+For $n=3$ it reduces to $T_1=T_2=0$ (Theorem~\ref{thm:stam3}).
 \end{remark}
 
 \begin{remark}[Boundary behaviour]\label{rem:boundary}
