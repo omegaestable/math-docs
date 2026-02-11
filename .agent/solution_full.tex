@@ -310,7 +310,8 @@ $\sum_{i=1}^n (\lambda_i - \mu)\,V_i = \sum \lambda_i V_i - \mu \sum V_i = \frac
 \end{proof}
 
 \begin{lemma}[Fisher--Variance Inequality] \label{lem:fv}
-$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality if and only if $n = 2$.
+$\Phi_n(p) \cdot \sigma^2(p) \ge \frac{n(n-1)^2}{4}$, with equality if and only if there exists a constant $c$ such that
+$V_i = c(\lambda_i - \mu)$ for all $i$.
 \end{lemma}
 
 \begin{proof}
@@ -321,7 +322,7 @@ By Cauchy--Schwarz applied to the Score-Root Identity:
 \le \biggl(\sum_{i=1}^n (\lambda_i - \mu)^2\biggr)\!\biggl(\sum_{i=1}^n V_i^2\biggr)
 = n\,\sigma^2(p)\cdot\Phi_n(p).
 \]
-Equality in Cauchy--Schwarz requires proportionality $V_i = c(\lambda_i - \mu)$ for a constant $c$. For $n=2$ this holds automatically (see Lemma~\ref{lem:n2}).
+Equality in Cauchy--Schwarz requires proportionality $V_i = c(\lambda_i - \mu)$ for a constant $c$. For $n=2$ this holds automatically (see Lemma~\ref{lem:n2}); for $n\ge 3$ it characterizes the Hermite-root configuration discussed after Theorem~\ref{thm:stam-ineq}.
 \end{proof}
 
 \begin{lemma}[The $n=2$ Identity] \label{lem:n2}
@@ -340,7 +341,11 @@ Thus $1/\Phi_2 = d^2/2 = 2\sigma^2$.
 \section{Local Analysis: Perturbation Theory}
 %==============================================================================
 
-We examine the behavior of roots under convolution with a noise polynomial $q_\epsilon$ of small variance $\epsilon^2$.
+We examine the behavior of roots under convolution with a noise polynomial $q_\epsilon$ of small variance $\epsilon^2$. For the perturbation expansion we assume $q_\epsilon$ is centered and symmetric, so its odd coefficients vanish and the first nontrivial correction is order $\epsilon^2$.
+
+\begin{remark}[Why centering and symmetry are harmless]
+The quantities $\sigma^2(p)$ and $\Phi_n(p)$ depend only on root differences, so they are invariant under translations $p(x)\mapsto p(x-c)$. The convolution satisfies $a_1(p\boxplus_n q)=a_1(p)+a_1(q)$, so shifting $q$ by its mean simply shifts $p\boxplus_n q$ by the same amount without changing any variance or Fisher information. Hence we may assume $q_\epsilon$ is centered without loss of generality. Symmetry is a convenience: if the root set of $q_\epsilon$ is symmetric, then $b_1=b_3=\cdots=0$, which makes the first correction term order $\epsilon^2$. If $q_\epsilon$ is centered but not symmetric, odd coefficients produce only higher-order corrections (order $\epsilon^3$ and above) and do not affect the leading $\epsilon^2$ terms used in the dissipation identity.
+\end{remark}
 
 \subsection{Root Dynamics}
 The convolution operator induces a shift in the roots of $p$.
@@ -356,17 +361,18 @@ Let $\lambda_i$ be the roots of $p$. The roots $\mu_i$ of $p \boxplus_n q_\epsil
 Consider the operator representation $p \boxplus_n q_\epsilon = T_{q_\epsilon}\,p$.
 Since $q_\epsilon$ is centered with variance $\epsilon^2$ and close to $x^n$, its coefficients satisfy
 $b_0 = 1$, $b_1 = 0$, and $b_2 = -n\epsilon^2/2$ (from the variance formula applied to $q_\epsilon$).
-Higher coefficients are $O(\epsilon^3)$ or smaller.
+By the symmetry assumption, $b_3=0$, and higher coefficients are $O(\epsilon^4)$.
 The operator $T_{q_\epsilon} = \sum_{k} \frac{(n-k)!}{n!}\,b_k\,\partial_x^k$ therefore acts as:
 \[
-T_{q_\epsilon}\,p(x) = p(x) + \frac{(n-2)!}{n!}\,b_2\,p''(x) + O(\epsilon^3)
-= p(x) - \frac{\epsilon^2}{2(n-1)}\,p''(x) + O(\epsilon^3).
+T_{q_\epsilon}\,p(x) = p(x) + \frac{(n-2)!}{n!}\,b_2\,p''(x) + O(\epsilon^4)
+= p(x) - \frac{\epsilon^2}{2(n-1)}\,p''(x) + O(\epsilon^4).
 \]
+Here we used $(n-2)!/n! = 1/[n(n-1)]$ and $b_2 = -n\epsilon^2/2$.
 
 Now let $\mu_i = \lambda_i + \delta_i$ with $\delta_i = O(\epsilon^2)$. Expanding $T_{q_\epsilon}\,p(\mu_i)=0$:
 \[
 0 = p(\lambda_i) + \delta_i\,p'(\lambda_i) + O(\delta_i^2)
-    - \frac{\epsilon^2}{2(n-1)}\,p''(\lambda_i) + O(\epsilon^3).
+    - \frac{\epsilon^2}{2(n-1)}\,p''(\lambda_i) + O(\epsilon^4).
 \]
 Since $p(\lambda_i) = 0$ and $\delta_i^2 = O(\epsilon^4)$, we solve:
 \[
@@ -543,12 +549,46 @@ This identity is the precise algebraic content of the convolution.
 
 We therefore define the fractional family by the power identity
 \begin{equation}\label{eq:Kt}
-K_{q_t}(z) \coloneqq K_q(z)^{\,t}, \qquad t\in[0,1],
+K_{q_t}(z) \coloneqq \bigl[K_q(z)\bigr]^{t} \;\bmod z^{n+1}, \qquad t\in[0,1],
 \end{equation}
-where $K_q(z)^{\,t}$ is expanded as a power series and truncated at degree $n$.
-Then $K_{q_0}(z)=1$ (so $q_0=x^n$), $K_{q_1}(z)=K_q(z)$, and by construction
-$K_{q_s}(z)K_{q_t}(z)=K_{q_{s+t}}(z)$, which yields the semigroup property
-$q_s \boxplus_n q_t = q_{s+t}$.
+which we now unpack.
+Since $\kappa_0(q)=1$, we can write $K_q(z) = 1 + h(z)$ where
+$h(z) = \kappa_1 z + \cdots + \kappa_n z^n$ has no constant term.
+Define the \emph{formal logarithm}:
+\[
+L(z) \coloneqq \ln K_q(z) = \ln(1+h(z))
+= h(z) - \tfrac{1}{2}h(z)^2 + \tfrac{1}{3}h(z)^3 - \cdots \;\bmod z^{n+1}.
+\]
+Because $h(z)$ starts at degree~$1$, the $m$-th power $h(z)^m$ starts at degree~$m$,
+so the infinite series truncates after at most $n$ terms and $L(z)$ is a well-defined
+polynomial of degree~$\le n$. Then:
+\begin{equation}\label{eq:Kt-exp}
+K_{q_t}(z) = \exp\!\bigl(t\,L(z)\bigr)
+= 1 + t\,L(z) + \tfrac{t^2}{2}\,L(z)^2 + \cdots \;\bmod z^{n+1}.
+\end{equation}
+Again, $L(z)^m$ starts at degree~$m$, so this truncates and $K_{q_t}(z)$ is an
+explicit polynomial of degree~$\le n$ with real coefficients that vary smoothly in~$t$.
+Its first three coefficients are:
+\[
+\kappa_0(q_t) = 1, \qquad
+\kappa_1(q_t) = t\,\kappa_1(q), \qquad
+\kappa_2(q_t) = t\,\kappa_2(q) + \tfrac{t(t-1)}{2}\,\kappa_1(q)^2.
+\]
+Recovering the polynomial $q_t$ from its normalized coefficients:
+$b_k(q_t) = \frac{n!}{(n-k)!}\,\kappa_k(q_t)$.
+
+\medskip
+\noindent\textbf{Verification of the key properties.}
+\begin{itemize}[nosep]
+\item \emph{Endpoints:} $K_{q_0}(z) = e^0 = 1$ (so $q_0 = x^n$, the identity);
+  $K_{q_1}(z) = e^{L(z)} = K_q(z)$ (so $q_1 = q$).
+\item \emph{Semigroup:} $K_{q_s}(z)\,K_{q_t}(z) = e^{sL(z)}e^{tL(z)} = e^{(s+t)L(z)} = K_{q_{s+t}}(z)$,
+  which, via~\eqref{eq:K-product}, gives $q_s \boxplus_n q_t = q_{s+t}$.
+\item \emph{Variance:} Since $\kappa_1(q_t) = t\,\kappa_1(q)$, the mean scales by $t$.
+  By the variance formula and the coefficient expressions above,
+  $\sigma^2(q_t) = t\,\sigma^2(q) = t\,b$
+  (the detailed verification uses the same Vieta calculation as Lemma~\ref{lem:var}).
+\end{itemize}
 
 Define the \emph{flow polynomial}:
 \[p_t \coloneqq p \boxplus_n q_t.\]
@@ -558,8 +598,97 @@ By variance additivity (Lemma~\ref{lem:var-add}),
 \end{equation}
 \end{definition}
 
-\begin{remark}
-Although $K_q(z)^{\,t}$ is a power series when $t$ is non-integer, only the first $n$ coefficients matter when acting on degree-$n$ polynomials, because $\partial_x^{n+1}$ annihilates them. Thus the definition of $q_t$ via~\eqref{eq:Kt} is unambiguous at the operator level, and the semigroup identity follows from~\eqref{eq:K-product}. In what follows we assume $p_t$ has distinct real roots for $t\in[0,1]$ so that $\mathcal{S}(p_t)$ is well-defined; this is guaranteed for small steps by continuity of roots and by preservation of real-rootedness under $\boxplus_n$.
+\begin{remark}[Status of $q_t$: \emph{not} real-rooted in general]
+\label{rem:qt-not-rr}
+The polynomial $q_t$ defined above is an explicit degree-$n$ polynomial with real
+coefficients. However, for non-integer $t$ it need \emph{not} be real-rooted---the
+formal-logarithm construction produces valid coefficients but does not guarantee
+real roots for the intermediate $q_t$.
+
+\smallskip
+\noindent\textbf{Counterexample.}
+Take $n=4$ and $q(x)=(x-100)(x-1)(x+1)(x+100)=x^4 - 10001\,x^2 + 10000$.
+This polynomial is in $\PnR$ with normalized coefficients
+$\kappa_2 = -10001/12$, $\kappa_4 = 1250/3$
+(all odd $\kappa_k=0$ by symmetry).
+For $t=1/2$, the formal-logarithm recipe gives
+\[
+\kappa_4(q_{1/2})
+= \tfrac{1}{2}\,\kappa_4 - \tfrac{1}{8}\,\kappa_2^2
+= \frac{625}{3} - \frac{10001^2}{1152}
+= \frac{240\,000 - 100\,020\,001}{1152}
+< 0.
+\]
+Hence $q_{1/2}(x) = x^4 - \frac{10001}{2}\,x^2 + c$ with
+$c = \frac{4!}{0!}\,\kappa_4(q_{1/2}) = 24\,\kappa_4(q_{1/2}) < 0$.
+Setting $y = x^2$, the equation $y^2 - \frac{10001}{2}\,y + c = 0$ has one positive
+and one negative root (since the product of the roots is $c<0$).
+The negative root yields $x^2<0$, which has no real solutions.
+Therefore $q_{1/2}$ has only~$2$ real roots, not~$4$.
+
+\smallskip
+\noindent\textbf{Why this does not affect the proof.}
+The Stam inequality never requires $q_t$ itself to be real-rooted.
+It only requires $p_t = p \boxplus_n q_t$ to be real-rooted, and this is established
+independently by the Euler-step construction below (Remark~\ref{rem:euler}).
+The dissipation identity (Lemma~\ref{lem:dissip}) uses only the semigroup property
+$p_{t+h} = p_t \boxplus_n q_h$ at the operator level and the local perturbation
+expansion of Section~5; neither step requires $q_t\in\PnR$.
+\end{remark}
+
+\begin{remark}[Alternative: Euler-step construction guaranteeing real-rootedness]
+\label{rem:euler}
+Fix \emph{any} centered real-rooted polynomial $r \in \PnR$ with
+$\sigma^2(r) = b$ (for instance, a polynomial with roots
+$\pm\sqrt{b},\,\pm\sqrt{b},\,\dots$ symmetric about~$0$).
+For each positive integer $N$, define a rescaled polynomial $r_N$ with $\sigma^2(r_N)=b/N$
+(explicitly: $r_N(x) = N^{-n/2}\,r(\sqrt{N}\,x)$, which rescales the roots by $1/\sqrt{N}$).
+Then set
+\[
+p_t^{(N)} \coloneqq
+\underbrace{p \;\boxplus_n\; r_N \;\boxplus_n\; \cdots \;\boxplus_n\; r_N}_{\lfloor tN \rfloor\text{ copies of }r_N}.
+\]
+Each $\boxplus_n$ step preserves real-rootedness (Theorem~3.3), so $p_t^{(N)}\in\PnR$.
+Moreover, each step adds variance $b/N$, so $\sigma^2(p_t^{(N)}) \approx \sigma^2(p)+tb$.
+As $N\to\infty$ the coefficients of $p_t^{(N)}$ converge to those of $p_t$ defined
+via the semigroup (because $K_{r_N}(z)^{\lfloor tN \rfloor} \to K_q(z)^t \bmod z^{n+1}$
+by a standard approximation of the exponential).
+Since the limit of real-rooted polynomials is real-rooted (Hurwitz's theorem applied
+to the roots), the flow polynomial $p_t$ is real-rooted for every $t\in[0,1]$.
+\end{remark}
+
+\begin{remark}[Distinctness of the roots of $p_t$]
+\label{rem:distinct}
+We need the roots of $p_t$ to be \emph{simple} so that the scores $V_i(p_t)$ and the
+score-gradient energy $\mathcal{S}(p_t)$ are well-defined.
+
+\smallskip\noindent\textbf{Step~1 (local persistence).}
+Since $p = p_0$ has $n$ distinct real roots, there is a minimal root gap
+$\delta = \min_{i<j}|\lambda_i - \lambda_j| > 0$.
+The coefficients of $p_t$ are smooth functions of~$t$ (they are polynomials in the
+$\kappa_k(q_t)$, which are smooth in~$t$ by~\eqref{eq:Kt-exp}).
+By continuity of roots as functions of coefficients,
+for each root $\lambda_i(t)$ of $p_t$ we have $|\lambda_i(t)-\lambda_i|\to 0$ as $t\to 0$.
+Hence there exists $t_0>0$ such that for all $t\in[0,t_0)$, the root gaps remain $>\delta/2$,
+and in particular the roots are simple.
+
+\smallskip\noindent\textbf{Step~2 (global, via the discriminant).}
+The discriminant $\Delta(p_t) = \prod_{i<j}(\lambda_i(t)-\lambda_j(t))^2$ is a polynomial
+in the coefficients of $p_t$, hence an analytic function of~$t$.
+At $t=0$ it equals $\Delta(p)>0$ (since $p$ has simple roots).
+A nonzero real-analytic function on $[0,1]$ can vanish only at finitely many points.
+Therefore $\Delta(p_t)>0$---and the roots of $p_t$ are simple---for all $t\in[0,1]$
+except possibly finitely many values $t_1,\dots,t_m$.
+
+\smallskip\noindent\textbf{Step~3 (why finitely many exceptions are harmless).}
+The integrand $\mathcal{S}(p_t)/\Phi_n(p_t)^2$ in Theorem~\ref{thm:integral} is a
+continuous function of the roots (hence of~$t$) wherever the roots are simple.
+At each exceptional $t_j$, the roots collide but remain real, so the integrand has
+a well-defined (possibly infinite) limit.
+Since a finite number of points does not affect a Lebesgue integral, the integral identity
+holds as stated.
+In fact, for \emph{generic} $p$ and $q$ (an open dense set), no collisions occur
+and $p_t$ has simple roots for all $t\in[0,1]$.
 \end{remark}
 
 \subsection{The Dissipation Identity}
@@ -876,7 +1005,8 @@ For $p \in \PnR$ with positive variance, the \emph{efficiency ratio} $\eta(p)$ i
 \[
 \eta(p) \coloneqq \frac{4\Phi_n(p) \sigma^2(p)}{n(n-1)^2}.
 \]
-By the Fisher--Variance inequality, $\eta(p) \ge 1$, with equality if and only if $n=2$ (or in the $n \to \infty$ Gaussian limit for random polynomials).
+By the Fisher--Variance inequality, $\eta(p) \ge 1$, with equality if and only if
+$V_i = c(\lambda_i - \mu)$ for all $i$ (the Hermite-root configuration; $n=2$ is the simplest case).
 \end{definition}
 
 In this language, the Stam inequality is related to the following regularization property.
