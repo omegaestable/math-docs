@@ -7,6 +7,7 @@
 \usepackage{mathtools}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 \usepackage{enumitem}
+\usepackage{booktabs}
 
 %--- Theorem Environments ---
 \theoremstyle{plain}
@@ -595,8 +596,20 @@ The comparison shows that the Fisher information, when expressed via critical va
 The techniques developed here---particularly the convolution-flow framework and the dissipation identity---can be applied to other quantities derived from critical-point data. For instance, one can study the behavior of the discriminant, the resultant, or other polynomial invariants under the symmetric additive convolution.
 \end{remark}
 
+\subsection{Preview of Advanced Methods}
+
+\begin{remark}
+The proof of Theorem~\ref{thm:main} presented in Sections 1--6 is elementary and self-contained. However, deeper structural insights can be obtained by viewing the problem through the lens of \emph{total positivity theory}. In Section~\ref{sec:advanced}, we present an alternative proof using:
+\begin{itemize}
+\item \emph{Pólya frequency sequences} to characterize real-rootedness via determinant positivity,
+\item \emph{Variation-diminishing transformations} to quantify preservation of sign-change structure,
+\item \emph{Determinant inequalities} to directly bound critical values under convolution.
+\end{itemize}
+This advanced approach not only provides an independent verification of the Critical-Point Comparison Lemma but also reveals why the inequality (*) holds from a more fundamental perspective. The two approaches are complementary: the elementary proof is constructive and explicit, while the advanced proof is conceptual and reveals deeper structure.
+\end{remark}
+
 %======================================================================
-\section{Advanced Tools: PF Sequences, Total Positivity, and Determinant Inequalities}
+\section{Advanced Tools: PF Sequences, Total Positivity, and Determinant Inequalities}\label{sec:advanced}
 %======================================================================
 
 In this section, we present alternative approaches to proving inequality (*) and strengthening the Critical-Point Comparison Lemma using advanced tools from the theory of totally positive kernels, Pólya frequency sequences, and variation-diminishing transformations. These methods provide deeper structural insights into why the Stam inequality holds and reveal connections to classical results in analysis and approximation theory.
@@ -882,6 +895,36 @@ We have established the Critical-Point Comparison Lemma (CL) in full generality 
 
 \medskip\noindent
 The determinant-based approach reveals that the finite free Stam inequality is fundamentally a consequence of the total positivity structure of the symmetric additive convolution operation. This perspective opens new directions for generalizations and provides sharper quantitative bounds.
+
+\subsection{Comparison of the Two Approaches}
+
+We conclude by comparing the elementary and advanced approaches in tabular form:
+
+\begin{center}
+\begin{tabular}{@{}p{0.3\textwidth}p{0.3\textwidth}p{0.3\textwidth}@{}}
+\toprule
+\textbf{Aspect} & \textbf{Elementary Approach} (Sections 1--6) & \textbf{Advanced Approach} (Section~\ref{sec:advanced}) \\
+\midrule
+\textbf{Main tools} & Cauchy--Schwarz, residue theorem, convolution flow & PF sequences, total positivity, determinant inequalities \\
+\addlinespace
+\textbf{Key insight} & Fisher information dissipates along convolution flow & Convolution is a totally positive transformation \\
+\addlinespace
+\textbf{Proof strategy} & Integrate differential inequality over flow & Direct determinant bounds on critical values \\
+\addlinespace
+\textbf{Prerequisites} & Complex analysis, basic calculus & Theory of total positivity \\
+\addlinespace
+\textbf{Advantages} & Self-contained, explicit, constructive & Conceptual, reveals deeper structure \\
+\addlinespace
+\textbf{Error term} & $O(1/n)$ in Theorem~\ref{thm:main} & Absolute constant $C$ in Theorem~\ref{thm:cl-det} \\
+\addlinespace
+\textbf{Generalizability} & Extends to other dissipative flows & Extends to other TP kernels \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}
+Both approaches are rigorous and complete. The elementary approach is more accessible and provides a constructive proof with explicit control over error terms. The advanced approach is more conceptual and reveals why the inequality must hold from the perspective of total positivity. Together, they provide complementary insights into the structure of the finite free Stam inequality.
+\end{remark}
 
 This completes our comprehensive treatment of the Critical-Point Comparison Lemma for the finite free Stam inequality.
 
