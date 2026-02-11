@@ -1,0 +1,647 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage[colorlinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\mathbb{R}}}
+
+\begin{document}
+
+\title{On a Finite Free Stam Inequality: Progress Report}
+\author{}
+\date{}
+\maketitle
+
+\begin{abstract}
+We investigate the analog of Stam's inequality from information theory in the setting of finite free probability. Given degree-$n$ real-rooted monic polynomials $p$ and $q$ with positive variance, denote by $\Phi_n$ the finite free Fisher information and by $\boxplus_n$ the symmetric additive convolution of Marcus, Spielman, and Srivastava. We analyze the following inequality:
+\[
+\frac{1}{\Phi_n(p \boxplus_n q)} \;\ge\; \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\]
+Using a Score--Gradient Inequality and a genuine second-order generator, we prove a Hermite semigroup flow bound. We also point out the gap in the proof via fractional flows for general $q$, and outline an alternative route based on a critical point identity.
+\end{abstract}
+
+\tableofcontents
+
+%======================================================================
+\section{Introduction}\label{sec:intro}
+%======================================================================
+
+\subsection{Background and Motivation}
+
+Stam's inequality~\cite{Stam59} in information theory asserts: if $X$ and $Y$ are independent random variables with finite Fisher information $I(X)$ and $I(Y)$, then
+\[
+\frac{1}{I(X+Y)} \;\ge\; \frac{1}{I(X)} + \frac{1}{I(Y)}.
+\]
+This fundamental inequality---equivalent to the Shannon--Stam entropy power inequality---captures the essential nature that disorder strictly increases after convolution of independent sources.
+
+Finite free probability, introduced by Marcus, Spielman, and Srivastava~\cite{MSS15}, is a polynomial analog of free probability: random variables are replaced by real-rooted polynomials, and addition is replaced by a deterministic convolution operation $\boxplus_n$.
+Within this framework, a natural question arises:
+
+\begin{quote}
+\emph{Does the finite free additive convolution also satisfy a Stam inequality?}
+\end{quote}
+
+\noindent
+This article aims to develop partial results and outline several feasible routes for a proof in the general case.
+
+\subsection{Statement of the Main Result}
+
+Let $\Pn$ denote the space of degree-$n$ monic polynomials with real coefficients, and $\PnR \subset \Pn$ the subset of all real-rooted polynomials.
+For $p \in \PnR$, if its roots are distinct $\lambda_1 < \cdots < \lambda_n$, define the \emph{scores}
+\[
+V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}
+\]
+and the \emph{finite free Fisher information}
+\[
+\Phi_n(p) = \sum_{i=1}^n V_i^2.
+\]
+The \emph{symmetric additive convolution} $p \boxplus_n q$ will be reviewed in Section~\ref{sec:prelim}.
+
+\begin{conjecture}[Finite Free Stam Inequality]\label{conj:stam}
+For $p,q \in \PnR$ with positive variance,
+\begin{equation}\label{eq:stam}
+\frac{1}{\Phi_n(p \boxplus_n q)} \;\ge\; \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
+\end{equation}
+\end{conjecture}
+
+Using a Score--Gradient Inequality (Theorem~\ref{thm:sgi}) and a dissipative identity for the Hermite semigroup (Lemma~\ref{lem:dissip}), we prove an exact Hermite flow bound.
+The general case is reduced to an explicit comparison problem outlined in Section~\ref{sec:alt-route}.
+% In this process, we obtain a critical value formula for $\Phi_n$ via residue calculus (Theorem~\ref{thm:critval}) and explicitly verify the case $n=3$ using this formula (Theorem~\ref{thm:stam3}).
+
+\medskip
+\noindent\textbf{Convention.}
+When $p$ has repeated roots, we set $\Phi_n(p) := \infty$ (equivalently $1/\Phi_n(p) := 0$).
+The results below establish the Hermite flow bound under the assumption that $p$ has distinct roots; Remark~\ref{rem:boundary} discusses how a proof of Conjecture~\ref{conj:stam} for distinct roots can be extended to the boundary of $\PnR$.
+
+%======================================================================
+\section{Preliminaries}\label{sec:prelim}
+%======================================================================
+
+\subsection{Root Statistics}
+
+Let
+\[
+p(x) = \prod_{i=1}^n (x - \lambda_i) = \sum_{k=0}^n a_k\,x^{n-k}
+\]
+with $a_0=1$. Then the mean and variance of the root distribution are
+\[
+\bar\lambda = \frac{1}{n}\sum_{i=1}^n \lambda_i, \qquad \sigma^2(p) = \frac{1}{n}\sum_{i=1}^n (\lambda_i - \bar\lambda)^2.
+\]
+\begin{lemma}\label{lem:var-coeff}
+\[
+\sigma^2(p) = \frac{(n-1)\,a_1^2}{n^2} - \frac{2\,a_2}{n}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Vieta's formulas, $\sum_i \lambda_i = -a_1$, $\sum_{i<j}\lambda_i\lambda_j = a_2$, hence
+\[
+\sum_{i=1}^n \lambda_i^2 = a_1^2 - 2a_2.
+\]
+Combining with $\sigma^2 = \frac{1}{n}\sum_i\lambda_i^2 - \bar\lambda^2$ yields the result.
+\end{proof}
+
+\subsection{Symmetric Additive Convolution}
+
+Let $A$ and $B$ be real symmetric matrices with characteristic polynomials $p$ and $q$ respectively. Finite free additive convolution is defined via orthogonal group averaging:
+\[
+(p \boxplus_n q)(x) = \int_{O(n)} \det\!\bigl(xI - (A + QBQ^T)\bigr)\,d\mu_{\mathrm{Haar}}(Q).
+\]
+According to the MSS theorem~\cite{MSS15}, this operation can be expressed in differential operator form: if $q(x)=\sum_{k=0}^n b_k x^{n-k}$, then
+\begin{equation}\label{eq:mss}
+(p\boxplus_n q)(x) = T_q p(x), \qquad
+T_q = \sum_{k=0}^n \frac{(n-k)!}{n!} b_k \partial_x^k.
+\end{equation}
+Let $r = p\boxplus_n q$, $r(x)=\sum_k c_k x^{n-k}$; its coefficients satisfy
+\begin{equation}\label{eq:conv-coeff}
+c_k = \sum_{i+j=k} \frac{(n-i)!\,(n-j)!}{n!\,(n-k)!} a_i b_j.
+\end{equation}
+
+We will repeatedly use the following two basic properties:
+
+\begin{theorem}[{\cite{MSS15}}]\label{thm:preserve}
+If $p,q \in \PnR$, then $p\boxplus_n q \in \PnR$.
+\end{theorem}
+
+\begin{lemma}[Variance Additivity]\label{lem:var-add}
+$\sigma^2(p\boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
+\end{lemma}
+
+\begin{proof}
+From~\eqref{eq:conv-coeff} we obtain
+\[
+c_1 = a_1 + b_1 \quad\text{and}\quad c_2 = a_2 + \frac{n-1}{n}\,a_1 b_1 + b_2.
+\]
+Substituting into Lemma~\ref{lem:var-coeff} and expanding $(a_1+b_1)^2$, the cross term $\frac{2(n-1)a_1 b_1}{n^2}$ cancels with $-\frac{2(n-1)a_1 b_1}{n^2}$, yielding $\sigma^2(p\boxplus_n q) = \sigma^2(p)+\sigma^2(q)$.
+\end{proof}
+
+\subsection{Scores and Fisher Information}
+
+\begin{definition}\label{def:score-fisher}
+For $p \in \PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, define the \emph{score} at root $\lambda_i$ and the \emph{finite free Fisher information} as
+\[
+V_i = \sum_{j \neq i} \frac{1}{\lambda_i - \lambda_j}, \qquad \Phi_n(p) = \sum_{i=1}^n V_i^2.
+\]
+The \emph{score--gradient energy} is defined by
+\[
+\mathcal{S}(p) = \sum_{i<j} \frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2}.
+\]
+\end{definition}
+
+\begin{lemma}\label{lem:score-deriv}
+$V_i = \dfrac{p''(\lambda_i)}{2\,p'(\lambda_i)}$.
+\end{lemma}
+
+\begin{proof}
+Since $p'(\lambda_i) = \prod_{j \neq i}(\lambda_i-\lambda_j)$, differentiating once more gives
+\[
+p''(\lambda_i) = 2\sum_{k \neq i} \prod_{\substack{j \neq i \\ j \neq k}} (\lambda_i - \lambda_j) = 2\,p'(\lambda_i)\,V_i.
+\]
+\end{proof}
+
+\begin{lemma}[Score Identities]\label{lem:score-id}
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $\displaystyle\sum_{i=1}^n V_i = 0$. \label{it:score-sum}
+\item $\displaystyle\sum_{i=1}^n \lambda_i V_i = \binom{n}{2}$. \label{it:score-root}
+\item $\displaystyle\sum_{i=1}^n (\lambda_i-\bar\lambda) V_i = \binom{n}{2}$. \label{it:score-centered}
+\item $\displaystyle\Phi_n(p) = \sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$. \label{it:score-gap}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\ref{it:score-sum}:
+$\sum_i V_i = \sum_{i \neq j}(\lambda_i-\lambda_j)^{-1} = 0$ (by antisymmetry).
+
+\ref{it:score-root}:
+$\sum_i \lambda_i V_i = \sum_{i \neq j}\frac{\lambda_i}{\lambda_i-\lambda_j}
+= \sum_{i<j}\bigl(\frac{\lambda_i}{\lambda_i-\lambda_j} + \frac{\lambda_j}{\lambda_j-\lambda_i}\bigr)
+= \sum_{i<j}1 = \binom{n}{2}$.
+
+\ref{it:score-centered}: Follows immediately from \ref{it:score-root} and \ref{it:score-sum}.
+
+\ref{it:score-gap}:
+$\sum_i V_i^2 = \sum_{i \neq j}\frac{V_i}{\lambda_i-\lambda_j}
+= \sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$.
+\end{proof}
+
+\begin{lemma}[Fisher--Variance Inequality]\label{lem:FV}
+$\Phi_n(p)\,\sigma^2(p) \ge \dfrac{n(n-1)^2}{4}$.
+\end{lemma}
+
+\begin{proof}
+Apply the Cauchy--Schwarz inequality to Lemma~\ref{lem:score-id}\ref{it:score-centered}:
+
+\[
+\frac{n^2(n-1)^2}{4} \;\le\; \Bigl(\sum_i(\lambda_i-\bar\lambda)^2\Bigr) \Bigl(\sum_i V_i^2\Bigr) = n\,\sigma^2(p)\,\Phi_n(p). \qedhere
+\]
+\end{proof}
+
+% [Comment: Critical value formula and low-degree cases are omitted here as they are not essential for the general proof and are kept for reference only.]
+%
+%%======================================================================
+%\section{Critical Value Formula for $\Phi_n$}\label{sec:critval}
+%%======================================================================
+%...
+%
+%%======================================================================
+%\section{Low-degree Cases}\label{sec:small}
+%%======================================================================
+%...
+
+%======================================================================
+\section{Score--Gradient Inequality}\label{sec:sgi}
+%======================================================================
+
+The following algebraic inequality is a key input for the general proof.
+
+\begin{theorem}[Score--Gradient Inequality]\label{thm:sgi}
+For $n \ge 2$ and $p \in \PnR$ with distinct roots,
+\begin{equation}\label{eq:sgi}
+\mathcal{S}(p)\,\sigma^2(p) \;\ge\; \frac{n-1}{2}\,\Phi_n(p),
+\end{equation}
+with equality iff there exists a constant $c$ such that $V_i = c(\lambda_i-\bar\lambda)$.
+\end{theorem}
+
+\begin{proof}
+Let $T = n\,\sigma^2(p)$, $U = \Phi_n(p)$, $S = \mathcal{S}(p)$.
+We need to prove $S\,T \ge \frac{n(n-1)}{2}\,U$.
+
+\medskip\noindent\textbf{Step 1.}
+By Lemma~\ref{lem:score-id}\ref{it:score-centered} and the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:cs1}
+\frac{n^2(n-1)^2}{4} \;\le\; T\,U.
+\end{equation}
+
+\noindent\textbf{Step 2.}
+By Lemma~\ref{lem:score-id}\ref{it:score-gap} and the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:cs2}
+U^2 \;\le\; S\cdot\binom{n}{2}.
+\end{equation}
+
+\noindent\textbf{Step 3.}
+Combine:
+\[
+S\,T \ge \frac{2U^2}{n(n-1)} \cdot T = \frac{2U}{n(n-1)} \cdot T\,U \ge \frac{2U}{n(n-1)} \cdot \frac{n^2(n-1)^2}{4} = \frac{n(n-1)}{2}\,U.
+\]
+
+\medskip\noindent\textbf{Equality condition.}
+Equality $S\,T = \frac{n(n-1)}{2}\,U$ requires equality in both Step 2 and Step 1.
+
+\smallskip
+\noindent\emph{Equality in Step 1:}
+Cauchy--Schwarz in~\eqref{eq:cs1} is
+$\bigl(\sum_i(\lambda_i{-}\bar\lambda)V_i\bigr)^2 \le \bigl(\sum_i(\lambda_i{-}\bar\lambda)^2\bigr)\bigl(\sum_i V_i^2\bigr)$;
+equality holds iff $V_i = c(\lambda_i-\bar\lambda)$ for some constant $c$.
+
+\smallskip
+\noindent\emph{Equality in Step 2:}
+Cauchy--Schwarz in~\eqref{eq:cs2} is
+$\bigl(\sum_{i<j}\frac{V_i{-}V_j}{\lambda_i{-}\lambda_j}\cdot 1\bigr)^2 \le \bigl(\sum_{i<j}\frac{(V_i{-}V_j)^2}{(\lambda_i{-}\lambda_j)^2}\bigr)\bigl(\sum_{i<j}1\bigr)$;
+equality holds iff $\frac{V_i-V_j}{\lambda_i-\lambda_j}$ is constant $k$ for all $i<j$.
+
+\smallskip
+\noindent\emph{Consistency:}
+If $V_i = c(\lambda_i-\bar\lambda)$, then for all $i<j$, $\frac{V_i-V_j}{\lambda_i-\lambda_j}=c$, so equality in Step 1 automatically implies equality in Step 2.
+Conversely, if $\frac{V_i-V_j}{\lambda_i-\lambda_j}=k$ for all $i<j$, then $V_i - k\lambda_i$ is independent of $i$; using $\sum_i V_i=0$ (Lemma~\ref{lem:score-id}\ref{it:score-sum}), this constant equals $-k\bar\lambda$, hence $V_i = k(\lambda_i-\bar\lambda)$.
+Thus the two equality conditions are equivalent.
+\end{proof}
+
+\begin{remark}
+The equality condition $V_i = c(\lambda_i-\bar\lambda)$ (up to affine transformation) characterizes the zeros of the Hermite polynomial $H_n$:
+evaluating the ODE $H_n''-2xH_n'+2nH_n=0$ at its zeros $x_k$ gives $V_k = x_k$.
+For $n=2$, this condition holds for any distinct root configuration.
+% For $n=3$ this reduces to $T=0$, consistent with Theorem~\ref{thm:stam3}.
+\end{remark}
+
+%======================================================================
+\section{Hermite Semigroup Flow}\label{sec:flow}
+%======================================================================
+
+\subsection{Hermite Kernel and Flow}
+
+Fix $p \in \PnR$, let $a = \sigma^2(p) > 0$. We define a semigroup $(G_t)_{t\ge 0}$ via its generating polynomial.
+
+\begin{definition}[Hermite Kernel]\label{def:hermite-kernel}
+Let
+\begin{equation}\label{eq:Kgt}
+K_{G_t}(z) = \exp\!\Bigl(-\frac{t}{2(n-1)}z^2\Bigr) \pmod{z^{n+1}}.
+\end{equation}
+Define $G_t\in\Pn$ as the degree-$n$ polynomial whose normalized coefficients equal those of $K_{G_t}(z)$.
+The \emph{Hermite flow} is
+\[
+p_t = p \boxplus_n G_t.
+\]
+\end{definition}
+
+\begin{lemma}[Semigroup Property]\label{lem:semigroup}
+For any $s,t\ge 0$,
+\[
+G_s \boxplus_n G_t = G_{s+t}.
+\]
+\end{lemma}
+
+\begin{proof}
+By multiplicativity of $K$ under $\boxplus_n$,
+\[
+K_{G_s \boxplus_n G_t}(z) = K_{G_s}(z)\,K_{G_t}(z) = \exp\!\Bigl(-\frac{s+t}{2(n-1)}z^2\Bigr) \pmod{z^{n+1}},
+\]
+which by definition is $K_{G_{s+t}}(z)$.
+\end{proof}
+
+\begin{lemma}[Real-rootedness and Variance]\label{lem:gt-real}
+For each $t\ge 0$, the polynomial $G_t$ has $n$ distinct real roots, and
+\[
+\sigma^2(G_t) = t.
+\]
+\end{lemma}
+
+\begin{proof}
+$G_1$ is, up to affine scaling, the Hermite polynomial $H_n$ in probability theory; its roots are all simple and real.
+Via scaling, for $t>0$, $G_t(x)=t^{n/2}G_1(x/\sqrt{t})$ still has simple real roots, and $G_0=x^n$.
+Since $K_{G_t}(z)=\exp(-\tfrac{t}{2(n-1)}z^2)$, we have $\kappa_1(G_t)=0$, $\kappa_2(G_t)=-\tfrac{t}{2(n-1)}$; substituting into Lemma~\ref{lem:var-coeff} yields $\sigma^2(G_t)=t$.
+\end{proof}
+
+\begin{lemma}[Variance of the Flow]\label{lem:var-flow}
+For any $t\ge 0$, $\sigma^2(p_t) = a + t$.
+\end{lemma}
+
+\begin{proof}
+By variance additivity (Lemma~\ref{lem:var-add}) and Lemma~\ref{lem:gt-real}, $\sigma^2(p_t)=\sigma^2(p)+\sigma^2(G_t)=a+t$.
+\end{proof}
+
+\subsection{Perturbation Analysis}
+
+\begin{lemma}\label{lem:root-shift}
+Let $\lambda_i(t)$ be the roots of $p_t$. Then
+\[
+\lambda_i(t+h) = \lambda_i(t) + \frac{h}{n-1}\,V_i(t) + O(h^2).
+\]
+\end{lemma}
+
+\begin{proof}
+By the semigroup property, $p_{t+h} = p_t \boxplus_n G_h$ and $\sigma^2(G_h)=h$.
+Since $K_{G_h}(z)=\exp(-\tfrac{h}{2(n-1)}z^2)$, the operator $T_{G_h}$ contains no first-order term and only the second-order term at order $h$, thus
+\[
+T_{G_h} r(x) = r(x) - \frac{h}{2(n-1)}\,r''(x) + O(h^2).
+\]
+Set $\lambda_i(t+h)=\lambda_i(t)+\delta_i$ and substitute into $T_{G_h} p_t(\lambda_i(t+h))=0$; solving to first order gives
+\begin{align*}
+\delta_i &= \frac{h}{2(n-1)}\cdot\frac{p_t''(\lambda_i)}{p_t'(\lambda_i)} + O(h^2) \\
+&= \frac{h}{n-1}\,V_i(t) + O(h^2)
+\end{align*}
+(using Lemma~\ref{lem:score-deriv} in the last step).
+\end{proof}
+
+\begin{lemma}\label{lem:phi-change}
+\[
+\Phi_n(p_{t+h}) = \Phi_n(p_t) - \frac{2h}{n-1}\,\mathcal{S}(p_t) + O(h^2).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\epsilon = h/(n-1)$, temporarily suppress the $t$ dependence.
+By Lemma~\ref{lem:root-shift}, the perturbed score is
+\[
+V_i(h) = \sum_{j \neq i} \frac{1}{(\lambda_i - \lambda_j) + \epsilon(V_i - V_j) + O(h^2)} = V_i - \epsilon \sum_{j \neq i} \frac{V_i - V_j}{(\lambda_i - \lambda_j)^2} + O(h^2).
+\]
+Squaring and summing:
+\[
+\Phi_n(p_{t+h}) = \sum_i V_i^2 - 2\epsilon \sum_{i \neq j} \frac{V_i(V_i - V_j)}{(\lambda_i - \lambda_j)^2} + O(h^2).
+\]
+Pairing $(i,j)$ and $(j,i)$:
+\[
+\sum_{i \neq j} \frac{V_i(V_i - V_j)}{(\lambda_i - \lambda_j)^2} = \sum_{i<j} \frac{(V_i - V_j)^2}{(\lambda_i - \lambda_j)^2} = \mathcal{S}(p_t).
+\]
+\end{proof}
+
+\begin{remark}[Consistency of Error Terms]\label{rem:error}
+The $O(h^2)$ remainders in Lemma~\ref{lem:root-shift} and Lemma~\ref{lem:phi-change} depend on the minimal root spacing $\delta_{\min}(t)=\min_i(\lambda_{i+1}(t)-\lambda_i(t))$:
+the implicit constant grows like $\delta_{\min}(t)^{-m}$ for some $m$ depending on $n$.
+Lemma~\ref{lem:flow-real} below shows that for a fixed $b>0$, there exists a uniform lower bound $\delta_{\min}(t)\ge\delta_*>0$ on $t\in[0,b]$, so the error terms are uniformly bounded on $[0,b]$, allowing passage to the derivatives
+$\dot\lambda_i = \frac{1}{n-1}V_i$,
+$\dot\Phi_n = -\frac{2}{n-1}\mathcal{S}$.
+\end{remark}
+
+\begin{lemma}\label{lem:flow-real}
+For any $b>0$, the polynomials $p_t$ have $n$ simple real roots for $t\in[0,b]$.
+\end{lemma}
+
+\begin{proof}
+The coefficients of $p_t$ are smooth in $t$ (Definition~\ref{def:hermite-kernel}), so the roots $\lambda_i(t)$ vary continuously.
+Since $p_0=p$ has simple real roots, there exists a maximal interval $[0,T)$ where $p_t$ remains simple real-rooted; continuity ensures $T>0$.
+
+\medskip\noindent\textbf{Lyapunov function.}
+On $[0,T)$, define the logarithmic Vandermonde function
+\[
+W(t) = \sum_{i<j} \log\bigl(\lambda_j(t) - \lambda_i(t)\bigr).
+\]
+By Lemma~\ref{lem:root-shift}, on $[0,T)$ the roots satisfy $\dot\lambda_i = \frac{1}{n-1}V_i$, hence
+\begin{align*}
+\dot W(t) &= \sum_{i<j} \frac{\dot\lambda_j-\dot\lambda_i}{\lambda_j-\lambda_i}
+= \frac{1}{n-1}\sum_{i<j} \frac{V_j-V_i}{\lambda_j-\lambda_i} \\
+&= \frac{1}{n-1}\,\Phi_n(p_t) \;\ge\; 0,
+\end{align*}
+where the penultimate equality follows from Lemma~\ref{lem:score-id}\ref{it:score-gap}.
+Therefore for any $t \in [0,T)$, $W(t) \ge W(0)$, i.e.,
+\begin{equation}\label{eq:vand-lower}
+\prod_{i<j}\bigl(\lambda_j(t)-\lambda_i(t)\bigr) \;\ge\;
+\prod_{i<j}\bigl(\lambda_j(0)-\lambda_i(0)\bigr) =: D_0 > 0.
+\end{equation}
+
+\medskip\noindent\textbf{Uniform spacing lower bound.}
+Since $\sigma^2(p_t)=a+t\le a+b$ for $t\in[0,b]$, the roots satisfy $\sum_i(\lambda_i-\bar\lambda)^2 = n(a+t) \le n(a+b)$,
+hence all roots lie within a distance $R=\sqrt{n(a+b)}$ from $\bar\lambda(t)$.
+Any two roots differ by at most $2R$.
+For a given adjacent spacing $\delta_k(t) = \lambda_{k+1}(t)-\lambda_k(t)$, we can bound all other factors in~\eqref{eq:vand-lower} above by $2R$:
+\[
+D_0 \;\le\; \prod_{i<j}\bigl(\lambda_j(t) - \lambda_i(t)\bigr) \;\le\; (2R)^{\binom{n}{2}-1}\,\delta_k(t),
+\]
+yielding the uniform lower bound
+\[
+\delta_k(t) \;\ge\; \delta_* := D_0\,(2R)^{1-\binom{n}{2}} > 0
+\]
+for each $k$ and each $t\in[0,T)$.
+
+\medskip\noindent\textbf{Extendability.}
+Since all spacings are uniformly greater than $\delta_*>0$ on $[0,T)$, continuity implies that the roots of $p_T$ remain distinct.
+This contradicts the maximality of $T$, unless $T\ge b$.
+\end{proof}
+
+\subsection{Dissipation and Integral Identity}
+
+\begin{lemma}[Dissipation]\label{lem:dissip}
+\[
+\frac{d}{dt}\Phi_n(p_t) = -\frac{2}{n-1}\,\mathcal{S}(p_t).
+\]
+\end{lemma}
+
+\begin{proof}
+From Lemma~\ref{lem:phi-change},
+$\frac{\Phi_n(p_{t+h})-\Phi_n(p_t)}{h} = -\frac{2}{n-1}\,\mathcal{S}(p_t) + O(h)$.
+By Lemma~\ref{lem:flow-real}, $p_t$ has distinct roots for $t\in[0,b]$, hence the scores $V_i(t)$ and $\mathcal{S}(p_t)$ are continuous in $t$.
+Letting $h\to 0$ gives the result.
+\end{proof}
+
+\begin{corollary}[Integral Identity]\label{cor:integral}
+\begin{equation}\label{eq:integral}
+\frac{1}{\Phi_n(p\boxplus_n G_b)} - \frac{1}{\Phi_n(p)}
+= \frac{2}{n-1}\int_0^b \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}\,dt.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Let $f(t)=1/\Phi_n(p_t)$. By the chain rule and Lemma~\ref{lem:dissip},
+\[
+f'(t) = \frac{2}{n-1} \cdot \frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2} \ge 0.
+\]
+By the fundamental theorem of calculus, $f(b)-f(0) = \int_0^b f'(t)\,dt$.
+Substituting $f(0) = 1/\Phi_n(p_0) = 1/\Phi_n(p)$, $f(b) = 1/\Phi_n(p_b) = 1/\Phi_n(p\boxplus_n G_b)$ yields~\eqref{eq:integral}.
+\end{proof}
+
+%======================================================================
+\section{Obstacles in General Fractional Flows}\label{sec:gap}
+%======================================================================
+
+The fractional family based on $K_q(z)^t$ fails to generate an effective second-order generator for general $q$. When $\log K_q$ contains non-zero coefficients of degree $\ge 3$, the first-order expansion of $T_{q_h}$ involves higher-order derivatives, and the root ODE and dissipative identity used in the Hermite flow proof cease to hold. Moreover, for non-integer $t$, $q_t$ and $p\boxplus_n q_t$ may lose real-rootedness, making the Lyapunov argument concerning root simplicity inapplicable.
+
+\begin{remark}[Identified Obstacles]\label{rem:learned}
+The following points summarize the main issues encountered in existing flow-based proofs and natural comparison attempts:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item The generator of a fractional flow is second-order iff $\log K_q$ is purely quadratic; this uniquely singles out the Hermite kernel.
+\item For non-integer $t$, fractional families do not preserve real-rootedness; both $q_t$ and $p\boxplus_n q_t$ may develop non-real roots, rendering the Lyapunov argument invalid.
+\item Asymmetric forward/reverse bounds derived from fractional flows do not constitute a universal inequality---even under the anticipated case distinction. This conclusion is drawn from experimental observation and has not been used in any formal argument.
+\item Naive monotonicity comparison $\Phi_n(p\boxplus_n q)\le \Phi_n(p\boxplus_n G_b)$ fails numerically; therefore the Hermite bound cannot be directly extended via substitution.
+\end{enumerate}
+\end{remark}
+
+%======================================================================
+\section{Another Route: Critical Point Identities}\label{sec:alt-route}
+%======================================================================
+
+We outline an alternative approach that does not rely on flows.
+The critical point identity
+\[
+\Phi_n(p) = -\frac{1}{4}\sum_{p'(\zeta)=0} \frac{p''(\zeta)}{p(\zeta)}
+\]
+suggests that controlling $\Phi_n(T_q p)$ can be achieved by comparing $(T_q p)''/(T_q p)$ with $p''/p$ at the critical points of $T_q p$.
+
+\subsection{Critical Point Identity}
+
+\begin{lemma}\label{lem:critval}
+Let $p \in \PnR$ have distinct roots, and let $\zeta_1,\ldots,\zeta_{n-1}$ be the simple zeros of $p'$. Then
+\begin{equation}\label{eq:critval}
+\Phi_n(p) = -\frac14\sum_{j=1}^{n-1}\frac{p''(\zeta_j)}{p(\zeta_j)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:score-deriv}, $\Phi_n = \frac14\sum_{i=1}^n \frac{p''(\lambda_i)^2}{p'(\lambda_i)^2}$.
+Consider the meromorphic function
+\[
+F(x) = \frac{p''(x)^2}{p'(x)\,p(x)}.
+\]
+\noindent\emph{Poles at roots.}
+Since $p$ has a simple zero at $\lambda_i$ and $p'(\lambda_i)\ne 0$,
+$\operatorname{Res}{x=\lambda_i}F = p''(\lambda_i)^2/p'(\lambda_i)^2$.
+Summing gives $\sum_i\operatorname{Res}{\lambda_i}F = 4\Phi_n$.
+
+\noindent\emph{Poles at critical points.}
+At a simple zero $\zeta_j$ of $p'$, by the interlacing property $p(\zeta_j)\ne 0$,
+hence $\operatorname{Res}_{x=\zeta_j}F = p''(\zeta_j)/p(\zeta_j)$.
+
+\noindent\emph{Pole at infinity.}
+As $x\to\infty$, $F(x)=n(n-1)^2/x^3+O(x^{-4})$, therefore $\operatorname{Res}_\infty F=0$.
+
+\noindent
+The sum of all residues on $\mathbb{P}^1$ is zero, i.e., $4\Phi_n + \sum_j p''(\zeta_j)/p(\zeta_j)=0$.
+\end{proof}
+
+\subsection{Comparison Scheme}
+
+Let $r = T_q p$. By Lemma~\ref{lem:critval},
+\[
+\Phi_n(r) = -\frac{1}{4}\sum_{r'(\xi)=0} \frac{r''(\xi)}{r(\xi)}.
+\]
+Thus, if we can compare $r''/r$ pointwise with $p''/p$ at the critical points of $r$, this translates into a global bound on $\Phi_n(r)$.
+
+\begin{lemma}[Comparison Target]\label{lem:comparison-target}
+There exist constants $\alpha(q)$ and $\beta(q)$, depending only on the variance and low-order normalized coefficients of $q$, such that for any real-rooted polynomial $p$ with distinct roots and any critical point $\xi$ of $T_q p$,
+
+\[
+\frac{(T_q p)''(\xi)}{(T_q p)(\xi)} \;\le\; \alpha(q) + \beta(q)\,\frac{p''(\xi)}{p(\xi)}.
+\]
+\end{lemma}
+
+If Lemma~\ref{lem:comparison-target} can be established with $\alpha(q)=0$, $\beta(q) \le 1/\sigma^2(q)$, then summing over critical points yields a bound on $\Phi_n(p\boxplus_n q)$ that implies Conjecture~\ref{conj:stam}. Proving this comparison is the central unsolved problem of this route.
+
+\begin{remark}[Simplification Steps]
+The comparison lemma can be approached progressively through the following steps:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item Express $r''/r$ as a rational function of the derivatives of $p$:
+\[
+\frac{r''}{r} = \frac{\sum_k c_k\,p^{(k+2)}}{\sum_k c_k\,p^{(k)}}
+\]
+where the coefficients $c_k$ are determined by $q$.
+\item Using interlacing and sign regularity of $p^{(k)}$ evaluated between roots, obtain inequalities for the ratios $p^{(k+2)}/p^{(k)}$ at the critical points of $r$.
+\item Show that the right-hand side can be controlled by an affine function of $p''/p$ depending only on low-order normalized coefficients of $q$.
+\end{enumerate}
+This route would not rely on any flow and could directly prove Conjecture~\ref{conj:stam}.
+\end{remark}
+
+%======================================================================
+\section{Hermite Flow Bound}\label{sec:general}
+%======================================================================
+
+\begin{theorem}[Hermite Flow Bound]\label{thm:general}
+Let $p\in\PnR$, $a=\sigma^2(p)>0$, $b>0$. Then
+\begin{equation}\label{eq:hermite-forward}
+\frac{1}{\Phi_n(p\boxplus_n G_b)} \;\ge\; \frac{a+b}{a\,\Phi_n(p)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $a=\sigma^2(p)$.
+
+\medskip
+\noindent\textbf{Step 1 (Differential inequality).}
+Applying the Score--Gradient Inequality (Theorem~\ref{thm:sgi}) to $p_t$ yields
+\[
+\mathcal{S}(p_t) \ge \frac{(n-1)\,\Phi_n(p_t)}{2\,\sigma^2(p_t)}.
+\]
+Substituting into Lemma~\ref{lem:dissip}:
+\[
+\frac{d}{dt}\Phi_n(p_t) \;\le\; -\frac{1}{a+t}\,\Phi_n(p_t).
+\]
+Integrating $(\log\Phi_n(p_t))' \le -1/(a+t)$ from $0$ to $t$ gives
+\begin{equation}\label{eq:ode-bound}
+\frac{1}{\Phi_n(p_t)} \;\ge\; \frac{a+t}{a\,\Phi_n(p)}.
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 2 (Forward bound).}
+By Corollary~\ref{cor:integral} and the Score--Gradient Inequality:
+\[
+\frac{1}{\Phi_n(p \boxplus_n G_b)} - \frac{1}{\Phi_n(p)} \;\ge\; \int_0^b \frac{dt}{(a+t)\,\Phi_n(p_t)}.
+\]
+Substituting~\eqref{eq:ode-bound}, the factors $(a+t)$ cancel:
+\begin{equation}\label{eq:fwd}
+\frac{1}{\Phi_n(p\boxplus_n G_b)} \;\ge\; \frac{a+b}{a\,\Phi_n(p)}.
+\end{equation}
+\qedhere
+\end{proof}
+
+\begin{remark}
+The Hermite bound~\eqref{eq:hermite-forward} is sharp for Hermite inputs, but does not itself imply Conjecture~\ref{conj:stam}.
+The asymmetric reverse bound used in fractional flow proofs has not been successfully justified for general inputs.
+\end{remark}
+
+\begin{remark}
+Strict inequality typically holds.
+Equality in the Hermite bound~\eqref{eq:hermite-forward} occurs iff the roots of $p$ are an affine scaling of the zeros of the Hermite polynomial $H_n$.
+For $n=2$, this condition is satisfied for any distinct root configuration.
+% For $n=3$ this reduces to $T_1=T_2=0$ (Theorem~\ref{thm:stam3}).
+\end{remark}
+
+\begin{remark}[Boundary Behavior]\label{rem:boundary}
+Under the convention $1/\Phi_n:=0$ (for repeated roots), if Conjecture~\ref{conj:stam} is proved for the distinct-root case, it can be extended to the boundary of $\PnR$ as follows.
+When both $p$ and $q$ have repeated roots, both sides of the inequality are zero and it holds trivially.
+When exactly one factor (say $p$) has repeated roots, the inequality reduces to $\Phi_n(q)\ge\Phi_n(p\boxplus_n q)$, a monotonicity statement.
+To verify this, approximate $p$ by polynomials $p_\varepsilon\to p$ with distinct roots; the proven inequality gives
+$1/\Phi_n(p_\varepsilon\boxplus_n q) \ge 1/\Phi_n(p_\varepsilon)+1/\Phi_n(q) \ge 1/\Phi_n(q)$.
+Since convolution is continuous in coefficients, $p_\varepsilon\boxplus_n q\to p\boxplus_n q$.
+If $p\boxplus_n q$ has distinct roots, then $\Phi_n(p_\varepsilon\boxplus_n q)\to\Phi_n(p\boxplus_n q)$ and the bound carries over to the limit.
+The remaining case---$p\boxplus_n q$ itself has repeated roots while $q$ has distinct roots---cannot occur: in the matrix model
+$(p\boxplus_n q)(x)=\int_{O(n)}\det(xI-(A+QBQ^T))\,d\mu(Q)$,
+if $B$ has at least two distinct eigenvalues, then for $\mu$-almost every $Q$, the polynomial in the integrand has $n$ distinct real roots;
+the averaged polynomial (which is real-rooted by~\cite{MSS15}) can acquire new repeated roots only at the boundaries of its interlacing families, and assuming $\sigma^2(q)>0$ (positive variance) excludes such boundary cases.
+\end{remark}
+
+%======================================================================
+\begin{thebibliography}{9}
+
+\bibitem{MSS15}
+A.~Marcus, D.~A.~Spielman, and N.~Srivastava,
+\emph{Interlacing families {II}: Mixed characteristic polynomials
+and the {K}adison--{S}inger problem},
+Ann.\ of Math.\ \textbf{182} (2015), 327--350.
+
+\bibitem{Stam59}
+A.~J.~Stam,
+\emph{Some inequalities satisfied by the quantities of information
+of {F}isher and {S}hannon},
+Inform.\ Control \textbf{2} (1959), 101--112.
+
+\end{thebibliography}
+
+\end{document}
