@@ -9,6 +9,10 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 
+%--- Spacing Improvements ---
+\allowdisplaybreaks
+\setlength{\jot}{10pt}
+
 %--- Theorem Environments ---
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -92,9 +96,13 @@ Let $\Pn$ denote the space of monic polynomials of degree~$n$ with real
 coefficients, and $\PnR \subset \Pn$ the subset with all real roots.
 For $p \in \PnR$ with distinct roots $\lambda_1 < \cdots < \lambda_n$,
 define the \emph{scores}
-$V_i = \sum_{j \neq i}(\lambda_i - \lambda_j)^{-1}$
+\[
+  V_i = \sum_{j \neq i}\frac{1}{\lambda_i - \lambda_j}
+\]
 and the \emph{finite free Fisher information}
-$\Phi_n(p) = \sum_{i=1}^n V_i^2$.
+\[
+  \Phi_n(p) = \sum_{i=1}^n V_i^2.
+\]
 The \emph{symmetric additive convolution} $p \boxplus_n q$ is recalled
 in Section~\ref{sec:prelim}.
 
@@ -130,7 +138,10 @@ of~$\PnR$ by a limiting argument.
 
 \subsection{Root statistics}
 
-For $p(x) = \prod_{i=1}^n(x-\lambda_i) = \sum_{k=0}^n a_k\,x^{n-k}$
+For
+\[
+  p(x) = \prod_{i=1}^n(x-\lambda_i) = \sum_{k=0}^n a_k\,x^{n-k}
+\]
 with $a_0=1$, the mean and variance of the root distribution are
 \[
   \bar\lambda = \frac{1}{n}\sum_{i=1}^n \lambda_i,
@@ -139,13 +150,17 @@ with $a_0=1$, the mean and variance of the root distribution are
 \]
 
 \begin{lemma}\label{lem:var-coeff}
-$\sigma^2(p) = \dfrac{(n-1)\,a_1^2}{n^2} - \dfrac{2\,a_2}{n}$.
+\[
+  \sigma^2(p) = \frac{(n-1)\,a_1^2}{n^2} - \frac{2\,a_2}{n}.
+\]
 \end{lemma}
 
 \begin{proof}
 By Vieta's formulas, $\sum_i \lambda_i = -a_1$ and
 $\sum_{i<j}\lambda_i\lambda_j = a_2$, whence
-$\sum_i \lambda_i^2 = a_1^2-2a_2$.
+\[
+  \sum_{i=1}^n \lambda_i^2 = a_1^2-2a_2.
+\]
 The result follows from
 $\sigma^2 = \frac{1}{n}\sum_i\lambda_i^2 - \bar\lambda^2$.
 \end{proof}
@@ -184,8 +199,12 @@ $\sigma^2(p\boxplus_n q) = \sigma^2(p) + \sigma^2(q)$.
 \end{lemma}
 
 \begin{proof}
-From~\eqref{eq:conv-coeff}, $c_1 = a_1+b_1$ and
-$c_2 = a_2+\frac{n-1}{n}\,a_1 b_1+b_2$.
+From~\eqref{eq:conv-coeff},
+\[
+  c_1 = a_1+b_1
+  \quad\text{and}\quad
+  c_2 = a_2+\frac{n-1}{n}\,a_1 b_1+b_2.
+\]
 Substituting into Lemma~\ref{lem:var-coeff} and expanding
 $(a_1+b_1)^2$, the cross-terms $\frac{2(n-1)a_1 b_1}{n^2}$
 and $-\frac{2(n-1)a_1 b_1}{n^2}$ cancel, yielding
@@ -204,8 +223,9 @@ For $p \in \PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, the
   \Phi_n(p) = \sum_{i=1}^n V_i^2.
 \]
 The \emph{score-gradient energy} is
-$\displaystyle\mathcal{S}(p) = \sum_{i<j}
-  \frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}$.
+\[
+  \mathcal{S}(p) = \sum_{i<j} \frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}.
+\]
 \end{definition}
 
 \begin{lemma}\label{lem:score-deriv}
@@ -215,9 +235,11 @@ $V_i = \dfrac{p''(\lambda_i)}{2\,p'(\lambda_i)}$.
 \begin{proof}
 Since $p'(\lambda_i) = \prod_{j \neq i}(\lambda_i-\lambda_j)$,
 differentiating once more yields
-$p''(\lambda_i)
-= 2\sum_{k \neq i}\prod_{j \neq i,\,j \neq k}(\lambda_i-\lambda_j)
-= 2\,p'(\lambda_i)\,V_i$.
+\[
+  p''(\lambda_i)
+  = 2\sum_{k \neq i}\prod_{j \neq i,\,j \neq k}(\lambda_i-\lambda_j)
+  = 2\,p'(\lambda_i)\,V_i.
+\]
 \end{proof}
 
 \begin{lemma}[Score identities]\label{lem:score-id}
@@ -527,26 +549,36 @@ in Lemma~\ref{lem:flow-real} below.
 \begin{lemma}\label{lem:root-shift}
 Let $\lambda_i(t)$ denote the roots of~$p_t$.
 Then
-$\lambda_i(t{+}h) = \lambda_i(t)+\frac{hb}{n-1}\,V_i(t)+O(h^2)$.
+\[
+  \lambda_i(t{+}h) = \lambda_i(t)+\frac{hb}{n-1}\,V_i(t)+O(h^2).
+\]
 \end{lemma}
 
 \begin{proof}
 By the semigroup property, $p_{t+h} = p_t \boxplus_n q_h$ with
 $\sigma^2(q_h) = hb$. The coefficients of~$q_h$ satisfy
-$b_0=1$, $b_1=0$, $b_2 = -nhb/2+O(h^2)$, so the operator
-$T_{q_h}$ acts as
-$T_{q_h}\,r(x) = r(x) - \frac{hb}{2(n-1)}\,r''(x)+O(h^2)$.
+\[
+  b_0=1, \quad b_1=0, \quad b_2 = -\frac{nhb}{2}+O(h^2),
+\]
+so the operator $T_{q_h}$ acts as
+\[
+  T_{q_h}\,r(x) = r(x) - \frac{hb}{2(n-1)}\,r''(x)+O(h^2).
+\]
 Setting $\lambda_i(t{+}h)=\lambda_i(t)+\delta_i$ in
 $T_{q_h}\,p_t(\lambda_i(t{+}h))=0$ and solving to first order:
-$\delta_i
-= \frac{hb}{2(n-1)}\cdot\frac{p_t''(\lambda_i)}{p_t'(\lambda_i)}+O(h^2)
-= \frac{hb}{n-1}\,V_i(t)+O(h^2)$
+\begin{align*}
+  \delta_i
+  &= \frac{hb}{2(n-1)}\cdot\frac{p_t''(\lambda_i)}{p_t'(\lambda_i)}+O(h^2) \\
+  &= \frac{hb}{n-1}\,V_i(t)+O(h^2)
+\end{align*}
 by Lemma~\ref{lem:score-deriv}.
 \end{proof}
 
 \begin{lemma}\label{lem:phi-change}
-$\Phi_n(p_{t+h})
-= \Phi_n(p_t) - \dfrac{2hb}{n-1}\,\mathcal{S}(p_t) + O(h^2)$.
+\[
+  \Phi_n(p_{t+h})
+  = \Phi_n(p_t) - \frac{2hb}{n-1}\,\mathcal{S}(p_t) + O(h^2).
+\]
 \end{lemma}
 
 \begin{proof}
@@ -560,14 +592,18 @@ From Lemma~\ref{lem:root-shift}, the perturbed scores are
     \frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}+O(h^2).
 \]
 Squaring and summing:
-$\Phi_n(p_{t+h})
-= \sum_i V_i^2
-  -2\epsilon\sum_{i \neq j}
-    \frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}+O(h^2)$.
+\[
+  \Phi_n(p_{t+h})
+  = \sum_i V_i^2
+    -2\epsilon\sum_{i \neq j}
+      \frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}+O(h^2).
+\]
 Pairing $(i,j)$ with $(j,i)$:
-$\sum_{i \neq j}\frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}
-= \sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}
-= \mathcal{S}(p_t)$.
+\[
+  \sum_{i \neq j}\frac{V_i(V_i-V_j)}{(\lambda_i-\lambda_j)^2}
+  = \sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}
+  = \mathcal{S}(p_t).
+\]
 \end{proof}
 
 \begin{lemma}\label{lem:flow-real}
@@ -584,8 +620,10 @@ $T>0$.
 
 For $t<T$, the root-shift formula (Lemma~\ref{lem:root-shift})
 implies
-$\dot\delta_i(t)
-= \frac{b}{n-1}\bigl(V_{i+1}(t)-V_i(t)\bigr)$
+\[
+  \dot\delta_i(t)
+  = \frac{b}{n-1}\bigl(V_{i+1}(t)-V_i(t)\bigr)
+\]
 for consecutive gaps $\delta_i = \lambda_{i+1}-\lambda_i$.
 Expanding the score difference:
 \[
@@ -597,8 +635,10 @@ Expanding the score difference:
 so $\dot\delta_i \ge \frac{2b}{(n{-}1)\delta_i}-C$ with $C$
 bounded as long as all gaps are positive.
 Hence
-$\frac{d}{dt}\delta_i^2 = 2\delta_i\,\dot\delta_i
-\ge \frac{4b}{n{-}1}-2C\delta_i$.
+\[
+  \frac{d}{dt}\delta_i^2 = 2\delta_i\,\dot\delta_i
+  \ge \frac{4b}{n{-}1}-2C\delta_i.
+\]
 For $\delta_i < \delta_0 := 2b/(C(n{-}1))$, this is strictly
 positive, so no gap can reach zero in finite time.
 Since the roots at time~$T$ remain separated, continuity extends
@@ -631,10 +671,11 @@ Taking $h\to 0$ yields the result.
 \end{corollary}
 
 \begin{proof}
-Set $f(t)=1/\Phi_n(p_t)$. By the chain rule and
-Lemma~\ref{lem:dissip},
-$f'(t) = \frac{2b}{n-1}\cdot\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}
-\ge 0$.
+Set $f(t)=1/\Phi_n(p_t)$. By the chain rule and Lemma~\ref{lem:dissip},
+\[
+  f'(t) = \frac{2b}{n-1}\cdot\frac{\mathcal{S}(p_t)}{\Phi_n(p_t)^2}
+  \ge 0.
+\]
 By the Fundamental Theorem of Calculus,
 $f(1)-f(0) = \int_0^1 f'(t)\,dt$.
 Substituting: $f(0) = 1/\Phi_n(p_0) = 1/\Phi_n(p)$ and
@@ -657,8 +698,10 @@ Write $a=\sigma^2(p)$ and $b=\sigma^2(q)$.
 \noindent\textbf{Step~1 (Differential inequality).}
 The Score-Gradient Inequality (Theorem~\ref{thm:sgi}) applied to
 $p_t$ gives
-$\mathcal{S}(p_t) \ge
-  \frac{(n-1)\,\Phi_n(p_t)}{2\,\sigma^2(p_t)}$.
+\[
+  \mathcal{S}(p_t) \ge
+  \frac{(n-1)\,\Phi_n(p_t)}{2\,\sigma^2(p_t)}.
+\]
 Substituting into Lemma~\ref{lem:dissip}:
 \[
   \frac{d}{dt}\Phi_n(p_t)
