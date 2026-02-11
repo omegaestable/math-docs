@@ -37,24 +37,29 @@
 \maketitle
 
 \begin{abstract}
-The classical Stam inequality asserts the superadditivity of the reciprocal
-Fisher information under convolution of independent random variables.
-We prove the polynomial analogue in the framework of finite free probability:
-for monic, degree-$n$, real-rooted polynomials $p$ and $q$,
+We establish a finite free analogue of the Stam inequality from
+information theory.
+Given monic, degree-$n$, real-rooted polynomials $p$ and~$q$ with
+positive variance, and writing $\Phi_n$ for the finite free Fisher
+information and $\boxplus_n$ for the symmetric additive convolution of
+Marcus, Spielman, and Srivastava, we prove that
 \[
   \frac{1}{\Phi_n(p\boxplus_n q)}
   \;\ge\;
-  \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)},
+  \frac{1}{\Phi_n(p)} + \frac{1}{\Phi_n(q)}.
 \]
-where $\boxplus_n$ is the symmetric additive convolution of Marcus,
-Spielman, and Srivastava, and $\Phi_n$ is the finite free Fisher information.
-The proof combines an algebraic inequality---the
-Score-Gradient Inequality, established via two applications of
-Cauchy--Schwarz---with a flow-based argument exploiting
-the semigroup structure of~$\boxplus_n$.
-We also derive a closed-form expression for~$\Phi_n$ in terms of
-the critical values of the polynomial via residue calculus, and use it
-to verify the inequality explicitly for cubics.
+The argument proceeds in two stages.
+First, a Score-Gradient Inequality, obtained by a double application
+of Cauchy--Schwarz, converts pointwise score data into a lower bound
+on the Fisher information.
+Second, a convolution-flow analysis---interpolating between $p$ and
+$p\boxplus_n q$ via the semigroup structure of~$\boxplus_n$---yields
+a differential inequality that, after integration, produces
+asymmetric bounds strictly stronger than the Stam inequality in
+each regime; the full result follows by a case split exploiting
+commutativity of~$\boxplus_n$.
+Equality is characterized: it holds if and only if both polynomials
+have roots at affinely rescaled zeros of the Hermite polynomial~$H_n$.
 \end{abstract}
 
 \tableofcontents
