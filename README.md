@@ -36,7 +36,7 @@ Longer-form content, teaching notes, and book drafts.
 ### Research Papers
 
 *   **[The Finite Free Stam Inequality](Problem%204.pdf)**: Establishes a finite free analogue of the Stam inequality from information theory using polynomial root analysis and convolution-flow techniques.
-*   **[The Critical-Point Comparison Lemma](critical_point_comparison_lemma.pdf)**: Advanced treatment of the critical-point comparison inequality using P\'olya frequency sequences, total positivity, variation diminishing, interlacing, and determinant inequalities.
+*   **[The Critical-Point Comparison Lemma](critical_point_comparison_lemma.pdf)**: Advanced treatment of the critical-point comparison inequality using Pólya frequency sequences, total positivity, variation diminishing, interlacing, and determinant inequalities.
 
 ## Usage
 
