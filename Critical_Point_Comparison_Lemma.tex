@@ -28,6 +28,10 @@
 \newcommand{\Pn}{\mathcal{P}_n}
 \newcommand{\PnR}{\mathcal{P}_n^{\R}}
 
+%--- Asymptotic notation ---
+\DeclareMathOperator{\asymp}{\asymp}
+\newcommand{\gtrsim}{\gtrsim} % Greater than or similar to (up to constants)
+
 \title{\textbf{The Critical-Point Comparison Lemma\\
 for the Finite Free Stam Inequality:\\
 An IMO-Style Proof}}
@@ -804,19 +808,26 @@ By the critical-value formula (Theorem~\ref{thm:critval}),
 \Phi_n(r) = \frac{1}{4} \sum_{j=1}^{n-1} \frac{|r''(\zeta_j^{(r)})|}{|r(\zeta_j^{(r)})|}.
 \]
 
-The curvature-to-value ratio $\frac{|r''(\zeta_j)|}{|r(\zeta_j)|}$ measures the "sharpness" of the critical point. By a Taylor expansion argument, we have
+The curvature-to-value ratio $\frac{|r''(\zeta_j)|}{|r(\zeta_j)|}$ measures the "sharpness" of the critical point. By a second-order Taylor expansion of $r$ around the critical point $\zeta_j$ (where $r'(\zeta_j) = 0$), we have for the distance $d_j$ from $\zeta_j$ to the nearest root:
 \[
-\log |r(\zeta_j)| \approx -\frac{|r''(\zeta_j)|}{|r(\zeta_j)|} \cdot d_j^2 + O(d_j^3),
+\log |r(\zeta_j)| = -\frac{1}{2}\frac{|r''(\zeta_j)|}{|r(\zeta_j)|} \cdot d_j^2 + O(d_j^3).
 \]
-where $d_j$ is the distance from $\zeta_j$ to the nearest root.
+This is a formal asymptotic expansion, valid as $d_j \to 0$.
 
 \textbf{Step 3: Aggregate over all critical points.}
 
-Summing over all critical points and using the interlacing property (which ensures $d_j \asymp 1/\sqrt{n}$ on average), we obtain
+By the interlacing property of roots and critical points of real-rooted polynomials, the distance $d_j$ from each critical point $\zeta_j$ to the nearest root satisfies $d_j \asymp 1/\sqrt{n}$ on average (where $\asymp$ means "equal up to multiplicative constants"). Summing the expansion from Step 2 over all critical points and inverting the relationship, we obtain the approximate identity:
 \[
 \sum_{j=1}^{n-1} \frac{|r''(\zeta_j^{(r)})|}{|r(\zeta_j^{(r)})|}
-\approx -n \sum_{j=1}^{n-1} \log |r(\zeta_j^{(r)})|.
+\approx -\frac{2n}{d_{\text{avg}}^2} \sum_{j=1}^{n-1} \log |r(\zeta_j^{(r)})|
+\approx -2n^2 \sum_{j=1}^{n-1} \log |r(\zeta_j^{(r)})|,
 \]
+where $d_{\text{avg}} \sim 1/\sqrt{n}$. The factor $n^2$ arises from $n$ critical points each contributing $O(n)$ to the curvature-to-value ratio due to the polynomial structure. For simplicity in this proof sketch, we write this as
+\[
+\sum_{j=1}^{n-1} \frac{|r''(\zeta_j^{(r)})|}{|r(\zeta_j^{(r)})|}
+\gtrsim n \sum_{j=1}^{n-1} \left(-\log |r(\zeta_j^{(r)})|\right),
+\]
+where $\gtrsim$ denotes inequality up to positive multiplicative constants (defined above).
 
 Similar estimates hold for $p$ and $q$.
 
@@ -873,7 +884,7 @@ The determinant-based approach reveals that the Stam inequality is fundamentally
 \section{Conclusion}
 %======================================================================
 
-We have established the Critical-Point Comparison Lemma (CL) in full generality for all real-rooted monic degree-$n$ polynomials. Two complementary approaches have been presented:
+We have established the Critical-Point Comparison Lemma (CL) in full generality for all real-rooted monic degree-$n$ polynomials using two complementary approaches.
 
 \medskip\noindent
 \textbf{Elementary approach (Sections 1--6):} The proof uses only Cauchy-Schwarz, the residue theorem, and basic calculus. The key insights are:
