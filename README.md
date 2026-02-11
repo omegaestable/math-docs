@@ -33,6 +33,11 @@ Longer-form content, teaching notes, and book drafts.
 
 *   **[Padilla Notes 1005](Books/MA%201005_en.pdf)**: A comprehensive set of notes, including source LaTeX and generated figures.
 
+### Research Documents
+
+*   **[The Finite Free Stam Inequality](Problem%204.tex)** ([PDF](Problem%204.pdf)): A complete proof of the finite free Stam inequality for real-rooted polynomials, establishing an analogue of the classical information-theoretic Stam inequality in finite free probability theory.
+*   **[Critical-Point Comparison Lemma](Critical_Point_Comparison_Lemma.tex)**: An IMO-style rigorous proof of the Critical-Point Comparison Lemma (CL) in full generality for all real-rooted monic degree-n polynomials. This lemma provides essential comparison estimates for critical-point data under symmetric additive convolution, serving as a key technical ingredient in the finite free Stam inequality.
+
 ## Usage
 
 Most documents in this repository are written in **LaTeX**. To build the PDFs from source, you will need a standard TeX distribution (such as TeX Live, MacTeX, or MiKTeX).
