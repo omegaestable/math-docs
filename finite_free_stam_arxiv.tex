@@ -1,0 +1,628 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+\allowdisplaybreaks
+\setlength{\jot}{8pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\R}}
+
+\title[Finite free Stam inequality]{Finite free Stam inequality via score-gradient bounds and dilation interpolation:
+rigorous partial results, and a counterexample to a convexity heuristic}
+\author{}
+\date{}
+
+\begin{document}
+\begin{abstract}
+We study the finite free analogue of Stam's inequality for the symmetric additive convolution
+$\boxplus_n$ of Marcus--Spielman--Srivastava.
+For monic degree-$n$ real-rooted polynomials $p,q$ with positive variance, the conjectured inequality is
+\[
+  \frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)},
+\]
+where $\Phi_n$ is the finite free Fisher information (defined in terms of ``scores'' at the roots).
+This note is self-contained.
+We give complete proofs of: (i) the Score-Gradient Inequality (a double Cauchy--Schwarz estimate),
+(ii) a sharp Hermite semigroup bound, and (iii) the Stam inequality in low degrees $n=2$ (equality) and $n=3$.
+For general $n$ we present a real-rooted interpolation (the \emph{dilation path}).
+We record an explicit numerical example showing that a natural global convexity heuristic for
+$t\mapsto 1/\Phi_n(p\boxplus_n q_t)$ (and for the associated ``dilation excess'') fails.
+Thus any dilation-based proof of the full Stam inequality must use a different monotonicity/comparison principle.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+%======================================================================
+\section{Setup}
+%======================================================================
+
+\subsection{Real-rooted polynomials and convolution}
+
+\begin{definition}[Real-rooted polynomials]
+Fix $n\ge 2$. Let $\PnR$ denote the set of monic degree-$n$ polynomials with all roots real.
+For $p\in\PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, write
+\[
+  p(x)=\prod_{i=1}^n(x-\lambda_i)=\sum_{k=0}^n a_k\,x^{n-k}.
+\]
+\end{definition}
+
+\begin{definition}[Symmetric additive convolution]
+\label{def:conv}
+For $p(x)=\sum_{k=0}^n a_k x^{n-k}$ and $q(x)=\sum_{k=0}^n b_k x^{n-k}$ in $\PnR$,
+set $r=p\boxplus_n q$ to be the monic degree-$n$ polynomial with coefficients
+\[
+  r(x)=\sum_{k=0}^n c_k x^{n-k},\qquad
+  c_k=\sum_{i+j=k}\frac{(n-i)!\,(n-j)!}{n!\,(n-k)!}\,a_i b_j.
+\]
+Equivalently (MSS), writing
+\[
+  T_q:=\sum_{k=0}^n\frac{(n-k)!}{n!}\,b_k\,\partial_x^k,
+\]
+one has $p\boxplus_n q=T_q p$.
+\end{definition}
+
+\begin{theorem}[Marcus--Spielman--Srivastava]
+\label{thm:mss}
+If $p,q\in\PnR$, then $p\boxplus_n q\in\PnR$. Moreover, $\boxplus_n$ is commutative.
+\end{theorem}
+
+\subsection{Scores, Fisher information, and variance}
+
+\begin{definition}[Scores and Fisher information]
+\label{def:fisher}
+Let $p\in\PnR$ have distinct roots $\lambda_1<\cdots<\lambda_n$.
+Define the \emph{score} at $\lambda_i$ and the \emph{finite free Fisher information} by
+\[
+  V_i:=\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j},\qquad
+  \Phi_n(p):=\sum_{i=1}^n V_i^2.
+\]
+If $p$ has a repeated root, set $\Phi_n(p):=\infty$ (equivalently $1/\Phi_n(p):=0$).
+\end{definition}
+
+\begin{definition}[Score-gradient energy]
+\label{def:score-grad}
+\[
+  \mathcal{S}(p):=\sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}.
+\]
+\end{definition}
+
+\begin{definition}[Variance]
+\label{def:var}
+Let $\bar\lambda:=\frac{1}{n}\sum_{i=1}^n\lambda_i$.
+Define
+\[
+  \sigma^2(p):=\frac{1}{n}\sum_{i=1}^n(\lambda_i-\bar\lambda)^2.
+\]
+\end{definition}
+
+\begin{remark}[Affine invariances]
+$\Phi_n$ and $\mathcal{S}$ are translation-invariant.
+Under dilation $p(x)\mapsto p_t(x)=t^{-n}p(tx)$ (i.e. roots scale by $t$), the scores scale as $V_i\mapsto V_i/t$, hence
+$\Phi_n\mapsto \Phi_n/t^2$.
+\end{remark}
+
+\begin{lemma}[Translation covariance]
+\label{lem:translation}
+For $c\in\R$ and a monic polynomial $p$, write $(\tau_c p)(x):=p(x-c)$.
+Then for all monic degree-$n$ polynomials $p,q$,
+\[
+  \tau_a p\boxplus_n \tau_b q=\tau_{a+b}(p\boxplus_n q).
+\]
+In particular, since scores depend only on root differences,
+$\Phi_n(\tau_c p)=\Phi_n(p)$ and $\sigma^2(\tau_c p)=\sigma^2(p)$.
+\end{lemma}
+
+\begin{proof}
+Let $K_p$ denote the normalized generating function used in the MSS framework.
+Translation by $c$ multiplies the generating function by $e^{cz}$:
+$K_{\tau_c p}(z)=e^{cz}K_p(z)$.
+Using $K_{p\boxplus_n q}=K_pK_q$ modulo $z^{n+1}$ gives
+$K_{\tau_a p\boxplus_n \tau_b q}=e^{(a+b)z}K_pK_q=K_{\tau_{a+b}(p\boxplus_n q)}$.
+The invariance statements follow from the definitions.
+\end{proof}
+
+%======================================================================
+\section{Preliminary identities}
+%======================================================================
+
+Throughout this section, $p\in\PnR$ has distinct roots $\lambda_1<\cdots<\lambda_n$ and scores $V_i$.
+
+\begin{lemma}[Score--derivative relation]
+\label{lem:score-deriv}
+\[
+  V_i=\frac{p''(\lambda_i)}{2\,p'(\lambda_i)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $p'(\lambda_i)=\prod_{j\ne i}(\lambda_i-\lambda_j)$, differentiating
+$p'(x)=\sum_{i=1}^n\prod_{j\ne i}(x-\lambda_j)$ and evaluating at $x=\lambda_i$ gives
+\[
+  p''(\lambda_i)=2\,p'(\lambda_i)\sum_{k\ne i}\frac{1}{\lambda_i-\lambda_k}=2\,p'(\lambda_i)\,V_i.\qedhere
+\]
+\end{proof}
+
+\begin{lemma}[Score identities]
+\label{lem:score-id}
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item\label{it:score-sum} $\sum_i V_i=0$.
+  \item\label{it:score-root} $\sum_i \lambda_i V_i=\binom{n}{2}$.
+  \item\label{it:score-centered} $\sum_i (\lambda_i-\bar\lambda)V_i=\binom{n}{2}$.
+  \item\label{it:score-gap} $\Phi_n(p)=\sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) is antisymmetry of $(\lambda_i-\lambda_j)^{-1}$ in $(i,j)$.
+
+(ii) Pair $(i,j)$ and $(j,i)$:
+$\frac{\lambda_i}{\lambda_i-\lambda_j}+\frac{\lambda_j}{\lambda_j-\lambda_i}=1$.
+
+(iii) follows from (ii) and (i).
+
+(iv) Expand $\sum_i V_i^2=\sum_i V_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ and pair $(i,j)$ and $(j,i)$.
+\end{proof}
+
+\begin{lemma}[Variance via coefficients]
+\label{lem:var-coeff}
+If $p(x)=\sum_{k=0}^n a_k x^{n-k}$, then
+\[
+  \sigma^2(p)=\frac{(n-1)a_1^2}{n^2}-\frac{2a_2}{n}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Vieta, $\sum_i\lambda_i=-a_1$ and $\sum_{i<j}\lambda_i\lambda_j=a_2$.
+Thus $\sum_i\lambda_i^2=a_1^2-2a_2$, and
+$\sigma^2=\frac{1}{n}\sum_i\lambda_i^2-\bar\lambda^2$ with $\bar\lambda=-a_1/n$.
+\end{proof}
+
+\begin{lemma}[Variance additivity]
+\label{lem:var-add}
+$\sigma^2(p\boxplus_n q)=\sigma^2(p)+\sigma^2(q)$.
+\end{lemma}
+
+\begin{proof}
+From Definition~\ref{def:conv},
+$c_1=a_1+b_1$ and $c_2=a_2+\frac{n-1}{n}a_1 b_1+b_2$.
+Plugging into Lemma~\ref{lem:var-coeff} and expanding $(a_1+b_1)^2$ shows cross terms cancel.
+\end{proof}
+
+%======================================================================
+\section{Fisher--variance and the Score-Gradient Inequality}
+%======================================================================
+
+\begin{lemma}[Fisher--variance inequality]
+\label{lem:FV}
+\[
+  \Phi_n(p)\,\sigma^2(p)\ge \frac{n(n-1)^2}{4}.
+\]
+Equality holds iff $V_i=c(\lambda_i-\bar\lambda)$ for some constant $c$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:score-id}~\eqref{it:score-centered},
+$\sum_i(\lambda_i-\bar\lambda)V_i=\frac{n(n-1)}{2}$.
+Apply Cauchy--Schwarz:
+\[
+  \Bigl(\sum_i(\lambda_i-\bar\lambda)V_i\Bigr)^2
+  \le \Bigl(\sum_i(\lambda_i-\bar\lambda)^2\Bigr)\Bigl(\sum_i V_i^2\Bigr)
+  = n\,\sigma^2(p)\,\Phi_n(p).\qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Score-Gradient Inequality]
+\label{thm:sgi}
+For $p\in\PnR$ with distinct roots,
+\begin{equation}\label{eq:sgi}
+  \mathcal{S}(p)\,\sigma^2(p)\ge \frac{n-1}{2}\,\Phi_n(p).
+\end{equation}
+Equality holds iff $V_i=c(\lambda_i-\bar\lambda)$ for some constant $c$.
+\end{theorem}
+
+\begin{proof}
+Set $T:=n\sigma^2(p)$, $U:=\Phi_n(p)$, $S:=\mathcal{S}(p)$.
+We show $ST\ge \frac{n(n-1)}{2}U$.
+
+First, Lemma~\ref{lem:score-id}~\eqref{it:score-centered} and Cauchy--Schwarz give
+$\frac{n^2(n-1)^2}{4}\le TU$.
+Second, Lemma~\ref{lem:score-id}~\eqref{it:score-gap} and Cauchy--Schwarz give
+$U^2\le S\binom{n}{2}=\frac{n(n-1)}{2}S$.
+Combine:
+\[
+  ST\ge \frac{2U^2}{n(n-1)}\,T=\frac{2U}{n(n-1)}\,(TU)
+  \ge \frac{2U}{n(n-1)}\,\frac{n^2(n-1)^2}{4}=\frac{n(n-1)}{2}U.\qedhere
+\]
+The equality characterization is the standard ``both Cauchy--Schwarz equalities'' argument.
+\end{proof}
+
+%======================================================================
+\section{Low-degree Stam: $n=2$ and $n=3$}
+%======================================================================
+
+\subsection{$n=2$: equality and convexity along the dilation path}
+
+\begin{proposition}[Quadratic case]
+\label{prop:n2}
+For $n=2$, for all $p,q\in\PnR$ with distinct roots,
+\[
+  \frac{1}{\Phi_2(p\boxplus_2 q)}=\frac{1}{\Phi_2(p)}+\frac{1}{\Phi_2(q)}.
+\]
+Moreover, along the dilation path $r_t=p\boxplus_2 q_t$,
+$F(t):=1/\Phi_2(r_t)$ is a quadratic polynomial in $t$ with $F''(t)>0$.
+\end{proposition}
+
+\begin{proof}
+If $p(x)=(x-\lambda_1)(x-\lambda_2)$ with $d=\lambda_2-\lambda_1>0$, then
+$V_1=-1/d$, $V_2=1/d$, hence $\Phi_2(p)=2/d^2$ and
+$\sigma^2(p)=d^2/4$, so $1/\Phi_2(p)=2\sigma^2(p)$.
+By variance additivity (Lemma~\ref{lem:var-add}),
+$1/\Phi_2(p\boxplus_2 q)=2\sigma^2(p\boxplus_2 q)=2\sigma^2(p)+2\sigma^2(q)$.
+
+For dilation: $q_t$ scales the root gap by $t$, so
+$\sigma^2(q_t)=t^2\sigma^2(q)$, and the same identity gives
+$1/\Phi_2(r_t)=2(\sigma^2(p)+t^2\sigma^2(q))$, with constant second derivative.
+\end{proof}
+
+\subsection{$n=3$: an explicit computation (centered cubics)}
+
+\subsubsection{A critical-value formula for $\Phi_n$}
+
+\begin{theorem}[Critical-value formula]
+\label{thm:critval}
+Let $p\in\PnR$ have distinct roots $\lambda_1<\cdots<\lambda_n$, and let
+$\zeta_1,\dots,\zeta_{n-1}$ be the simple zeros of $p'$. Then
+\begin{equation}\label{eq:critval}
+  \Phi_n(p)=-\frac{1}{4}\sum_{j=1}^{n-1}\frac{p''(\zeta_j)}{p(\zeta_j)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:score-deriv},
+$\Phi_n(p)=\frac{1}{4}\sum_i \frac{p''(\lambda_i)^2}{p'(\lambda_i)^2}$.
+Consider the meromorphic function on the Riemann sphere:
+\[
+  F(x):=\frac{p''(x)^2}{p'(x)\,p(x)}.
+\]
+
+\emph{Residues at the roots.}
+Since $p$ has a simple zero at $\lambda_i$ and $p'(\lambda_i)\ne 0$,
+\[
+  \operatorname{Res}_{x=\lambda_i}F=\frac{p''(\lambda_i)^2}{p'(\lambda_i)^2}.
+\]
+Summing over $i$ gives $\sum_i\operatorname{Res}_{\lambda_i}F=4\Phi_n(p)$.
+
+\emph{Residues at the critical points.}
+At a simple zero $\zeta_j$ of $p'$, interlacing implies $p(\zeta_j)\ne 0$.
+Thus
+\[
+  \operatorname{Res}_{x=\zeta_j}F=\frac{p''(\zeta_j)^2}{p''(\zeta_j)\,p(\zeta_j)}=\frac{p''(\zeta_j)}{p(\zeta_j)}.
+\]
+
+\emph{Residue at infinity.}
+As $x\to\infty$, $p(x)\sim x^n$, $p'(x)\sim n x^{n-1}$, and
+$p''(x)\sim n(n-1)x^{n-2}$, so $F(x)=\frac{n(n-1)^2}{x^3}(1+O(x^{-1}))$.
+Hence $\operatorname{Res}_{\infty}F=0$.
+
+By the global residue theorem, the sum of all residues on the sphere is zero:
+$4\Phi_n(p)+\sum_{j=1}^{n-1} \frac{p''(\zeta_j)}{p(\zeta_j)}=0$, proving~\eqref{eq:critval}.
+\end{proof}
+
+A centered monic cubic has the form $r(x)=x^3-Sx+T$ with $S\ge 0$.
+It has three distinct real roots iff its discriminant $\Delta:=4S^3-27T^2$ is positive.
+
+\begin{proposition}[Closed form for $\Phi_3$]
+\label{prop:phi3}
+For a centered cubic $r(x)=x^3-Sx+T$ with $\Delta>0$,
+\[
+  \Phi_3(r)=\frac{18S^2}{\Delta}.
+\]
+\end{proposition}
+
+\begin{proof}
+Apply Theorem~\ref{thm:critval}.
+The critical points are $\zeta_\pm=\pm\alpha$ with $\alpha:=\sqrt{S/3}$ and $r''(x)=6x$.
+Thus
+\[
+  4\Phi_3(r)=-\frac{6\alpha}{r(\alpha)}+\frac{6\alpha}{r(-\alpha)}
+  =6\alpha\,\frac{r(\alpha)-r(-\alpha)}{r(\alpha)r(-\alpha)}.
+\]
+Compute $r(\alpha)-r(-\alpha)=-\frac{4S\alpha}{3}$ and
+$r(\alpha)r(-\alpha)=T^2-\frac{4S^3}{27}=-\frac{\Delta}{27}$.
+Substituting gives $4\Phi_3(r)=\frac{72S^2}{\Delta}$.
+\end{proof}
+
+\begin{proposition}[Convolution preserves cubic shape (centered)]
+\label{prop:cubic-conv}
+If $p(x)=x^3-S_1x+T_1$ and $q(x)=x^3-S_2x+T_2$ are centered, then
+$(p\boxplus_3 q)(x)=x^3-(S_1+S_2)x+(T_1+T_2)$.
+\end{proposition}
+
+\begin{proof}
+With $a_1=b_1=0$ the only surviving coefficient contributions are additive for $a_2,a_3$.
+\end{proof}
+
+\begin{theorem}[Stam for $n=3$]
+\label{thm:stam3}
+The finite free Stam inequality holds for $n=3$.
+Equality holds iff $T_1=T_2=0$ in the centered parametrization.
+\end{theorem}
+
+\begin{proof}
+By Propositions~\ref{prop:phi3} and~\ref{prop:cubic-conv},
+$1/\Phi_3=\Delta/(18S^2)=2S/9-3T^2/(2S^2)$.
+Cancelling the linear terms in $S$, the inequality reduces to
+\[
+  \frac{(T_1+T_2)^2}{(S_1+S_2)^2}\le \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2},
+\]
+which is Jensen/convexity for $t\mapsto t^2$.
+\end{proof}
+
+%======================================================================
+\section{Hermite semigroup bound}
+%======================================================================
+
+\subsection{Hermite kernel}
+
+\begin{definition}[Hermite kernel]
+\label{def:hermite}
+For $t\ge 0$, let $G_t\in\PnR$ be the monic degree-$n$ polynomial whose normalized generating function satisfies
+\[
+  K_{G_t}(z)=\exp\!\Bigl(-\frac{t}{2(n-1)}z^2\Bigr)\pmod{z^{n+1}}.
+\]
+The \emph{Hermite flow} is $p_t:=p\boxplus_n G_t$.
+\end{definition}
+
+\begin{lemma}[Semigroup and variance]
+\label{lem:hermite-props}
+For $s,t\ge 0$:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item $G_s\boxplus_n G_t=G_{s+t}$.
+  \item $\sigma^2(G_t)=t$.
+  \item $\sigma^2(p_t)=\sigma^2(p)+t$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) follows from $K_{G_s}K_{G_t}=K_{G_{s+t}}$ modulo $z^{n+1}$.
+(ii) is read from the quadratic term. (iii) is Lemma~\ref{lem:var-add}.
+\end{proof}
+
+\subsection{Root ODE and dissipation}
+
+\begin{lemma}[Hermite root ODE]
+\label{lem:hermite-ode}
+Along the Hermite flow, if $\lambda_i(t)$ are the roots of $p_t$ and $V_i(t)$ their scores, then
+\[
+  \dot\lambda_i=\frac{1}{n-1}V_i(t).
+\]
+\end{lemma}
+
+\begin{proof}
+Using $K_{G_h}(z)=1-\frac{h}{2(n-1)}z^2+O(h^2)$, one has
+$T_{G_h}f=f-\frac{h}{2(n-1)}f''+O(h^2)$.
+Differentiate $0=T_{G_h}p_t(\lambda_i(t+h))$ to first order and use Lemma~\ref{lem:score-deriv}.
+\end{proof}
+
+\begin{lemma}[Hermite dissipation]
+\label{lem:hermite-dissip}
+\[
+  \frac{d}{dt}\Phi_n(p_t)=-\frac{2}{n-1}\,\mathcal{S}(p_t).
+\]
+\end{lemma}
+
+\begin{proof}
+Differentiate $V_i(t)=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ using the root ODE,
+then sum $\dot\Phi_n=2\sum_i V_i\dot V_i$ and symmetrize.
+\end{proof}
+
+\begin{theorem}[Hermite flow bound]
+\label{thm:hermite-bound}
+Let $a:=\sigma^2(p)>0$ and $b>0$. Then
+\[
+  \frac{1}{\Phi_n(p\boxplus_n G_b)}\ge \frac{a+b}{a\,\Phi_n(p)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the Score-Gradient Inequality (Theorem~\ref{thm:sgi}) to $p_t$:
+$\mathcal{S}(p_t)\ge \frac{(n-1)\Phi_n(p_t)}{2\sigma^2(p_t)}=\frac{(n-1)\Phi_n(p_t)}{2(a+t)}$.
+With Lemma~\ref{lem:hermite-dissip},
+$\dot\Phi_n(p_t)\le -\Phi_n(p_t)/(a+t)$.
+Integrate $(\log\Phi_n)'\le -(a+t)^{-1}$ from $0$ to $b$.
+\end{proof}
+
+%======================================================================
+\section{Dilation interpolation and a convexity heuristic}
+%======================================================================
+
+\subsection{The dilation path}
+
+\begin{definition}[Dilation family]
+\label{def:dilation}
+Let $q(x)=\prod_{i=1}^n(x-\mu_i)\in\PnR$. For $t\in[0,1]$, define
+\[
+  q_t(x):=\prod_{i=1}^n(x-t\mu_i),\qquad r_t:=p\boxplus_n q_t.
+\]
+\end{definition}
+
+\begin{lemma}[Basic properties]
+\label{lem:dilation-props}
+Let $a:=\sigma^2(p)$ and $b:=\sigma^2(q)$. Then:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item $r_0=p$ and $r_1=p\boxplus_n q$.
+  \item $\sigma^2(q_t)=t^2\sigma^2(q)$ and $\sigma^2(r_t)=a+t^2 b$.
+  \item $\Phi_n(q_t)=\Phi_n(q)/t^2$ for $t>0$.
+  \item $r_t\in\PnR$ for all $t\in[0,1]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) is immediate since $q_0=x^n$ is the identity for $\boxplus_n$.
+(ii) follows from scaling of roots and variance additivity.
+(iii) is score scaling under dilation.
+(iv) is Theorem~\ref{thm:mss}.
+\end{proof}
+
+\subsection{The excess functional}
+
+\begin{definition}[Dilation excess]
+\label{def:excess}
+For the dilation path $r_t$, define
+\[
+  E(t):=\frac{1}{\Phi_n(r_t)}-\frac{1}{\Phi_n(p)}-\frac{t^2}{\Phi_n(q)}.
+\]
+\end{definition}
+
+\begin{lemma}[Endpoints]
+\label{lem:excess-endpoints}
+$E(0)=0$, and $E(1)\ge 0$ is equivalent to the finite free Stam inequality.
+\end{lemma}
+
+\begin{proof}
+Immediate from the definition and $r_0=p$, $r_1=p\boxplus_n q$.
+\end{proof}
+
+\begin{conjecture}[Excess convexity (false in general)]
+\label{conj:excess}
+Along the dilation path, $E$ is convex on $(0,1)$, i.e. $E''(t)\ge 0$.
+Equivalently,
+$\frac{d^2}{dt^2}\bigl(1/\Phi_n(r_t)\bigr)\ge 2/\Phi_n(q)$.
+\end{conjecture}
+
+\begin{remark}
+Conjecture~\ref{conj:excess} is a clean sufficient condition for Stam via
+Theorem~\ref{thm:reduction}, but it is \emph{not true} in full generality;
+see Appendix~\ref{app:counterexample}.
+
+It is worth stressing a simple diagnostic: if we write $F(t):=1/\Phi_n(r_t)$,
+then $E(t)=F(t)-1/\Phi_n(p)-t^2/\Phi_n(q)$ satisfies
+\[
+  E''(t)=F''(t)-\frac{2}{\Phi_n(q)}.
+\]
+Thus even if one happens to observe $F''(t)\ge 0$ in a given example,
+the subtraction of $t^2/\Phi_n(q)$ shifts the curvature by a negative
+constant and can force $E''(t)<0$.
+\end{remark}
+
+\begin{lemma}[Vanishing first derivative at $t=0$]
+\label{lem:excess-deriv0}
+Assume $q$ is centered (i.e. the sum of its roots is zero, equivalently its $x^{n-1}$ coefficient vanishes).
+Then $E'(0)=0$.
+\end{lemma}
+
+\begin{proof}
+Write $q(x)=\sum_{k=0}^n b_k x^{n-k}$.
+Centering means $b_1=0$.
+
+Along the dilation family, $q_t$ has coefficients $b_k(t)=t^k b_k$.
+By Definition~\ref{def:conv},
+\[
+  r_t(x)=\sum_{k=0}^n\frac{(n-k)!}{n!}\,b_k(t)\,p^{(k)}(x)
+  =p(x)+\sum_{k=1}^n\frac{(n-k)!}{n!}\,t^k b_k\,p^{(k)}(x).
+\]
+Since $b_1=0$, the first nonzero term is order $t^2$, hence $\partial_t r_t|_{t=0}=0$ as a polynomial.
+In particular, the coefficient vector of $r_t$ has no linear term in $t$.
+When $p$ has distinct roots, the roots of $r_t$ depend smoothly on the coefficients for $t$ in a neighborhood of $0$,
+so each root trajectory has zero first derivative at $t=0$.
+Since $\Phi_n$ is a smooth function of the roots as long as they remain distinct,
+this implies
+$\bigl.\frac{d}{dt}\frac{1}{\Phi_n(r_t)}\bigr|_{t=0}=0$.
+Also $\frac{d}{dt}\bigl(t^2/\Phi_n(q)\bigr)|_{t=0}=0$.
+Thus $E'(0)=0$.
+\end{proof}
+
+\begin{theorem}[Convexity reduction]
+\label{thm:reduction}
+If Conjecture~\ref{conj:excess} holds for all $p,q\in\PnR$ with positive variance, then the finite free Stam inequality holds for all such $p,q$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:translation}, we may replace $q$ by its centered translate without changing
+either side of the Stam inequality; assume henceforth that $q$ is centered.
+
+Assuming Conjecture~\ref{conj:excess}, the convex function $E$ satisfies
+$E(t)\ge E(0)+tE'(0)$ for all $t\in[0,1]$.
+By Lemma~\ref{lem:excess-endpoints}, $E(0)=0$, and by Lemma~\ref{lem:excess-deriv0}, $E'(0)=0$.
+Hence $E(1)\ge 0$, which is exactly the Stam inequality.
+\end{proof}
+
+\begin{remark}[What remains for general $n$]
+The counterexample in Appendix~\ref{app:counterexample} shows that a global convexity strategy along the dilation
+path cannot be the final mechanism behind the Stam inequality.
+The open problem is to find a different comparison principle along a real-rooted interpolation (such as the dilation
+path or the constant-variance path) that implies $E(1)\ge 0$ without requiring pointwise convexity.
+\end{remark}
+
+%======================================================================
+\appendix
+\section{A numerical counterexample to dilation convexity}
+\label{app:counterexample}
+
+We record one explicit example (found by brute-force search) showing that neither $t\mapsto 1/\Phi_n(r_t)$ nor the
+dilation excess $E(t)$ need be convex.
+
+For $n=3$, take $p$ with roots $(-2,-\tfrac32,\tfrac32)$ and $q$ with roots $(-5,2,3)$ (so $q$ is centered).
+Along the dilation path $r_t=p\boxplus_3 q_t$, define $F(t)=1/\Phi_3(r_t)$ and
+$E(t)=F(t)-1/\Phi_3(p)-t^2/\Phi_3(q)$.
+
+A finite-difference computation (step size $h=10^{-5}$) that verifies all roots of $r_t$ have imaginary parts below
+$10^{-8}$ for the sampled $t$ values yields a negative second derivative:
+\[
+  F''(t^*)\approx -8.16\quad\text{at }t^*\approx 0.435.
+\]
+Since $2/\Phi_3(q)\approx 0.965$, this also forces $E''(t^*)\approx -9.12<0$.
+Nevertheless $E(1)\approx 2.18>0$, so the Stam inequality holds in this example.
+
+Raw convexity $F''(t)\ge 0$ also fails in higher degrees. For $n=4$, take $p$ with roots
+$(-1.10743,-0.81774,-0.36839,0.42118)$ and $q$ with centered roots
+$(-1.57864,-1.22305,-0.93765,3.73934)$. A finite-difference computation (step size $h=2\cdot 10^{-4}$)
+gives $F''(0.3)\approx -0.14$ (and already $F''(0.2)\approx -0.12$), so $t\mapsto 1/\Phi_4(r_t)$ need not be convex.
+
+This appendix is included to prevent overfitting the analysis to a false convexity narrative.
+
+%======================================================================
+\section{Bibliographic notes}
+%======================================================================
+
+\begin{remark}
+This file is intended to be arXiv-style and self-contained.
+The repository \texttt{math-docs} contains additional related notes, including a critical-value formula via residues and further numerical experiments.
+\end{remark}
+
+\begin{thebibliography}{9}
+
+\bibitem{MSS15}
+A.~Marcus, D.~A.~Spielman, and N.~Srivastava,
+\emph{Interlacing families {II}: Mixed characteristic polynomials and the {K}adison--{S}inger problem},
+Ann.\ of\ Math.\ \textbf{182} (2015), 327--350.
+
+\bibitem{Stam59}
+A.~J.~Stam,
+\emph{Some inequalities satisfied by the quantities of information of {F}isher and {S}hannon},
+Inform.\ Control \textbf{2} (1959), 101--112.
+
+\end{thebibliography}
+
+\end{document}
