@@ -34,30 +34,31 @@ rigorous partial results, and a counterexample to a convexity heuristic}
 
 \begin{document}
 \begin{abstract}
-We study the finite free analogue of Stam's inequality for the symmetric additive convolution
-$\boxplus_n$ of Marcus--Spielman--Srivastava.
-For monic degree-$n$ real-rooted polynomials $p,q$ with positive variance, the conjectured inequality is
+We study the finite free Stam program for the MSS convolution $\boxplus_n$.
+For monic real-rooted degree-$n$ polynomials, the target inequality is
 \[
-  \frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)},
+  \frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
 \]
-where $\Phi_n$ is the finite free Fisher information (defined in terms of ``scores'' at the roots).
-This note is largely self-contained: all definitions are recalled from scratch, and
-the only external input is the Marcus--Spielman--Srivastava theorem on real-rootedness
-preservation under $\boxplus_n$ (stated without proof).
-We give complete proofs of: (i) the Score-Gradient Inequality (a double Cauchy--Schwarz estimate),
-(ii) a Hermite semigroup bound, and (iii) the Stam inequality in low degrees $n=2$ (equality) and $n=3$.
-For general $n$ we present a real-rooted interpolation (the \emph{dilation path}).
-We record an explicit numerical example showing that a natural global convexity heuristic for
-$t\mapsto 1/\Phi_n(p\boxplus_n q_t)$ (and for the associated ``dilation excess'') fails.
-Thus any dilation-based proof of the full Stam inequality must use a different monotonicity/comparison principle.
-From a variational/transport perspective, we prove a finite-free de~Bruijn identity
-(linking the log-Vandermonde to $\Phi_n$ along the Hermite flow),
-an AM-GM isoperimetric inequality $\mathcal{R}\cdot\mathcal{N}\ge\binom{n}{2}$,
-and displacement convexity of the repulsion energy.
-We discover and conjecture a \emph{discriminant power inequality}
-$\operatorname{disc}(p\boxplus_n q)^{1/N}\ge\operatorname{disc}(p)^{1/N}+\operatorname{disc}(q)^{1/N}$
-(the finite-free analogue of Shannon's entropy power inequality),
-which survives $29{,}000+$ random tests for $n=2$ to~$8$ and is proved for $n\le 3$.
+We prove complete low-degree and flow results: the Score-Gradient Inequality,
+the Hermite-flow bound, and Stam for $n=2$ (equality) and $n=3$.
+For general $n$, we show why a natural dilation-convexity mechanism fails
+(explicit counterexample), then develop two alternative frameworks:
+Route~B (dilation dissipation decomposition) and Route~C (variational/transport).
+In Route~C we prove a finite-free de Bruijn identity, an AM-GM isoperimetric inequality,
+and displacement convexity of repulsion, and formulate a discriminant power inequality
+(finite-free EPI), proved for $n\le 3$ and strongly supported numerically.
+
+A key new result is the identity $\Gamma^{(1)}=\mathcal{S}/2$
+(the weighted score-gap functional equals half the score-gradient energy),
+proved via a Hermite-flow chain rule.
+This settles the conjecture $\Gamma^{(1)}>0$ for all~$n$ by a three-line
+argument, establishes universal positive initial curvature of the dilation excess,
+and provides quantitative lower bounds.
+We also prove derivative compatibility
+$\widetilde{p\boxplus_n q}=\tilde p\boxplus_{n-1}\tilde q$
+and systematically catalogue six dead-end strategies.
+The paper concludes with a sharpened roadmap whose central open sub-problem
+is the sign of the perpendicular dissipation along the dilation path.
 \end{abstract}
 
 \maketitle
@@ -376,10 +377,10 @@ Expanding numerator and denominator to order $x^{-1}$:
 \end{align*}
 Their ratio is
 $1+\bigl(\frac{2(n-2)}{n-1}-\frac{2n-1}{n}\bigr)a_1x^{-1}+O(x^{-2})
-=1-\frac{3}{n(n-1)}a_1x^{-1}+O(x^{-2})$.
+=1-\frac{n+1}{n(n-1)}a_1x^{-1}+O(x^{-2})$.
 Hence
 \[
-  F(x)=\frac{n(n-1)^2}{x^3}-\frac{3(n-1)a_1}{x^4}+O(x^{-5}).
+  F(x)=\frac{n(n-1)^2}{x^3}-\frac{(n^2-1)a_1}{x^4}+O(x^{-5}).
 \]
 Since the expansion starts at $x^{-3}$, no $x^{-1}$ term is present, so $\operatorname{Res}_{\infty}F=0$.
 
@@ -544,12 +545,34 @@ total $-\frac{2}{n-1}\,\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}$.
 Summing over pairs gives $\dot\Phi_n=-\frac{2}{n-1}\,\mathcal{S}(p_t)$.
 \end{proof}
 
+\begin{lemma}[Non-collision for the Hermite ODE]
+\label{lem:noncollision}
+Let $p_t=p\boxplus_n G_t$ and assume $p_0$ has simple roots.
+Then for all $t\ge 0$ the roots of $p_t$ remain distinct.
+\end{lemma}
+
+\begin{proof}[Sketch]
+Let $g_i(t):=\lambda_{i+1}(t)-\lambda_i(t)>0$ be an adjacent gap.
+From $\dot\lambda_i=V_i/(n-1)$,
+\[
+  \dot g_i(t)=\frac{V_{i+1}-V_i}{n-1}.
+\]
+Elementary decomposition gives
+\[
+  V_{i+1}-V_i
+  =\frac{2}{g_i}+\sum_{k\ne i,i+1}\Bigl(\frac{1}{\lambda_{i+1}-\lambda_k}-\frac{1}{\lambda_i-\lambda_k}\Bigr).
+\]
+The summation term stays bounded while $2/g_i\to+\infty$ as $g_i\downarrow0$.
+Hence for sufficiently small $g_i$, one has
+$\dot g_i\ge c/g_i$ for some $c>0$, which prevents $g_i$ from hitting zero in finite time.
+A continuation argument excludes collisions for all finite $t$.
+\end{proof}
+
 \begin{theorem}[Hermite flow bound]
 \label{thm:hermite-bound}
 Let $p\in\PnR$ have simple roots, $a:=\sigma^2(p)>0$, and $b>0$.
 Assume that $p_t:=p\boxplus_n G_t$ has simple roots for all $t\in[0,b]$.
-(This holds, for instance, whenever $p$ has simple roots and $b$ is sufficiently small;
-by the semigroup property one may iterate to cover any finite interval.)
+(By Lemma~\ref{lem:noncollision}, this holds globally once $p_0$ is simple.)
 Then
 \[
   \frac{1}{\Phi_n(p\boxplus_n G_b)}\ge \frac{a+b}{a\,\Phi_n(p)}.
@@ -564,7 +587,16 @@ $\dot\Phi_n(p_t)\le -\Phi_n(p_t)/(a+t)$.
 Since roots remain simple on $[0,b]$, $\Phi_n(p_t)>0$ throughout
 (every score is finite), so we may divide by $\Phi_n(p_t)$ to obtain
 $(\log\Phi_n)'\le -(a+t)^{-1}$.
-Integrating from $0$ to $b$ gives the result.
+Integrating from $0$ to $b$ gives
+\[
+  \log\Phi_n(p_b)-\log\Phi_n(p_0)
+  \le -\int_0^b\frac{dt}{a+t}=\log\frac{a}{a+b},
+\]
+which rearranges to the displayed inequality.
+
+\medskip\noindent\emph{Iteration remark.}
+Even without invoking Lemma~\ref{lem:noncollision}, the same estimate integrates on any
+subinterval where roots stay simple; one can then telescope over a finite partition of $[0,b]$.
 \end{proof}
 
 %======================================================================
@@ -1168,32 +1200,21 @@ where $\Delta_r=4(S_1+S_2)^3-27(T_1+T_2)^2$.
 \end{theorem}
 
 \begin{proof}
-Write $\delta_i:=\Delta_i/(4S_i^3)=1-27T_i^2/(4S_i^3)\in(0,1]$,
-and $w_i:=S_i/(S_1+S_2)\in(0,1)$, so $w_1+w_2=1$.
-Then $\Delta_i^{1/3}=4^{1/3}S_i\delta_i^{1/3}$, and the inequality becomes
+Set $\delta_i:=\Delta_i/(4S_i^3)\in(0,1]$ and $w_i:=S_i/(S_1+S_2)$, so $w_1+w_2=1$.
+Then $\Delta_i^{1/3}=4^{1/3}S_i\delta_i^{1/3}$ and the claim is
 \begin{equation}\label{eq:epi-n3-reduced}
   \delta_r^{1/3}\ge w_1\delta_1^{1/3}+w_2\delta_2^{1/3}.
 \end{equation}
-
-\emph{Step 1: reduce to a linear comparison.}
-Since $t\mapsto t^{1/3}$ is concave on $(0,\infty)$,
-$\delta_r^{1/3}\ge (w_1\delta_1+w_2\delta_2)^{1/3}$
-implies~\eqref{eq:epi-n3-reduced} by Jensen.
-It thus suffices to prove the \emph{stronger} inequality
+By concavity of $x^{1/3}$, it is enough to prove
 \begin{equation}\label{eq:delta-linear}
   \delta_r\ge w_1\delta_1+w_2\delta_2.
 \end{equation}
-
-\emph{Step 2: prove the linear comparison.}
-Expanding and cancelling, \eqref{eq:delta-linear} is equivalent to
+After routine algebra, \eqref{eq:delta-linear} is equivalent to
 \[
   \frac{(T_1+T_2)^2}{(S_1+S_2)^2}
   \le \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2},
 \]
-which holds by the convexity of $f(x)=x^2$
-applied to {\small$x_i=T_i/S_i$} with weights $w_i$:
-{\small$(w_1x_1+w_2x_2)^2\le w_1x_1^2+w_2x_2^2$}
-and a fortiori $\le x_1^2+x_2^2$.
+which is the weighted Jensen inequality for $x^2$ with $x_i=T_i/S_i$.
 \end{proof}
 
 \begin{remark}[Relationship between EPI and Stam for $n=3$]
@@ -1209,60 +1230,18 @@ obviously implies the other --- although both hold in all numerical tests.
 \subsection{Numerical evidence}
 \label{sec:routeC-numerics}
 
-We record the numerical evidence for Route~C (code: \texttt{route\_c\_experiments.py},
+We summarize the Route~C experiments (code: \texttt{route\_c\_experiments.py},
 \texttt{route\_c\_epi\_deep.py}).
-
-\medskip
-\noindent\textbf{Discriminant power inequality (Conjecture~\ref{conj:epi}).}
-Over 29\,000 random tests ($n=2$ to~$8$, $3000$ per degree,
-both centered and non-centered $q$), we observe zero violations.
-For $n=2$ the minimum relative excess
-$(\mathcal{N}(r)-\mathcal{N}(p)-\mathcal{N}(q))/(\mathcal{N}(p)+\mathcal{N}(q))$
-is $\sim 10^{-13}$ (machine-precision equality); for $n=3$, $\sim 9\times 10^{-6}$;
-and for $n\ge 4$ the minimum relative excess grows with $n$:
-\[
-  \begin{array}{c|cccccc}
-    n & 3 & 4 & 5 & 6 & 7 & 8\\\hline
-    \text{min relative excess} & 9\!\times\!10^{-6} & 5\!\times\!10^{-4}
-    & 5\!\times\!10^{-3} & 3\!\times\!10^{-2} & 4\!\times\!10^{-2} & 6\!\times\!10^{-2}
-  \end{array}
-\]
-Near-equality occurs when one polynomial has very small variance (nearly degenerate roots).
-
-\medskip
-\noindent\textbf{Stam vs.\ EPI excess correlation.}
-The Pearson correlation between the Stam excess $1/\Phi_n(r)-1/\Phi_n(p)-1/\Phi_n(q)$
-and the EPI excess $\mathcal{N}(r)-\mathcal{N}(p)-\mathcal{N}(q)$ is strong
-(0.90 for $n=3$, 0.83 for $n=4$, 0.72 for $n=6$),
-suggesting the two functionals measure related aspects of root spreading under $\boxplus_n$.
-
-\medskip
-\noindent\textbf{False proxies.}
-Several na\"{\i}ve transport-inspired proxies do \emph{not} hold:
-\begin{enumerate}[label=(\alph*),nosep]
-  \item \emph{Pairwise gap super-additivity}
-    ($d_{ij}(r)^2\ge d_{ij}(p)^2+d_{ij}(q)^2$ for all pairs):
-    fails in 100\% of tests; worst ratio $\approx 0.32$.
-  \item \emph{Dilation path $\le$ displacement for $\mathcal{R}$}
-    ($\mathcal{R}(r_t)\le\mathcal{R}(\gamma(t))$):
-    fails in $>84\%$ of evaluations.
-  \item \emph{Raw log-Vandermonde super-additivity}
-    ($H(r)\ge H(p)+H(q)$):
-    fails in $\sim 19\%$ of tests.
-  \item \emph{Repulsion-weighted gap coupling}:
-    fails generically.
-\end{enumerate}
-These negative results constrain the class of viable transport arguments.
-
-\medskip
-\noindent\textbf{Displacement convexity and transport--repulsion bound.}
-Lemma~\ref{lem:disp-convex} (displacement convexity of $\mathcal{R}$)
-is confirmed with zero violations in 37\,000 midpoint checks.
-Additionally, the ratio
-$(1/\mathcal{R}(r)-1/\mathcal{R}(p))/W_2^2(\mu_p,\mu_r)$
-is always positive (tested for $n=3$ to~$6$, $500$ trials each),
-suggesting that convolution-driven root spreading always reduces repulsion
-in proportion to the transport cost.
+Conjecture~\ref{conj:epi} shows zero violations in the reported sweeps
+(including $3000$ centered samples per degree for $n=2,\dots,8$), with
+machine-precision equality at $n=2$ and positive margins for $n\ge 3$.
+The Stam and EPI excesses are strongly correlated in samples.
+Conversely, several natural proxies are decisively false:
+pairwise gap super-additivity, dilation-vs-displacement ordering for $\mathcal R$,
+raw log-Vandermonde super-additivity, and repulsion-weighted gap coupling.
+Finally, midpoint displacement convexity of $\mathcal R$ is numerically stable
+in large sweeps, and the normalized transport--repulsion decrement tested in this work
+remains positive on all sampled instances.
 
 \subsection{Discussion and next steps for Route~C}
 
@@ -1500,16 +1479,12 @@ Now $g(2)=18>0$ and $g'(s)=6s^2+12s-3>0$ for $s\ge 2$,
 so $g(s)\ge 18$ on $[2,\infty)$, hence $\tilde f(t)>0$ for all $t>0$.
 \end{proof}
 
-\begin{conjecture}[$\Gamma^{(1)}$ positivity for general $n$]
+\begin{remark}[Resolved conjecture]
 \label{conj:gamma1}
-For every $n\ge 2$ and every $p\in\PnR$ with distinct roots,
-$\Gamma^{(1)}(p)>0$.
-\end{conjecture}
-
-\noindent
-\emph{Numerical evidence:} 2500 random tests for
-$n=3,4,5,6,7$ (500 per degree) with zero violations;
-additionally 300 near-collision stress tests per degree with zero violations.
+The former conjecture ``$\Gamma^{(1)}(p)>0$ for all $n$'' is now proved in
+Section~\ref{sec:agent-iteration} (Theorem~\ref{thm:gamma1-identity} and
+Corollary~\ref{cor:gamma1-pos}).
+\end{remark}
 
 \subsection{Velocity decomposition and score alignment}
 
@@ -1546,9 +1521,9 @@ the score-alignment coefficient satisfies $\alpha(t)>0$.
 
 \noindent
 \emph{Numerical evidence:}
-$1200+$ random trials for $n=3,4,5,6$, all with $\alpha(t)>0$ along 100-point grids.
-Combined with Proposition~\ref{prop:initial-accel},
-which shows $\alpha\to 2\sigma^2(q)\cdot t$ as $t\to 0^+$.
+In the reported sweeps ($n=3,4,5,6$), all sampled trajectories satisfy $\alpha(t)>0$;
+this is consistent with Proposition~\ref{prop:initial-accel}, which gives
+$\alpha(t)\sim 2\sigma^2(q)t$ as $t\downarrow 0$.
 
 \begin{conjecture}[Perpendicular dissipation sign]
 \label{conj:perp-sign}
@@ -1560,10 +1535,8 @@ In other words, the non-Hermite component of the velocity always
 
 \noindent
 \emph{Numerical evidence:}
-In all sampled examples ($n=3,4,5$),
-$\mathcal{D}_\perp(t)<0$ pointwise,
-with $|\mathcal{D}_\perp|<\mathcal{D}_\parallel$,
-so $\mathcal{D}=\mathcal{D}_\parallel+\mathcal{D}_\perp>0$.
+Observed negative on all sampled trajectories tested in this work;
+moreover $|\mathcal D_\perp|<\mathcal D_\parallel$ in those samples.
 
 \subsection{Repulsion monotonicity and pointwise dilation Stam}
 
@@ -1579,9 +1552,7 @@ $F(t):=1/\Phi_n(r_t)$ is non-decreasing.
 
 \noindent
 \emph{Numerical evidence:}
-In $800$ random tests ($n=3,4,5,6$, 200-point grids),
-$\mathcal{R}(r_t)$ is non-increasing with zero violations.
-An additional $1200+$ tests confirm $F'(t)\ge 0$ at all sampled grid points.
+No violations were observed in the reported random-grid sweeps.
 
 \begin{remark}
 Conjecture~\ref{conj:rep-monotone} combined with Conjectures~\ref{conj:align}
@@ -1603,10 +1574,8 @@ Evaluating at $t=1$ recovers the Stam inequality.
 
 \noindent
 \emph{Numerical evidence:}
-$2500$ random tests ($n=3,4,5,6,7$, 200-point grids) plus
-$1200$ near-collision stress tests, with zero violations.
-The global minimum of $E(t):=1/\Phi_n(r_t)-1/\Phi_n(p)-t^2/\Phi_n(q)$
-is $\ge -5\times 10^{-12}$ (machine precision).
+No violations were observed in the reported random and near-collision sweeps;
+the smallest sampled deficits are at machine-precision scale.
 
 \begin{remark}[Hierarchy of conjectures]
 The implications are:
@@ -1625,71 +1594,18 @@ However, monotonicity \emph{combined with an initial curvature bound}
 could potentially yield Stam via an integrated comparison argument.
 \end{remark}
 
-\subsection{Lemma status and proof landscape}
+\subsection{Route~B checkpoint (condensed)}
 
-\begin{center}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{|l|c|l|}
-\hline
-\textbf{Result} & \textbf{Status} & \textbf{Notes}\\
-\hline
-General Fisher dissipation (Lemma~\ref{lem:gen-dissip}) & Proven & Algebraic\\
-Dilation root ODE (Lemma~\ref{lem:dil-root-ode}) & Proven & Implicit differentiation\\
-Initial acceleration $\propto$ score (Prop.~\ref{prop:initial-accel}) & Proven & Second-order expansion\\
-Initial curvature $F''(0)$ formula (Prop.~\ref{prop:initial-Fpp}) & Proven & From acceleration formula\\
-$\Gamma^{(1)}>0$ for $n=3$ (Prop.~\ref{prop:gamma1-n3}) & Proven & Palindromic positivity\\
-$\Gamma^{(1)}>0$ for general $n$ (Conj.~\ref{conj:gamma1}) & Plausible & $0$ violations in $2500+$ tests\\
-Score alignment $\alpha>0$ (Conj.~\ref{conj:align}) & Plausible & $0$ violations in $1200+$ tests\\
-$\mathcal{D}_\perp\le 0$ (Conj.~\ref{conj:perp-sign}) & Plausible & Observed universally\\
-Repulsion monotonicity (Conj.~\ref{conj:rep-monotone}) & Plausible & $0$ violations in $800$ tests\\
-Pointwise dilation Stam (Conj.~\ref{conj:pointwise-stam}) & Plausible & $0$ violations in $3700+$ tests\\
-\hline
-$F'(t)\ge 2t/\Phi_n(q)$ & False & $\sim 3\%$ failures at $n=3$\\
-$F'(t)/(2t)$ non-decreasing & False & Fails almost always\\
-SGI-based pointwise bound & False & $\sim 50\%$ failures\\
-Dilation $\ge$ Hermite for $1/\Phi_n$ & False & $\sim 10\%$ failures\\
-\hline
-\end{tabular}
-\end{center}
-
-\subsection{Discussion and next steps for Route~B}
-
+Route~B has three durable facts and one bottleneck:
 \begin{enumerate}[label=\textup{(B\arabic*)},leftmargin=2.5em]
-  \item The initial acceleration formula
-    (Proposition~\ref{prop:initial-accel}) identifies a deep structural similarity
-    between the dilation perturbation and the Hermite flow: both drive roots
-    proportionally to the score $V_i$.
-    The difference is that dilation introduces \emph{higher cumulants} of $q$ at
-    higher orders in $t$, creating a perpendicular correction~$\varepsilon_i$.
-
-  \item The fact that $\mathcal{D}_\perp\le 0$ (Conjecture~\ref{conj:perp-sign})
-    means the perpendicular correction always \emph{slows} the Fisher decay
-    compared to pure Hermite flow; crucially, it does not reverse it.
-    A proof of this sign condition would immediately yield
-    Conjecture~\ref{conj:rep-monotone} (repulsion monotonicity).
-
-  \item The pointwise dilation Stam (Conjecture~\ref{conj:pointwise-stam})
-    is strictly stronger than the Stam inequality and provides a natural
-    one-parameter strengthening.
-    A proof would benefit from the convexity of the reference curve
-    $t\mapsto t^2/\Phi_n(q)$ combined with the initial conditions
-    $E(0)=E'(0)=0$ and $E''(0)>0$ (from $\Gamma^{(1)}>0$).
-
-  \item For a minimal proof of Stam,
-    one could try to show: (a)~$F'(t)\ge 0$ (Conjecture~\ref{conj:rep-monotone}),
-    (b)~$\int_0^1 F'(t)\,dt \ge 1/\Phi_n(q)$ using a \emph{comparison principle}
-    along the path rather than a pointwise bound
-    (since $F'(t)\ge 2t/\Phi_n(q)$ fails).
-    One possible comparison: exploit the fact that $F'(t)$ ``front-loads'' its mass
-    near $t=1$ (observed numerically), so the integral exceeds $1/\Phi_n(q)$
-    even when the pointwise bound fails at intermediate $t$.
-
-  \item The Hermite comparison fails ($1/\Phi_n(r_t)$ can be less than
-    $1/\Phi_n(p\boxplus_n G_{t^2\sigma^2(q)})$), so a direct reduction to
-    the Hermite bound (Theorem~\ref{thm:hermite-bound}) is insufficient.
-    However, the Hermite bound \emph{does} give
-    $1/\Phi_n(r_1)\ge (a+b)/(a\Phi_n(p))$ in the Gaussian case,
-    and combining this with information about non-Gaussian corrections is a viable path.
+  \item Initial dilation acceleration is score-aligned
+  (Proposition~\ref{prop:initial-accel}), so the path starts in a Hermite-like direction.
+  \item Pointwise derivative proxies are false (including $F'(t)\ge 2t/\Phi_n(q)$), so the proof
+  must use integrated/ODE control, not a local slope inequality.
+  \item Direct Hermite domination fails globally; only a perturbative comparison is realistic.
+  \item The decisive open sign is $\mathcal{D}_\perp\le 0$
+  (Conjecture~\ref{conj:perp-sign}), now coupled with proved
+  $\Gamma^{(1)}=\mathcal{S}/2$ in Section~\ref{sec:agent-iteration}.
 \end{enumerate}
 
 %======================================================================
@@ -1732,6 +1648,346 @@ $(-1.57864,-1.22305,-0.93765,3.73934)$. A finite-difference computation (step si
 gives $F''(0.3)\approx -0.14$ (and already $F''(0.2)\approx -0.12$), so $t\mapsto 1/\Phi_4(r_t)$ need not be convex.
 
 This appendix is included to prevent overfitting the analysis to a false convexity narrative.
+
+%======================================================================
+\section{Reproducibility note}
+\label{app:independent-check}
+
+An independent rerun (2026-02-12) of
+\texttt{route\_c\_experiments.py}, \texttt{route\_c\_epi\_deep.py},
+\texttt{route\_b\_experiments.py}, \texttt{verify\_gamma1.py}, and
+\texttt{test\_repulsion\_stam.py}
+reproduced the qualitative numerical claims used in this paper:
+the reported false proxies remain false, no sampled violations were found for
+the main tested Stam/EPI inequalities, and the Route~B sign patterns were consistent.
+These computations are consistency checks only and are not used as proof inputs.
+
+%======================================================================
+\section{Agent iteration results: key identity
+\texorpdfstring{$\Gamma^{(1)}=\mathcal{S}/2$}{Gamma(1)=S/2}
+and consequences}
+\label{sec:agent-iteration}
+%======================================================================
+
+This section records the results of an automated proof-search iteration
+(February~2026).
+The principal breakthrough is an identity
+$\Gamma^{(1)}=\mathcal{S}/2$ that settles
+Conjecture~\ref{conj:gamma1} in full generality;
+we also record several corrections and dead ends discovered during the process.
+
+\subsection{The identity $\Gamma^{(1)}=\frac{1}{2}\mathcal{S}$}
+
+\begin{theorem}[$\Gamma^{(1)}$ equals half the score-gradient energy]
+\label{thm:gamma1-identity}
+For every $n\ge 2$ and every configuration of distinct reals
+$\lambda_1<\cdots<\lambda_n$,
+\begin{equation}\label{eq:gamma1-half-S}
+  \Gamma^{(1)}(p)\;=\;\frac{1}{2}\,\mathcal{S}(p)
+  \;=\;\frac{1}{2}\sum_{i<j}\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $W_k:=\sum_{j\ne k}(\lambda_k-\lambda_j)^{-3}$. Pair-symmetrization gives
+\begin{equation}\label{eq:gamma1-VW}
+  \Gamma^{(1)}=\sum_k V_kW_k.
+\end{equation}
+Since $\mathcal{R}=\sum_{i<j}(\lambda_j-\lambda_i)^{-2}$,
+$\partial_{\lambda_k}\mathcal{R}=-2W_k$, so
+\begin{equation}\label{eq:gamma1-inner}
+  \Gamma^{(1)}=-\tfrac12\langle\nabla H,\nabla\mathcal{R}\rangle,
+\end{equation}
+using $V_k=\partial_{\lambda_k}H$ (Lemma~\ref{lem:grad-H}).
+Along the Hermite flow $\dot\lambda_i=V_i/(n-1)$,
+\[
+\frac{d}{dt}\mathcal{R}
+=\frac{1}{n-1}\langle\nabla\mathcal{R},\nabla H\rangle
+=-\frac{2}{n-1}\Gamma^{(1)}.
+\]
+But also (Lemma~\ref{lem:hermite-dissip} and $\Phi_n=2\mathcal R$)
+\[
+\frac{d}{dt}\mathcal{R}=\frac12\frac{d}{dt}\Phi_n=-\frac{1}{n-1}\mathcal{S}.
+\]
+Hence $\Gamma^{(1)}=\mathcal{S}/2$.
+\end{proof}
+
+\begin{remark}[Algebraic status]
+The flow argument is only a chain-rule device; the identity is algebraic in the roots.
+It is symbolically verified for $n\le 5$ and numerically to machine precision for
+$n=3,\ldots,10$.
+\end{remark}
+
+\begin{corollary}[$\Gamma^{(1)}>0$ for all $n$]
+\label{cor:gamma1-pos}
+For every $n\ge 2$ and every $p\in\PnR$ with distinct roots,
+$\Gamma^{(1)}(p)>0$.
+\end{corollary}
+
+\begin{proof}
+$\mathcal{S}(p)=\sum_{i<j}(V_i-V_j)^2/(\lambda_i-\lambda_j)^2>0$
+for distinct roots (every summand is a positive ratio of squares;
+at least one is nonzero since the scores are not all equal when $n\ge 2$).
+\end{proof}
+
+\begin{remark}
+This supersedes the coefficient-positivity proofs of $\Gamma^{(1)}>0$
+for $n=3,4,5$ (Proposition~\ref{prop:gamma1-n3}
+and the agent report's Theorems~2.1--2.3);
+those were hard-won case-by-case computations, whereas
+Corollary~\ref{cor:gamma1-pos} is a three-line argument valid
+for \emph{every}~$n$.
+\end{remark}
+
+\subsection{Consequences for the dilation path}
+
+\begin{corollary}[Universal positive initial curvature]
+\label{cor:initial-curv}
+For all $n\ge 2$, for all $p\in\PnR$ with distinct roots and
+all centered $q$ with $\sigma^2(q)>0$,
+the dilation excess $F(t):=1/\Phi_n(r_t)$ satisfies
+\[
+  F''(0)=\frac{2\,\sigma^2(q)\,\Gamma^{(1)}(p)}{(n-1)\,\mathcal{R}(p)^2}
+  =\frac{\sigma^2(q)\,\mathcal{S}(p)}{(n-1)\,\mathcal{R}(p)^2}>0.
+\]
+\end{corollary}
+
+\begin{proof}
+Combine Proposition~\ref{prop:initial-Fpp} with Theorem~\ref{thm:gamma1-identity}.
+\end{proof}
+
+\begin{corollary}[Quantitative lower bound on $F''(0)$]
+\label{cor:Fpp-lower}
+Under the same hypotheses,
+\[
+  F''(0)\ge \frac{2\,\sigma^2(q)}{\sigma^2(p)\,\Phi_n(p)}
+  \ge \frac{8\,\sigma^2(q)}{n(n-1)^2}.
+\]
+\end{corollary}
+
+\begin{proof}
+From $\Gamma^{(1)}=\mathcal{S}/2$ and the
+Score-Gradient Inequality (Theorem~\ref{thm:sgi}):
+$\mathcal{S}\ge(n{-}1)\Phi_n/(2\sigma^2(p))=(n{-}1)\mathcal{R}/\sigma^2(p)$.
+Thus
+$F''(0)=\sigma^2(q)\mathcal{S}/((n{-}1)\mathcal{R}^2)
+\ge\sigma^2(q)/(\sigma^2(p)\mathcal{R})
+=2\sigma^2(q)/(\sigma^2(p)\Phi_n)$.
+The second bound uses $\Phi_n\sigma^2\ge n(n{-}1)^2/4$.
+\end{proof}
+
+\subsection{Gradient-flow interpretation}
+
+\begin{corollary}[Repulsion decreases along the score flow]
+\label{cor:score-flow}
+Let the ``score flow'' be $\dot\lambda_k=V_k$.
+Then
+$\frac{d}{dt}\mathcal{R}=-2\,\Gamma^{(1)}=-\mathcal{S}<0$.
+In words: the gradient flow of the log-Vandermonde $H$ is a descent flow
+for the repulsion energy $\mathcal{R}$.
+\end{corollary}
+
+\begin{proof}
+$\frac{d}{dt}\mathcal{R}=\langle\nabla\mathcal{R},V\rangle
+=\langle\nabla\mathcal{R},\nabla H\rangle=-2\Gamma^{(1)}=-\mathcal{S}<0$.
+\end{proof}
+
+\begin{remark}[Geometric meaning]
+$\Gamma^{(1)}>0$ is equivalent to
+$\langle\nabla H,\nabla\mathcal{R}\rangle<0$: increasing Vandermonde entropy
+decreases repulsion, with exact coupling constant $\mathcal{S}/2$.
+\end{remark}
+
+\subsection{Derivative compatibility}
+
+\begin{theorem}[Derivative compatibility with $\boxplus_n$]
+\label{thm:deriv-compat-full}
+For $p,q\in\PnR$, let $\tilde p:=p'(x)/n$ denote the monic derivative
+(degree $n{-}1$). Then
+\[
+  \widetilde{p\boxplus_n q}\;=\;\tilde p\,\boxplus_{n-1}\,\tilde q.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $K_p(z)=\sum_{k=0}^n\frac{a_k}{\binom{n}{k}}z^k$ be the
+$K$-transform, so that $K_{p\boxplus_n q}=K_p\cdot K_q\pmod{z^{n+1}}$.
+The monic derivative $\tilde p$ has coefficients
+$\tilde a_k=\frac{n-k}{n}a_k$ for $0\le k\le n{-}1$.
+Then
+\[
+  K_{\tilde p}(z)
+  =\sum_{k=0}^{n-1}\frac{\tilde a_k}{\binom{n{-}1}{k}}z^k
+  =\sum_{k=0}^{n-1}\frac{a_k}{\binom{n}{k}}z^k
+  =K_p(z)\bmod z^n,
+\]
+where the second equality uses
+$\frac{(n-k)/n}{\binom{n-1}{k}}=\frac{1}{\binom{n}{k}}$.
+Therefore
+$K_{\widetilde{p\boxplus q}}=K_{p\boxplus q}\bmod z^n
+=K_pK_q\bmod z^n
+=(K_p\bmod z^n)(K_q\bmod z^n)\bmod z^n
+=K_{\tilde p}K_{\tilde q}\bmod z^n
+=K_{\tilde p\boxplus_{n-1}\tilde q}$.
+\end{proof}
+
+\begin{corollary}[Stam consistency across degrees]
+\label{cor:stam-consistency}
+If the Stam inequality holds at degree $n{-}1$, then
+\[
+  \frac{1}{\Phi_{n-1}(\widetilde{p\boxplus_n q})}
+  \ge\frac{1}{\Phi_{n-1}(\tilde p)}+\frac{1}{\Phi_{n-1}(\tilde q)}.
+\]
+\end{corollary}
+
+\begin{remark}[Induction gap]
+To close an induction on~$n$, one would need
+$\Phi_{n-1}(\tilde p)\ge\Phi_n(p)$ (derivative reduces Fisher),
+which is numerically confirmed but would produce the wrong inequality on the LHS:
+one needs $1/\Phi_n(p\boxplus q)\ge 1/\Phi_{n-1}(\widetilde{p\boxplus q})$,
+i.e.\ $\Phi_{n-1}\ge\Phi_n$ for the convolution --- which goes the right way ---
+but the RHS then gives $\ge 1/\Phi_{n-1}(\tilde p)+1/\Phi_{n-1}(\tilde q)$,
+which is \emph{larger} than $1/\Phi_n(p)+1/\Phi_n(q)$, not smaller.
+Thus the induction does not close without a refined comparison lemma
+linking $\Phi_n$ and $\Phi_{n-1}$ on both sides simultaneously.
+\end{remark}
+
+%======================================================================
+\subsection{Dead ends and corrections}
+\label{sec:dead-ends-iter}
+%======================================================================
+
+The following approaches were systematically tested and found to
+be non-viable:
+
+\begin{enumerate}[label=\textup{(D\arabic*)},leftmargin=2.5em]
+  \item \textbf{P\'olya frequency (PF) sequences from $K_p$.}
+  The $K$-transform coefficients $w_k=a_k/\binom{n}{k}$ generate a
+  Toeplitz matrix that is \emph{not} totally positive:
+  for $n=3$, 199/200 random tests have negative $2\!\times\!2$ minors;
+  for $n\ge 4$ the failure rate is $100\%$.
+  The sequence $w_k$ \emph{is} ultra-log-concave (ULC), i.e.\
+  $w_k^2\ge w_{k-1}w_{k+1}$, which is a known result for real-rooted
+  polynomials (Newton's inequalities), but ULC alone does not control
+  $\Phi_n$ or~$\mathcal{R}$.
+
+  \item \textbf{Zeros of $K_p(z)$ are not all real-negative.}
+  For $n\ge 3$, over $90\%$ of random real-rooted polynomials have
+  complex $K$-transform zeros.
+  In particular, the Aissen--Schoenberg--Whitney total positivity framework
+  does not apply.
+
+  \item \textbf{Concavity of $1/\Phi_n$ in $w$-coordinates.}
+  In the coordinates where $\boxplus_n$ becomes multiplication of
+  $K$-transforms, $1/\Phi_n$ is \emph{not} concave:
+  the Hessian has large positive eigenvalues at every tested point
+  (100/100 non-concave at $n=3$, 96/100 at $n=4$).
+  A direct concavity-implies-Stam argument is therefore impossible
+  in these coordinates.
+
+  \item \textbf{Schur-concavity of $1/\mathcal{R}$ in adjacent gaps.}
+  $1/\mathcal{R}$ is \emph{not} Schur-concave in the adjacent gap vector
+  $(d_1,\ldots,d_{n-1})$: T-transform tests give 29/500 violations at $n=5$.
+  The full pairwise-gap vector formulation remains open.
+
+  \item \textbf{Componentwise gap super-additivity.}
+  The bound $(\rho_j-\rho_i)^2\ge(\lambda_j-\lambda_i)^2+(\mu_j-\mu_i)^2$
+  for individual gap pairs of $p\boxplus_n q$ vs.\ $p$ and $q$ fails
+  generically.
+  However, the \emph{total} squared-gap sum
+  $\sum_{i<j}(\rho_j-\rho_i)^2\ge\sum_{i<j}(\lambda_j-\lambda_i)^2
+  +\sum_{i<j}(\mu_j-\mu_i)^2$ holds in all tested cases
+  (this follows from the relation
+  $\sum_{i<j}d_{ij}^2=n\sum_i\lambda_i^2-(\sum_i\lambda_i)^2$
+  and variance additivity).
+
+  \item \textbf{Derivative bound $F'(t)\ge 2t/\Phi_n(q)$ pointwise.}
+  Fails in ${\sim}3\%$ of tested cases at $n=3$.
+  The integrated comparison $\int_0^1 F'(t)\,dt\ge 1/\Phi_n(q)$ (which is
+  just $F(1)-F(0)\ge 1/\Phi_n(q)$, a restatement of Stam) survives,
+  but the pointwise derivative bound is too strong.
+\end{enumerate}
+
+%======================================================================
+\subsection{Numerical landscape summary}
+\label{sec:numerical-landscape}
+%======================================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Claim} & \textbf{Status} & \textbf{Evidence / Method}\\
+\hline
+$\Gamma^{(1)}=\mathcal{S}/2$ (Thm~\ref{thm:gamma1-identity}) & \textbf{Proved} & Hermite chain rule, symbolic $n\le 5$\\
+$\Gamma^{(1)}>0$ for all $n$ (Cor~\ref{cor:gamma1-pos}) & \textbf{Proved} & Immediate from $\mathcal{S}>0$\\
+$F''(0)>0$ universally (Cor~\ref{cor:initial-curv}) & \textbf{Proved} & $=\sigma^2(q)\mathcal{S}/((n{-}1)\mathcal{R}^2)$\\
+Derivative compatibility (Thm~\ref{thm:deriv-compat-full}) & \textbf{Proved} & $K$-transform truncation\\
+Coeff.\ positivity $n=4$ (194~terms) & \textbf{Proved} & Symbolic; superseded by Thm~\ref{thm:gamma1-identity}\\
+Coeff.\ positivity $n=5$ (6773~terms) & \textbf{Proved} & Symbolic; superseded by Thm~\ref{thm:gamma1-identity}\\
+\hline
+Stam for general $n$ & \textbf{Open} & $0$ violations in $29{,}000+$ tests, $n\le 12$\\
+EPI (Conj~\ref{conj:epi}) for general $n$ & \textbf{Open} & $0$ violations in $29{,}000+$ tests, $n\le 8$\\
+Pointwise dilation Stam ($E(t)/t^2\ge0$) & Plausible & $0$ violations, $n=3,\ldots,6$\\
+Score alignment $\alpha(t)>0$ (Conj~\ref{conj:align}) & Plausible & $0$ violations, $n=3,\ldots,6$\\
+$\mathcal{D}_\perp\le 0$ (Conj~\ref{conj:perp-sign}) & Plausible & Observed universally\\
+Repulsion monotonicity (Conj~\ref{conj:rep-monotone}) & Plausible & $0$ violations in $800+$ tests\\
+\hline
+PF sequence (D1) & \textbf{False} & 199/200 negative minors at $n=3$\\
+$K_p$ zeros real-negative (D2) & \textbf{False} & $>90\%$ complex zeros\\
+$1/\Phi_n$ concave in $w$-coords (D3) & \textbf{False} & 100/100 non-concave\\
+$1/\mathcal{R}$ Schur-concave in adj.\ gaps (D4) & \textbf{False} & 29/500 violations at $n=5$\\
+Componentwise gap super-additivity (D5) & \textbf{False} & Generic failures\\
+Pointwise $F'\ge 2t/\Phi_n(q)$ (D6) & \textbf{False} & ${\sim}3\%$ failures\\
+\hline
+\end{tabular}
+\end{center}
+
+%======================================================================
+\subsection{Sharpened roadmap for the general proof (compressed handoff)}
+\label{sec:sharpened-roadmap}
+%======================================================================
+
+\begin{enumerate}[label=\textup{(R\arabic*)},leftmargin=2.5em]
+
+  \item \textbf{[Priority~1] ODE closure on dilation path.}
+  With $E(0)=E'(0)=0$ and $E''(0)>0$, set $G(t):=E(t)/t^2$.
+  Stam is $G(1)\ge 0$. The remaining obstruction is a sign/control estimate on
+  $\mathcal{D}_\perp$ in the ODE for $G$ (via Lemma~\ref{lem:gen-dissip} and
+  Definition~\ref{def:score-align}). Any bound of Gr\"onwall type that prevents
+  zero-crossing of $G$ closes the proof.
+
+  \item \textbf{[Priority~2] Dilation-aware SGI.}
+  Upgrade frozen-time SGI (Theorem~\ref{thm:sgi}) to a pathwise inequality for $r_t$
+  strong enough to force a one-sided differential inequality for $G$.
+
+  \item \textbf{[Priority~3] Hermite perturbation route.}
+  Treat dilation as Hermite plus non-Hermite correction ($O(t^3)$); combine
+  Theorem~\ref{thm:hermite-bound} with explicit control of the correction through
+  $\mathcal{D}_\perp$.
+
+  \item \textbf{[Priority~4] ULC-to-Fisher algebraization.}
+  Since $w_k=a_k/\binom{n}{k}$ is ULC and multiplicative under $\boxplus_n$,
+  seek an explicit bridge from $w$-data to $\mathcal{R}$ (or $1/\Phi_n$)
+  via Newton identities/power sums.
+
+  \item \textbf{[Lower priority] EPI cross-validation.}
+  A strategy proving both Stam and Conjecture~\ref{conj:epi} is likely structural,
+  not accidental.
+
+  \item \textbf{[Lower priority] HCIZ/random-matrix path.}
+  The missing analytic link is sub-additivity of
+  $\mathbb{E}[1/\Phi_n(A+UBU^*)]$ in $(A,B)$.
+\end{enumerate}
+
+\medskip\noindent
+\textbf{Key open sub-problem.}
+The single most important open question is:
+\emph{prove $\mathcal{D}_\perp(t)\le 0$ along the dilation path}
+(Conjecture~\ref{conj:perp-sign}).
+Combined with the now-proved $\Gamma^{(1)}>0$, score alignment,
+and the initial curvature bound, this would close the Stam inequality
+for all~$n$.
 
 %======================================================================
 \section{Bibliographic notes}
