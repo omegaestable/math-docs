@@ -41,13 +41,23 @@ For monic degree-$n$ real-rooted polynomials $p,q$ with positive variance, the c
   \frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)},
 \]
 where $\Phi_n$ is the finite free Fisher information (defined in terms of ``scores'' at the roots).
-This note is self-contained.
+This note is largely self-contained: all definitions are recalled from scratch, and
+the only external input is the Marcus--Spielman--Srivastava theorem on real-rootedness
+preservation under $\boxplus_n$ (stated without proof).
 We give complete proofs of: (i) the Score-Gradient Inequality (a double Cauchy--Schwarz estimate),
-(ii) a sharp Hermite semigroup bound, and (iii) the Stam inequality in low degrees $n=2$ (equality) and $n=3$.
+(ii) a Hermite semigroup bound, and (iii) the Stam inequality in low degrees $n=2$ (equality) and $n=3$.
 For general $n$ we present a real-rooted interpolation (the \emph{dilation path}).
 We record an explicit numerical example showing that a natural global convexity heuristic for
 $t\mapsto 1/\Phi_n(p\boxplus_n q_t)$ (and for the associated ``dilation excess'') fails.
 Thus any dilation-based proof of the full Stam inequality must use a different monotonicity/comparison principle.
+From a variational/transport perspective, we prove a finite-free de~Bruijn identity
+(linking the log-Vandermonde to $\Phi_n$ along the Hermite flow),
+an AM-GM isoperimetric inequality $\mathcal{R}\cdot\mathcal{N}\ge\binom{n}{2}$,
+and displacement convexity of the repulsion energy.
+We discover and conjecture a \emph{discriminant power inequality}
+$\operatorname{disc}(p\boxplus_n q)^{1/N}\ge\operatorname{disc}(p)^{1/N}+\operatorname{disc}(q)^{1/N}$
+(the finite-free analogue of Shannon's entropy power inequality),
+which survives $29{,}000+$ random tests for $n=2$ to~$8$ and is proved for $n\le 3$.
 \end{abstract}
 
 \maketitle
@@ -61,10 +71,13 @@ Thus any dilation-based proof of the full Stam inequality must use a different m
 
 \begin{definition}[Real-rooted polynomials]
 Fix $n\ge 2$. Let $\PnR$ denote the set of monic degree-$n$ polynomials with all roots real.
-For $p\in\PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, write
+Every $p\in\PnR$ can be written
 \[
-  p(x)=\prod_{i=1}^n(x-\lambda_i)=\sum_{k=0}^n a_k\,x^{n-k}.
+  p(x)=\prod_{i=1}^n(x-\lambda_i)=\sum_{k=0}^n a_k\,x^{n-k}
 \]
+with $\lambda_1\le\cdots\le\lambda_n$ (roots listed with multiplicity).
+We say $p$ has \emph{simple roots} if all inequalities are strict.
+In the sequel, we shall always state explicitly whenever simple roots are required.
 \end{definition}
 
 \begin{definition}[Symmetric additive convolution]
@@ -134,11 +147,19 @@ $\Phi_n(\tau_c p)=\Phi_n(p)$ and $\sigma^2(\tau_c p)=\sigma^2(p)$.
 \end{lemma}
 
 \begin{proof}
-Let $K_p$ denote the normalized generating function used in the MSS framework.
-Translation by $c$ multiplies the generating function by $e^{cz}$:
-$K_{\tau_c p}(z)=e^{cz}K_p(z)$.
-Using $K_{p\boxplus_n q}=K_pK_q$ modulo $z^{n+1}$ gives
-$K_{\tau_a p\boxplus_n \tau_b q}=e^{(a+b)z}K_pK_q=K_{\tau_{a+b}(p\boxplus_n q)}$.
+For $p(x)=\sum_{k=0}^n a_k x^{n-k}\in\PnR$, define the \emph{normalized generating function}
+\[
+  K_p(z):=\sum_{k=0}^n \frac{a_k}{\binom{n}{k}}\,z^k,
+\]
+so that $K_{p\boxplus_n q}(z)=K_p(z)\,K_q(z)\pmod{z^{n+1}}$
+(see~\cite{MSS15}).
+Translation by $c$ replaces each root $\lambda_i$ by $\lambda_i+c$.
+Since $K_p$ is binomial-normalized, the shift identity
+$K_{\tau_c p}(z)=e^{cz}K_p(z)\pmod{z^{n+1}}$
+is exactly the standard MSS binomial-convolution relation (see~\cite{MSS15}).
+Therefore
+$K_{\tau_a p\boxplus_n \tau_b q}=e^{(a+b)z}K_pK_q=K_{\tau_{a+b}(p\boxplus_n q)}\pmod{z^{n+1}}$,
+and since $K$ determines the monic polynomial, the identity follows.
 The invariance statements follow from the definitions.
 \end{proof}
 
@@ -146,7 +167,10 @@ The invariance statements follow from the definitions.
 \section{Preliminary identities}
 %======================================================================
 
-Throughout this section, $p\in\PnR$ has distinct roots $\lambda_1<\cdots<\lambda_n$ and scores $V_i$.
+\medskip
+\noindent\textbf{Standing hypothesis for Section~2.}
+Throughout this section, $p\in\PnR$ has simple (i.e.\ distinct) roots $\lambda_1<\cdots<\lambda_n$
+and scores $V_i$ as in Definition~\ref{def:fisher}.
 
 \begin{lemma}[Score--derivative relation]
 \label{lem:score-deriv}
@@ -181,7 +205,8 @@ $\frac{\lambda_i}{\lambda_i-\lambda_j}+\frac{\lambda_j}{\lambda_j-\lambda_i}=1$.
 
 (iii) follows from (ii) and (i).
 
-(iv) Expand $\sum_i V_i^2=\sum_i V_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ and pair $(i,j)$ and $(j,i)$.
+(iv) Write $\Phi_n(p)=\sum_i V_i^2=\sum_i V_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$.
+Pairing $(i,j)$ and $(j,i)$ gives $\frac{V_i-V_j}{\lambda_i-\lambda_j}$, and summing over $i<j$ yields the claim.
 \end{proof}
 
 \begin{lemma}[Variance via coefficients]
@@ -247,21 +272,30 @@ We show $ST\ge \frac{n(n-1)}{2}U$.
 
 First, Lemma~\ref{lem:score-id}~\eqref{it:score-centered} and Cauchy--Schwarz give
 $\frac{n^2(n-1)^2}{4}\le TU$.
-Second, Lemma~\ref{lem:score-id}~\eqref{it:score-gap} and Cauchy--Schwarz give
-$U^2\le S\binom{n}{2}=\frac{n(n-1)}{2}S$.
+Second, Lemma~\ref{lem:score-id}~\eqref{it:score-gap} writes $U=\sum_{i<j}a_{ij}$
+with $a_{ij}:=(V_i-V_j)/(\lambda_i-\lambda_j)$.
+Applying Cauchy--Schwarz to the vector $(a_{ij})_{i<j}$ and the all-ones vector gives
+$U^2\le \binom{n}{2}\sum_{i<j}a_{ij}^2=\frac{n(n-1)}{2}S$.
 Combine:
 \[
-  ST\ge \frac{2U^2}{n(n-1)}\,T=\frac{2U}{n(n-1)}\,(TU)
+  ST\ge \frac{2U^2}{n(n-1)}\,T=\frac{2U}{n(n-1)}(TU)
   \ge \frac{2U}{n(n-1)}\,\frac{n^2(n-1)^2}{4}=\frac{n(n-1)}{2}U.\qedhere
 \]
-The equality characterization is the standard ``both Cauchy--Schwarz equalities'' argument.
+
+\medskip\noindent\emph{Equality characterization.}
+Equality in~\eqref{eq:sgi} requires simultaneous equality in both Cauchy--Schwarz applications.
+The first (Fisher--variance) gives $V_i=c(\lambda_i-\bar\lambda)$ for a constant $c$.
+The second (score-gap) gives $\frac{V_i-V_j}{\lambda_i-\lambda_j}=\mu$ for every $i<j$
+and a common value $\mu$.
+Substituting $V_i=c(\lambda_i-\bar\lambda)$ into the second condition yields
+$c=\mu$, which is consistent, so the equality case is exactly $V_i=c(\lambda_i-\bar\lambda)$.
 \end{proof}
 
 %======================================================================
-\section{Low-degree Stam: $n=2$ and $n=3$}
+\section{Low-degree Stam: \texorpdfstring{$n=2$ and $n=3$}{n=2 and n=3}}
 %======================================================================
 
-\subsection{$n=2$: equality and convexity along the dilation path}
+\subsection{\texorpdfstring{$n=2$}{n=2}: equality and convexity along the dilation path}
 
 \begin{proposition}[Quadratic case]
 \label{prop:n2}
@@ -277,17 +311,16 @@ $F(t):=1/\Phi_2(r_t)$ is a quadratic polynomial in $t$ with $F''(t)>0$.
 If $p(x)=(x-\lambda_1)(x-\lambda_2)$ with $d=\lambda_2-\lambda_1>0$, then
 $V_1=-1/d$, $V_2=1/d$, hence $\Phi_2(p)=2/d^2$ and
 $\sigma^2(p)=d^2/4$, so $1/\Phi_2(p)=2\sigma^2(p)$.
-By variance additivity (Lemma~\ref{lem:var-add}),
+Variance additivity gives
 $1/\Phi_2(p\boxplus_2 q)=2\sigma^2(p\boxplus_2 q)=2\sigma^2(p)+2\sigma^2(q)$.
-
-For dilation: $q_t$ scales the root gap by $t$, so
-$\sigma^2(q_t)=t^2\sigma^2(q)$, and the same identity gives
-$1/\Phi_2(r_t)=2(\sigma^2(p)+t^2\sigma^2(q))$, with constant second derivative.
+Along dilation, $\sigma^2(q_t)=t^2\sigma^2(q)$, hence
+$1/\Phi_2(r_t)=2(\sigma^2(p)+t^2\sigma^2(q))$, a quadratic in $t$ with positive constant second derivative.
 \end{proof}
 
-\subsection{$n=3$: an explicit computation (centered cubics)}
+\subsection{\texorpdfstring{$n=3$}{n=3}: an explicit computation (centered cubics)}
 
-\subsubsection{A critical-value formula for $\Phi_n$}
+The following residue formula is valid for all degrees;
+we state it here because its only application in this paper is to the cubic case.
 
 \begin{theorem}[Critical-value formula]
 \label{thm:critval}
@@ -321,9 +354,34 @@ Thus
 \]
 
 \emph{Residue at infinity.}
-As $x\to\infty$, $p(x)\sim x^n$, $p'(x)\sim n x^{n-1}$, and
-$p''(x)\sim n(n-1)x^{n-2}$, so $F(x)=\frac{n(n-1)^2}{x^3}(1+O(x^{-1}))$.
-Hence $\operatorname{Res}_{\infty}F=0$.
+We need $\operatorname{Res}_{\infty}F=0$.
+Equivalently, the coefficient of $x^{-1}$ in the Laurent expansion of $F$ at $\infty$ must vanish.
+Write $p(x)=x^n+a_1x^{n-1}+a_2x^{n-2}+\cdots$, so that
+\begin{align*}
+  p(x)  &= x^n\bigl(1+a_1x^{-1}+a_2x^{-2}+\cdots\bigr),\\
+  p'(x) &= nx^{n-1}\bigl(1+\tfrac{n-1}{n}a_1x^{-1}+\tfrac{n-2}{n}a_2x^{-2}+\cdots\bigr),\\
+  p''(x)&= n(n-1)x^{n-2}\bigl(1+\tfrac{n-2}{n-1}a_1x^{-1}+\tfrac{(n-3)(n-2)}{n(n-1)}a_2x^{-2}\cdots\bigr).
+\end{align*}
+Therefore
+\[
+  F(x)=\frac{p''(x)^2}{p'(x)\,p(x)}
+  =\frac{n(n-1)^2}{x^3}\;\frac{\bigl(1+\tfrac{n-2}{n-1}a_1x^{-1}+\cdots\bigr)^2}
+       {\bigl(1+\tfrac{n-1}{n}a_1x^{-1}+\cdots\bigr)\bigl(1+a_1x^{-1}+\cdots\bigr)}.
+\]
+Expanding numerator and denominator to order $x^{-1}$:
+\begin{align*}
+  \text{numerator:}\quad &1+\frac{2(n-2)}{n-1}\,a_1x^{-1}+O(x^{-2}),\\
+  \text{denominator:}\quad &1+\Bigl(\frac{n-1}{n}+1\Bigr)a_1x^{-1}+O(x^{-2})
+  =1+\frac{2n-1}{n}\,a_1x^{-1}+O(x^{-2}).
+\end{align*}
+Their ratio is
+$1+\bigl(\frac{2(n-2)}{n-1}-\frac{2n-1}{n}\bigr)a_1x^{-1}+O(x^{-2})
+=1-\frac{3}{n(n-1)}a_1x^{-1}+O(x^{-2})$.
+Hence
+\[
+  F(x)=\frac{n(n-1)^2}{x^3}-\frac{3(n-1)a_1}{x^4}+O(x^{-5}).
+\]
+Since the expansion starts at $x^{-3}$, no $x^{-1}$ term is present, so $\operatorname{Res}_{\infty}F=0$.
 
 By the global residue theorem, the sum of all residues on the sphere is zero:
 $4\Phi_n(p)+\sum_{j=1}^{n-1} \frac{p''(\zeta_j)}{p(\zeta_j)}=0$, proving~\eqref{eq:critval}.
@@ -360,13 +418,22 @@ $(p\boxplus_3 q)(x)=x^3-(S_1+S_2)x+(T_1+T_2)$.
 \end{proposition}
 
 \begin{proof}
-With $a_1=b_1=0$ the only surviving coefficient contributions are additive for $a_2,a_3$.
+For $n=3$ we have $a_0=b_0=1$ (monic), $a_1=b_1=0$ (centered), $a_2=-S_1$, $a_3=T_1$,
+and similarly for $q$.
+Using Definition~\ref{def:conv} with $n=3$, the convolution coefficients are
+\[
+  c_k=\sum_{i+j=k}\frac{(3-i)!\,(3-j)!}{3!\,(3-k)!}\,a_ib_j.
+\]
+A direct substitution gives
+$c_0=1$, $c_1=0$, $c_2=a_2+b_2=-(S_1+S_2)$, and $c_3=a_3+b_3=T_1+T_2$.
+Therefore $(p\boxplus_3 q)(x)=x^3-(S_1+S_2)x+(T_1+T_2)$.
 \end{proof}
-
-\begin{theorem}[Stam for $n=3$]
+\begin{theorem}[Stam for n=3]
 \label{thm:stam3}
 The finite free Stam inequality holds for $n=3$.
-Equality holds iff $T_1=T_2=0$ in the centered parametrization.
+More precisely, after replacing $p,q$ by their centered translates
+(which preserves both sides of the inequality by Lemma~\ref{lem:translation}),
+equality holds if and only if $T_1=T_2=0$, i.e.\ both polynomials are even.
 \end{theorem}
 
 \begin{proof}
@@ -376,7 +443,17 @@ Cancelling the linear terms in $S$, the inequality reduces to
 \[
   \frac{(T_1+T_2)^2}{(S_1+S_2)^2}\le \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2},
 \]
-which is Jensen/convexity for $t\mapsto t^2$.
+which follows from convexity of $x\mapsto x^2$.
+
+To see the equality statement, note that three distinct real roots force $\Delta_i=4S_i^3-27T_i^2>0$,
+hence $S_i>0$; set $x_i:=T_i/S_i$.
+Then
+\[
+\frac{(T_1+T_2)^2}{(S_1+S_2)^2}=\Bigl(\frac{S_1}{S_1+S_2}x_1+\frac{S_2}{S_1+S_2}x_2\Bigr)^2
+\le \frac{S_1}{S_1+S_2}x_1^2+\frac{S_2}{S_1+S_2}x_2^2\le x_1^2+x_2^2.
+\]
+If equality holds at the endpoints, both inequalities are equalities. The first forces $x_1=x_2$,
+and the second then forces $x_1=x_2=0$. Hence $T_1=T_2=0$.
 \end{proof}
 
 %======================================================================
@@ -413,33 +490,67 @@ For $s,t\ge 0$:
 
 \begin{lemma}[Hermite root ODE]
 \label{lem:hermite-ode}
-Along the Hermite flow, if $\lambda_i(t)$ are the roots of $p_t$ and $V_i(t)$ their scores, then
+Suppose $p_t$ has simple roots for all $t$ in an open interval $I$.
+Then the root trajectories $\lambda_i(t)$ are $C^\infty$ on $I$
+(by the implicit function theorem, since $p_t'(\lambda_i(t))\ne 0$),
+and
 \[
   \dot\lambda_i=\frac{1}{n-1}V_i(t).
 \]
 \end{lemma}
 
 \begin{proof}
-Using $K_{G_h}(z)=1-\frac{h}{2(n-1)}z^2+O(h^2)$, one has
+For small $h>0$, expanding the exponential gives
+$K_{G_h}(z)=1-\frac{h}{2(n-1)}z^2+O(h^2)$,
+so the MSS operator acts as
 $T_{G_h}f=f-\frac{h}{2(n-1)}f''+O(h^2)$.
-Differentiate $0=T_{G_h}p_t(\lambda_i(t+h))$ to first order and use Lemma~\ref{lem:score-deriv}.
+Since $p_{t+h}=p_t\boxplus_n G_h=T_{G_h}\,p_t$, evaluating at $\lambda_i(t+h)$ gives
+$0=p_{t+h}(\lambda_i(t+h))=T_{G_h}\,p_t(\lambda_i(t+h))$.
+Expand to first order in $h$:
+\[
+  0 = p_t(\lambda_i+\dot\lambda_i h)
+    - \frac{h}{2(n-1)}p_t''(\lambda_i)+O(h^2)
+  = p_t'(\lambda_i)\,\dot\lambda_i\,h
+    - \frac{h}{2(n-1)}p_t''(\lambda_i)+O(h^2),
+\]
+where we used $p_t(\lambda_i)=0$.
+Dividing by $h\,p_t'(\lambda_i)$ and applying Lemma~\ref{lem:score-deriv}
+($V_i=p_t''(\lambda_i)/(2p_t'(\lambda_i))$) yields $\dot\lambda_i=V_i/(n-1)$.
 \end{proof}
 
 \begin{lemma}[Hermite dissipation]
 \label{lem:hermite-dissip}
+Under the same simple-root hypothesis as Lemma~\ref{lem:hermite-ode},
 \[
   \frac{d}{dt}\Phi_n(p_t)=-\frac{2}{n-1}\,\mathcal{S}(p_t).
 \]
 \end{lemma}
 
 \begin{proof}
-Differentiate $V_i(t)=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ using the root ODE,
-then sum $\dot\Phi_n=2\sum_i V_i\dot V_i$ and symmetrize.
+Differentiate $V_i(t)=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ using the root ODE
+$\dot\lambda_i=V_i/(n-1)$:
+\[
+  \dot V_i
+  =-\sum_{j\ne i}\frac{\dot\lambda_i-\dot\lambda_j}{(\lambda_i-\lambda_j)^2}
+  =-\frac{1}{n-1}\sum_{j\ne i}\frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}.
+\]
+Then
+\[
+  \dot\Phi_n=2\sum_i V_i\dot V_i
+  =-\frac{2}{n-1}\sum_i V_i\sum_{j\ne i}\frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}.
+\]
+Symmetrizing: for each unordered pair $\{i,j\}$, the contributions from the $i$-sum and the $j$-sum
+total $-\frac{2}{n-1}\,\frac{(V_i-V_j)^2}{(\lambda_i-\lambda_j)^2}$.
+Summing over pairs gives $\dot\Phi_n=-\frac{2}{n-1}\,\mathcal{S}(p_t)$.
 \end{proof}
 
 \begin{theorem}[Hermite flow bound]
 \label{thm:hermite-bound}
-Let $a:=\sigma^2(p)>0$ and $b>0$. Then
+Let $p\in\PnR$ have simple roots, $a:=\sigma^2(p)>0$, and $b>0$.
+Assume that $p_t:=p\boxplus_n G_t$ has simple roots for all $t\in[0,b]$.
+(This holds, for instance, whenever $p$ has simple roots and $b$ is sufficiently small;
+by the semigroup property one may iterate to cover any finite interval.)
+Then
 \[
   \frac{1}{\Phi_n(p\boxplus_n G_b)}\ge \frac{a+b}{a\,\Phi_n(p)}.
 \]
@@ -450,7 +561,10 @@ Apply the Score-Gradient Inequality (Theorem~\ref{thm:sgi}) to $p_t$:
 $\mathcal{S}(p_t)\ge \frac{(n-1)\Phi_n(p_t)}{2\sigma^2(p_t)}=\frac{(n-1)\Phi_n(p_t)}{2(a+t)}$.
 With Lemma~\ref{lem:hermite-dissip},
 $\dot\Phi_n(p_t)\le -\Phi_n(p_t)/(a+t)$.
-Integrate $(\log\Phi_n)'\le -(a+t)^{-1}$ from $0$ to $b$.
+Since roots remain simple on $[0,b]$, $\Phi_n(p_t)>0$ throughout
+(every score is finite), so we may divide by $\Phi_n(p_t)$ to obtain
+$(\log\Phi_n)'\le -(a+t)^{-1}$.
+Integrating from $0$ to $b$ gives the result.
 \end{proof}
 
 %======================================================================
@@ -526,7 +640,7 @@ the subtraction of $t^2/\Phi_n(q)$ shifts the curvature by a negative
 constant and can force $E''(t)<0$.
 \end{remark}
 
-\begin{lemma}[Vanishing first derivative at $t=0$]
+\begin{lemma}[Vanishing first derivative at t=0]
 \label{lem:excess-deriv0}
 Assume $q$ is centered (i.e. the sum of its roots is zero, equivalently its $x^{n-1}$ coefficient vanishes).
 Then $E'(0)=0$.
@@ -542,9 +656,19 @@ By Definition~\ref{def:conv},
   r_t(x)=\sum_{k=0}^n\frac{(n-k)!}{n!}\,b_k(t)\,p^{(k)}(x)
   =p(x)+\sum_{k=1}^n\frac{(n-k)!}{n!}\,t^k b_k\,p^{(k)}(x).
 \]
-Since $b_1=0$, the first nonzero term is order $t^2$, hence $\partial_t r_t|_{t=0}=0$ as a polynomial.
-In particular, the coefficient vector of $r_t$ has no linear term in $t$.
-When $p$ has distinct roots, the roots of $r_t$ depend smoothly on the coefficients for $t$ in a neighborhood of $0$,
+Since $b_1=0$, the first nonzero perturbation is order $t^2$, so
+$\partial_t r_t\big|_{t=0}=0$ as a polynomial.
+
+Now differentiate the identity $r_t(\lambda_i(t))\equiv 0$ in $t$.
+Since $r_0=p$ has simple roots, the implicit function theorem
+(applied to $r_t(\lambda_i(t))=0$ with $r_0'(\lambda_i)=p'(\lambda_i)\ne 0$)
+guarantees that each $\lambda_i(t)$ is $C^\infty$ near $t=0$.
+Differentiating gives
+\[
+  \dot\lambda_i(0)
+  =-\frac{\partial_t r_t(\lambda_i)\big|_{t=0}}{r_0'(\lambda_i)}
+  =-\frac{0}{p'(\lambda_i)}=0,
+\]
 so each root trajectory has zero first derivative at $t=0$.
 Since $\Phi_n$ is a smooth function of the roots as long as they remain distinct,
 this implies
@@ -568,34 +692,1041 @@ By Lemma~\ref{lem:excess-endpoints}, $E(0)=0$, and by Lemma~\ref{lem:excess-deri
 Hence $E(1)\ge 0$, which is exactly the Stam inequality.
 \end{proof}
 
-\begin{remark}[What remains for general $n$]
-The counterexample in Appendix~\ref{app:counterexample} shows that a global convexity strategy along the dilation
-path cannot be the final mechanism behind the Stam inequality.
-The open problem is to find a different comparison principle along a real-rooted interpolation (such as the dilation
-path or the constant-variance path) that implies $E(1)\ge 0$ without requiring pointwise convexity.
+\begin{remark}[What remains for general n]
+Appendix~\ref{app:counterexample} rules out global convexity of the dilation excess as a general mechanism.
+The remaining task is to find a different one-sided comparison principle along a real-rooted interpolation
+(dilation path, constant-variance path, or similar) that still forces $E(1)\ge 0$.
 \end{remark}
+
+%======================================================================
+\section{Auxiliary toolkit for future attempts}
+%======================================================================
+
+The results in this section are \emph{not} used elsewhere in the paper.
+They record operator identities and proxy functionals intended as scaffolding
+for future general-$n$ attempts at the Stam inequality,
+and are included for the convenience of the reader.
+
+\subsection{Operator paths in the normalized derivative basis}
+
+\begin{definition}[Normalized derivative operators]
+For $0\le k\le n$, set
+\[
+  D_k:=\frac{(n-k)!}{n!}\,\partial_x^k.
+\]
+Then for $q(x)=\sum_{k=0}^n b_k x^{n-k}$,
+\[
+  T_q=\sum_{k=0}^n b_k D_k,
+\]
+and $p\boxplus_n q=T_qp$.
+\end{definition}
+
+\begin{lemma}[Dilation and Hermite as coefficient rays]
+\label{lem:operator-rays}
+Let $q_t(x)=\prod_{i=1}^n(x-t\mu_i)=\sum_{k=0}^n t^k b_k x^{n-k}$. Then
+\[
+  T_{q_t}=\sum_{k=0}^n t^k b_k D_k.
+\]
+If $G_t$ is the Hermite kernel (Definition~\ref{def:hermite}), then
+\[
+  T_{G_t}=\sum_{m=0}^{\lfloor n/2\rfloor}\frac{1}{m!}\Bigl(-\frac{t}{2(n-1)}\Bigr)^m\partial_x^{2m}.
+\]
+In particular, both the dilation family and the Hermite flow are explicit paths in the
+commutative algebra generated by $\partial_x$.
+\end{lemma}
+
+\begin{proof}
+The dilation identity is immediate from coefficient scaling $b_k(t)=t^k b_k$.
+For $G_t$, use $K_{G_t}(z)=\exp(-\tfrac{t}{2(n-1)}z^2)\pmod{z^{n+1}}$ and the MSS operator rule
+$T_q=\sum_k \frac{(n-k)!}{n!}b_k\partial_x^k$; only even powers occur, with the displayed coefficients.
+Commutativity follows because all operators are polynomials in $\partial_x$.
+\end{proof}
+
+\begin{remark}[Why this matters]
+Lemma~\ref{lem:operator-rays} identifies the operator coefficients as the control variables
+for each interpolation, which is the natural format for MSS-style one-sided estimates.
+\end{remark}
+
+\subsection{Fisher--repulsion identity and its consequences}
+
+\begin{definition}[Pairwise repulsion energy]
+For $p\in\PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, define
+\[
+  \mathcal{R}(p):=\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}.
+\]
+\end{definition}
+
+\begin{theorem}[Fisher--repulsion identity]
+\label{lem:phi-vs-R}
+For $p\in\PnR$ with distinct roots,
+\begin{equation}\label{eq:phi-eq-2R}
+  \Phi_n(p)=2\,\mathcal{R}(p).
+\end{equation}
+In particular, $1/\Phi_n(p)=1/(2\mathcal{R}(p))$.
+\end{theorem}
+
+\begin{proof}
+Expand $\Phi_n=\sum_{i=1}^n V_i^2$ by writing each $V_i$ as a sum:
+\[
+  \Phi_n
+  =\sum_i\sum_{j\ne i}\sum_{k\ne i}
+    \frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}
+  =\underbrace{\sum_i\sum_{j\ne i}\frac{1}{(\lambda_i-\lambda_j)^2}}_%
+    {\displaystyle=\,2\mathcal{R}}
+  +\underbrace{\sum_i\sum_{\substack{j\ne i,\,k\ne i\\j\ne k}}
+    \frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}}_%
+    {\displaystyle=:\,C}.
+\]
+The first sum counts each unordered pair $\{i,j\}$ twice, giving $2\mathcal{R}$.
+To show $C=0$, group by unordered triples $\{a,b,c\}$.
+Each triple contributes (with two orderings of the non-pivot pair)
+\[
+  2\Bigl[
+    \frac{1}{(\lambda_a-\lambda_b)(\lambda_a-\lambda_c)}
+    +\frac{1}{(\lambda_b-\lambda_a)(\lambda_b-\lambda_c)}
+    +\frac{1}{(\lambda_c-\lambda_a)(\lambda_c-\lambda_b)}
+  \Bigr].
+\]
+Set $u=\lambda_a-\lambda_b$, $v=\lambda_a-\lambda_c$.
+The bracket becomes
+$\frac{1}{uv}-\frac{1}{u(v-u)}+\frac{1}{v(v-u)}$.
+Putting over the common denominator $uv(v-u)$ gives
+$\frac{v-u-v+u}{uv(v-u)}=0$.
+Since each bracket vanishes, $C=0$ and $\Phi_n=2\mathcal{R}$.
+\end{proof}
+
+\begin{remark}
+This identity is purely algebraic: it holds for any list of distinct reals,
+with no real-rootedness hypothesis.
+It sharpens the Cauchy--Schwarz bound $\Phi_n\le 2(n-1)\mathcal{R}$
+by a factor of~$n-1$.
+\end{remark}
+
+\begin{corollary}[Stam as a harmonic-mean bound on repulsion]
+\label{cor:stam-repulsion}
+The Stam inequality
+$1/\Phi_n(p\boxplus_n q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+is equivalent to
+\[
+  \frac{1}{\mathcal{R}(p\boxplus_n q)}\ge \frac{1}{\mathcal{R}(p)}+\frac{1}{\mathcal{R}(q)},
+\]
+i.e.~$\mathcal{R}(p\boxplus_n q)$ is bounded above by the harmonic mean of
+$\mathcal{R}(p)$ and $\mathcal{R}(q)$.
+\end{corollary}
+
+\begin{proof}
+Divide~\eqref{eq:phi-eq-2R} through by $2$.
+\end{proof}
+
+\begin{corollary}[Improved Fisher--variance via repulsion]
+\label{cor:proxy-corridor}
+For every $p\in\PnR$ with distinct roots and positive variance,
+\[
+  \frac{1}{\Phi_n(p)}=\frac{1}{2\mathcal{R}(p)}
+  \le \frac{4\,\sigma^2(p)}{n(n-1)^2}.
+\]
+Equivalently, $\mathcal{R}(p)\,\sigma^2(p)\ge n(n-1)^2/8$.
+\end{corollary}
+
+\begin{proof}
+Combine Theorem~\ref{lem:phi-vs-R} with Lemma~\ref{lem:FV}.
+\end{proof}
+
+\begin{remark}[Reformulation of Stam]
+The identity $\Phi_n=2\mathcal{R}$ gives the cleanest formulation of
+the Stam inequality: $\mathcal{R}$ depends only on root gaps (no
+``scores'' needed), and the target is the classical harmonic-mean
+inequality for an energy functional.
+\end{remark}
+
+\subsection{Barrier-inspired resolvent quantities}
+
+\begin{definition}[Cauchy transform at height $\eta$]
+\label{def:height-eta}
+For $\eta>0$ and real $x$, define
+\[
+  g_{p,\eta}(x):=\frac{1}{n}\,\frac{p'(x+i\eta)}{p(x+i\eta)}
+  =\frac{1}{n}\sum_{j=1}^n\frac{1}{x+i\eta-\lambda_j}.
+\]
+Write
+$g_{p,\eta}=u_{p,\eta}+iv_{p,\eta}$ with $u,v\in\R$.
+\end{definition}
+
+\begin{lemma}[Uniform bounds away from the real axis]
+\label{lem:eta-bounds}
+For every $\eta>0$ and every real $x$,
+\[
+  |u_{p,\eta}(x)|\le \frac{1}{\eta},
+  \qquad
+  0<v_{p,\eta}(x)\le \frac{1}{\eta}.
+\]
+\end{lemma}
+
+\begin{proof}
+Using Definition~\ref{def:height-eta},
+\[
+  u_{p,\eta}(x)=\frac{1}{n}\sum_{j=1}^n\frac{x-\lambda_j}{(x-\lambda_j)^2+\eta^2},
+  \qquad
+  v_{p,\eta}(x)=\frac{1}{n}\sum_{j=1}^n\frac{\eta}{(x-\lambda_j)^2+\eta^2}.
+\]
+Each summand has absolute value at most $1/\eta$ in the real part and lies in $(0,1/\eta]$
+in the imaginary part, and averaging preserves these bounds.
+\end{proof}
+
+\begin{remark}[Connection to MSS barriers]
+In MSS-style arguments one tracks logarithmic derivatives off the real axis.
+Here $g_{p,\eta}(x)$ is precisely that quantity at height $\eta$, and unlike $\Phi_n$
+it stays uniformly bounded and avoids collision singularities.
+\end{remark}
+
+\subsection{Discussion and next steps}
+
+\begin{enumerate}[label=\textup{(L\arabic*)},leftmargin=2.5em]
+  \item\label{log:l1}
+  The dilation-path convexity heuristic for $E(t)$ is false globally, so the final proof
+  mechanism is likely to be one-sided and robust rather than purely curvature-based.
+
+  \item\label{log:l2}
+  The operator identities in Lemma~\ref{lem:operator-rays} provide a clean decomposition of
+  both interpolation families into differential-operator coordinates.
+  This is the correct format for importing MSS-style barrier ideas.
+
+  \item\label{log:l3}
+  The identity $\Phi_n=2\mathcal{R}$ (Theorem~\ref{lem:phi-vs-R}) and
+  the resulting harmonic-mean reformulation (Corollary~\ref{cor:stam-repulsion})
+  provide the cleanest formulation of the Stam conjecture.
+
+  \item\label{log:l4}
+  Numerical experiments (see \texttt{route\_a\_experiments.py} and \texttt{test\_repulsion\_stam.py})
+  show that Lorentzian regularisation of the repulsion energy at any fixed $\eta>0$
+  \emph{breaks} the super-additivity; thus a direct resolvent-barrier proof at fixed height
+  is unlikely to succeed without substantial modification.
+  However, the identity $\Phi_n=2\mathcal{R}$ was discovered via this investigation and is
+  independently useful.
+
+  \item\label{log:l5}
+  The most promising remaining strategies are:
+  (a) a dilation-path ODE argument for $1/\mathcal{R}(r_t)$ combined with the SGI and
+  the identity $\Phi_n=2\mathcal{R}$ (see Section~\ref{sec:routeB} for Route~B analysis);
+  (b) the constant-variance path combined with
+  monotonicity of $\Phi_n$ under higher-cumulant perturbation;
+  (c) a random-matrix / HCIZ representation of $\mathcal{R}$ as a Haar-averaged trace;
+  (d) a variational/transport approach via the discriminant power inequality discovered in
+  Section~\ref{sec:routeC}.
+  Route~B (Section~\ref{sec:routeB}) provides extensive evidence that $\Phi_n(r_t)$
+  is non-increasing along the dilation path and that the ``pointwise dilation Stam''
+  (Conjecture~\ref{conj:pointwise-stam}) holds; the key open sub-problem is controlling
+  the sign of the perpendicular dissipation (Conjecture~\ref{conj:perp-sign}).
+
+  \item\label{log:l6}
+  Route~C (Section~\ref{sec:routeC}) introduces a transport/variational framework
+  and discovers the \emph{discriminant power inequality} (Conjecture~\ref{conj:epi}):
+  $\mathcal{N}(p\boxplus_n q)\ge\mathcal{N}(p)+\mathcal{N}(q)$,
+  the finite-free analogue of Shannon's entropy-power inequality.
+  The conjecture survives $29\,000+$ random tests for $n=2$ to~$8$ with zero violations.
+  For $n=2$ it reduces to variance additivity (exact equality),
+  and for $n=3$ it is proved via the same convexity argument that establishes the Stam inequality.
+  Several na\"{\i}ve transport proxies (pairwise gap super-additivity, dilation vs.\ displacement
+  comparison, weighted gap coupling) are disproved by numerical counterexample.
+\end{enumerate}
+
+%======================================================================
+\section{Route C: Variational / transport approach}
+\label{sec:routeC}
+%======================================================================
+
+We now develop a variational perspective on the Stam inequality based on
+optimal-transport ideas and energy functionals of root configurations.
+The key outcome is a new conjectured inequality (the \emph{discriminant power inequality},
+Conjecture~\ref{conj:epi}) that is the finite-free analogue of Shannon's entropy power inequality.
+
+\subsection{Root measures, log-Vandermonde, and discriminant power}
+
+\begin{definition}[Empirical root measure]
+\label{def:root-meas}
+For $p\in\PnR$ with roots $\lambda_1\le\cdots\le\lambda_n$, define
+$\mu_p:=\frac{1}{n}\sum_{i=1}^n\delta_{\lambda_i}$.
+\end{definition}
+
+\begin{definition}[Log-Vandermonde (``entropy'')]
+\label{def:log-vand}
+For $p\in\PnR$ with distinct roots $\lambda_1<\cdots<\lambda_n$, define
+\[
+  H(p):=\sum_{1\le i<j\le n}\log(\lambda_j-\lambda_i)
+  =\log\prod_{i<j}(\lambda_j-\lambda_i)
+  =\tfrac{1}{2}\log\operatorname{disc}(p),
+\]
+where $\operatorname{disc}(p)=\prod_{i<j}(\lambda_j-\lambda_i)^2$ is the discriminant.
+If $p$ has a repeated root, set $H(p):=-\infty$.
+\end{definition}
+
+\begin{definition}[Discriminant power (``entropy power'')]
+\label{def:disc-power}
+With $N:=\binom{n}{2}$, define the \emph{discriminant power}
+\[
+  \mathcal{N}(p):=\operatorname{disc}(p)^{1/N}=e^{2H(p)/N}
+  =\Bigl(\prod_{i<j}(\lambda_j-\lambda_i)^2\Bigr)^{1/N},
+\]
+i.e.\ the geometric mean of the squared gaps.
+Set $\mathcal{N}(p):=0$ when $p$ has a repeated root.
+\end{definition}
+
+\begin{remark}
+For $n=2$, $N=1$ and $\mathcal{N}(p)=(\lambda_2-\lambda_1)^2=4\sigma^2(p)$.
+More generally, $\mathcal{N}(p)$ captures the ``typical squared gap'' of~$p$.
+\end{remark}
+
+\subsection{Gradient structure of the log-Vandermonde}
+
+\begin{lemma}[Score as gradient of $H$]
+\label{lem:grad-H}
+Let $p\in\PnR$ have distinct roots.
+Viewing $H$ as a function of the root vector $\boldsymbol{\lambda}=(\lambda_1,\dots,\lambda_n)$
+in the open Weyl chamber $W_n:=\{\lambda_1<\cdots<\lambda_n\}\subset\R^n$,
+\[
+  \frac{\partial H}{\partial\lambda_k}=V_k\qquad(k=1,\dots,n).
+\]
+In particular $\Phi_n(p)=\|\nabla H(\boldsymbol\lambda)\|^2$.
+\end{lemma}
+
+\begin{proof}
+Differentiate $H=\sum_{i<j}\log(\lambda_j-\lambda_i)$.
+For fixed $k$, every pair $(k,j)$ with $j>k$ contributes
+$\partial_{\lambda_k}\log(\lambda_j-\lambda_k)=-1/(\lambda_j-\lambda_k)$,
+and every pair $(i,k)$ with $i<k$ contributes
+$\partial_{\lambda_k}\log(\lambda_k-\lambda_i)=1/(\lambda_k-\lambda_i)$.
+Combining, $\partial_k H=\sum_{j\ne k}1/(\lambda_k-\lambda_j)=V_k$.
+\end{proof}
+
+\begin{lemma}[Hessian and trace identity]
+\label{lem:hess-H}
+For distinct roots,
+\[
+  \frac{\partial^2 H}{\partial\lambda_i\partial\lambda_j}
+  =\begin{cases}
+    \displaystyle\frac{1}{(\lambda_i-\lambda_j)^2}&i\ne j,\\[8pt]
+    \displaystyle-\sum_{k\ne i}\frac{1}{(\lambda_i-\lambda_k)^2}&i=j.
+  \end{cases}
+\]
+In particular, $\operatorname{tr}\!\bigl(\operatorname{Hess}(H)\bigr)
+=-2\mathcal{R}(p)=-\Phi_n(p)$.
+Moreover, $\operatorname{Hess}(H)$ is negative semidefinite with kernel
+$\operatorname{span}(\mathbf{1})$ (translation direction).
+\end{lemma}
+
+\begin{proof}
+The formula follows by direct differentiation.
+The trace sums the diagonal entries: $\sum_i(-\sum_{k\ne i}(\lambda_i-\lambda_k)^{-2})
+=-\sum_i\sum_{k\ne i}(\lambda_i-\lambda_k)^{-2}=-2\mathcal{R}=-\Phi_n$.
+
+For negative semidefiniteness, let $v\in\R^n$ with $\sum_i v_i=0$.
+Then
+\[
+  v^\top\!\operatorname{Hess}(H)\,v
+  =\sum_i v_i^2\Bigl(-\sum_{k\ne i}\frac{1}{d_{ik}^2}\Bigr)
+   +\sum_{i\ne j}\frac{v_iv_j}{d_{ij}^2}
+  =-\sum_{i<j}\frac{(v_i-v_j)^2}{d_{ij}^2}\le 0,
+\]
+with equality iff all $v_i$ are equal; combined with $\sum v_i=0$, this gives $v=0$.
+On the full space, $\mathbf{1}^\top\operatorname{Hess}(H)\mathbf{1}=\operatorname{tr}+2\sum_{i<j}d_{ij}^{-2}=-2\mathcal{R}+2\mathcal{R}=0$,
+so $\mathbf{1}$ is in the kernel.
+\end{proof}
+
+\subsection{De Bruijn identity and isoperimetric inequality}
+
+\begin{theorem}[Finite free de Bruijn identity]
+\label{thm:deBruijn}
+Under the same simple-root hypothesis as Lemma~\ref{lem:hermite-ode}, along the Hermite flow $p_t=p\boxplus_n G_t$,
+\begin{equation}\label{eq:deBruijn}
+  \frac{d}{dt}H(p_t)=\frac{\Phi_n(p_t)}{n-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By the chain rule, Lemma~\ref{lem:grad-H}, and the Hermite root ODE $\dot\lambda_i=V_i/(n-1)$:
+\[
+  \frac{d}{dt}H(p_t)
+  =\sum_{k=1}^n \frac{\partial H}{\partial\lambda_k}\,\dot\lambda_k
+  =\sum_{k=1}^n V_k\cdot\frac{V_k}{n-1}
+  =\frac{1}{n-1}\sum_k V_k^2
+  =\frac{\Phi_n(p_t)}{n-1}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}
+Identity~\eqref{eq:deBruijn} is the exact analogue of the classical de Bruijn identity
+$\frac{d}{dt}h(X+\sqrt{t}\,Z)=\frac{1}{2}J(X+\sqrt{t}\,Z)$
+for the differential entropy $h$ and Fisher information~$J$.
+Combined with the dissipation identity $\dot\Phi_n=-\frac{2}{n-1}\mathcal{S}$
+(Lemma~\ref{lem:hermite-dissip}), it gives a closed system on $(H,\Phi_n,\mathcal{S})$
+along the Hermite flow.
+\end{remark}
+
+\begin{lemma}[AM-GM isoperimetric inequality]
+\label{lem:amgm-iso}
+For $p\in\PnR$ with distinct roots,
+\begin{equation}\label{eq:amgm}
+  \mathcal{R}(p)\cdot\mathcal{N}(p)\ge N=\binom{n}{2}.
+\end{equation}
+Equivalently, $\Phi_n(p)\cdot\mathcal{N}(p)\ge 2\binom{n}{2}=n(n-1)$.
+Equality holds if and only if all $\binom{n}{2}$ gaps $|\lambda_i-\lambda_j|$ are equal
+(i.e.\ the roots are equally spaced).
+\end{lemma}
+
+\begin{proof}
+By AM-GM applied to the $N$ positive numbers $1/d_{ij}^2$ $(i<j)$:
+\[
+  \frac{1}{N}\sum_{i<j}\frac{1}{d_{ij}^2}
+  \ge \Bigl(\prod_{i<j}\frac{1}{d_{ij}^2}\Bigr)^{1/N}
+  =\frac{1}{\mathcal{N}(p)}.
+\]
+Rearranging, $\mathcal{R}/N\ge 1/\mathcal{N}$.
+Equality in AM-GM holds iff all $d_{ij}^{-2}$ coincide.
+\end{proof}
+
+\subsection{Displacement convexity of the repulsion energy}
+
+\begin{definition}[Displacement interpolation]
+\label{def:displacement}
+For two ordered root vectors
+$\boldsymbol{\lambda}=(\lambda_1<\cdots<\lambda_n)$ and
+$\boldsymbol{\rho}=(\rho_1<\cdots<\rho_n)$ in $W_n$,
+define
+$\boldsymbol{\gamma}(t):=(1-t)\boldsymbol{\lambda}+t\boldsymbol{\rho}$
+for $t\in[0,1]$.
+This is the McCann displacement interpolation (monotone-coupling geodesic)
+between the empirical measures $\mu_{\boldsymbol\lambda}$ and $\mu_{\boldsymbol\rho}$.
+\end{definition}
+
+\begin{lemma}[Displacement convexity of $\mathcal{R}$]
+\label{lem:disp-convex}
+The repulsion energy $\mathcal{R}$ is convex along displacement interpolations in~$W_n$.
+That is, for every $\boldsymbol{\lambda},\boldsymbol{\rho}\in W_n$,
+\[
+  t\mapsto \mathcal{R}(\boldsymbol{\gamma}(t))
+  \quad\text{is convex on }[0,1].
+\]
+\end{lemma}
+
+\begin{proof}
+Each gap along the displacement interpolation is linear:
+$\gamma_j(t)-\gamma_i(t)=(1-t)(\lambda_j-\lambda_i)+t(\rho_j-\rho_i)$,
+and is positive for all $t\in[0,1]$ because both endpoints are positive
+(since $i<j$ and both $\boldsymbol{\lambda},\boldsymbol{\rho}$ are strictly ordered).
+Thus
+$\mathcal{R}(\boldsymbol{\gamma}(t))=\sum_{i<j}\frac{1}{(\gamma_j(t)-\gamma_i(t))^2}$
+is a sum of functions $f\circ\ell$ where $f(d)=1/d^2$ is convex on $(0,\infty)$
+(since $f''(d)=6/d^4>0$) and $\ell(t)$ is a positive affine function.
+A convex function composed with an affine function is convex, and sums of convex functions are convex.
+\end{proof}
+
+\begin{remark}
+In optimal-transport terminology, this says the Riesz $(s{=}{-}2)$ interaction energy
+is \emph{displacement convex} on $W_n$.
+In contrast, the log-energy $H$ is easily verified to be displacement \emph{concave}
+(since $\log d$ is concave), and its exponential $\mathcal{N}=e^{2H/N}$
+inherits the log-concavity.
+\end{remark}
+
+\subsection{The discriminant power inequality}
+
+\begin{conjecture}[Discriminant power inequality (``finite-free EPI'')]
+\label{conj:epi}
+For all $p,q\in\PnR$,
+\begin{equation}\label{eq:epi}
+  \mathcal{N}(p\boxplus_n q)\ge \mathcal{N}(p)+\mathcal{N}(q).
+\end{equation}
+Equivalently,
+$\operatorname{disc}(p\boxplus_n q)^{1/N}
+\ge \operatorname{disc}(p)^{1/N}+\operatorname{disc}(q)^{1/N}$.
+\end{conjecture}
+
+\begin{proposition}[EPI for $n=2$: equality]
+\label{prop:epi-n2}
+For $n=2$, the discriminant power inequality
+is an exact equality and reduces to variance additivity:
+$\mathcal{N}(p\boxplus_2 q)=4\sigma^2(p\boxplus_2 q)=4\sigma^2(p)+4\sigma^2(q)=\mathcal{N}(p)+\mathcal{N}(q)$.
+\end{proposition}
+
+\begin{proof}
+For $n=2$, $N=1$ and $\mathcal{N}(p)=(\lambda_2-\lambda_1)^2=4\sigma^2(p)$.
+The result is Lemma~\ref{lem:var-add}.
+\end{proof}
+
+\begin{theorem}[EPI for $n=3$]
+\label{thm:epi-n3}
+The discriminant power inequality~\eqref{eq:epi} holds for $n=3$.
+More precisely, after centering (which preserves $\mathcal{N}$ because
+all gaps are translation-invariant), write
+$p(x)=x^3-S_1x+T_1$ and $q(x)=x^3-S_2x+T_2$ with $S_i>0$ and
+$\Delta_i=4S_i^3-27T_i^2>0$.
+Then
+\[
+  \Delta_r^{1/3}\ge \Delta_1^{1/3}+\Delta_2^{1/3},
+\]
+where $\Delta_r=4(S_1+S_2)^3-27(T_1+T_2)^2$.
+\end{theorem}
+
+\begin{proof}
+Write $\delta_i:=\Delta_i/(4S_i^3)=1-27T_i^2/(4S_i^3)\in(0,1]$,
+and $w_i:=S_i/(S_1+S_2)\in(0,1)$, so $w_1+w_2=1$.
+Then $\Delta_i^{1/3}=4^{1/3}S_i\delta_i^{1/3}$, and the inequality becomes
+\begin{equation}\label{eq:epi-n3-reduced}
+  \delta_r^{1/3}\ge w_1\delta_1^{1/3}+w_2\delta_2^{1/3}.
+\end{equation}
+
+\emph{Step 1: reduce to a linear comparison.}
+Since $t\mapsto t^{1/3}$ is concave on $(0,\infty)$,
+$\delta_r^{1/3}\ge (w_1\delta_1+w_2\delta_2)^{1/3}$
+implies~\eqref{eq:epi-n3-reduced} by Jensen.
+It thus suffices to prove the \emph{stronger} inequality
+\begin{equation}\label{eq:delta-linear}
+  \delta_r\ge w_1\delta_1+w_2\delta_2.
+\end{equation}
+
+\emph{Step 2: prove the linear comparison.}
+Expanding and cancelling, \eqref{eq:delta-linear} is equivalent to
+\[
+  \frac{(T_1+T_2)^2}{(S_1+S_2)^2}
+  \le \frac{T_1^2}{S_1^2}+\frac{T_2^2}{S_2^2},
+\]
+which holds by the convexity of $f(x)=x^2$
+applied to {\small$x_i=T_i/S_i$} with weights $w_i$:
+{\small$(w_1x_1+w_2x_2)^2\le w_1x_1^2+w_2x_2^2$}
+and a fortiori $\le x_1^2+x_2^2$.
+\end{proof}
+
+\begin{remark}[Relationship between EPI and Stam for $n=3$]
+The intermediate inequality~\eqref{eq:delta-linear} is \emph{equivalent}
+to the Stam inequality at $n=3$
+(compare the proof of Theorem~\ref{thm:stam3}).
+Thus for $n=3$, Stam $\Rightarrow$ EPI (since Stam gives
+the stronger linear bound, from which the cube-root bound follows by concavity).
+For general~$n$ the two statements appear to be independent --- neither
+obviously implies the other --- although both hold in all numerical tests.
+\end{remark}
+
+\subsection{Numerical evidence}
+\label{sec:routeC-numerics}
+
+We record the numerical evidence for Route~C (code: \texttt{route\_c\_experiments.py},
+\texttt{route\_c\_epi\_deep.py}).
+
+\medskip
+\noindent\textbf{Discriminant power inequality (Conjecture~\ref{conj:epi}).}
+Over 29\,000 random tests ($n=2$ to~$8$, $3000$ per degree,
+both centered and non-centered $q$), we observe zero violations.
+For $n=2$ the minimum relative excess
+$(\mathcal{N}(r)-\mathcal{N}(p)-\mathcal{N}(q))/(\mathcal{N}(p)+\mathcal{N}(q))$
+is $\sim 10^{-13}$ (machine-precision equality); for $n=3$, $\sim 9\times 10^{-6}$;
+and for $n\ge 4$ the minimum relative excess grows with $n$:
+\[
+  \begin{array}{c|cccccc}
+    n & 3 & 4 & 5 & 6 & 7 & 8\\\hline
+    \text{min relative excess} & 9\!\times\!10^{-6} & 5\!\times\!10^{-4}
+    & 5\!\times\!10^{-3} & 3\!\times\!10^{-2} & 4\!\times\!10^{-2} & 6\!\times\!10^{-2}
+  \end{array}
+\]
+Near-equality occurs when one polynomial has very small variance (nearly degenerate roots).
+
+\medskip
+\noindent\textbf{Stam vs.\ EPI excess correlation.}
+The Pearson correlation between the Stam excess $1/\Phi_n(r)-1/\Phi_n(p)-1/\Phi_n(q)$
+and the EPI excess $\mathcal{N}(r)-\mathcal{N}(p)-\mathcal{N}(q)$ is strong
+(0.90 for $n=3$, 0.83 for $n=4$, 0.72 for $n=6$),
+suggesting the two functionals measure related aspects of root spreading under $\boxplus_n$.
+
+\medskip
+\noindent\textbf{False proxies.}
+Several na\"{\i}ve transport-inspired proxies do \emph{not} hold:
+\begin{enumerate}[label=(\alph*),nosep]
+  \item \emph{Pairwise gap super-additivity}
+    ($d_{ij}(r)^2\ge d_{ij}(p)^2+d_{ij}(q)^2$ for all pairs):
+    fails in 100\% of tests; worst ratio $\approx 0.32$.
+  \item \emph{Dilation path $\le$ displacement for $\mathcal{R}$}
+    ($\mathcal{R}(r_t)\le\mathcal{R}(\gamma(t))$):
+    fails in $>84\%$ of evaluations.
+  \item \emph{Raw log-Vandermonde super-additivity}
+    ($H(r)\ge H(p)+H(q)$):
+    fails in $\sim 19\%$ of tests.
+  \item \emph{Repulsion-weighted gap coupling}:
+    fails generically.
+\end{enumerate}
+These negative results constrain the class of viable transport arguments.
+
+\medskip
+\noindent\textbf{Displacement convexity and transport--repulsion bound.}
+Lemma~\ref{lem:disp-convex} (displacement convexity of $\mathcal{R}$)
+is confirmed with zero violations in 37\,000 midpoint checks.
+Additionally, the ratio
+$(1/\mathcal{R}(r)-1/\mathcal{R}(p))/W_2^2(\mu_p,\mu_r)$
+is always positive (tested for $n=3$ to~$6$, $500$ trials each),
+suggesting that convolution-driven root spreading always reduces repulsion
+in proportion to the transport cost.
+
+\subsection{Discussion and next steps for Route~C}
+
+\begin{enumerate}[label=\textup{(C\arabic*)},leftmargin=2.5em]
+  \item The discriminant power inequality (Conjecture~\ref{conj:epi}) is numerically robust
+  and has a clean algebraic statement:
+  $\operatorname{disc}(p\boxplus_n q)^{1/N}\ge\operatorname{disc}(p)^{1/N}+\operatorname{disc}(q)^{1/N}$.
+  A proof would constitute a finite-free analogue of Shannon's entropy power inequality.
+
+  \item The de Bruijn identity (Theorem~\ref{thm:deBruijn})
+  and the AM-GM isoperimetric (Lemma~\ref{lem:amgm-iso})
+  provide the finite-free analogues of the two pillar identities
+  in the classical proof of the entropic Stam inequality.
+  The question is whether they can be combined to yield either Stam or EPI for general~$n$.
+
+  \item For a proof of the EPI at general~$n$,
+  possible approaches include:
+  (i) the MSS random-matrix representation
+  $p\boxplus_n q(x)=\mathbb{E}_U\det(xI-A-UBU^*)$
+  combined with Minkowski-type determinantal inequalities;
+  (ii) induction on $n$ using interlacing and root-deletion relations
+  for the discriminant;
+  (iii) an operator-semigroup argument along the Hermite flow,
+  exploiting the de Bruijn identity and the dissipation formula.
+
+  \item Even without a direct EPI$\Rightarrow$Stam implication,
+  the EPI serves as an independent ``litmus test'' for proposed approaches:
+  any strategy that can prove both Stam \emph{and} EPI likely captures
+  the essential structure of root spreading under~$\boxplus_n$.
+\end{enumerate}
+
+%======================================================================
+\section{Route B: Operator-coefficient monotone path}
+\label{sec:routeB}
+%======================================================================
+
+We study the dilation path $r_t=p\boxplus_n q_t$ (Definition~\ref{def:dilation})
+from the perspective of root-velocity dissipation.
+The key outcomes are:
+(i)~a general dissipation formula that decomposes $\dot\Phi_n$ into
+score-aligned and perpendicular components (Lemma~\ref{lem:gen-dissip}),
+(ii)~a proof that the initial root acceleration is proportional to the score
+(Proposition~\ref{prop:initial-accel}),
+(iii)~a new functional $\Gamma^{(1)}$ whose positivity controls $F''(0)$,
+proved positive for $n=3$ (Proposition~\ref{prop:gamma1-n3}),
+and (iv)~several conjectures supported by extensive numerical experiments.
+
+\subsection{General dissipation along arbitrary root motions}
+
+\begin{lemma}[General Fisher dissipation]
+\label{lem:gen-dissip}
+Let $\boldsymbol\lambda(t)=(\lambda_1(t),\dots,\lambda_n(t))$
+be a smooth path of distinct ordered configurations in $W_n$,
+and set $V_i(t):=\sum_{j\ne i}(\lambda_i(t)-\lambda_j(t))^{-1}$.
+Then
+\begin{equation}\label{eq:gen-dissip}
+  \frac{d}{dt}\Phi_n(\boldsymbol\lambda(t))
+  =-2\sum_{i<j}\frac{(V_i-V_j)(\dot\lambda_i-\dot\lambda_j)}{(\lambda_i-\lambda_j)^2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+$\Phi_n=\sum_i V_i^2$.
+Differentiating $V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ gives
+$\dot V_i=-\sum_{j\ne i}\frac{\dot\lambda_i-\dot\lambda_j}{(\lambda_i-\lambda_j)^2}$.
+Thus $\dot\Phi_n=2\sum_i V_i\dot V_i$.
+Substituting $\dot V_i$ and symmetrizing over unordered pairs~$\{i,j\}$
+(exactly as in the proof of Lemma~\ref{lem:hermite-dissip}) yields~\eqref{eq:gen-dissip}.
+\end{proof}
+
+\begin{definition}[Dissipation pairing]
+\label{def:dissip-pairing}
+For a root configuration $\boldsymbol\lambda\in W_n$ with scores $V_i$ and
+velocity vector $\dot{\boldsymbol\lambda}$,
+define
+\[
+  \mathcal{D}(\boldsymbol\lambda,\dot{\boldsymbol\lambda})
+  :=\sum_{i<j}\frac{(V_i-V_j)(\dot\lambda_i-\dot\lambda_j)}{(\lambda_i-\lambda_j)^2}.
+\]
+Thus $\dot\Phi_n=-2\mathcal{D}$ and
+$\dot F:=\frac{d}{dt}\frac{1}{\Phi_n}=\frac{2\mathcal{D}}{\Phi_n^2}$.
+\end{definition}
+
+\begin{remark}
+Writing $s_{ij}:=(V_i-V_j)/d_{ij}$ and $w_{ij}:=(\dot\lambda_i-\dot\lambda_j)/d_{ij}$,
+we have $\mathcal{D}=\sum_{i<j}s_{ij}\,w_{ij}$
+and $\mathcal{S}=\sum_{i<j}s_{ij}^2$.
+For the Hermite flow ($w_{ij}=s_{ij}/(n-1)$),
+$\mathcal{D}=\mathcal{S}/(n-1)>0$ always.
+For a general path the sign of $\mathcal{D}$ depends on the alignment between
+the score-gradient and velocity-gradient vectors.
+\end{remark}
+
+\subsection{Dilation root velocity and initial acceleration}
+
+\begin{lemma}[Dilation root ODE]
+\label{lem:dil-root-ode}
+Along $r_t=p\boxplus_n q_t$ (with $p,q_t$ having all distinct roots in a neighbourhood),
+the root trajectories satisfy
+\begin{equation}\label{eq:dil-ode}
+  \dot\lambda_i(t)
+  =-\frac{(\partial_t r_t)(\lambda_i(t))}{r_t'(\lambda_i(t))},
+\end{equation}
+where
+$\displaystyle
+  \partial_t r_t(x)
+  =\sum_{k=1}^n k\,t^{k-1}\,b_k\,\frac{(n-k)!}{n!}\,p^{(k)}(x)
+$
+and $b_k$ are the coefficients of $q(x)=\sum_{k=0}^n b_k x^{n-k}$.
+\end{lemma}
+
+\begin{proof}
+Direct implicit differentiation of $r_t(\lambda_i(t))\equiv 0$.
+The formula for $\partial_t r_t$ follows from the MSS operator representation
+$r_t=\sum_k t^k b_k D_k p$ (Lemma~\ref{lem:operator-rays}).
+\end{proof}
+
+\begin{proposition}[Initial root acceleration for centered $q$]
+\label{prop:initial-accel}
+Let $q$ be centered ($b_1=0$).
+Then $\dot\lambda_i(0)=0$ and
+\begin{equation}\label{eq:initial-accel}
+  \ddot\lambda_i(0)=\frac{2\,\sigma^2(q)}{n-1}\,V_i(p),
+\end{equation}
+where $V_i(p)$ are the scores of $p$.
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1: $\dot\lambda_i(0)=0$.}
+Since $b_1=0$, the term $k=1$ in~\eqref{eq:dil-ode} vanishes at $t=0$,
+and all terms $k\ge 2$ carry a factor $t^{k-1}\to 0$, so $(\partial_t r_t)|_{t=0}=0$.
+By~\eqref{eq:dil-ode}, $\dot\lambda_i(0)=0$.
+
+\emph{Step 2: second-order expansion.}
+Differentiating $r_t(\lambda_i(t))=0$ twice at $t=0$
+(using $r_0=p$, $\dot\lambda_i(0)=0$):
+\[
+  p'(\lambda_i)\ddot\lambda_i(0)+(\partial_t^2 r_t)(\lambda_i)\big|_{t=0}=0.
+\]
+Now $\partial_t^2 r_t(x)=\sum_{k\ge 2}k(k-1)t^{k-2}b_k D_k p(x)$,
+and at $t=0$ only $k=2$ survives:
+$(\partial_t^2 r_t)(x)\big|_{t=0}=2b_2\,D_2 p(x)=\frac{2b_2}{n(n-1)}p''(x)$.
+Thus:
+\[
+  \ddot\lambda_i(0)=-\frac{2b_2}{n(n-1)}\,\frac{p''(\lambda_i)}{p'(\lambda_i)}
+  =-\frac{4b_2}{n(n-1)}\,V_i(p),
+\]
+using Lemma~\ref{lem:score-deriv}.
+Since $q$ is centered with $b_1=0$, the variance formula (Lemma~\ref{lem:var-coeff}) gives
+$\sigma^2(q)=-2b_2/n$, i.e.\ $b_2=-n\sigma^2(q)/2$.
+Substituting:
+$\ddot\lambda_i(0)=\frac{4\cdot n\sigma^2(q)}{2n(n-1)}\,V_i(p)
+=\frac{2\sigma^2(q)}{n-1}\,V_i(p)$.
+\end{proof}
+
+\begin{remark}[Score-aligned acceleration]
+Equation~\eqref{eq:initial-accel} shows that the initial root acceleration under
+dilation is proportional to the \emph{score} $V_i$, with
+a positive coefficient $2\sigma^2(q)/(n-1)$.
+This is exactly the velocity field of the Hermite flow
+(Lemma~\ref{lem:hermite-ode}), scaled by
+$2\sigma^2(q)$. In other words, the leading-order dilation perturbation
+``looks like'' a Hermite perturbation at rate $2\sigma^2(q)$
+per unit~$t^2$.
+\end{remark}
+
+\subsection{The weighted score-gap functional $\Gamma^{(1)}$}
+
+\begin{definition}[Weighted score-gap functionals]
+\label{def:gamma-s}
+For integer $s\ge 0$ and $p\in\PnR$ with distinct roots, define
+\[
+  \Gamma^{(s)}(p):=\sum_{i<j}\frac{V_j-V_i}{(\lambda_j-\lambda_i)^{1+2s}}.
+\]
+\end{definition}
+
+\begin{remark}
+$\Gamma^{(0)}=\Phi_n$ by Lemma~\ref{lem:score-id}~(iv).
+\end{remark}
+
+\begin{proposition}[Initial curvature of $1/\Phi_n$ along dilation]
+\label{prop:initial-Fpp}
+For centered $q$,
+\begin{equation}\label{eq:initial-Fpp}
+  F''(0)=\frac{d^2}{dt^2}\Bigl(\frac{1}{\Phi_n(r_t)}\Bigr)\Bigg|_{t=0}
+  =\frac{2\,\sigma^2(q)\,\Gamma^{(1)}(p)}{(n-1)\,\mathcal{R}(p)^2}.
+\end{equation}
+In particular, $F''(0)>0$ if and only if $\Gamma^{(1)}(p)>0$.
+\end{proposition}
+
+\begin{proof}
+From Proposition~\ref{prop:initial-accel},
+$\dot\lambda_i(0)=0$ and $\ddot\lambda_i(0)=\frac{2\sigma^2(q)}{n-1}V_i$.
+Using $\Phi_n=2\mathcal{R}$ and $F=1/\Phi_n=1/(2\mathcal{R})$:
+\[
+  F'(t)=-\frac{\dot{\mathcal{R}}}{2\mathcal{R}^2},\qquad
+  \dot{\mathcal{R}}=-2\sum_{i<j}\frac{\dot\lambda_j-\dot\lambda_i}{(\lambda_j-\lambda_i)^3}.
+\]
+Since all $\dot\lambda_i(0)=0$, we get $\dot{\mathcal{R}}(0)=0$ and $F'(0)=0$.
+At second order:
+$\ddot{\mathcal{R}}(0)=-2\sum_{i<j}\frac{\ddot\lambda_j(0)-\ddot\lambda_i(0)}{(\lambda_j-\lambda_i)^3}
+=-\frac{4\sigma^2(q)}{n-1}\sum_{i<j}\frac{V_j-V_i}{(\lambda_j-\lambda_i)^3}
+=-\frac{4\sigma^2(q)}{n-1}\Gamma^{(1)}(p)$.
+Since $F'(0)=0$:
+$F''(0)=-\frac{\ddot{\mathcal{R}}(0)}{2\mathcal{R}(p)^2}
+=\frac{2\sigma^2(q)\,\Gamma^{(1)}(p)}{(n-1)\mathcal{R}(p)^2}$.
+\end{proof}
+
+\begin{proposition}[$\Gamma^{(1)}>0$ for $n=3$]
+\label{prop:gamma1-n3}
+For every $p\in\mathcal{P}_3^{\R}$ with distinct roots,
+$\Gamma^{(1)}(p)>0$.
+\end{proposition}
+
+\begin{proof}
+Let the roots be $\lambda_1<\lambda_2<\lambda_3$ and set
+$d:=\lambda_2-\lambda_1>0$, $e:=\lambda_3-\lambda_2>0$.
+Computing the scores $V_1=-1/d-1/(d+e)$, $V_2=1/d-1/e$, $V_3=1/(d+e)+1/e$
+and substituting into $\Gamma^{(1)}=\sum_{i<j}(V_j-V_i)/(\lambda_j-\lambda_i)^3$,
+a mechanical computation (verified with \texttt{sympy}) yields
+\begin{equation}\label{eq:gamma1-n3}
+  \Gamma^{(1)}
+  =\frac{(d^2+de+e^2)\,f(d,e)}{d^4\,e^4\,(d+e)^4},
+\end{equation}
+where
+\[
+  f(d,e):=2d^6+6d^5e+3d^4e^2-4d^3e^3+3d^2e^4+6de^5+2e^6.
+\]
+The denominator and the factor $d^2+de+e^2$ are manifestly positive.
+For $f$, note that $f$ is a palindromic polynomial in $t:=e/d$:
+$f=d^6(2t^6+6t^5+3t^4-4t^3+3t^2+6t+2)=:d^6\,\tilde f(t)$.
+Setting $s:=t+1/t\ge 2$ (by AM-GM), we find
+$\tilde f(t)=t^3\,g(s)$ with $g(s)=2s^3+6s^2-3s-16$.
+Now $g(2)=18>0$ and $g'(s)=6s^2+12s-3>0$ for $s\ge 2$,
+so $g(s)\ge 18$ on $[2,\infty)$, hence $\tilde f(t)>0$ for all $t>0$.
+\end{proof}
+
+\begin{conjecture}[$\Gamma^{(1)}$ positivity for general $n$]
+\label{conj:gamma1}
+For every $n\ge 2$ and every $p\in\PnR$ with distinct roots,
+$\Gamma^{(1)}(p)>0$.
+\end{conjecture}
+
+\noindent
+\emph{Numerical evidence:} 2500 random tests for
+$n=3,4,5,6,7$ (500 per degree) with zero violations;
+additionally 300 near-collision stress tests per degree with zero violations.
+
+\subsection{Velocity decomposition and score alignment}
+
+\begin{definition}[Score alignment and orthogonal decomposition]
+\label{def:score-align}
+Given root velocities $\dot\lambda_i$ and scores $V_i$,
+define the \emph{score-alignment coefficient}
+\[
+  \alpha:=\frac{(n-1)\,\sum_i V_i\,\dot\lambda_i}{\sum_i V_i^2}
+\]
+and decompose
+$\dot\lambda_i=\frac{\alpha}{n-1}\,V_i+\varepsilon_i$,
+where $\sum_i V_i\varepsilon_i=0$
+(so $\varepsilon$ is orthogonal to the score vector in $\ell^2$).
+The \emph{aligned dissipation} is
+$\mathcal{D}_\parallel:=\frac{\alpha}{n-1}\mathcal{S}$,
+and the \emph{perpendicular dissipation} is
+$\mathcal{D}_\perp:=\mathcal{D}-\mathcal{D}_\parallel$.
+\end{definition}
+
+\begin{remark}
+In the Hermite case, $\alpha\equiv 1$ and $\varepsilon\equiv 0$,
+so $\mathcal{D}=\mathcal{D}_\parallel=\mathcal{S}/(n-1)$.
+\end{remark}
+
+The following conjectures are supported by extensive numerical experiments
+(code: \texttt{route\_b\_experiments.py} and \texttt{route\_b\_deep.py}).
+
+\begin{conjecture}[Score alignment]
+\label{conj:align}
+Along the dilation path $r_t=p\boxplus_n q_t$ (with centered $q$, $t\in(0,1]$),
+the score-alignment coefficient satisfies $\alpha(t)>0$.
+\end{conjecture}
+
+\noindent
+\emph{Numerical evidence:}
+$1200+$ random trials for $n=3,4,5,6$, all with $\alpha(t)>0$ along 100-point grids.
+Combined with Proposition~\ref{prop:initial-accel},
+which shows $\alpha\to 2\sigma^2(q)\cdot t$ as $t\to 0^+$.
+
+\begin{conjecture}[Perpendicular dissipation sign]
+\label{conj:perp-sign}
+Along the dilation path,
+$\mathcal{D}_\perp(t)\le 0$ for all $t\in(0,1]$.
+In other words, the non-Hermite component of the velocity always
+\emph{retards} the Fisher dissipation, but does not reverse it.
+\end{conjecture}
+
+\noindent
+\emph{Numerical evidence:}
+In all sampled examples ($n=3,4,5$),
+$\mathcal{D}_\perp(t)<0$ pointwise,
+with $|\mathcal{D}_\perp|<\mathcal{D}_\parallel$,
+so $\mathcal{D}=\mathcal{D}_\parallel+\mathcal{D}_\perp>0$.
+
+\subsection{Repulsion monotonicity and pointwise dilation Stam}
+
+\begin{conjecture}[Repulsion monotonicity]
+\label{conj:rep-monotone}
+Along the dilation path $r_t=p\boxplus_n q_t$, the repulsion energy is non-increasing:
+\[
+  \frac{d}{dt}\mathcal{R}(r_t)\le 0\qquad\text{for all }t\in[0,1].
+\]
+Equivalently, $\Phi_n(r_t)$ is non-increasing, and
+$F(t):=1/\Phi_n(r_t)$ is non-decreasing.
+\end{conjecture}
+
+\noindent
+\emph{Numerical evidence:}
+In $800$ random tests ($n=3,4,5,6$, 200-point grids),
+$\mathcal{R}(r_t)$ is non-increasing with zero violations.
+An additional $1200+$ tests confirm $F'(t)\ge 0$ at all sampled grid points.
+
+\begin{remark}
+Conjecture~\ref{conj:rep-monotone} combined with Conjectures~\ref{conj:align}
+and~\ref{conj:perp-sign} would follow from
+$\mathcal{D}(t)=\mathcal{D}_\parallel(t)+\mathcal{D}_\perp(t)\ge 0$,
+which says the (positive) score-aligned dissipation always
+dominates the (negative) perpendicular correction.
+\end{remark}
+
+\begin{conjecture}[Pointwise dilation Stam]
+\label{conj:pointwise-stam}
+For all $p,q\in\PnR$ with distinct roots and positive variance,
+\begin{equation}\label{eq:pointwise-stam}
+  \frac{1}{\Phi_n(r_t)}\ge \frac{1}{\Phi_n(p)}+\frac{t^2}{\Phi_n(q)}
+  \qquad\text{for all }t\in[0,1].
+\end{equation}
+Evaluating at $t=1$ recovers the Stam inequality.
+\end{conjecture}
+
+\noindent
+\emph{Numerical evidence:}
+$2500$ random tests ($n=3,4,5,6,7$, 200-point grids) plus
+$1200$ near-collision stress tests, with zero violations.
+The global minimum of $E(t):=1/\Phi_n(r_t)-1/\Phi_n(p)-t^2/\Phi_n(q)$
+is $\ge -5\times 10^{-12}$ (machine precision).
+
+\begin{remark}[Hierarchy of conjectures]
+The implications are:
+\[
+  \text{Conj.~\ref{conj:pointwise-stam} (pointwise)}
+  \;\Longrightarrow\;
+  \text{Stam inequality}
+  \;\Longrightarrow\;
+  E(1)\ge 0.
+\]
+Also, Conjecture~\ref{conj:rep-monotone} (monotonicity $F'\ge 0$) alone gives
+only $F(1)\ge F(0)=1/\Phi_n(p)$,
+which is weaker than Stam.
+However, monotonicity \emph{combined with an initial curvature bound}
+(Proposition~\ref{prop:initial-Fpp} and $\Gamma^{(1)}>0$)
+could potentially yield Stam via an integrated comparison argument.
+\end{remark}
+
+\subsection{Lemma status and proof landscape}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Result} & \textbf{Status} & \textbf{Notes}\\
+\hline
+General Fisher dissipation (Lemma~\ref{lem:gen-dissip}) & Proven & Algebraic\\
+Dilation root ODE (Lemma~\ref{lem:dil-root-ode}) & Proven & Implicit differentiation\\
+Initial acceleration $\propto$ score (Prop.~\ref{prop:initial-accel}) & Proven & Second-order expansion\\
+Initial curvature $F''(0)$ formula (Prop.~\ref{prop:initial-Fpp}) & Proven & From acceleration formula\\
+$\Gamma^{(1)}>0$ for $n=3$ (Prop.~\ref{prop:gamma1-n3}) & Proven & Palindromic positivity\\
+$\Gamma^{(1)}>0$ for general $n$ (Conj.~\ref{conj:gamma1}) & Plausible & $0$ violations in $2500+$ tests\\
+Score alignment $\alpha>0$ (Conj.~\ref{conj:align}) & Plausible & $0$ violations in $1200+$ tests\\
+$\mathcal{D}_\perp\le 0$ (Conj.~\ref{conj:perp-sign}) & Plausible & Observed universally\\
+Repulsion monotonicity (Conj.~\ref{conj:rep-monotone}) & Plausible & $0$ violations in $800$ tests\\
+Pointwise dilation Stam (Conj.~\ref{conj:pointwise-stam}) & Plausible & $0$ violations in $3700+$ tests\\
+\hline
+$F'(t)\ge 2t/\Phi_n(q)$ & False & $\sim 3\%$ failures at $n=3$\\
+$F'(t)/(2t)$ non-decreasing & False & Fails almost always\\
+SGI-based pointwise bound & False & $\sim 50\%$ failures\\
+Dilation $\ge$ Hermite for $1/\Phi_n$ & False & $\sim 10\%$ failures\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Discussion and next steps for Route~B}
+
+\begin{enumerate}[label=\textup{(B\arabic*)},leftmargin=2.5em]
+  \item The initial acceleration formula
+    (Proposition~\ref{prop:initial-accel}) identifies a deep structural similarity
+    between the dilation perturbation and the Hermite flow: both drive roots
+    proportionally to the score $V_i$.
+    The difference is that dilation introduces \emph{higher cumulants} of $q$ at
+    higher orders in $t$, creating a perpendicular correction~$\varepsilon_i$.
+
+  \item The fact that $\mathcal{D}_\perp\le 0$ (Conjecture~\ref{conj:perp-sign})
+    means the perpendicular correction always \emph{slows} the Fisher decay
+    compared to pure Hermite flow; crucially, it does not reverse it.
+    A proof of this sign condition would immediately yield
+    Conjecture~\ref{conj:rep-monotone} (repulsion monotonicity).
+
+  \item The pointwise dilation Stam (Conjecture~\ref{conj:pointwise-stam})
+    is strictly stronger than the Stam inequality and provides a natural
+    one-parameter strengthening.
+    A proof would benefit from the convexity of the reference curve
+    $t\mapsto t^2/\Phi_n(q)$ combined with the initial conditions
+    $E(0)=E'(0)=0$ and $E''(0)>0$ (from $\Gamma^{(1)}>0$).
+
+  \item For a minimal proof of Stam,
+    one could try to show: (a)~$F'(t)\ge 0$ (Conjecture~\ref{conj:rep-monotone}),
+    (b)~$\int_0^1 F'(t)\,dt \ge 1/\Phi_n(q)$ using a \emph{comparison principle}
+    along the path rather than a pointwise bound
+    (since $F'(t)\ge 2t/\Phi_n(q)$ fails).
+    One possible comparison: exploit the fact that $F'(t)$ ``front-loads'' its mass
+    near $t=1$ (observed numerically), so the integral exceeds $1/\Phi_n(q)$
+    even when the pointwise bound fails at intermediate $t$.
+
+  \item The Hermite comparison fails ($1/\Phi_n(r_t)$ can be less than
+    $1/\Phi_n(p\boxplus_n G_{t^2\sigma^2(q)})$), so a direct reduction to
+    the Hermite bound (Theorem~\ref{thm:hermite-bound}) is insufficient.
+    However, the Hermite bound \emph{does} give
+    $1/\Phi_n(r_1)\ge (a+b)/(a\Phi_n(p))$ in the Gaussian case,
+    and combining this with information about non-Gaussian corrections is a viable path.
+\end{enumerate}
 
 %======================================================================
 \appendix
 \section{A numerical counterexample to dilation convexity}
 \label{app:counterexample}
 
-We record one explicit example (found by brute-force search) showing that neither $t\mapsto 1/\Phi_n(r_t)$ nor the
-dilation excess $E(t)$ need be convex.
+We record an explicit brute-force example showing that neither $t\mapsto 1/\Phi_n(r_t)$ nor
+the dilation excess $E(t)$ must be convex.
 
-For $n=3$, take $p$ with roots $(-2,-\tfrac32,\tfrac32)$ and $q$ with roots $(-5,2,3)$ (so $q$ is centered).
+\medskip
+\noindent\textbf{Computational protocol.}
+All computations were done in Python~3 with \texttt{numpy} (64-bit IEEE~754).
+We approximate $F''(t)$ by the centered stencil
+$\bigl(F(t+h)-2F(t)+F(t-h)\bigr)/h^2$ on a uniform $200$-point grid in $[0,1]$,
+compute $r_t=p\boxplus_n q_t$ from Definition~\ref{def:conv}, and extract roots with
+\texttt{numpy.roots}. Real-rootedness is checked by $|\operatorname{Im}\lambda|<10^{-8}$
+(well above observed noise $\sim10^{-15}$). Scripts are available in the cited repository.
+
+\medskip
+\noindent\textbf{Example~1 ($n=3$).} $p$ with roots $(-2,-\tfrac32,\tfrac32)$ and $q$ with roots $(-5,2,3)$ (so $q$ is centered).
 Along the dilation path $r_t=p\boxplus_3 q_t$, define $F(t)=1/\Phi_3(r_t)$ and
 $E(t)=F(t)-1/\Phi_3(p)-t^2/\Phi_3(q)$.
 
-A finite-difference computation (step size $h=10^{-5}$) that verifies all roots of $r_t$ have imaginary parts below
-$10^{-8}$ for the sampled $t$ values yields a negative second derivative:
+A finite-difference computation (step $h=10^{-5}$, checked on the full $200$-point grid) yields
+a negative second derivative:
 \[
   F''(t^*)\approx -8.16\quad\text{at }t^*\approx 0.435.
 \]
 Since $2/\Phi_3(q)\approx 0.965$, this also forces $E''(t^*)\approx -9.12<0$.
 Nevertheless $E(1)\approx 2.18>0$, so the Stam inequality holds in this example.
 
-Raw convexity $F''(t)\ge 0$ also fails in higher degrees. For $n=4$, take $p$ with roots
+Raw convexity $F''(t)\ge 0$ fails in higher degrees as well.
+
+\medskip
+\noindent\textbf{Example~2 ($n=4$).}
+Take $p$ with roots
 $(-1.10743,-0.81774,-0.36839,0.42118)$ and $q$ with centered roots
 $(-1.57864,-1.22305,-0.93765,3.73934)$. A finite-difference computation (step size $h=2\cdot 10^{-4}$)
 gives $F''(0.3)\approx -0.14$ (and already $F''(0.2)\approx -0.12$), so $t\mapsto 1/\Phi_4(r_t)$ need not be convex.
@@ -605,11 +1736,6 @@ This appendix is included to prevent overfitting the analysis to a false convexi
 %======================================================================
 \section{Bibliographic notes}
 %======================================================================
-
-\begin{remark}
-This file is intended to be arXiv-style and self-contained.
-The repository \texttt{math-docs} contains additional related notes, including a critical-value formula via residues and further numerical experiments.
-\end{remark}
 
 \begin{thebibliography}{9}
 
@@ -623,6 +1749,30 @@ A.~J.~Stam,
 \emph{Some inequalities satisfied by the quantities of information of {F}isher and {S}hannon},
 Inform.\ Control \textbf{2} (1959), 101--112.
 
+\bibitem{Shannon48}
+C.~E.~Shannon,
+\emph{A mathematical theory of communication},
+Bell Syst.\ Tech.\ J.\ \textbf{27} (1948), 379--423, 623--656.
+
+\bibitem{Villani09}
+C.~Villani,
+\emph{Optimal Transport: Old and New},
+Grundlehren der mathematischen Wissenschaften, vol.~338, Springer, 2009.
+
 \end{thebibliography}
+
+\bigskip
+\noindent\textbf{Data availability.}
+Supplementary Python scripts and further numerical experiments are available at
+\url{https://github.com/omegaestable/math-docs}.
+Scripts include:
+\texttt{route\_a\_core.py} (core library),
+\texttt{route\_a\_experiments.py} (Route~A proxies),
+\texttt{test\_repulsion\_stam.py} (large-scale Stam tests),
+\texttt{route\_b\_experiments.py} (Route~B dilation path experiments),
+\texttt{route\_b\_deep.py} (Route~B targeted follow-ups and stress tests),
+\texttt{route\_c\_experiments.py} (Route~C transport experiments),
+\texttt{route\_c\_epi\_deep.py} (discriminant power inequality stress tests),
+\texttt{route\_c\_n3\_epi\_proof.py} ($n{=}3$ EPI proof verification).
 
 \end{document}

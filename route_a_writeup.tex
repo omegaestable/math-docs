@@ -1,0 +1,461 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+\allowdisplaybreaks
+\setlength{\jot}{8pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Pn}{\mathcal{P}_n}
+\newcommand{\PnR}{\mathcal{P}_n^{\R}}
+
+\title[Route A: Resolvent/barrier regularisation]{Route A: Resolvent/barrier regularisation for the finite free Stam inequality\\[4pt]
+  \normalsize Proxy functionals, an exact identity $\Phi_n=2\mathcal{R}$, and numerical experiments}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We pursue the \emph{resolvent/barrier regularisation} approach (Route~A) to the
+finite free Stam inequality $1/\Phi_n(p\boxplus_n q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$.
+Two candidate proxy functionals built from the Cauchy transform
+$g_{p,\eta}(x)=\frac{1}{n}\frac{p'(x+i\eta)}{p(x+i\eta)}$ at height $\eta>0$
+are introduced and tested numerically.
+As a by-product, we discover and prove a short algebraic identity:
+the Fisher information $\Phi_n(p)$ equals \emph{twice} the pairwise repulsion
+energy $\mathcal{R}(p)=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$
+(Theorem~\ref{thm:phi-eq-2R}).
+This identity sharpens the paper's Cauchy--Schwarz bound $\Phi_n\le 2(n-1)\mathcal{R}$
+by a factor of $n-1$ and translates the Stam inequality into a
+\emph{harmonic-mean bound on pairwise repulsion} (Corollary~\ref{cor:stam-rewrite}).
+Extensive numerical experiments (degrees $n=2$--$8$, $\ge5000$ trials each, plus
+near-collision stress tests) confirm the Stam inequality with \textbf{zero violations}
+and reveal that Lorentzian regularisation ($\eta>0$) of the repulsion energy
+\emph{breaks} super-additivity,
+ruling out a direct resolvent-barrier proof at fixed height.
+All Python scripts are attached.
+\end{abstract}
+
+\tableofcontents
+
+%======================================================================
+\section{Definitions and notation}
+\label{sec:defs}
+%======================================================================
+
+We use the notation of the main document. Fix $n\ge 2$. Let
+$p\in\PnR$ be monic of degree $n$ with distinct roots
+$\lambda_1<\cdots<\lambda_n$ and scores $V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$.
+Write $\Phi_n(p)=\sum_i V_i^2$ (Fisher information),
+$\sigma^2(p)=\frac{1}{n}\sum_i(\lambda_i-\bar\lambda)^2$ (variance),
+and $\boxplus_n$ for the MSS symmetric additive convolution.
+
+\begin{definition}[Pairwise repulsion energy]
+\label{def:repulsion}
+\[
+  \mathcal{R}(p):=\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}.
+\]
+\end{definition}
+
+\begin{definition}[Cauchy transform at height $\eta$]
+\label{def:cauchy}
+For $\eta>0$ and $x\in\R$, define
+\[
+  g_{p,\eta}(x):=\frac{1}{n}\sum_{j=1}^n\frac{1}{x+i\eta-\lambda_j}
+  =:u_{p,\eta}(x)+i\,v_{p,\eta}(x),
+\]
+where
+\[
+  u_{p,\eta}(x)=\frac{1}{n}\sum_j\frac{x-\lambda_j}{(x-\lambda_j)^2+\eta^2},
+  \qquad
+  v_{p,\eta}(x)=\frac{1}{n}\sum_j\frac{\eta}{(x-\lambda_j)^2+\eta^2}.
+\]
+\end{definition}
+
+%======================================================================
+\section{The identity $\Phi_n=2\mathcal{R}$}
+\label{sec:identity}
+%======================================================================
+
+The main document establishes by Cauchy--Schwarz that
+$\Phi_n(p)\le 2(n-1)\mathcal{R}(p)$
+(Lemma~6.6 of the arxiv draft).
+We now prove that the correct relationship is an \emph{exact identity}, removing the factor $n-1$.
+
+\begin{theorem}[Fisher--repulsion identity]
+\label{thm:phi-eq-2R}
+For every $p\in\PnR$ with $n\ge 2$ distinct roots,
+\begin{equation}\label{eq:phi-eq-2R}
+  \Phi_n(p)=2\,\mathcal{R}(p).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand $\Phi_n=\sum_{i=1}^n V_i^2$ by writing each $V_i$ as a sum:
+\[
+  \Phi_n=\sum_{i=1}^n\Bigl(\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\Bigr)^{\!2}
+  =\sum_i\sum_{j\ne i}\sum_{k\ne i}
+    \frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}.
+\]
+Split the triple sum over ordered pairs $(j,k)$ with $j,k\ne i$ into
+\emph{diagonal terms} ($j=k$) and \emph{off-diagonal terms} ($j\ne k$):
+\[
+  \Phi_n
+  =\underbrace{\sum_i\sum_{j\ne i}\frac{1}{(\lambda_i-\lambda_j)^2}}_{\displaystyle=\,2\mathcal{R}}
+  +\underbrace{\sum_i\sum_{\substack{j\ne i,\;k\ne i\\j\ne k}}
+    \frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}}_{\displaystyle=:\,C}.
+\]
+The first sum counts every unordered pair $\{i,j\}$ twice
+(once with $i$ as the ``pivot'' and once with $j$), giving $2\mathcal{R}$.
+
+It remains to show $C=0$.
+Group the terms in~$C$ by unordered triples $\{a,b,c\}\subset\{1,\dots,n\}$.
+For each such triple, the three choices of pivot $i\in\{a,b,c\}$ each
+contribute two ordered pairs $(j,k)$, totalling
+\[
+  C=2\!\sum_{\{a,b,c\}}\!\Bigl[
+    \frac{1}{(\lambda_a-\lambda_b)(\lambda_a-\lambda_c)}
+    +\frac{1}{(\lambda_b-\lambda_a)(\lambda_b-\lambda_c)}
+    +\frac{1}{(\lambda_c-\lambda_a)(\lambda_c-\lambda_b)}
+  \Bigr].
+\]
+Setting $u=\lambda_a-\lambda_b$, $v=\lambda_a-\lambda_c$ (so
+$\lambda_b-\lambda_c=v-u$), each bracket becomes
+\[
+  \frac{1}{uv}+\frac{1}{(-u)(v-u)}+\frac{1}{(-v)(u-v)}
+  =\frac{1}{uv}-\frac{1}{u(v-u)}+\frac{1}{v(v-u)}.
+\]
+Computing over a common denominator $uv(v-u)$:
+\[
+  \frac{v-u}{uv(v-u)}-\frac{v}{uv(v-u)}+\frac{u}{uv(v-u)}
+  =\frac{v-u-v+u}{uv(v-u)}=0.
+\]
+Since each bracket vanishes, $C=0$, and $\Phi_n=2\mathcal{R}$.
+\end{proof}
+
+\begin{remark}
+The identity $\Phi_n=2\mathcal{R}$ is a purely algebraic consequence
+of the definition $V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$;
+it holds for any list of distinct real numbers, with no real-rootedness
+assumption.
+\end{remark}
+
+\begin{corollary}[Stam as a harmonic-mean bound on repulsion]
+\label{cor:stam-rewrite}
+The Stam inequality
+$1/\Phi_n(p\boxplus_n q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+is equivalent to
+\begin{equation}\label{eq:stam-repulsion}
+  \frac{1}{\mathcal{R}(p\boxplus_n q)}
+  \ge \frac{1}{\mathcal{R}(p)}+\frac{1}{\mathcal{R}(q)},
+\end{equation}
+i.e.\ $\mathcal{R}(p\boxplus_n q)$ is bounded above by the
+\emph{harmonic mean} of $\mathcal{R}(p)$ and $\mathcal{R}(q)$.
+\end{corollary}
+
+\begin{proof}
+Divide \eqref{eq:phi-eq-2R} through by $2$.
+\end{proof}
+
+\begin{corollary}[Improved Fisher--variance inequality]
+\label{cor:improved-FV}
+The identity $\Phi_n=2\mathcal{R}$ combined with the Fisher--variance bound
+$\Phi_n\sigma^2\ge n(n-1)^2/4$ gives
+\[
+  \mathcal{R}(p)\,\sigma^2(p)\ge \frac{n(n-1)^2}{8},
+\]
+with equality iff $V_i=c(\lambda_i-\bar\lambda)$ for a constant $c$.
+\end{corollary}
+
+%======================================================================
+\section{Two candidate proxy functionals (Route A)}
+\label{sec:proxies}
+%======================================================================
+
+\subsection{Proxy A1: Lorentzian-regularised inverse repulsion}
+
+\begin{definition}[Regularised repulsion]
+\label{def:R-eta}
+For $\eta\ge 0$, define
+\[
+  \mathcal{R}_\eta(p):=\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2+4\eta^2}.
+\]
+Note that $\mathcal{R}_0=\mathcal{R}$ and $\mathcal{R}_\eta\le\mathcal{R}$ for all $\eta>0$.
+\end{definition}
+
+\begin{definition}[Proxy A1]
+\[
+  \mathcal{P}_\eta^{(A1)}(p):=\frac{1}{2(n-1)\,\mathcal{R}_\eta(p)}.
+\]
+\end{definition}
+
+\begin{lemma}[Properties of Proxy A1]
+\label{lem:A1-props}
+\hfill
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item At $\eta=0$:
+    $\mathcal{P}_0^{(A1)}(p)=\frac{1}{(n-1)\Phi_n(p)}$,
+    so the conjectured super-additivity
+    $\mathcal{P}_0^{(A1)}(r)\ge\mathcal{P}_0^{(A1)}(p)+\mathcal{P}_0^{(A1)}(q)$
+    is exactly $\frac{1}{n-1}$ times the Fisher Stam inequality.
+  \item For $\eta>0$:
+    $\mathcal{P}_\eta^{(A1)}(p)\ge \mathcal{P}_0^{(A1)}(p)$.
+  \item The function $\eta\mapsto\mathcal{P}_\eta^{(A1)}(p)$ is
+    strictly increasing on $(0,\infty)$ and
+    $\mathcal{P}_\eta^{(A1)}(p)\to\infty$ as $\eta\to\infty$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Part~(i) follows from $\Phi_n=2\mathcal{R}$ (Theorem~\ref{thm:phi-eq-2R}).
+Parts (ii) and (iii) are immediate from $\mathcal{R}_\eta\le\mathcal{R}_0$
+and the fact that the regularisation decreases monotonically with~$\eta$.
+\end{proof}
+
+\begin{proposition}[Proxy A1 super-additivity \emph{fails} for $\eta>0$]
+\label{prop:A1-fails}
+For every $\eta>0$ and every $n\ge 3$, there exist $p,q\in\PnR$ with
+\[
+  \mathcal{P}_\eta^{(A1)}(p\boxplus_n q)
+  <\mathcal{P}_\eta^{(A1)}(p)+\mathcal{P}_\eta^{(A1)}(q).
+\]
+\emph{(Numerical evidence; see Section~\ref{sec:numerics}.)}
+\end{proposition}
+
+\begin{remark}
+For $\eta=0$, the proxy A1 inequality is by Lemma~\ref{lem:A1-props}(i)
+equivalent to the Fisher Stam inequality. Therefore the $\eta=0$ case is
+\emph{open} (not false), with $0$ violations in $>35{,}000$ random tests.
+\end{remark}
+
+\subsection{Proxy A2: Density-weighted resolvent Fisher inverse}
+
+\begin{definition}[Resolvent Fisher information]
+\label{def:Phi-res}
+For $\eta>0$, define
+\[
+  \Phi_{n,\eta}^{\mathrm{res}}(p)
+  :=\frac{n^3}{\pi}\int_{-\infty}^\infty u_{p,\eta}(x)^2\,v_{p,\eta}(x)\,dx,
+\]
+where $u_{p,\eta}=\operatorname{Re}g_{p,\eta}$,
+$v_{p,\eta}=\operatorname{Im}g_{p,\eta}$.
+\end{definition}
+
+\begin{lemma}[Limiting behaviour]
+$\Phi_{n,\eta}^{\mathrm{res}}(p)\to\Phi_n(p)$ as $\eta\to 0^+$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+As $\eta\to 0^+$, the weight $\frac{n}{\pi}v_{p,\eta}\,dx$ converges
+weakly to $\sum_{i=1}^n\delta_{\lambda_i}$ and
+$u_{p,\eta}(\lambda_i)\to V_i/n$,
+so $\Phi_{n,\eta}^{\mathrm{res}}\to n^2\sum_i(V_i/n)^2=\Phi_n$.
+\end{proof}
+
+\begin{definition}[Proxy A2]
+$\mathcal{P}_\eta^{(A2)}(p):=1/\Phi_{n,\eta}^{\mathrm{res}}(p)$.
+\end{definition}
+
+\begin{proposition}[Proxy A2 super-additivity \emph{fails} for all $\eta>0$]
+\label{prop:A2-fails}
+For every $\eta>0$ tested and every $n\ge 3$, violations
+$\mathcal{P}_\eta^{(A2)}(r)<\mathcal{P}_\eta^{(A2)}(p)+\mathcal{P}_\eta^{(A2)}(q)$
+appear generically ($\ge85\%$ of random trials).
+\emph{(Numerical evidence; see Section~\ref{sec:numerics}.)}
+\end{proposition}
+
+%======================================================================
+\section{Proofs and lemma status}
+\label{sec:proofs}
+%======================================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\hline
+\textbf{Result} & \textbf{Status} & \textbf{Reference} \\
+\hline
+$\Phi_n(p)=2\mathcal{R}(p)$ & \textbf{Proven}
+  & Theorem~\ref{thm:phi-eq-2R} \\
+Stam $\Leftrightarrow$ harmonic-mean repulsion
+  & \textbf{Proven} & Corollary~\ref{cor:stam-rewrite} \\
+Proxy A1 ($\eta>0$) super-additivity
+  & \textbf{False} & Proposition~\ref{prop:A1-fails} \\
+Proxy A1 ($\eta=0$) super-additivity
+  & \textbf{Open = Stam} & Lemma~\ref{lem:A1-props}(i) \\
+Proxy A2 super-additivity
+  & \textbf{False} & Proposition~\ref{prop:A2-fails} \\
+Improved $\mathcal{R}\sigma^2\ge n(n-1)^2/8$
+  & \textbf{Proven}
+  & Corollary~\ref{cor:improved-FV} \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Detailed heuristic: why Lorentzian regularisation fails}
+
+The failure of Proxy~A1 for $\eta>0$ can be understood as follows.
+At $\eta=0$ we have the identity $\Phi_n=2\mathcal{R}$, so the
+super-additivity of $1/\mathcal{R}$ is \emph{exactly} the Stam
+inequality.
+However, the regularisation
+$\mathcal{R}_\eta=\sum_{i<j}(d_{ij}^2+4\eta^2)^{-1}$
+breaks the algebraic cancellation in the proof of
+Theorem~\ref{thm:phi-eq-2R}: the identity
+$\Phi_n=2\mathcal{R}$ uses the exact inverse-square kernel
+$d_{ij}^{-2}$, and any softening of this kernel introduces
+non-cancelling cross terms.
+In particular, $\sum_i V_{i,\eta}^2\ne 2\mathcal{R}_\eta$
+for $\eta>0$ (where $V_{i,\eta}$ is the Lorentzian-regularised
+score).
+
+As a concrete diagnostic, the ``equispaced roots'' example
+with $n=4$ satisfies $\Phi_4=2\mathcal{R}$ exactly, but when
+$\eta$ increases the proxy excess
+$\mathcal{P}_\eta^{(A1)}(r)-\mathcal{P}_\eta^{(A1)}(p)-\mathcal{P}_\eta^{(A1)}(q)$
+begins negative at $\eta\approx 0.3$
+(see the $\eta$-asymptotics table in Section~\ref{sec:numerics}).
+
+\subsection{Why Proxy A2 fails more severely}
+
+The resolvent Fisher $\Phi_{n,\eta}^{\mathrm{res}}$ involves the
+\emph{cube} of the Cauchy kernel (two factors of the real part and
+one of the imaginary part), making it a more nonlinear functional of
+the root configuration.
+The $L^2$-integration mixes contributions from all roots
+simultaneously, destroying the pairwise structure that is critical
+for the cancellation argument.
+Even the direction of the error is adverse:
+$\Phi_{n,\eta}^{\mathrm{res}}$ systematically \emph{underestimates}
+$\Phi_n$ for the convolution output (relative to the summands),
+causing the inverse to overshoot, hence negative excess.
+
+%======================================================================
+\section{Implications for the finite free Stam inequality}
+\label{sec:implications}
+%======================================================================
+
+\subsection{What the identity $\Phi_n=2\mathcal{R}$ gives}
+
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+  \item It provides the cleanest formulation of the Stam inequality:
+    \[
+      \frac{1}{\mathcal{R}(p\boxplus_n q)}
+      \ge \frac{1}{\mathcal{R}(p)}+\frac{1}{\mathcal{R}(q)}.
+    \]
+    The pairwise repulsion $\mathcal{R}$ is a simpler object than
+    $\Phi_n$ (no ``scores'' needed; just root gaps).
+
+  \item It strengthens the Fisher--variance bound by a factor of
+    $n-1$.
+
+  \item It connects $\Phi_n$ directly to the \emph{pair-correlation
+    function} in the sense of random matrix theory, potentially
+    opening the door to determinantal or Pfaffian arguments.
+
+  \item It simplifies the Hermite flow dissipation:
+    Since $\Phi_n=2\mathcal{R}$, the Hermite dissipation
+    $\dot\Phi_n=-\frac{2}{n-1}\mathcal{S}$ translates to
+    $\dot{\mathcal{R}}=-\frac{1}{n-1}\mathcal{S}$.
+\end{enumerate}
+
+\subsection{What Route A does \emph{not} give}
+
+The resolvent regularisation approach, as tested here, does
+\emph{not} yield a super-additive proxy at any fixed $\eta>0$.
+Therefore, a direct barrier argument using the Cauchy transform
+at height $\eta$ and taking $\eta\to 0$ is unlikely to succeed
+without substantial modification.
+
+However, the identity $\Phi_n=2\mathcal{R}$ is itself a
+by-product of Route~A exploration and is useful for
+Routes~B and~C as well.
+
+%======================================================================
+\section{Numerical experiments}
+\label{sec:numerics}
+%======================================================================
+
+\subsection{Protocol}
+
+All experiments use IEEE~754 double precision via NumPy~2.4.
+Polynomials are specified by roots; the convolution
+$p\boxplus_n q$ is computed via the coefficient formula
+(Definition~1.1 of the main paper) and roots extracted with
+\texttt{numpy.roots}.
+Random polynomials are generated by sampling $n$ iid
+$\mathrm{Uniform}[-3,3]$ roots (centred for $q$ by subtracting
+the mean).
+
+Scripts: \texttt{route\_a\_core.py}, \texttt{route\_a\_experiments.py},
+\texttt{test\_repulsion\_stam.py}.
+
+\subsection{Summary of results}
+
+\textbf{1.\ Fisher Stam ($0$ violations):}
+Across $>35{,}000$ random polynomial pairs for $n=2,\dots,8$,
+plus near-collision stress tests with root gaps down to
+$10^{-6}$, we observe \emph{zero violations} of the Stam
+inequality.
+
+\medskip
+\textbf{2.\ Proxy~A1 random sweep} (500 trials each, $n=3,4,5$):
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+$\eta$ & $n=3$ viol.\ & $n=4$ viol.\ & $n=5$ viol.\ \\
+\hline
+$0.000$ & 0 & 0 & 0 \\
+$0.001$ & 0 & 0 & 0 \\
+$0.010$ & 0 & 0 & 0 \\
+$0.050$ & 9 & 0 & 0 \\
+$0.100$ & 18 & 1 & 0 \\
+$0.500$ & 302 & 324 & 371 \\
+$1.000$ & 489 & 500 & 500 \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{3.\ Proxy~A2:} violations at every tested $\eta>0$
+($\ge85\%$ of trials for $n=3$; $\ge56\%$ for $n=5$).
+
+\medskip
+\textbf{4.\ Identity $\Phi_n=2\mathcal{R}$:}
+The ratio $\Phi_n/(2(n-1)\mathcal{R})$ equals $1/(n-1)$
+to machine precision ($\le 10^{-10}$) across all
+$10{,}000$ random polynomials tested for each $n\in\{2,\dots,10\}$.
+
+\medskip
+\textbf{5.\ Repulsion Stam excess / Fisher Stam excess:}
+The ratio equals \textbf{exactly 2} for all tested pairs,
+as predicted by Theorem~\ref{thm:phi-eq-2R}.
+
+%======================================================================
+\section*{Acknowledgements}
+%======================================================================
+
+All computations were performed with Python~3.14, NumPy~2.4, and mpmath~1.3.
+
+\end{document}

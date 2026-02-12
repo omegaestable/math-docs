@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\title{Roadmap: Finite Free Stam Inequality}
+\author{}
+\date{}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PnR}{\mathcal{P}_n^{\R}}
+
+\begin{document}
+\maketitle
+
+\section*{Summary of status}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5.5cm}|c|p{5.5cm}|}
+\hline
+\textbf{Component} & \textbf{Status} & \textbf{Notes}\\
+\hline\hline
+\multicolumn{3}{|l|}{\textbf{Established results (fully proved)}}\\
+\hline
+Score identities (sum, root, centered, gap) & \textsc{Proven} & Lemma in main paper\\
+Fisher--variance inequality: $\Phi_n\sigma^2\ge n(n-1)^2/4$ & \textsc{Proven} & Cauchy--Schwarz\\
+Score-Gradient Inequality (SGI): $\mathcal{S}\sigma^2\ge\frac{n-1}{2}\Phi_n$ & \textsc{Proven} & Double Cauchy--Schwarz\\
+Critical-value formula via residues & \textsc{Proven} & Global residue theorem\\
+Hermite flow bound: $1/\Phi_n(p\boxplus G_b)\ge(a{+}b)/(a\Phi_n(p))$ & \textsc{Proven} & SGI + Hermite semigroup\\
+$n=2$ case (equality) & \textsc{Proven} & Exact: $1/\Phi_2=2\sigma^2$\\
+$n=3$ case & \textsc{Proven} & Convexity of $x\mapsto x^2$\\
+Dilation path real-rootedness & \textsc{Proven} & MSS theorem\\
+Dilation root ODE and dissipation & \textsc{Proven} & Implicit differentiation\\
+Local convexity at $t=0$ & \textsc{Proven} & Root acceleration + SGI\\
+\hline
+\textbf{Identity $\Phi_n = 2\mathcal{R}$} & \textsc{Proven} & \textbf{Route A.}  Algebraic: cross-terms vanish\\
+Stam $\Leftrightarrow$ harmonic-mean repulsion & \textsc{Proven} & Immediate from $\Phi_n=2\mathcal{R}$\\
+Improved repulsion--variance: $\mathcal{R}\sigma^2\ge n(n{-}1)^2/8$ & \textsc{Proven} & $\Phi_n=2\mathcal{R}$ + Fisher--variance\\
+\hline
+\textbf{General Fisher dissipation} & \textsc{Proven} & \textbf{Route B.}  Eq.~\eqref{eq:gen-dissip}\\
+\textbf{Initial acceleration $\propto$ score} & \textsc{Proven} & \textbf{Route B.}  Prop.~\ref{prop:initial-accel}\\
+\textbf{$\Gamma^{(1)}$ formula for $F''(0)$} & \textsc{Proven} & \textbf{Route B.}  Prop.~\ref{prop:initial-Fpp}\\
+\textbf{$\Gamma^{(1)}>0$ for $n=3$} & \textsc{Proven} & \textbf{Route B.}  Palindromic positivity\\
+\hline\hline
+\multicolumn{3}{|l|}{\textbf{Plausible conjectures (zero violations, $1000+$ tests)}}\\
+\hline
+$\Gamma^{(1)}>0$ for all $n$ & \textsc{Plausible} & $0/2500$ failures ($n\le 7$)\\
+Score alignment $\alpha(t)>0$ & \textsc{Plausible} & $0/1200$ failures ($n\le 6$)\\
+$\mathcal{D}_\perp(t)\le 0$ & \textsc{Plausible} & Universal in all samples\\
+Repulsion monotonicity $\mathcal{R}(r_t)\downarrow$ & \textsc{Plausible} & $0/800$ failures ($n\le 6$)\\
+Pointwise dilation Stam $E(t)\ge 0$ & \textsc{Plausible} & $0/3700$ failures ($n\le 7$)\\
+Discriminant power inequality (EPI) & \textsc{Plausible} & $0/29000$ failures ($n\le 8$)\\
+\hline\hline
+\multicolumn{3}{|l|}{\textbf{Open conjecture (target)}}\\
+\hline
+Fisher Stam for all $n$, all $p,q$ & \textsc{Open} & $0$ violations in $>35{,}000$ tests $(n\le 8)$\\
+\hline\hline
+\multicolumn{3}{|l|}{\textbf{False conjectures (counterexampled)}}\\
+\hline
+Global convexity of $1/\Phi_n(r_t)$ & \textsc{False} & $n=3$, $n=4$ counterexamples\\
+Dilation excess convexity $E''(t)\ge 0$ & \textsc{False} & Same counterexamples\\
+Proxy A1 super-additivity for $\eta>0$ & \textsc{False} & Violations at $\eta\ge 0.05$\\
+Proxy A2 super-additivity & \textsc{False} & Violations generically\\
+$F'(t)\ge 2t/\Phi_n(q)$ pointwise & \textsc{False} & \textbf{Route B.}  $\sim3\%$ at $n=3$\\
+$F'(t)/(2t)$ non-decreasing & \textsc{False} & \textbf{Route B.}  Fails almost always\\
+SGI-based pointwise bound & \textsc{False} & \textbf{Route B.}  $\sim50\%$ failures\\
+Dilation $\ge$ Hermite for $1/\Phi_n$ & \textsc{False} & \textbf{Route B.}  $\sim10\%$ failures\\
+\hline
+\end{tabular}
+\end{center}
+
+\section*{Minimal remaining steps for a complete proof}
+
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=3.5em]
+  \item \textbf{Prove the perpendicular dissipation sign $\mathcal{D}_\perp\le 0$
+    (Conjecture~B, most direct path).}
+    Along the dilation path $r_t=p\boxplus_n q_t$, decompose the root velocity
+    into a score-aligned component ($\alpha V_i/(n{-}1)$) and an
+    orthogonal correction~$\varepsilon_i$.
+    Show that the dissipation pairing from $\varepsilon$ is non-positive.
+    This immediately gives repulsion monotonicity
+    ($\Phi_n(r_t)$ non-increasing).
+
+  \item \textbf{Prove $\Gamma^{(1)}(p)>0$ for general $n$.}
+    This is proved for $n=3$ via palindromic positivity.
+    For $n\ge 4$, try $n$-variable partial-fraction identities
+    analogous to the $\Phi_n=2\mathcal{R}$ proof.
+    Combined with Step~1, this gives $F''(0)>0$ and
+    strong evidence for the pointwise dilation Stam.
+
+  \item \textbf{Prove the pointwise dilation Stam $E(t)\ge 0$, or (weaker)
+    the integrated Stam $\int_0^1 F'(t)\,dt\ge 1/\Phi_n(q)$.}
+    The former is the strongest
+    plausible statement. The latter suffices for the Stam inequality.
+    Approach: use $E(0)=E'(0)=0$, $E''(0)>0$, and the fact that $E(t)/t^2$
+    has a positive initial value and is controlled by the repulsion monotonicity.
+
+  \item \textbf{Handle the boundary} (repeated roots):
+  By the convention $1/\Phi_n:=0$ when $p$ has repeated roots
+  and the continuity of $\boxplus_n$, Stam extends to the boundary;
+  this step is already addressed in the main paper.
+\end{enumerate}
+
+\section*{Recommended next routes}
+
+\begin{description}[leftmargin=2em,style=nextline]
+  \item[Route B (Operator-coefficient monotone path) — most developed.]
+    The dilation path provides a smooth, real-rooted interpolation
+    $r_t=p\boxplus_n q_t$ from $p$ to $p\boxplus_n q$.
+    \textbf{New results:}
+    \begin{itemize}[nosep]
+      \item The initial root acceleration is proportional to the score:
+        $\ddot\lambda_i(0)=\frac{2\sigma^2(q)}{n-1}V_i(p)$ (Proposition, proven).
+      \item A new functional $\Gamma^{(1)}(p)>0$ controls $F''(0)$;
+        proved positive for $n=3$ via palindromic polynomial analysis.
+      \item The dissipation decomposes as
+        $\mathcal{D}=\mathcal{D}_\parallel+\mathcal{D}_\perp$,
+        where the Hermite-aligned part $\mathcal{D}_\parallel>0$ always
+        and the perpendicular correction $\mathcal{D}_\perp\le 0$
+        never dominates ($3700+$ tests, zero violations).
+      \item \textbf{Key conjecture:} the ``pointwise dilation Stam''
+        $1/\Phi_n(r_t)\ge 1/\Phi_n(p)+t^2/\Phi_n(q)$
+        holds for all $t\in[0,1]$ (zero violations in $3700+$ tests).
+    \end{itemize}
+    \textbf{Minimal remaining step:}
+    prove $\mathcal{D}_\perp\le 0$
+    (or directly prove repulsion monotonicity).
+
+  \item[Route C (Variational/transport approach).]
+    View the root measure $\mu_p=\frac{1}{n}\sum\delta_{\lambda_i}$
+    as a discrete probability measure, and $\mathcal{R}$ as a
+    Riesz-type energy $I_{-2}(\mu_p)$.
+    The discriminant power inequality (Conjecture: $\mathcal{N}(p\boxplus_n q)\ge
+    \mathcal{N}(p)+\mathcal{N}(q)$) survives $29{,}000+$ tests
+    and is proved for $n\le 3$.
+
+  \item[Hybrid approach.]
+    Combine the Hermite flow bound (proved) with
+    the Route~B velocity decomposition.
+    The score-aligned component gives a Hermite-type bound;
+    the perpendicular correction is always non-positive.
+    Key step: prove the perpendicular correction is \emph{bounded}
+    in a way that the net dissipation suffices for Stam.
+\end{description}
+
+\section*{Available code}
+
+\begin{itemize}[nosep]
+  \item \texttt{route\_a\_core.py} — Library: $\boxplus_n$, root extraction, $\Phi_n$, $\mathcal{R}$, scores, proxies
+  \item \texttt{route\_a\_experiments.py} — Route A experiments (proxies A1, A2 at varying $\eta$)
+  \item \texttt{test\_repulsion\_stam.py} — Large-scale test of repulsion Stam ($n=2$--$8$, $35{,}000+$ trials)
+  \item \texttt{route\_b\_experiments.py} — Route B: dilation path analysis, velocity decomposition, conjecture tests
+  \item \texttt{route\_b\_deep.py} — Route B: pointwise excess, Hermite comparison, stress tests
+  \item \texttt{verify\_gamma1.py} — Symbolic verification of $\Gamma^{(1)}>0$ for $n=3$
+\end{itemize}
+
+\end{document}
