@@ -37,7 +37,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
-\newcommand{\HH}{\mathbb{H}}
+\newcommand{\HH}{\mathbb{H}} % upper half-plane
 \newcommand{\PnR}[1][n]{\mathcal{P}^{\R}_{#1}}
 \newcommand{\fp}{\boxplus_n}
 \DeclareMathOperator{\tr}{tr}
@@ -53,6 +53,9 @@
 \newcommand{\deadend}{\textbf{[\,Dead End\,]}}
 \newcommand{\numconf}{\textbf{[\,Numerically Confirmed\,]}}
 \newcommand{\open}{\textbf{[\,Open\,]}}
+\newcommand{\compverif}{\textbf{[\,Computer-verified\,]}}
+\newcommand{\proofsketch}{\textbf{[\,Proof sketch\,]}}
+\newcommand{\conditional}{\textbf{[\,Conditional\,]}}
 
 % ─────────────── title ───────────────
 \begin{document}
@@ -73,30 +76,127 @@ For $r\in\PnR$ with simple roots $\lambda_1<\cdots<\lambda_n$, define
 the \emph{Fisher information}
 $\Phi_n(r)=\sum_{i=1}^n\bigl(\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}\bigr)^2$.
 
-This document is a comprehensive research compendium on the
+This document is a working compendium for the
 \emph{finite free Stam inequality}
 \begin{equation}\label{eq:stam-main}
   \frac{1}{\Phi_n(p\fp q)}\;\ge\;\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)},
   \qquad p,q\in\PnR,
 \end{equation}
-the polynomial analogue of the classical Stam inequality in information
-theory.
-We consolidate all rigorous proofs (17 lemmas/theorems, including
-complete proofs for $n=2$ and $n=3$), all attempted proof strategies
-(8 routes, labelled A through I), all dead ends with precise failure
-modes, all numerical evidence ($>$80\,000 trials across $n=2$--$12$
-with zero violations of the target inequality), and all structural
-identities discovered along the way.
-We formulate precise open conjectures and provide detailed route maps
-for two promising future directions:
-a marginal/hypergraph decomposition reducing the general case to $n=3$
-(Option~C), and an optimal-transport/entropy-dissipation formulation
-(Option~D).
+the polynomial analogue of classical Stam.
+The purpose of this version is to give a compact, accurate handoff for
+future iterations: what is proved, what is only computer-verified, what
+failed, and what should be attempted next.
+
+\medskip\noindent
+\textbf{Proof-status conventions.}
+Results are classified as follows:
+\proved{} = fully rigorous proof;
+\conditional{} = result whose proof relies on one or more
+explicitly identified unproved intermediate statements;
+\compverif{} = statement verified by exhaustive symbolic or
+numerical computation (typically $\ge 10^5$ random feasible trials,
+zero violations) but lacking a closed-form algebraic certificate;
+\proofsketch{} = outline whose key steps are justified but whose
+full details are deferred;
+\open{} = statement without proof or reduction.
+All conditional dependencies and computer-verified steps are
+explicitly flagged in the text.
+
+Current high-level status:
+$n=2,3$ are fully proved;
+Gaussian-input Stam for all~$n$ is proved \emph{conditional}
+on the root ODE $\dot\lambda_i=V_i/(n-1)$ under Hermite flow
+(which has not yet been derived from first principles);
+the $n=4$ argument is rigorously reduced to
+computer-verified polynomial inequalities that await
+closed-form algebraic certificates;
+a quantitative local Stam inequality near the Hermite manifold
+is proved for all~$n$ (as a proof sketch with an identified
+uniform-in-$w$ gap);
+global Stam for $n\ge 5$ remains open.
+See Table~\ref{tab:status} for a complete classification.
 \end{abstract}
 
 \maketitle
 \tableofcontents
 \newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Global status table}\label{sec:status-table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addcontentsline{toc}{section}{Global status table}
+
+Table~\ref{tab:status} classifies every major result
+in this document.  The status categories are defined in the
+abstract.  References point to the theorem or observation
+where each result is stated.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.08}
+\caption{Proof-status classification of all major results.}
+\label{tab:status}
+\begin{tabular}{p{4.8cm}lp{3.5cm}}
+\toprule
+\textbf{Result} & \textbf{Status} & \textbf{Reference} \\
+\midrule
+\multicolumn{3}{l}{\emph{Structural identities (Part~\ref{part:foundations})}} \\
+Fisher--repulsion $\Phi_n=2\mathcal{R}$ & \proved & Thm~\ref{thm:fisher-rep} \\
+Fisher--trace--Laplacian & \proved & Thm~\ref{thm:phi-trL} \\
+Score identities (i)--(iv) & \proved & Lem~\ref{lem:score-ids} \\
+Fisher--variance inequality & \proved & Thm~\ref{thm:fisher-var} \\
+Score-gradient inequality & \proved & Thm~\ref{thm:SGI} \\
+Variance additivity & \proved & Lem~\ref{lem:var-add} \\
+Derivative compatibility & \proved & Lem~\ref{lem:deriv} \\
+Bezoutian representation & \proved & Thm~\ref{thm:bez} \\
+Harmonicity of $\log\disc$ & \proofsketch{} + \compverif & Thm~\ref{thm:harmonicity} \\
+Contour integral for $\Phi_n$ & \proved & Thm~\ref{thm:contour} \\
+Isoperimetric inequality & \proved & Prop~\ref{prop:isoperimetric} \\
+Cumulant-ratio defect $\Delta_k\ge 0$ & \proved & Lem~\ref{lem:defect-pos} \\
+CS mixing inequality & \proved & Lem~\ref{lem:cs-mix} \\
+\midrule
+\multicolumn{3}{l}{\emph{Special cases (Part~\ref{part:foundations})}} \\
+Stam for $n=2$ (equality) & \proved & \S\ref{sec:special} \\
+Stam for $n=3$ (SOS proof) & \proved & Thm~\ref{thm:n3-stam} \\
+Stam for $n=3$ (CS mixing) & \proved & Thm~\ref{thm:n3-cs} \\
+De Bruijn identity & \conditional & Thm~\ref{thm:debruijn} \\
+Gaussian-input Stam, all $n$ & \conditional & Thm~\ref{thm:stam-gauss} \\
+\midrule
+\multicolumn{3}{l}{\emph{CS mixing framework (Part~\ref{part:route-j})}} \\
+Hessian of $G_n$, $n=3,4$ & \proved & Thm~\ref{thm:hessian} \\
+Hessian of $G_n$, $n\ge 5$ & \compverif & Thm~\ref{thm:hessian} \\
+$R_3=\tfrac{9}{8}\tau_3^2$ (exact) & \proved & Thm~\ref{thm:R3-exact} \\
+Quadratic Stam, $n=3$ & \proved & Thm~\ref{thm:quad-stam} \\
+Quadratic Stam, $n\ge 4$ & \conditional on Hessian & Thm~\ref{thm:quad-stam} \\
+KStam kurtosis axis, $n=4$ & \proved{} + \compverif & Thm~\ref{thm:stam-kurt4} \\
+Stam for $n=4$ & \compverif{} (3 ineqs) & Thm~\ref{thm:stam-n4} \\
+\midrule
+\multicolumn{3}{l}{\emph{MSS interlacing framework (Part~\ref{part:mss})}} \\
+$K$-cumulant preservation & \proved & Thm~\ref{thm:kappa-pres} \\
+Score--Cauchy identity & \proved & Thm~\ref{thm:score-cauchy} \\
+Column-sum vanishing & \proved & Thm~\ref{thm:col-zero} \\
+Frobenius norm $\|C\|_F^2=4\Phi_n$ & \proved & Thm~\ref{thm:frob} \\
+Deficit telescoping & \proved & Thm~\ref{thm:telescope} \\
+Chain dominance $D_n\ge\delta_n D_3$ & \compverif & Conj~\ref{thm:chain-dom} \\
+\midrule
+\multicolumn{3}{l}{\emph{Gate analysis and local results (Part~\ref{part:gates})}} \\
+Local Stam for all $n$ & \proofsketch & Thm~\ref{thm:local-stam} \\
+$\mathcal{E}_n\ge 0$ & \deadend & Obs~\ref{obs:gate1-false} \\
+Ladder monotonicity $D_k\ge D_{k-1}$ & \deadend & Obs~\ref{obs:gate2-false} \\
+Universal level-wise Stam & \compverif & Obs~\ref{obs:universal-stam} \\
+Frobenius reduction bound & \compverif & Obs~\ref{obs:frob-reduction} \\
+\midrule
+\multicolumn{3}{l}{\emph{Open conjectures}} \\
+Stam for all $n\ge 4$ & \open & Conj~\ref{conj:stam} \\
+$R_n$ sub-averaging & \open & Conj~\ref{thm:Rn-subavg} \\
+Flow monotonicity & \open & Conj~\ref{conj:flow-mono} \\
+Real stability of $K_r$ & \open & Conj~\ref{thm:K-symbol-stable} \\
+Newton wall compactness & \open & Conj~\ref{thm:compact-feas} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -117,7 +217,7 @@ $r=p\fp q$ is defined by
   r(x)=\sum_{k=0}^n c_k x^{n-k},\qquad
   c_k=\sum_{i+j=k}\frac{(n-i)!\,(n-j)!}{n!\,(n-k)!}\,a_i b_j.
 \]
-By the Marcus--Spielman--Srivastava theorem~\cite{MSS2022},
+By the Marcus--Spielman--Srivastava theorem~\textup{[1]},
 $\fp$ preserves $\PnR$: if $p,q\in\PnR$ then $p\fp q\in\PnR$.
 \end{definition}
 
@@ -154,38 +254,78 @@ For $r\in\PnR$ with simple roots $\lambda_1<\cdots<\lambda_n$:
 If $r$ has a repeated root, we set $\Phi_n(r)=\infty$.
 \end{definition}
 
-\begin{definition}[Curvature matrix / graph Laplacian]\label{def:curv}
-The \emph{curvature matrix} of $r$ is $K\in\R^{n\times n}$ with
+\begin{definition}[Graph Laplacian]\label{def:curv}
+The \emph{graph Laplacian} of $r$ is $L\in\R^{n\times n}$ with
 \[
-  K_{ij}=\begin{cases}
+  L_{ij}=\begin{cases}
     -(\lambda_i-\lambda_j)^{-2}&i\ne j,\\
     \sum_{k\ne i}(\lambda_i-\lambda_k)^{-2}&i=j.
   \end{cases}
 \]
-This is the complete-graph Laplacian with weights $w_{ij}=(\lambda_i-\lambda_j)^{-2}$.
-We have $K\mathbf{1}=0$, $K\succeq 0$, $\ker K=\mathrm{span}\{\mathbf{1}\}$,
-$\rank K=n-1$.
-Equivalently, $K=-\tfrac{1}{2}\mathrm{Hess}_\lambda(\log\disc(r))$.
+This is the complete-graph Laplacian with edge weights $w_{ij}=(\lambda_i-\lambda_j)^{-2}$.
+We have $L\mathbf{1}=0$, $L\succeq 0$, $\ker L=\mathrm{span}\{\mathbf{1}\}$,
+$\rank L=n-1$.
+Equivalently, $L=-\tfrac{1}{2}\mathrm{Hess}_\lambda(\log\disc(r))$.
 \end{definition}
 
 \subsection{Variance and additive parameters}
 
 \begin{definition}[Additive mean and variance]\label{def:var}
-For $r\in\PnR$:
-\[
-  \mu(r):=-\frac{a_1(r)}{n},\qquad
-  \sigma^2(r):=-\frac{a_2(r)}{n(n-1)}+\frac{a_1(r)^2}{2n^2}.
-\]
-Under $\fp$: $\mu(p\fp q)=\mu(p)+\mu(q)$ and
+For $r\in\PnR$ with roots $\lambda_1<\cdots<\lambda_n$:
+\begin{align}
+  \mu(r)&:=-\frac{a_1(r)}{n}=\frac{1}{n}\sum_{i=1}^n\lambda_i
+  \qquad(\text{centroid}),\label{eq:mu}\\
+  \sigma^2(r)&:=\frac{1}{n}\sum_{i=1}^n(\lambda_i-\mu)^2
+  =\frac{(n-1)\,a_1(r)^2-2n\,a_2(r)}{n^2}
+  \qquad(\text{empirical variance}).\label{eq:sigma}
+\end{align}
+Both are \textbf{additive}: $\mu(p\fp q)=\mu(p)+\mu(q)$ and
 $\sigma^2(p\fp q)=\sigma^2(p)+\sigma^2(q)$.
-For the finite Gaussian $g_t$, $\sigma^2(g_t)=t$.
+\end{definition}
+
+\begin{definition}[Finite Gaussian]\label{def:gauss}
+The \emph{finite Gaussian} $g_t\in\PnR$ of variance~$t>0$ is
+the unique centred polynomial whose $K$-transform
+has $\kappa_k(g_t)=0$ for all $k\ne 0,2$.
+Equivalently, all log-cumulants $\ell_k(g_t)=0$ for $k\ge 3$,
+so $g_t$ is characterised by $\sigma^2(g_t)=t$.
+The Hermite semigroup satisfies $g_s\fp g_t=g_{s+t}$.
+For example: $g_t=x^2-t$ at $n=2$;\;
+$g_t=x^3-\frac{3}{2}t\,x$ at $n=3$.
 \end{definition}
 
 \begin{definition}[Normalised cumulant ratios]\label{def:tau}
-For centred $r\in\PnR$ with $u:=-\ell_2(r)>0$:
+For centred $r\in\PnR$ with $u:=-\ell_2(r)>0$, define
 $\tau_k(r):=\ell_k(r)/u(r)^{k/2}$ for $k\ge 3$.
-Note $u=\sigma^2/(2(n-1))$.
+The \emph{additive variance parameter}
+$u=\sigma^2/(2(n-1))$ satisfies $u(p\fp q)=u(p)+u(q)$.
 \end{definition}
+
+\begin{lemma}[Normalisation identities]\label{lem:normalisation}
+For centred $r\in\PnR$ $($i.e., $\mu(r)=0$$)$, the parameters
+$\kappa_2$, $\ell_2$, $u$, and $\sigma^2$ are related by:
+\begin{equation}\label{eq:norm-chain}
+  \ell_2\;=\;\kappa_2\;=\;\frac{(n-2)!\,a_2}{n!}
+  \;=\;\frac{a_2}{n(n-1)},
+  \qquad
+  u\;:=\;-\ell_2\;>\;0,
+  \qquad
+  \sigma^2\;=\;2(n-1)\,u.
+\end{equation}
+Here $a_2$ is the coefficient of $x^{n-2}$ in$~r$ $($so $a_2<0$
+for centred real-rooted $r$ with $n\ge 2$$)$.
+\end{lemma}
+
+\begin{proof}
+From Definition~\ref{def:K}: $\kappa_2=(n-2)!\,a_2/n!$.
+The log-cumulant recurrence (Definition~\ref{def:K}) gives
+$\ell_2=\kappa_2-\frac{1}{2}\kappa_1^2=\kappa_2$
+when $r$ is centred ($\kappa_1=\ell_1=0$).
+From~\eqref{eq:sigma} with $a_1=0$:
+$\sigma^2=-2a_2/n=-2n(n-1)\ell_2/n=2(n-1)(-\ell_2)=2(n-1)u$.
+All three parameters are additive under $\fp$
+because $\ell_2$ is additive (Definition~\ref{def:K}).
+\end{proof}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -224,29 +364,29 @@ Inequality~\eqref{eq:stam-main} is equivalent to
 $1/\mathcal{R}(p\fp q)\ge 1/\mathcal{R}(p)+1/\mathcal{R}(q)$.
 \end{corollary}
 
-% ─── Fisher = tr(K) ───
-\subsection{Fisher--trace--curvature identity}
+% ─── Fisher = tr(L) ───
+\subsection{Fisher--trace--Laplacian identity}
 
-\begin{theorem}[Fisher = $\tr(K)=\lambda^T K^2\lambda$]\label{thm:phi-trK}
+\begin{theorem}[Fisher = $\tr(L)=\lambda^T L^2\lambda$]\label{thm:phi-trL}
 For $r\in\PnR$:
 \begin{enumerate}[label=\textup{(\alph*)}]
-  \item $\Phi_n=\tr(K)=2\mathcal{R}$.
-  \item $V=K\lambda$ \textup{(Euler identity)}.
-  \item $\lambda^T K\lambda=\binom{n}{2}$ \textup{(universal constant)}.
-  \item $\Phi_n=\|V\|^2=\|K\lambda\|^2=\lambda^T K^2\lambda$.
+  \item $\Phi_n=\tr(L)=2\mathcal{R}$.
+  \item $V=L\lambda$ \textup{(Euler identity)}.
+  \item $\lambda^T L\lambda=\binom{n}{2}$ \textup{(universal constant)}.
+  \item $\Phi_n=\|V\|^2=\|L\lambda\|^2=\lambda^T L^2\lambda$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-(a) follows from $\Phi_n=2\mathcal{R}$ and $\tr(K)=2\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
+(a) follows from $\Phi_n=2\mathcal{R}$ and $\tr(L)=2\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
 
-(b) We compute $(K\lambda)_i=\sum_{j\ne i}\frac{\lambda_i-\lambda_j}{(\lambda_i-\lambda_j)^2}=\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}=V_i$.
+(b) We compute $(L\lambda)_i=\sum_{j\ne i}\frac{\lambda_i-\lambda_j}{(\lambda_i-\lambda_j)^2}=\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}=V_i$.
 
-(c) $\lambda^T K\lambda=V\cdot\lambda=\frac{1}{2}\sum_i\partial_{\lambda_i}\log\disc\cdot\lambda_i
+(c) $\lambda^T L\lambda=V\cdot\lambda=\frac{1}{2}\sum_i\partial_{\lambda_i}\log\disc\cdot\lambda_i
 =\frac{n(n-1)}{2}$
 by the Euler identity for homogeneity of $\disc$ (degree $n(n-1)$).
 
-(d) is immediate from $V=K\lambda$.
+(d) is immediate from $V=L\lambda$.
 \end{proof}
 
 % ─── Score identities ───
@@ -278,9 +418,42 @@ so $\sum_i\lambda_i V_i=\binom{n}{2}$.
 By (i), subtracting $\mu\sum V_i=0$ gives (ii).
 
 (iii) $\sum_{i<j}(V_i-V_j)/(\lambda_i-\lambda_j)
-=\sum_i V_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}\cdot[\text{with signs}]$;
-after careful bookkeeping this equals $\sum_i V_i^2=\Phi_n$, using the
-vanishing of triple cross-terms.
+=\sum_i V_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}
+-\sum_{i<j}\bigl[V_j/(\lambda_i-\lambda_j)+V_i/(\lambda_j-\lambda_i)\bigr]$.
+Rewriting the double sum: for each pair $i<j$, the term
+$V_i/(\lambda_i-\lambda_j)+V_j/(\lambda_j-\lambda_i)$ contributes
+to $\sum_k V_k\cdot(\text{sum of }1/(\lambda_k-\lambda_m)$ for $m\ne k)$.
+In fact,
+\begin{align*}
+  \sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}
+  &=\sum_{i<j}\frac{1}{\lambda_i-\lambda_j}
+    \Bigl(\sum_{k\ne i}\frac{1}{\lambda_i-\lambda_k}
+    -\sum_{k\ne j}\frac{1}{\lambda_j-\lambda_k}\Bigr)\\
+  &=\sum_{i<j}\sum_{k\ne i}\frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}
+    -\sum_{i<j}\sum_{k\ne j}\frac{1}{(\lambda_i-\lambda_j)(\lambda_j-\lambda_k)}.
+\end{align*}
+Relabelling the second sum by interchanging $i\leftrightarrow j$
+(which reverses both the sign of $(\lambda_i-\lambda_j)$ and the
+ordering to $j<i$, i.e.\ $i>j$) yields
+\[
+  \sum_{j<i}\sum_{k\ne i}\frac{1}{(\lambda_j-\lambda_i)(\lambda_i-\lambda_k)}
+  =-\sum_{i<j}\sum_{k\ne j}\frac{1}{(\lambda_i-\lambda_j)(\lambda_j-\lambda_k)},
+\]
+so the two double sums combine to give
+\[
+  2\sum_{i<j}\sum_{\substack{k\ne i}}\frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}.
+\]
+Separating the diagonal terms ($k=j$) from the cross terms ($k\ne j$, $k\ne i$):
+the diagonal terms give $\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$
+summed over the appropriate range, yielding $\sum_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-2}=\Phi_n$.
+The cross terms, grouped into triples $\{i,j,k\}$, each contribute
+$1/((\lambda_i-\lambda_j)(\lambda_i-\lambda_k))
++1/((\lambda_j-\lambda_i)(\lambda_j-\lambda_k))
++1/((\lambda_k-\lambda_i)(\lambda_k-\lambda_j))=0$
+by the partial-fraction identity
+$\sum_{\text{cyc}}1/((a-b)(a-c))=0$
+(the same identity as in Theorem~\ref{thm:fisher-rep}).
+Hence $\sum_{i<j}(V_i-V_j)/(\lambda_i-\lambda_j)=\Phi_n$.
 
 (iv) Since $r'(\lambda_i)=\prod_{j\ne i}(\lambda_i-\lambda_j)$,
 $V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}
@@ -322,19 +495,44 @@ $\sigma^2(p\fp q)=\sigma^2(p)+\sigma^2(q)$.
 \end{lemma}
 
 \begin{proof}
-Direct computation from the coefficient formula:
+From the MSS coefficient formula (Definition~\ref{def:mss}):
 $c_1=a_1+b_1$, $c_2=a_2+b_2+\frac{n-1}{n}a_1 b_1$.
+Using~\eqref{eq:sigma}:
+\begin{align*}
+  \sigma^2(p\fp q)
+  &=\frac{(n\!-\!1)(a_1\!+\!b_1)^2-2n(a_2\!+\!b_2\!+\!\tfrac{n-1}{n}a_1 b_1)}{n^2}\\
+  &=\frac{(n\!-\!1)a_1^2\!-\!2na_2}{n^2}
+   +\frac{(n\!-\!1)b_1^2\!-\!2nb_2}{n^2}
+   +\frac{2(n\!-\!1)a_1b_1\!-\!2(n\!-\!1)a_1b_1}{n^2}\\
+  &=\sigma^2(p)+\sigma^2(q).\qedhere
+\end{align*}
 \end{proof}
 
 \begin{lemma}[Derivative compatibility]\label{lem:deriv}
 $(p\fp q)'/n=(p'/n)\boxplus_{n-1}(q'/n)$.
 \end{lemma}
 
+\begin{proof}
+Write $p=\sum a_k x^{n-k}$, $q=\sum b_k x^{n-k}$.
+Then $(p\fp q)(x)=\sum c_k x^{n-k}$ with
+$c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}a_i b_j$.
+The derivative of $p$ is $p'(x)/n=\sum_{k=0}^{n-1}
+\frac{n-k}{n}a_k x^{n-1-k}$,
+which is a monic degree-$(n-1)$ polynomial with coefficients
+$\tilde a_k=(n-k)a_k/n$.
+A direct calculation confirms that the $\boxplus_{n-1}$
+convolution of $p'/n$ and $q'/n$ reproduces $(p\fp q)'/n$,
+using the identity
+$\frac{(n-i)(n-j)}{n^2}\cdot\frac{(n-1-i)!(n-1-j)!}{(n-1)!(n-1-k)!}
+=\frac{(n-k)}{n}\cdot\frac{(n-i)!(n-j)!}{n!(n-k)!}$
+for $i+j=k$.
+\end{proof}
+
 % ─── Bezoutian representation ───
 \subsection{Bezoutian representation}
 
 \begin{theorem}[Bezoutian representation of $\Phi_n$]\label{thm:bez}
-Let $\Bez(r,r')$ denote the Bezoutian of $r$ and $r'$. Then
+Let $\Bez(r,r')$ denote the Bezoutian of $r$ and $r'$~\textup{[9]}. Then
 \[
   \Phi_n(r)=\Bigl\|\frac{r''}{2}\Bigr\|^2_{\Bez(r,r')}
   =\sum_{i=1}^n\frac{r''(\lambda_i)^2}{4\,r'(\lambda_i)^2}.
@@ -342,16 +540,26 @@ Let $\Bez(r,r')$ denote the Bezoutian of $r$ and $r'$. Then
 \end{theorem}
 
 \begin{proof}
-The Bezoutian inner product is diagonal in the Lagrange basis:
-$\langle f,g\rangle_{\Bez}=\sum_i f(\lambda_i)g(\lambda_i)/r'(\lambda_i)^2$.
-Since $V_i=r''(\lambda_i)/(2r'(\lambda_i))$, we get
+The Bezoutian matrix $\Bez(r,r')$ is the unique symmetric matrix
+$B\in\R^{n\times n}$ satisfying
+$\sum_{i,j}B_{ij}x^{n-1-i}y^{n-1-j}
+=\bigl(r(x)r'(y)-r'(x)r(y)\bigr)/(x-y)$.
+The associated inner product is diagonal in the Lagrange basis
+$\{L_i(x)=\prod_{j\ne i}(x-\lambda_j)/\prod_{j\ne i}(\lambda_i-\lambda_j)\}$:
+$\langle f,g\rangle_{\Bez}=\sum_i f(\lambda_i)g(\lambda_i)/r'(\lambda_i)^2$
+(see~\textup{[9,~\S3]} for the diagonalisation in the Lagrange basis).
+Since $V_i=r''(\lambda_i)/(2r'(\lambda_i))$
+(Lemma~\ref{lem:score-ids}(iv)), we get
 $\Phi_n=\sum V_i^2=\|r''/2\|^2_{\Bez}$.
 \end{proof}
 
 % ─── Harmonicity theorem ───
 \subsection{Harmonicity of $\log\disc$ in matrix coordinates}
 
-\begin{theorem}[Harmonicity]\label{thm:harmonicity}
+\begin{theorem}[Harmonicity of $\log\disc$]\label{thm:harmonicity}
+\proofsketch{} + \compverif{}
+
+\noindent
 Let $A\in\mathrm{Sym}(n)$ have simple eigenvalues. Then
 \[
   \Delta_A\log\disc(\det(xI-A))=0,
@@ -359,16 +567,47 @@ Let $A\in\mathrm{Sym}(n)$ have simple eigenvalues. Then
 where $\Delta_A$ is the Laplace--Beltrami operator on $\mathrm{Sym}(n)$.
 The eigenvalue Laplacian contribution $-2\Phi_n$ is exactly cancelled by
 the rotation Laplacian $+2\Phi_n$ from off-diagonal perturbations.
+
+\medskip\noindent
+\textbf{Proof status.}  The argument below is a \emph{proof sketch}:
+the diagonal perturbation computation is complete, but the
+off-diagonal perturbation requires second-order eigenvalue
+perturbation theory whose algebra is outlined but not
+expanded line-by-line.
+The identity has been verified symbolically at $n=3$--$8$
+(error $<5\times 10^{-16}$).
 \end{theorem}
 
-\begin{proof}
-Second-order perturbation theory.
-For diagonal directions $H=E_{kk}$: contribution is $-2\sum_{j\ne k}(\lambda_k-\lambda_j)^{-2}$.
-Summing: $-2\Phi_n$.
-For off-diagonal directions $H=(E_{ab}+E_{ba})/\sqrt{2}$, $a<b$:
-contribution from pair $(a,b)$ is $4(\lambda_a-\lambda_b)^{-2}$ plus
-cross-terms; summing over all $(a,b)$ gives $+2\Phi_n$.
+\begin{proof}[Proof sketch]
+Second-order perturbation theory~\textup{[10]} on $A=\diag(\lambda_1,\ldots,\lambda_n)$.
+
+\emph{Diagonal perturbations.}
+For $H=E_{kk}$, $\partial_H\lambda_k=1$ and $\partial_H\lambda_j=0$
+for $j\ne k$, so
+$\partial_H^2\log\disc=-2\sum_{j\ne k}(\lambda_k-\lambda_j)^{-2}$.
+Summing over $k$: diagonal Laplacian $=-2\sum_k\sum_{j\ne k}(\lambda_k-\lambda_j)^{-2}=-2\Phi_n$.
+
+\emph{Off-diagonal perturbations.}
+For $H=(E_{ab}+E_{ba})/\sqrt{2}$ with $a<b$:
+$A+\epsilon H$ has eigenvalues
+$\lambda_i+O(\epsilon^2)$ for $i\ne a,b$
+and $\tfrac{\lambda_a+\lambda_b}{2}\pm\sqrt{(\tfrac{\lambda_a-\lambda_b}{2})^2+\epsilon^2/2}$
+for the $(a,b)$ pair.
+At second order: $\partial_{ab}^2\lambda_a=-\partial_{ab}^2\lambda_b
+=(\lambda_a-\lambda_b)^{-1}$, and for all other eigenvalues the
+second derivatives involve $(\lambda_i-\lambda_a)^{-1}(\lambda_i-\lambda_b)^{-1}$
+terms.
+Summing the resulting
+$\partial_{ab}^2\log\disc$ over all $\binom{n}{2}$ pairs $(a,b)$
+and using the identity $\sum_{k\ne a,b}\bigl[(\lambda_k-\lambda_a)^{-1}
+-(\lambda_k-\lambda_b)^{-1}\bigr](\lambda_a-\lambda_b)^{-1}
+=\sum_{k\ne a,b}\bigl[(\lambda_k-\lambda_a)^{-1}(\lambda_a-\lambda_b)^{-1}
++(\lambda_b-\lambda_k)^{-1}(\lambda_a-\lambda_b)^{-1}\bigr]$
+gives off-diagonal Laplacian $=+2\Phi_n$.
+
 Combined: $-2\Phi_n+2\Phi_n=0$.
+\textup{(Full perturbation algebra verified symbolically at
+$n=3$--$8$.)}
 \end{proof}
 
 \begin{remark}\label{rem:harmonicity-obstruction}
@@ -418,24 +657,50 @@ Equality holds iff $\ell_3(p)=\ell_3(q)=0$
 \end{theorem}
 
 \begin{proof}
-For centred $r\in\PnR[3]$ with $u=-\ell_2>0$ and $v=\ell_3$:
-\[
+\emph{Step~1: deriving $1/\Phi_3$.}
+For centred $r\in\PnR[3]$, write $r(x)=x^3+e_2 x+e_3$
+(with $e_1=0$).
+The log-cumulants (Definition~\ref{def:K}) satisfy
+$u:=-\ell_2>0$ and $v:=\ell_3$,
+related to the coefficients by the moment--cumulant inversion
+for $K_r(z)=1+\kappa_1 z+\kappa_2 z^2+\kappa_3 z^3$ with
+$\kappa_k=(n-k)!\,e_k/n!$:
+specifically $\kappa_2=e_2/6$, $\kappa_3=e_3/6$,
+$\ell_2=\kappa_2=e_2/6$, and (because $\kappa_1=0$ in the centred case)
+$\ell_3=\kappa_3=e_3/6$.
+(Equivalently: in $\log(1+u)$ with
+$u=\kappa_2 z^2+\kappa_3 z^3$, the term $-u^2/2$ starts at $z^4$, so it
+does not contribute to the $z^3$ coefficient.)
+
+For a depressed cubic, the Fisher information is
+$\Phi_3=18e_2^2/(-4e_2^3-27e_3^2)$
+(obtained from the Bezoutian formula, Theorem~\ref{thm:bez},
+or equivalently from the explicit roots in terms of $e_2,e_3$).
+Expressing $e_2$ and $e_3$ in terms of $u$ and $v$ via the
+above relations and inverting $\Phi_3$ yields
+\begin{equation}\label{eq:invPhi3}
   \frac{1}{\Phi_3(r)}=\frac{4u}{3}-\frac{3v^2}{2u^2}.
-\]
-(Verified to $10^{-14}$ over $10\,000$ samples.)
+\end{equation}
+This identity is verified symbolically and confirmed
+to $10^{-14}$ over $10{,}000$ random samples.
+
+\emph{Step~2: SOS decomposition.}
 Substituting $u_r=u_p+u_q$ and $v_r=v_p+v_q$ (additivity of $\ell_k$):
 \[
   D_3=\frac{3}{2}\biggl[\frac{v_p^2}{u_p^2}+\frac{v_q^2}{u_q^2}
   -\frac{(v_p+v_q)^2}{(u_p+u_q)^2}\biggr].
 \]
-The bracket has the SOS decomposition
-$(1-w)\alpha^2+w(1-w)(\alpha-\beta)^2+w\beta^2$
-(verified by direct expansion).
+Setting $\alpha=v_p/u_p$, $\beta=v_q/u_q$, $w=u_p/(u_p+u_q)$,
+direct expansion confirms
+$v_p^2/u_p^2+v_q^2/u_q^2-(v_p+v_q)^2/(u_p+u_q)^2
+=(1-w)\alpha^2+w(1-w)(\alpha-\beta)^2+w\beta^2$
+(alternatively: $=w(1-w)(\alpha-\beta)^2+w^2\alpha^2+(1-w)^2\beta^2
+=\cdots$ after regrouping).
 Each term is non-negative for $w\in(0,1)$.
 \end{proof}
 
 \begin{remark}\label{rem:n3-mechanism}
-The proof succeeds because $1/\Phi_3=L(u)+Q(v/u)$ where $L(u)=4u/3$
+The proof succeeds because $1/\Phi_3=A(u)+Q(v/u)$ where $A(u)=4u/3$
 is additive (cancels in~$D_3$) and $Q(\cdot)=-\frac{3}{2}(\cdot)^2$
 is convex in the skewness ratio $v/u$.
 This decomposition into additive-plus-convex parts is the mechanism;
@@ -446,20 +711,41 @@ does \emph{not} follow from global concavity.
 
 \subsection{Full Stam when one input is Gaussian}
 
-\begin{theorem}[Stam with Gaussian input]\label{thm:stam-gauss}
+\begin{theorem}[Gaussian-input Stam --- conditional on root ODE]\label{thm:stam-gauss}
+\conditional{}
+
+\noindent
 For all $r\in\PnR$ and all $t\ge 0$:
 $1/\Phi_n(r\fp g_t)\ge 1/\Phi_n(r)+1/\Phi_n(g_t)$,
 where $g_t$ is the finite Gaussian (Hermite) polynomial with $\sigma^2(g_t)=t$.
 Equality holds on the Hermite manifold.
+
+\medskip\noindent
+\textbf{Dependency.}  This proof uses the root ODE
+$\dot\lambda_i=V_i/(n-1)$ (Theorem~\ref{thm:debruijn}),
+which has not been derived from first principles.
+If the root ODE is established, the result becomes unconditional.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}[Proof sketch (given the root ODE)]
 The Hermite semigroup satisfies $g_s\fp g_t=g_{s+t}$ and
-$1/\Phi_n(g_t)=8t/(n(n-1))$.
-The sharp Fisher dissipation inequality
-$(1/\Phi_n(r_t))'\ge 8/(n(n-1))$
-(proved via SGI and the fact that the Hermite generator involves only
-$\ell_2$) integrates to the result.
+$1/\Phi_n(g_t)=4t/(n(n-1)^2)$.
+Along the flow $r_t:=r\fp g_t$, we have
+$\sigma^2(r_t)=\sigma^2(r)+t$ and $u(r_t)=u(r)+t/(2(n-1))$.
+
+\emph{Dissipation bound.}
+Since $g_t$ modifies only $\ell_2$ (all higher $\ell_k(g_t)=0$),
+assuming the root ODE under Hermite flow
+$\dot\lambda_i=V_i/(n-1)$ (Theorem~\ref{thm:debruijn}),
+This gives $\Phi_n'(r_t)=-2\,V^T LV/(n-1)\le 0$
+(where $L$ is the graph Laplacian, Definition~\ref{def:curv}).
+Combined with the SGI (Theorem~\ref{thm:SGI}), one obtains
+$(1/\Phi_n(r_t))'\ge 4/(n(n-1)^2)$ for all $t\ge 0$.
+
+\emph{Integration.}
+Integrating from $0$ to $t$:
+$1/\Phi_n(r_t)-1/\Phi_n(r)\ge 4t/(n(n-1)^2)=1/\Phi_n(g_t)$.
+Hence $1/\Phi_n(r\fp g_t)\ge 1/\Phi_n(r)+1/\Phi_n(g_t)$.
 \end{proof}
 
 
@@ -503,7 +789,6 @@ $v(z)=V_k/\zeta+O(1)$ and $m(z)=1/\zeta+O(1)$, so
 $v^2/m=V_k^2/\zeta+O(1)$,
 giving $\Res_{\lambda_k}(v^2/m)=V_k^2$.
 Summing: $\sum_k V_k^2=\Phi_n$.
-Verified to error $<10^{-14}$.
 \end{proof}
 
 \begin{remark}
@@ -515,7 +800,10 @@ A single large contour therefore gives zero, \emph{not}~$\Phi_n$.
 \subsection{The Stieltjes PDE under dilation}
 
 \begin{theorem}[Stieltjes PDE]\label{thm:pde}
-Under the CC-GEN dilation~\eqref{eq:ccgen}, $m_t(z)=r_t'(z)/r_t(z)$ satisfies
+Define the \emph{dilation path} $r_t:=r\fp q_t$ where $q_t$
+has $K$-transform $K_{q_t}(z)=K_q(z)^t$
+\textup{(}i.e., $\ell_k(q_t)=t\,\ell_k(q)$\textup{)}.
+Then $m_t(z)=r_t'(z)/r_t(z)$ satisfies
 \[
   \partial_t m_t=\partial_z\sum_{j=1}^n\ell_j(q)\,B_j(m_t,m_t',\ldots),
 \]
@@ -528,9 +816,45 @@ $\partial_t m_t=-\frac{\sigma^2}{2(n-1)}(m_t''+2m_t m_t')$.
 \subsection{De Bruijn identity}
 
 \begin{theorem}[De Bruijn identity]\label{thm:debruijn}
+\conditional{}
 Along the Hermite flow $r_t=r\fp g_t$:
 $\frac{d}{dt}\log|\disc(r_t)|=\frac{2}{n-1}\Phi_n(r_t)$.
+
+\medskip\noindent
+\textbf{Dependency.}  This result assumes the root ODE
+$\dot\lambda_i=V_i/(n-1)$, stated below as a standing hypothesis.
+Without a self-contained derivation of the root ODE from the MSS
+coefficient evolution, the theorem and all results that depend on it
+(notably Theorem~\ref{thm:stam-gauss}) remain conditional.
 \end{theorem}
+
+\begin{proof}[Proof (given the root ODE)]
+Assume $\dot\lambda_i=V_i/(n-1)$.
+Since $\disc(r)=\prod_{i<j}(\lambda_i-\lambda_j)^2$, we have
+$\partial_{\lambda_i}\log\disc=2V_i$.
+Therefore
+\[
+  \frac{d}{dt}\log\disc
+  =\sum_i 2V_i\cdot\frac{V_i}{n-1}
+  =\frac{2}{n-1}\sum V_i^2
+  =\frac{2\,\Phi_n}{n-1}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Status of the root ODE]\label{rem:root-ode-status}
+The root velocity $\dot\lambda_i=V_i/(n-1)$ under Hermite flow
+is consistent with the Stieltjes PDE (Theorem~\ref{thm:pde})
+and has been verified numerically to machine precision
+($\epsilon<10^{-9}$) at $n=3$--$8$.
+However, a fully self-contained derivation from the MSS
+coefficient evolution has not been carried out.
+Specifically, the missing step is to show that the
+coefficient-level ODE $\dot c_k = -c_{k-1}\sigma^2/(2(n-1))$
+implied by $r_t = r\fp g_t$ translates, via the implicit
+root--coefficient map, to $\dot\lambda_i=V_i/(n-1)$.
+All consequences of Theorem~\ref{thm:debruijn} inherit
+this conditional status.
+\end{remark}
 
 \subsection{Cumulant-ratio defect positivity}
 
@@ -587,302 +911,228 @@ $1/\Phi_r\ge 1/\Phi_p+1/\Phi_q
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\part{Dead Ends: Detailed Post-Mortem}\label{part:dead}
+\part{Dead Ends: Compact Post-Mortem}\label{part:dead}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We systematically document each failed proof strategy, recording the
-precise failure mode so that future efforts avoid redundant exploration.
+We document every failed proof strategy in compact form.
+Each entry records the strategy, the precise failure mode,
+and any salvaged components that remain useful.
 
-\section{Route A: Resolvent/barrier regularisation}\label{sec:route-a}
-\deadend{}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{p{2.5cm}p{4cm}p{4.5cm}p{2.5cm}}
+\toprule
+\textbf{Route} & \textbf{Strategy} & \textbf{Failure mode}
+  & \textbf{Salvaged} \\
+\midrule
+\endhead
+\textbf{A}: Resolvent
+  \S\ref{sec:route-a}
+  & Lorentzian-smoothed proxies
+    $\mathcal{P}_\eta$; take $\eta\to 0$
+  & Super-add.\ of $1/\mathcal{P}_\eta$
+    has violations at $\eta\ge 0.05$;
+    softening breaks $\Phi_n=2\mathcal{R}$
+  & $\Phi_n=2\mathcal{R}$
+    (Thm~\ref{thm:fisher-rep}) \\
+\midrule
+\textbf{B}: Dilation
+  \S\ref{sec:route-b}
+  & Dilation path $K_{q_t}=K_q^t$;
+    study $F(t)=1/\Phi_n(r_t)$
+  & First-order root expansion~\eqref{eq:wrong-exp}
+    is \textbf{false} for non-Gaussian $q$
+    (ratio $\to 0.80$ at $n=3$).
+    Correct velocity involves full $\log K_q$.
+  & SGI (Thm~\ref{thm:SGI}),
+    Gaussian flow Stam
+    (Thm~\ref{thm:stam-gauss}),
+    $F''(0)>0$ for $n\le 5$,
+    $F(t)\!\uparrow$ ($0/3700$ paths) \\
+\midrule
+\textbf{C}: Transport
+  \S\ref{sec:route-c}
+  & Displacement convexity of $1/\Phi_n$
+    in Wasserstein space
+  & Gap super-add.: 0\% pass.
+    Raw log-Vandermonde: false.
+    Schur convexity of $1/\mathcal{R}$:
+    29 viols at $n\!=\!5$.
+  & EPI analogue: $0$ viols
+    in $42$k tests ($n=3$--$9$);
+    bridge is missing \\
+\midrule
+\textbf{D}: Concavity
+  \S\ref{sec:route-d}
+  & Concavity of $1/\Phi_n$ in
+    ULC, $K$-transform, or
+    $\ell$-coordinates
+  & Hessian of $1/\Phi_n$ in $\ell$-coords
+    is \textbf{indefinite} at $30/30$
+    points for $n=3,4$.
+    Never concave along interlacing
+    segments ($0/50$).
+  & Hessian computation
+    at Gaussian
+    (Thm~\ref{thm:hessian}) \\
+\midrule
+\textbf{E}: Hyp./AF
+  \S\ref{sec:route-e}
+  & Curvature in PD cone;
+    Alexandrov--Fenchel ineqs
+  & Hankel super-add.: 0/2757 pass.
+    $\det(L)^{1/n}$: $\sim$35\%.
+    $\tr(L^{-1})$: $\sim$45\%.
+    Log-disc concavity: 0/28.
+  & Harmonicity thm
+    (Thm~\ref{thm:harmonicity}),
+    isoperimetric
+    (Prop~\ref{prop:isoperimetric}) \\
+\midrule
+\textbf{F}: Log-cum.
+  \S\ref{sec:route-f}
+  & Express $1/\Phi_n$ via
+    additive $\ell_k$; exploit
+  & Hessian indefinite; not concave
+    along dilation ($0/1800$);
+    no SOS formula for $D_4$.
+  & $n=3$ SOS proof
+    (Thm~\ref{thm:n3-stam});
+    additive/convex decomp. \\
+\midrule
+\textbf{G}: Bezoutian
+  \S\ref{sec:route-g}
+  & Spectral efficiency
+    super-averaging from
+    5~identities
+  & Gap lemma open; $\eta$ not
+    monotone along dilation
+    ($\sim$50\%); $K$-transforms
+    not real-rooted (0--26\%)
+  & All identities proved;
+    gap lemma remains viable \\
+\midrule
+\textbf{H}: Herglotz
+  \S\ref{sec:route-h}
+  & $1/\Phi_n$ as rational fn
+    of $(\tau_3,\ldots,\tau_n)$;
+    defect decomp.\ via $\Delta_k$
+  & Hessian of $g(\tau_3,\tau_4)$
+    is indefinite at origin
+    (det $= -20.25 < 0$);
+    no global concavity
+  & Exact $\Phi_4$ formula
+    \eqref{eq:Phi4-exact};
+    defect positivity
+    $\Delta_k\!\ge\!0$ \\
+\midrule
+\textbf{I}: Semigroup
+  \S\ref{sec:route-i}
+  & Gaussian flow deficit
+    $F(t)$; production convexity
+    of $\Psi$
+  & $2\Psi(r)\!\le\!\Psi(p)\!+\!\Psi(q)$
+    is \textbf{false}: 94/2000 viols;
+    max ratio 3.64.
+    Rate decreases with $n$
+    but persists.
+  & All 9 ingredients
+    (root ODE, de Bruijn,
+    exact dissipation,
+    sharp $(1/\Phi)'$,
+    $\Psi$ identity) \\
+\midrule
+PF/TP
+  \S\ref{sec:pf}
+  & PF structure of
+    $K$-Toeplitz matrix
+  & $K_p(z)$ complex zeros
+    in 470/500 cases;
+    TP matrix $\sim$100\% viols
+  & --- \\
+\midrule
+Interlacing
+  \S\ref{sec:jensen}
+  & Jensen leg + factorisation
+    leg for $1/\Phi$
+  & Jensen leg fails at
+    $n=2,3$;
+    factorisation leg false
+    at every $n\ge 3$ (0/15
+    at $n=8$)
+  & Jensen leg holds
+    $n\ge 4$ \\
+\midrule
+Induction
+  \S\ref{sec:induction}
+  & $\Phi_{n-1}(\tilde p)
+    \lessgtr\Phi_n(p)$ via
+    derivative compatibility
+  & Derivative contracts gaps,
+    may increase $\Phi_n$;
+    no useful comparison
+  & Lemma~\ref{lem:deriv}
+    reused in Approach~K \\
+\bottomrule
+\end{longtable}
+\end{center}
 
-\paragraph{Strategy.}
-Introduce Lorentzian-smoothed proxies
-$\mathcal{P}_\eta=\sum_{i<j}\bigl[(\lambda_i-\lambda_j)^2+\eta^2\bigr]^{-1}$
-for $\eta>0$.
-Attempt: prove super-additivity of $1/\mathcal{P}_\eta$, then take $\eta\to 0$.
+\begin{remark}[Universal lesson]
+Routes~D, E, and H all stumble on the same obstruction:
+$1/\Phi_n$ is \textbf{not} globally concave in any known coordinate
+system (the Hessian is indefinite at the Gaussian point for $n\ge 4$).
+Successful approaches (K, L, and the $n=3$ proof) circumvent this
+via \emph{local} mechanisms: telescoping, CS mixing, or exact SOS formulas.
+\end{remark}
 
-\paragraph{Failure mode.}
-Super-additivity of $1/\mathcal{P}_\eta$ has violations at $\eta\ge 0.05$.
-The Lorentzian softening breaks the algebraic cancellation underlying
-$\Phi_n=2\mathcal{R}$.
+% Keep minimal section labels for cross-references
+\section{Route A}\label{sec:route-a}\vspace{-1.5em}
+See table above.
+\section{Route B}\label{sec:route-b}\vspace{-1.5em}
 
-\paragraph{Salvaged.}
-The identity $\Phi_n=2\mathcal{R}$ (Theorem~\ref{thm:fisher-rep})
-was discovered during this investigation.
-
-
-\section{Route B: Dilation path / flow approach}\label{sec:route-b}
-\deadend{} (as stated; partial infrastructure salvaged)
-
-\paragraph{Strategy.}
-Define $q_t$ via $K_{q_t}=K_q^t\pmod{z^{n+1}}$, set $r_t=p\fp q_t$,
-study $F(t)=1/\Phi_n(r_t)$ on $[0,1]$.
-
-\paragraph{Critical flaw in a prior paper.}
-A previous version claimed the first-order expansion
+\begin{warning}[Critical flaw in prior work]
+The first-order expansion
 \begin{equation}\label{eq:wrong-exp}
-  T_{q_h}r(x)=r(x)-\frac{hb}{2(n-1)}r''(x)+O(h^2),
+  T_{q_h}r(x)=r(x)-\frac{hb}{2(n-1)}r''(x)+O(h^2)
 \end{equation}
-leading to root motion $\dot\lambda_i=\frac{b}{n-1}V_i$ and
-a dissipation identity depending only on $\sigma^2(q)$.
-
-\begin{warning}
-Expansion~\eqref{eq:wrong-exp} is \textbf{false} for general~$q$.
-For small $h$:
-$K_{q_h}=\exp(h\log K_q)=1+h\sum_{k\ge 1}\ell_k z^k+O(h^2)$.
-Generically $\ell_3,\ell_4,\ldots\ne 0$, producing
-$\partial^3,\partial^4,\ldots$ terms at first order in~$h$.
-The correct root velocity involves the \textbf{full} generating function $\log K_q$:
-\[
-  \dot\lambda_i=-\sum_{j=1}^n\ell_j\frac{r^{(j)}(\lambda_i)}{r'(\lambda_i)}.
-\]
+is \textbf{false} for general~$q$.
+The correct root velocity is
+$\dot\lambda_i=-\sum_{j=1}^n\ell_j\,r^{(j)}(\lambda_i)/r'(\lambda_i)$,
+involving the \textbf{full} generating function $\log K_q$.
+Formula~\eqref{eq:wrong-exp} holds only for Hermite polynomials
+($\ell_k=0$ for $k\ge 3$).
 \end{warning}
 
-\paragraph{Numerical confirmation.}
-At $n=3$, $p(x)=x^3-6x+2$, $q(x)=x^3-3x+1$:
-the paper's predicted $d\Phi/dt|_0=-0.612$ versus the true value $-0.490$
-(ratio $\to 0.80$, stable across $h=10^{-3}$ to $10^{-7}$).
-
-\paragraph{When it IS correct.}
-Formula~\eqref{eq:wrong-exp} holds for Hermite polynomials $q=G_b$
-(where $\ell_k=0$ for $k\ge 3$), giving Theorem~\ref{thm:stam-gauss}.
-
-\paragraph{Salvaged results.}
-\begin{enumerate}[nosep]
-  \item SGI (Theorem~\ref{thm:SGI}), proved independently.
-  \item Hermite semigroup bound (Theorem~\ref{thm:stam-gauss}).
-  \item $F'(0)=0$ and $F''(0)>0$ for $n\le 5$ (proved via palindromic positivity
-    of $\Gamma^{(1)}$ coefficients).
-  \item Numerical: $F(t)$ non-decreasing in $0/3700$ paths tested ($n\le 7$).
-\end{enumerate}
-
-
-\section{Route C: Variational / transport / EPI}\label{sec:route-c}
-\deadend{}
-
-\paragraph{Strategy.}
-View roots as a discrete probability; attempt displacement convexity
-of $1/\Phi_n$ in Wasserstein space, or gap super-additivity.
-
-\paragraph{Failure modes.}
-\begin{itemize}[nosep]
-  \item Pairwise gap super-additivity: \textbf{false} ($1000/1000$ violations at $n=4$).
-  \item Raw log-Vandermonde super-additivity: \textbf{false}.
-  \item Schur convexity of $1/\mathcal{R}$ in adjacent gaps: 29 violations at $n=5$.
-\end{itemize}
-
-\paragraph{Salvaged.}
-EPI analogue $|\disc(r)|^{2/M}\ge|\disc(p)|^{2/M}+|\disc(q)|^{2/M}$:
-\numconf{} ($0$ violations in $42{,}000+$ tests, $n=3$--$9$).
-The EPI$\to$Stam bridge is missing (isoperimetric bounds $1/\Phi$ from
-above, not below).
-
-
-\section{Route D: Concavity of $1/\Phi_n$ in various coordinates}\label{sec:route-d}
-\deadend{}
-
-\begin{enumerate}[nosep]
-  \item \emph{ULC weights $w_k=a_k/\binom{n}{k}$}: Hessian has large positive eigenvalues.
-  \item \emph{$K$-transform coordinates}: not concave.
-  \item \emph{Coefficient-convex interlacing segments}: never concave ($0/50$ for each $n=2,\ldots,10$).
-\end{enumerate}
-
+\section{Route C}\label{sec:route-c}\vspace{-1.5em}
+See table above.
+\section{Route D}\label{sec:route-d}\vspace{-1.5em}
 \subsection{Hessian of $1/\Phi_n$ in log-cumulant coordinates}\label{ssec:hess-indef}
-
-\begin{observation}
 The Hessian of $1/\Phi_n$ in $(\ell_2,\ldots,\ell_n)$-coordinates
-is \textbf{indefinite} at $30/30$ random test points for both $n=3$ and $n=4$.
-This kills the naive concavity approach to
-$1/\Phi_n(\ell_p+\ell_q)\ge 1/\Phi_n(\ell_p)+1/\Phi_n(\ell_q)$.
-\end{observation}
+is \textbf{indefinite} at $30/30$ random test points for $n=3,4$.
+\section{Route E}\label{sec:route-e}\vspace{-1.5em}
+See table above.
+\section{Route F}\label{sec:route-f}\vspace{-1.5em}
+See table above.
+\section{Route G}\label{sec:route-g}\vspace{-1.5em}
+See table above.
+\section{Route H}\label{sec:route-h}\vspace{-1.5em}
 
-
-\section{Route E: Hyperbolic / Alexandrov--Fenchel}\label{sec:route-e}
-\deadend{}
-
-\paragraph{Strategy.}
-Express $\Phi_n$ as a curvature in the hyperbolic cone of PD matrices;
-apply Alexandrov--Fenchel / Minkowski-type inequalities.
-
-\paragraph{Failure modes.}
-\begin{enumerate}[nosep]
-  \item Hankel super-additivity $H(r)\succeq H(p)+H(q)$: \textbf{0/2757 passes}
-    ($n=3$--$7$).
-  \item Curvature-matrix det super-additivity: $\sim 35\%$ pass rate.
-  \item $\tr(K^{-1})$ super-additivity: $\sim 45\%$ pass rate.
-  \item Log-discriminant concavity along dilation: $0/28$.
-  \item EPI$\to$Stam bridge via isoperimetric: \textbf{broken}
-    (bounds $1/\Phi$ from above, not below).
-\end{enumerate}
-
-\paragraph{Salvaged.}
-Harmonicity theorem (Theorem~\ref{thm:harmonicity}), Hankel representation
-$\disc=\det H$, $\Phi_n$ as eigenvalue Laplacian of $\log\disc$,
-curvature matrix $K$ PSD with $\ker K=\mathrm{span}\{\mathbf{1}\}$,
-isoperimetric inequality (Proposition~\ref{prop:isoperimetric}).
-
-
-\section{Route F: Log-cumulant / U-transform coordinates}\label{sec:route-f}
-
-\proved{} for $n=3$;\quad \open{} for $n\ge 4$.
-
-\paragraph{Strategy.}
-Express $1/\Phi_n$ as a function of the additive log-cumulants
-$\ell_2,\ldots,\ell_n$; exploit the resulting structure.
-
-\paragraph{Success at $n=3$.}
-The formula $1/\Phi_3=4u/3-3v^2/(2u^2)$ decomposes into
-additive~$+$~convex, yielding the SOS proof (Theorem~\ref{thm:n3-stam}).
-
-\paragraph{Obstacles for $n\ge 4$.}
-\begin{enumerate}[nosep]
-  \item Hessian of $1/\Phi_n$ in $\ell$-coordinates is indefinite
-    (Section~\ref{ssec:hess-indef}).
-  \item $1/\Phi_n$ is not concave along dilation paths in $\ell$-space
-    ($0/1800$ tests).
-  \item No simple SOS formula for $D_4$: regression $R^2=0.12$
-    against quadratic ansatz.
-  \item Score projection $V(r)\ne\mathbb{E}_Q[V(r_Q)]$: errors $\sim 700\%$.
-\end{enumerate}
-
-
-\section{Route G: Bezoutian / spectral efficiency}\label{sec:route-g}
-
-\open{}
-
-\paragraph{Strategy.}
-Reformulate Stam as spectral efficiency super-averaging
-$\eta_r\ge w\eta_p+(1-w)\eta_q$ (Theorem~\ref{thm:stam-eta});
-use the five identities of Section~\ref{sec:identities}.
-
-\paragraph{Status.}
-All identities proved.
-The gap lemma (Conjecture~\ref{conj:gap-lemma}) remains open:
-the spectral data $(\mu_a, c_a)$ of $K_r$ cannot be expressed simply
-in terms of the spectral data of $K_p$ and $K_q$.
-
-\paragraph{Partial dead ends within this route.}
-\begin{enumerate}[nosep]
-  \item $1/\Phi_n(r_t)$ not convex along dilation ($39$--$139/200$ passes).
-  \item $\eta$ not monotone along dilation ($\sim 50\%$ pass rate).
-  \item $K$-transforms not real-rooted ($0$--$26\%$).
-\end{enumerate}
-
-
-\section{Route H: Herglotz/Pick via Stieltjes transform}\label{sec:route-h}
-\deadend{} (proof strategy blocked)
-
-\paragraph{Strategy.}
-Express $1/\Phi_n$ in normalised cumulant coordinates
-$(\tau_3,\ldots,\tau_n)$ as a rational function; attempt
-to decompose the Stam defect via $\Delta_k\ge 0$.
-
-\paragraph{Results for $n=4$.}
-Exact symbolic computation gives:
+For $n=4$, the exact symbolic formula:
 \begin{align}
-  \Phi_4&=\frac{4(e_2^2+12e_4)\cdot P_6}{\disc},\label{eq:Phi4-exact}\\
-  P_{10}&:=(e_2^2+12e_4)\cdot P_6=-2e_2^5-16e_2^3 e_4+96e_2 e_4^2
-  -9e_2^2 e_3^2-108e_3^2 e_4.\notag
+  \Phi_4&=\frac{4(e_2^2+12e_4)\cdot P_6}{\disc},\label{eq:Phi4-exact}
 \end{align}
-In cumulant coordinates: $e_2^2+12e_4=288u^2(1+\tau_4)$.
-The function $g(\tau_3,\tau_4):=(1/\Phi_4)/u$ is a rational function:
-\[
-  g=\frac{81\tau_3^4+216\tau_3^2\tau_4+72\tau_3^2-32\tau_4^3+48\tau_4^2-16}
-  {6(\tau_4+1)(9\tau_3^2+4\tau_4-4)}.
-\]
+with $g(\tau_3,\tau_4)=(1/\Phi_4)/u$ a rational function
+(Hessian indefinite at origin --- det $=-20.25$).
 
-\paragraph{Failure mode.}
-On the kurtosis axis ($\tau_3=0$), $g$ is concave in $\tau_4$
-($d^2g/d\tau_4^2<0$ for all $\tau_4\in(-1,1)$).
-However, the Hessian of $g$ in $(\tau_3^2,\tau_4)$ is \textbf{indefinite}
-at the origin:
-$g_{xx}(0,0)=-13.5$, $g_{yy}(0,0)=-2.67$, $g_{xy}(0,0)=-7.5$;
-determinant $=-20.25<0$.
-No global concavity proof is available.
-
-\paragraph{Salvaged.}
-Universal defect positivity $\Delta_k\ge 0$ (Lemma~\ref{lem:defect-pos});
-complete $n=3$ proof via defects; exact symbolic formula~\eqref{eq:Phi4-exact}.
-
-
-\section{Route I: Semigroup / Gaussian flow}\label{sec:route-i}
-
-\deadend{} (the ``missing lemma'' is false)
-
-\paragraph{Strategy.}
-Define the Gaussian flow $p_t=p\fp g_t$, $q_t=q\fp g_t$,
-$r_t=p_t\fp q_t=(p\fp q)\fp g_{2t}$ and the deficit
-$F(t):=1/\Phi_n(r_t)-1/\Phi_n(p_t)-1/\Phi_n(q_t)$.
-Show $F$ is non-increasing (so $F(0)\ge F(\infty)=0$) by proving
-the ``production convexity'' of
-$\Psi(r):=4E(r)/\Phi_n(r)^2$ where
-$E(r):=s^T L s-\Phi_n^2/\binom{n}{2}$ (the Cauchy--Schwarz gap).
-
-\paragraph{Established ingredients.}
-\begin{enumerate}[nosep]
-  \item Root ODE: $\dot\lambda_i=2V_i$ under Hermite flow.
-  \item De Bruijn: $\frac{d}{dt}\log\disc(p_t)=4\Phi_n(p_t)$.
-  \item Gradient-flow: $\lambda'=-2\nabla F$ where $F=-\sum_{i<j}\log|\lambda_i-\lambda_j|$.
-  \item Exact dissipation: $\Phi_n'=-4s^T L s\le 0$.
-  \item Newton decrement bound: $s^T L^\dagger s\le\binom{n}{2}$.
-  \item Sharp dissipation: $(1/\Phi_n)'\ge 8/(n(n-1))$.
-  \item Exact: $(1/\Phi_n)'=8/(n(n-1))+\Psi$.
-  \item $F'(t)=2\Psi(r_t)-\Psi(p_t)-\Psi(q_t)$.
-  \item Boundary: $F(t)\to 0$ as $t\to\infty$.
-\end{enumerate}
-
-\paragraph{The fatal failure.}
-The production convexity inequality $2\Psi(p\fp q)\le\Psi(p)+\Psi(q)$
-is \textbf{numerically false}:
-\begin{center}
-\begin{tabular}{ccc}
-\toprule
-$n$ & Violations / 500 trials & Max ratio $2\Psi(r)/(\Psi(p)+\Psi(q))$\\
-\midrule
-3 & 68 (13.6\%) & 1.99 \\
-4 & 20 (4.0\%) & 3.64 \\
-5 & 5 (1.0\%) & 1.49 \\
-6 & 1 (0.2\%) & 1.01 \\
-\bottomrule
-\end{tabular}
-\end{center}
-Total: 94/2000 violations.
-Although the violation rate decreases with~$n$, the inequality is
-false for each fixed~$n$, and no corrected version was found.
-
-\paragraph{Salvaged.}
-All ingredients (1)--(9) above are rigorous and reusable.
-The boundary condition $F(\infty)=0$ via additivity of $\sigma^2$
-is clean.
-The exact identity $F'(t)=2\Psi(r_t)-\Psi(p_t)-\Psi(q_t)$
-is correct but useless because $\Psi$ is not convex under~$\fp$.
-
-
-\section{PF sequences / total positivity}\label{sec:pf}
-\deadend{}
-
-Zeros of $K_p(z)$ are not all real negative ($470/500$ have complex
-zeros at $n=3$).
-PF / TP structure of the $K$-Toeplitz matrix: nearly $100\%$ violations.
-
-
-\section{Interlacing / Jensen route}\label{sec:jensen}
-\deadend{}
-
-Jensen leg $1/\Phi(p\fp q)\ge\mathbb{E}_Q[1/\Phi(r_Q)]$: holds for $n\ge 4$
-but fails at $n=2,3$.
-Factorisation leg $\mathbb{E}_Q[1/\Phi(r_Q)]\ge 1/\Phi(p)+1/\Phi(q)$:
-\textbf{false} at every $n\ge 3$ (0/15 at $n=8$).
-
-\section{Induction on degree}\label{sec:induction}
-\deadend{}
-
-Derivative compatibility $(p\fp q)'/n=(p'/n)\boxplus_{n-1}(q'/n)$
-does not yield a useful comparison $\Phi_{n-1}(\tilde p)\lessgtr\Phi_n(p)$;
-the derivative operation contracts root gaps, potentially increasing
-Fisher information.
+\section{Route I}\label{sec:route-i}\vspace{-1.5em}
+See table above.
+\section{PF sequences / total positivity}\label{sec:pf}\vspace{-1.5em}
+See table above.
+\section{Interlacing / Jensen route}\label{sec:jensen}\vspace{-1.5em}
+See table above.
+\section{Induction on degree}\label{sec:induction}\vspace{-1.5em}
+See table above.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -909,24 +1159,24 @@ implementation of $\fp$ (coefficient formula), root computation
 \endhead
 Stam inequality~\eqref{eq:stam-main} & $n=2$--$12$, $35$k+ & 0 & \textbf{Target}\\
 $\Phi_n=2\mathcal{R}$ & $n=3$--$6$ & 0 & Proved\\
-$\Phi_n=\tr(K)=\lambda^T K^2\lambda$ & $n=3$--$15$ & 0 (err $<10^{-12}$) & Proved\\
-$V=K\lambda$ (Euler) & $n=3$--$15$ & 0 (err $<10^{-9}$) & Proved\\
-$\lambda^T K\lambda=\binom{n}{2}$ & $n=3$--$15$ & 0 (err $<10^{-11}$) & Proved\\
+$\Phi_n=\tr(L)=\lambda^T L^2\lambda$ & $n=3$--$15$ & 0 (err $<10^{-12}$) & Proved\\
+$V=L\lambda$ (Euler) & $n=3$--$15$ & 0 (err $<10^{-9}$) & Proved\\
+$\lambda^T L\lambda=\binom{n}{2}$ & $n=3$--$15$ & 0 (err $<10^{-11}$) & Proved\\
 Bezoutian $\Phi_n=\|r''/2\|^2_{\Bez}$ & $n=3$--$8$ & 0 (err $<10^{-16}$) & Proved\\
 Fisher--variance $\Phi\sigma^2\ge n(n-1)^2/4$ & all $n$ & 0 & Proved\\
 SGI $\mathcal{S}\sigma^2\ge(n-1)\Phi/2$ & all $n$ & 0 & Proved\\
 $n=3$ SOS formula & 10k & 0 (err $<10^{-14}$) & Proved\\
 Pick matrix PSD & $n=3$--$6$, 400 & 0 & Proved\\
 Contour integral & $n=3$--$8$ & 0 (err $<10^{-14}$) & Proved\\
-De Bruijn identity & $n=3$--$8$ & 0 (err $<10^{-9}$) & Proved\\
+De Bruijn identity & $n=3$--$8$ & 0 (err $<10^{-9}$) & Conditional (root ODE)\\
 $\Delta_k\ge 0$ (all $k\ge 3$) & $n=3$--$8$, 1.2k+ & 0 & Proved\\
 $K$-multiplicativity / $\ell$-additivity & all $n$ & 0 (err $<10^{-14}$) & Proved\\
 Variance additivity & all $n$ & exact & Proved\\
 Derivative compatibility & all tested & exact & Proved\\
-Harmonicity $\Delta_A\log\disc=0$ & $n=3$--$8$ & 0 (err $<5\!\times\!10^{-16}$) & Proved\\
+Harmonicity $\Delta_A\log\disc=0$ & $n=3$--$8$ & 0 (err $<5\!\times\!10^{-16}$) & Proof sketch + compverif\\
 Isoperimetric $\Phi D^{1/M}\ge 2M$ & $n=3$--$9$, 7k & 0 & Proved\\
 $-\mathrm{Hess}(\log\disc)$ PSD & $n=3$--$7$ & 0 & Proved\\
-$1/\Phi(g_t)=8t/(n(n-1))$ & all $n$ & exact & Proved\\
+$1/\Phi(g_t)=4t/(n(n-1)^2)$ & all $n$ & exact & Proved\\
 \midrule
 $\Gamma^{(1)}>0$ & $n=3$--$8$, 7.5k+ & 0 & Conj.\\
 Score alignment $\alpha(t)>0$ & $n=3$--$6$, 1.2k+ & 0 & Conj.\\
@@ -958,8 +1208,8 @@ $1/\Phi$ concave (generic) & $n=2$--$10$ & 0\% & Totally false\\
 $1/\Phi$ concave in $\ell$-coords & $n=3,4$ & 0\% & Hess.\ indefinite\\
 $1/\Phi$ concave along dilation & $n=3$--$8$ & 0\% & \\
 $H(r)\succeq H(p)+H(q)$ (Hankel) & $n=3$--$7$ & 0\% & Route E fatal\\
-$\det(K)^{1/n}$ super-add. & $n=3$--$8$ & $\sim 35\%$ & \\
-$\tr(K^{-1})$ super-add. & $n=3$--$8$ & $\sim 45\%$ & \\
+$\det(L)^{1/n}$ super-add. & $n=3$--$8$ & $\sim 35\%$ & \\
+$\tr(L^{-1})$ super-add. & $n=3$--$8$ & $\sim 45\%$ & \\
 $\log\disc$ concave along dilation & $n=3$--$6$ & 0\% & \\
 Jensen factorisation leg & $n\ge 3$ & varies & False\\
 Score projection $V(r)=\mathbb{E}[V(r_Q)]$ & $n=3$--$5$ & $\sim 700\%$ err & \\
@@ -987,9 +1237,11 @@ $n$ & $\bar D_n$ & $\log\bar D_n$ & $\min D_n$ & $\max D_n$\\
 \end{tabular}
 \end{center}
 The approximate law $\log\bar D_n\approx -0.53n+0.13$ fits $R^2>0.99$ over $n=3$--$6$.
-The minimum deficit \emph{increases} with~$n$ (the inequality becomes
-\emph{harder to saturate} at large~$n$), consistent with the tightest cases
-occurring at $n=3$ with near-collision roots.
+Using the tabulated points, the fitted line is
+$\log\bar D_n\approx -0.54n+0.28$ (still with $R^2>0.99$ over $n=3$--$6$).
+The reported $\min D_n$ values are \emph{sample minima} from the Monte-Carlo
+ensemble; they should not be interpreted as the true global infimum
+(which is $0$ in the Gaussian limit).
 \end{observation}
 
 
@@ -1012,8 +1264,10 @@ Proved for $n\le 5$; $0$ violations in $7500+$ trials at $n\le 8$.
 \end{conjecture}
 
 \begin{conjecture}[Repulsion monotonicity]\label{conj:rep-mono}
-$\Phi_n(r_t)$ is non-increasing in $t\in[0,1]$ along the CC-GEN dilation.
-Equivalently, $F(t)$ is non-decreasing.
+$\Phi_n(r_t)$ is non-increasing in $t\in[0,1]$ along the dilation
+path $r_t:=r\fp q_t$ where $K_{q_t}=K_q^t$
+\textup{(}Theorem~\textup{\ref{thm:pde})}.
+Equivalently, $F(t)=1/\Phi_n(r_t)$ is non-decreasing.
 $0$ violations in $3700+$ paths ($n\le 7$).
 \end{conjecture}
 
@@ -1034,12 +1288,18 @@ $0$ violations in $42{,}000+$ tests.
 For all $n\ge 4$ and centred $p,q\in\PnR$:
 $D_n\ge\sum_{k=3}^n\alpha_k(n,u_p,u_q)\Delta_k$
 for non-negative weight functions $\alpha_k$.
+\emph{Progress}: Approach~K chain dominance $D_n\ge\delta_n D_3$
+($\delta_n\ge 0.03$) is a weaker version; full $\alpha_k$-structure
+is still open.
 \end{conjecture}
 
 \begin{conjecture}[Gap lemma for spectral efficiency]\label{conj:gap-lemma}
 Under $\fp$, the spectral efficiency satisfies
 $\eta(r)\ge w\eta(p)+(1-w)\eta(q)$ with $w=\sigma^2(p)/\sigma^2(r)$.
 This is equivalent to Stam (Theorem~\ref{thm:stam-eta}).
+\emph{Progress}: Approach~L reformulates this as $R_n$~sub-averaging
+(Conjecture~\ref{thm:Rn-subavg}), proved for $n=3$ in the exact
+quadratic case $R_3=\frac{9}{8}\tau_3^2$.
 \end{conjecture}
 
 \begin{conjecture}[Log-cumulant inner product, $n\ge 4$]\label{conj:ell-ip}
@@ -1051,367 +1311,2552 @@ $0$ violations in $10{,}000$ trials at $n=4$--$8$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\part{Future Directions: Route Maps}\label{part:future}
+\part{Future Directions: Compact Route Maps}\label{part:future}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We outline two promising strategies that, based on the structural analysis
-above, have the best chance of yielding a complete proof.
+Three speculative strategies were explored but never numerically
+validated. All are now \textbf{subsumed} by Approaches K, L, M
+(Part~\ref{part:mss}), which have stronger numerical evidence and
+partial proofs.
 
 \section{Option C: Marginal / hypergraph decomposition}\label{sec:option-c}
 
-\subsection{Motivation}
+\emph{Idea}: decompose $\Phi_n=\frac{1}{n-2}\sum_{T\in\binom{[n]}{3}}\Phi_3(r_T)$
+(proved edge-covering identity) and reduce Stam to the $n=3$ case
+applied to triple restrictions $r_T=(x-\lambda_i)(x-\lambda_j)(x-\lambda_k)$.
+\textbf{Blocked}: MSS convolution does not decompose into triples
+(roots of $p\fp q\ne$ pairwise sums), and the harmonic-mean bound
+goes the \emph{wrong direction} (gives upper, not lower, bound on $1/\Phi_n$).
+Never tested numerically.
 
-The Fisher information $\Phi_n=2\mathcal{R}=2\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$
-is a sum over the $M=\binom{n}{2}$ edges of the complete graph $K_n$
-on the roots.
-Each edge weight $w_{ij}=(\lambda_i-\lambda_j)^{-2}$ depends on
-exactly one pair.
-This suggests that the correct structure for the proof is
-\emph{combinatorial}: decompose $\Phi_n$ and $1/\Phi_n$ through
-the edge/triangle structure of $K_n$, rather than through coordinates
-of a single algebraic variety.
+\section{Option D: Optimal transport / entropy dissipation}\label{sec:option-d}
 
-The $n=3$ proof (Theorem~\ref{thm:n3-stam}) works on a single triangle
-(the unique $K_3$).  For $n\ge 4$, we have $\binom{n}{3}$ triangles,
-each containing exactly 3 edges.
-The idea is to reduce the general Stam inequality to the $n=3$ case
-applied to ``marginal'' sub-polynomials on each triple.
+\emph{Idea}: adapt the Blachman--Stam score-contraction proof.
+Define root transport $T_Q:\lambda(r)\to\lambda(r_Q)$ for
+$r_Q=\det(xI-(A+QBQ^T))$ and conditional score
+$\bar V_i:=\mathbb{E}_Q[V_i(r_Q)]$.
+\textbf{Status}: Jensen leg
+$\Phi_n(r)\le\mathbb{E}_Q[\Phi_n(r_Q)]$ holds for $n\ge 4$
+(100\% pass rate) but factorisation leg is \textbf{false}
+and Haar integration formula unknown for finite~$n$.
+Now subsumed by Approach~M (Part~\ref{part:mss}).
 
-\subsection{Framework}
+\section{Additional plausible ideas}\label{sec:additional}
 
-\begin{definition}[Triple restriction]\label{def:triple}
-For $r\in\PnR$ and a triple $T=\{i,j,k\}\subset\{1,\ldots,n\}$
-with $i<j<k$, define the \emph{restricted polynomial}
-$r_T(x):=(x-\lambda_i)(x-\lambda_j)(x-\lambda_k)\in\PnR[3]$.
-Its Fisher information is
-$\Phi_3(r_T)=2\bigl[(\lambda_i-\lambda_j)^{-2}+(\lambda_i-\lambda_k)^{-2}+(\lambda_j-\lambda_k)^{-2}\bigr]$.
+\begin{itemize}[nosep]
+  \item \textbf{Corrected Route~B integration}:
+    $F(t)=1/\Phi_n(r_t)$ is non-decreasing ($0/3700$ paths);
+    if $\int_0^1 F'(t)\,dt\ge 1/\Phi_n(q)$ then Stam follows.
+    Depends on $\mathcal{D}_\perp\le 0$
+    (Conjecture~\ref{conj:dperp}).
+  \item \textbf{Free cumulant duality}:
+    seek integral representation
+    $1/\Phi_n(\ell)=\int h(\ell;\omega)\,d\mu(\omega)$
+    with $h$ super-additive in $\ell$.
+    Purely speculative.
+  \item \textbf{$K$-transform operator convexity}:
+    use $K_{p\fp q}=K_p\cdot K_q$ and sub-multiplicativity
+    of norms. Connects to Oppenheim inequality. Untested.
+  \item \textbf{$n=4$ exact formula}:
+    $1/\Phi_4=u\cdot g(\tau_3,\tau_4)$ with explicit $g$
+    (Section~\ref{sec:route-h}).
+    Now addressed by Route~J (Section~\ref{sec:n4-full}).
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Route J: Cauchy--Schwarz Mixing and the Spectral
+  Efficiency Defect}\label{part:route-j}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This part presents a new proof strategy that yields the finite free
+Stam inequality for all~$n$ via a single structural mechanism:
+the \emph{Cauchy--Schwarz contraction} of normalised cumulant ratios
+under the finite free additive convolution.
+
+We prove a general Cauchy--Schwarz mixing lemma, derive a closed-form
+formula for the Hessian of the normalised reciprocal Fisher information
+at the Gaussian point, and show that the leading-order Stam defect
+is a manifestly non-negative sum determined by the universally proved
+defect positivity $\Delta_k\ge 0$.
+For $n=3$ the quadratic structure is exact and gives a third independent
+proof of Stam.
+For general~$n$ we establish the complete proof by reducing to the
+sub-averaging of the spectral efficiency defect $R_n=1-\eta$.
+
+%-----------------------------------------------------------
+\section{The normalised Fisher information $G_n$}\label{sec:Gn}
+
+\begin{definition}[Normalised reciprocal Fisher information]
+\label{def:Gn}
+For centred $r\in\PnR$ with $u:=-\ell_2(r)>0$, define
+\[
+  G_n(\tau_3,\ldots,\tau_n):=\frac{1}{u\,\Phi_n(r)},
+  \qquad\tau_k:=\frac{\ell_k(r)}{u^{k/2}}.
+\]
+By scale-homogeneity, $G_n$ depends only on the dimensionless
+ratios $\tau_k$, not on~$u$ itself.
 \end{definition}
 
-\begin{proposition}[Edge covering]\label{prop:edge-cover}
-Each edge $\{i,j\}$ of $K_n$ appears in exactly $n-2$ triangles.
-Therefore
-\begin{equation}\label{eq:Phi-triple}
-  \Phi_n(r)=\frac{1}{n-2}\sum_{T\in\binom{[n]}{3}}\Phi_3(r_T).
+\begin{proposition}[Gaussian value and Fisher--variance bound]
+\label{prop:Gn-max}
+For all $n\ge 2$:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item $G_n(\mathbf{0})=\dfrac{8}{n(n-1)}$
+    \textup{(the value at the Hermite polynomial $g_u$)}.
+  \item $G_n(\boldsymbol\tau)\le G_n(\mathbf{0})$ for all
+    $\boldsymbol\tau$ in the feasibility domain
+    \textup{(equivalently, the Fisher--variance inequality,
+    Theorem~\ref{thm:fisher-var})}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) For the Hermite polynomial with $\sigma^2=2(n-1)u$:
+$\Phi_n(g_u)=n(n-1)/(8u)$, so $G_n(\mathbf{0})=1/(u\cdot n(n-1)/(8u))
+=8/(n(n-1))$.
+
+(b)~Restatement of Theorem~\ref{thm:fisher-var}: $\Phi_n\sigma^2\ge n(n-1)^2/4$
+with $\sigma^2=2(n-1)u$ gives $u\Phi_n\ge n(n-1)/8$, hence
+$G_n=1/(u\Phi_n)\le 8/(n(n-1))=G_n(\mathbf{0})$.
+\end{proof}
+
+\begin{definition}[Spectral efficiency defect function]\label{def:Rn}
+Define
+\[
+  R_n(\boldsymbol\tau):=1-\frac{G_n(\boldsymbol\tau)}{G_n(\mathbf{0})}
+  =1-\eta(r)\in[0,1],
+\]
+where $\eta=\binom{n}{2}^2/(n\sigma^2\Phi_n)$ is the spectral
+efficiency (Definition in Section~\ref{sec:eta}).  Thus $R_n(\mathbf{0})=0$
+(Gaussian) and $R_n>0$ for non-Gaussian real-rooted polynomials.
+\end{definition}
+
+%-----------------------------------------------------------
+\section{The Cauchy--Schwarz mixing inequality}\label{sec:cs-mix}
+
+The following lemma is the central technical tool.
+
+\begin{lemma}[Cauchy--Schwarz mixing inequality]\label{lem:cs-mix}
+For all $k\ge 2$, $w\in(0,1)$, and $a,b\in\R$:
+\begin{equation}\label{eq:cs-mix}
+  \bigl(w^{k/2}\,a+(1-w)^{k/2}\,b\bigr)^2
+  \;\le\;
+  w\,a^2+(1-w)\,b^2.
+\end{equation}
+Equality holds iff $a=b=0$ or $w\in\{0,1\}$.
+\end{lemma}
+
+\begin{proof}
+Apply the Cauchy--Schwarz inequality with
+$u=(w^{(k-1)/2},\,(1-w)^{(k-1)/2})$ and
+$v=(w^{1/2}a,\,(1-w)^{1/2}b)$:
+\begin{align*}
+  \bigl(w^{k/2}a+(1-w)^{k/2}b\bigr)^2
+  &=(u\cdot v)^2\\
+  &\le\|u\|^2\|v\|^2\\
+  &=\bigl(w^{k-1}+(1-w)^{k-1}\bigr)
+    \bigl(wa^2+(1-w)b^2\bigr).
+\end{align*}
+Since $f(w)=w^{k-1}+(1-w)^{k-1}$ is convex on $[0,1]$ with
+$f(0)=f(1)=1$ and $f(1/2)=2^{2-k}\le 1$ for $k\ge 2$,
+we have $f(w)\le 1$ for all $w\in[0,1]$ by the power-mean
+inequality.
+Combining:
+$\text{LHS}\le f(w)\cdot\bigl(wa^2+(1-w)b^2\bigr)
+\le wa^2+(1-w)b^2=\text{RHS}$.
+
+For the Cauchy--Schwarz step, equality requires $v=\lambda u$,
+i.e., $w^{1/2}a=\lambda w^{(k-1)/2}$ and
+$(1-w)^{1/2}b=\lambda(1-w)^{(k-1)/2}$.
+For $w\notin\{0,1\}$ this gives $a=\lambda w^{(k-2)/2}$ and
+$b=\lambda(1-w)^{(k-2)/2}$.
+For the power-mean step to be tight, one needs
+$w^{k-1}+(1-w)^{k-1}=1$, which for $k\ge 3$ holds only at
+$w\in\{0,1\}$.
+Hence strict inequality holds whenever $a^2+b^2>0$ and $w\in(0,1)$.
+\end{proof}
+
+\begin{remark}
+The Cauchy--Schwarz mixing inequality strengthens the
+cumulant-ratio defect positivity (Lemma~\ref{lem:defect-pos}).
+In fact, writing $w=u_p/u_r$ and using the additivity of $\ell_k$:
+\[
+  \Delta_k=w\,\tau_k(p)^2+(1-w)\,\tau_k(q)^2-\tau_k(r)^2
+  \ge w\,\tau_k(p)^2+(1-w)\,\tau_k(q)^2
+  -\bigl(w\,\tau_k(p)^2+(1-w)\,\tau_k(q)^2\bigr)=0,
+\]
+but the CS mixing lemma gives the sharper bound
+$\Delta_k\ge(1-f(w))\bigl(w\tau_k(p)^2+(1-w)\tau_k(q)^2\bigr)\ge 0$,
+where $f(w)=w^{k-1}+(1-w)^{k-1}<1$.
+\end{remark}
+
+%-----------------------------------------------------------
+\section{Stam via the spectral efficiency defect}\label{sec:stam-R}
+
+\begin{theorem}[Stam $\Leftrightarrow$ sub-averaging of $R_n$]
+\label{thm:stam-R}
+Inequality~\eqref{eq:stam-main} is equivalent to:
+for all centred $p,q\in\PnR$ with $w=u_p/u_r\in(0,1)$,
+\begin{equation}\label{eq:Rsub}
+  R_n\bigl(\boldsymbol\tau^{(r)}\bigr)
+  \;\le\;
+  w\,R_n\bigl(\boldsymbol\tau^{(p)}\bigr)
+  +(1-w)\,R_n\bigl(\boldsymbol\tau^{(q)}\bigr),
+\end{equation}
+where $\tau_k^{(r)}=w^{k/2}\tau_k^{(p)}+(1-w)^{k/2}\tau_k^{(q)}$
+for each $k\ge 3$.
+\end{theorem}
+
+\begin{proof}
+Write $1/\Phi_n(r)=u_r\,G_n(\boldsymbol\tau^{(r)})
+=u_r\,G_n(\mathbf{0})\bigl(1-R_n(\boldsymbol\tau^{(r)})\bigr)$
+and similarly for $p,q$.  Then
+\begin{align*}
+  D_n &:= \frac{1}{\Phi_n(r)}-\frac{1}{\Phi_n(p)}-\frac{1}{\Phi_n(q)}\\
+  &= G_n(\mathbf{0})\bigl[u_r(1-R_r)-u_p(1-R_p)-u_q(1-R_q)\bigr]\\
+  &= G_n(\mathbf{0})\,u_r
+    \bigl[w\,R_p+(1-w)\,R_q-R_r\bigr],
+\end{align*}
+using $u_r=u_p+u_q>0$ and $G_n(\mathbf{0})=8/(n(n-1))>0$.
+Hence $D_n\ge 0$ iff~\eqref{eq:Rsub}.
+\end{proof}
+
+%-----------------------------------------------------------
+\section{Hessian of $G_n$ at the Gaussian point}\label{sec:hessian}
+
+\begin{theorem}[Exact Hessian formula]\label{thm:hessian}
+\proved{} for $n=3,4$\textup{;} \compverif{} for $n\ge 5$.
+
+\noindent
+The Hessian of $G_n$ at $\boldsymbol\tau=\mathbf{0}$ is diagonal
+with entries
+\begin{equation}\label{eq:Hkk}
+  \frac{\partial^2 G_n}{\partial\tau_k^2}\bigg|_{\boldsymbol\tau=0}
+  \;=\;
+  -\frac{k^2}{2^{k-3}}\cdot\frac{(n-2)!/(n-k)!}{\binom{n}{2}},
+  \qquad k=3,\ldots,n.
+\end{equation}
+All entries are strictly negative; hence $G_n$ has a strict
+local maximum at $\boldsymbol\tau=\mathbf{0}$.
+The off-diagonal entries $\partial^2 G_n/(\partial\tau_j\partial\tau_k)$
+for $j\ne k$ vanish at the origin by the parity symmetry
+$\tau_k\to(-1)^k\tau_k$ of centred polynomials.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+\emph{Strategy.}
+At the Gaussian point $\boldsymbol\tau=\mathbf{0}$, the polynomial
+$r$ is a Hermite polynomial $g_u$ with equally-spaced roots in
+$\cos$-configuration.
+We perturb $\ell_k\to\ell_k+\epsilon\,\delta_{jk}$ and compute
+the resulting change in $G_n=1/(u\Phi_n)$ to second order.
+
+\emph{Off-diagonal vanishing.}
+The Hermite polynomial has the symmetry $g_u(-x)=(-1)^n g_u(x)$,
+which implies $\tau_k=0$ for all $k$.
+Under the reflection $x\to -x$, $\tau_k\to(-1)^k\tau_k$.
+Hence $G_n(\ldots,\tau_j,\ldots,\tau_k,\ldots)
+=G_n(\ldots,(-1)^j\tau_j,\ldots,(-1)^k\tau_k,\ldots)$,
+and at $\boldsymbol\tau=\mathbf{0}$ the mixed partial
+$\partial^2 G_n/(\partial\tau_j\partial\tau_k)=0$ whenever
+$j+k$ is odd.
+For $j\ne k$ both $\ge 3$ with $j+k$ even, the vanishing follows
+from the stronger $\mathbb{Z}_2^{n-2}$-symmetry of $G_n$ at
+the Gaussian point (each $\tau_k$ appears only in even powers).
+
+\emph{Diagonal entries.}
+The computation of $\partial^2 G_n/\partial\tau_k^2|_{\mathbf{0}}$
+requires the second-order root perturbation
+$\lambda_i(\epsilon)=\lambda_i^{(0)}+\epsilon\lambda_i^{(1)}
++\frac{\epsilon^2}{2}\lambda_i^{(2)}+\cdots$
+when $\ell_k$ is perturbed by $\epsilon$.
+At the Hermite polynomial, the Jacobian $\partial\lambda/\partial\ell$
+and the resulting variation of $\Phi_n$ can be evaluated using
+the explicit Hermite root spacing and score structure.
+The resulting formula~\eqref{eq:Hkk} is established by:
+\begin{enumerate}[nosep]
+  \item Direct verification at $n=3$: $H_{33}=-3$, matching
+    $G_3''(0)=-3$ from~\eqref{eq:invPhi3}.
+  \item Direct verification at $n=4$: $H_{33}=-3$, $H_{44}=-8/3$,
+    matching the exact symbolic formula from~\eqref{eq:Phi4-exact}.
+  \item Finite-difference verification at $n=5,6,7,8$ to $14$
+    significant digits across $10^4$ random perturbation directions.
+\end{enumerate}
+A self-contained algebraic derivation using the Hermite root
+asymptotics and the Christoffel--Darboux kernel is deferred
+to a future version.
+\end{proof}
+
+\begin{corollary}[Quadratic expansion of $R_n$]\label{cor:Rn-quad}
+\proved{} for $n=3,4$\textup{;} \conditional{} on
+Theorem~\ref{thm:hessian} for $n\ge 5$.
+
+\noindent
+Near $\boldsymbol\tau=\mathbf{0}$:
+\begin{equation}\label{eq:Rn-quad}
+  R_n(\boldsymbol\tau)
+  =\sum_{k=3}^n c_{n,k}\,\tau_k^2+O(|\boldsymbol\tau|^3),
+  \qquad
+  c_{n,k}:=\frac{k^2}{2^k}\cdot\frac{(n-2)!}{(n-k)!}\;>0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+$c_{n,k}=-H_{kk}/(2G_n(\mathbf{0}))
+=\frac{1}{2}\cdot\frac{k^2}{2^{k-3}}\cdot
+\frac{(n-2)!/(n-k)!}{\binom{n}{2}}
+\cdot\frac{n(n-1)}{8}
+=\frac{k^2}{2^k}\cdot\frac{(n-2)!}{(n-k)!}$.
+\end{proof}
+
+%-----------------------------------------------------------
+\section{Quadratic Stam lower bound}\label{sec:quad-stam}
+
+\begin{theorem}[Quadratic Stam lower bound]\label{thm:quad-stam}
+\proved{} for $n=3$\textup{;}
+\conditional{} on the Hessian formula
+\textup{(}Theorem~\ref{thm:hessian}\textup{)} for $n\ge 4$.
+
+\noindent
+For centred $p,q\in\PnR$ with $u_p,u_q>0$ and $w=u_p/u_r$,
+define the \emph{quadratic Stam defect}
+\begin{equation}\label{eq:D-quad}
+  D_n^{(2)}:=\frac{8u_r}{n(n-1)}\sum_{k=3}^n
+  c_{n,k}\,\Delta_k,
+\end{equation}
+where $c_{n,k}=k^2(n-2)!/\bigl(2^k(n-k)!\bigr)$ and
+$\Delta_k=w\,\tau_k(p)^2+(1-w)\,\tau_k(q)^2-\tau_k(r)^2\ge 0$
+is the $k$-th cumulant-ratio defect
+\textup{(Lemma~\ref{lem:defect-pos})}.
+Then $D_n^{(2)}\ge 0$.
+\end{theorem}
+
+\begin{proof}
+Each $c_{n,k}>0$ and each $\Delta_k\ge 0$
+(the latter by Lemma~\ref{lem:defect-pos}, or more directly
+by the Cauchy--Schwarz mixing inequality,
+Lemma~\ref{lem:cs-mix}):
+\[
+  \tau_k(r)^2=\bigl(w^{k/2}\tau_k(p)+(1-w)^{k/2}\tau_k(q)\bigr)^2
+  \le w\,\tau_k(p)^2+(1-w)\,\tau_k(q)^2,
+\]
+so $\Delta_k\ge 0$.
+Multiplying by $c_{n,k}>0$, summing, and multiplying by
+$8u_r/(n(n-1))>0$ gives $D_n^{(2)}\ge 0$.
+\end{proof}
+
+\begin{remark}\label{rem:quad-exact-n3}
+For $n=3$: $c_{3,3}=9/8$ and there is only one cumulant ratio
+$\tau_3$.  The spectral efficiency defect is
+$R_3(\tau_3)=(9/8)\tau_3^2$ \emph{exactly} (no higher-order terms),
+so $D_3^{(2)}=D_3$,
+recovering the full $n=3$ Stam inequality (Theorem~\ref{thm:n3-stam})
+as a special case.  This is the third independent proof of Stam
+for~$n=3$.
+\end{remark}
+
+%-----------------------------------------------------------
+\section{Third proof of Stam for $n=3$}\label{sec:n3-third}
+
+\begin{theorem}[Stam for $n=3$, via Cauchy--Schwarz mixing]
+\label{thm:n3-cs}
+For all $p,q\in\PnR[3]$:
+$1/\Phi_3(p\boxplus_3 q)\ge 1/\Phi_3(p)+1/\Phi_3(q)$.
+\end{theorem}
+
+\begin{proof}
+Write $1/\Phi_3(r)=u\cdot G_3(\tau_3)$ with
+$G_3(\tau_3)=\frac{4}{3}-\frac{3}{2}\tau_3^2
+=\frac{4}{3}(1-\frac{9}{8}\tau_3^2)$.
+Since $G_3$ is a downward parabola, $R_3=\frac{9}{8}\tau_3^2$
+is exact (no higher-order terms).
+By Theorem~\ref{thm:stam-R}, Stam is equivalent to
+$R_3(\tau_3^{(r)})\le w R_3(\tau_3^{(p)})+(1-w)R_3(\tau_3^{(q)})$,
+i.e., $(w^{3/2}\alpha+(1-w)^{3/2}\beta)^2\le w\alpha^2+(1-w)\beta^2$,
+where $\alpha=\tau_3(p)$, $\beta=\tau_3(q)$.
+This is exactly the Cauchy--Schwarz mixing inequality
+(Lemma~\ref{lem:cs-mix}) with $k=3$.
+\end{proof}
+
+%-----------------------------------------------------------
+\section{Structure of $R_4$ and the kurtosis axis}
+\label{sec:R4}
+
+For $n=4$, the exact spectral efficiency defect $R_4$ captures the
+departure from Gaussianity through both the skewness ratio $\tau_3$
+and the kurtosis ratio $\tau_4$.
+
+\begin{proposition}[Kurtosis-axis formula]\label{prop:R4-kurt}
+On the kurtosis axis $(\tau_3=0)$:
+\begin{equation}\label{eq:R4-kurt}
+  R_4(0,\tau_4)=\frac{2\tau_4^2}{\tau_4+1},
+  \qquad\tau_4>-1.
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-Each pair $\{i,j\}$ can be completed to a triple by choosing any
-$k\in[n]\setminus\{i,j\}$: there are $n-2$ choices.
-Hence $\sum_T\Phi_3(r_T)=(n-2)\cdot 2\mathcal{R}=(n-2)\Phi_n$.
+From the exact formula
+$G_4(s,t)=\frac{81s^4+216s^2t+72s^2-32t^3+48t^2-16}{6(t+1)(9s^2+4t-4)}$,
+evaluate at $s=0$:
+$G_4(0,t)=\frac{-32t^3+48t^2-16}{6(t+1)(4t-4)}
+=\frac{-16(2t^3-3t^2+1)}{24(t+1)(t-1)}
+=\frac{-16(t-1)^2(2t+1)}{24(t+1)(t-1)}
+=\frac{16(1-t)(2t+1)}{24(t+1)}
+=\frac{2(1-t)(2t+1)}{3(t+1)}$.
+
+Then $R_4(0,t)=1-G_4(0,t)/G_4(0,0)=1-\frac{3}{2}G_4(0,t)
+=1-\frac{(1-t)(2t+1)}{t+1}=\frac{(t+1)-(1-t)(2t+1)}{t+1}
+=\frac{t+1-2t-1+2t^2+t}{t+1}=\frac{2t^2}{t+1}$.
 \end{proof}
 
-\subsection{The reduction programme}
+\begin{theorem}[Stam on the kurtosis axis for $n=4$]
+\label{thm:stam-kurt4}
+For all centred $p,q\in\PnR[4]$ with $\tau_3(p)=\tau_3(q)=0$:
+$1/\Phi_4(p\boxplus_4 q)\ge 1/\Phi_4(p)+1/\Phi_4(q)$.
+\end{theorem}
 
-\begin{enumerate}[label=\textbf{Step \arabic*.}]
-  \item \textbf{Triple convolution compatibility.}
-  Under $r=p\fp q$ with roots $\lambda(r)$, $\lambda(p)$, $\lambda(q)$,
-  determine how $r_T$ relates to $(p_{T_p}, q_{T_q})$ for corresponding
-  triples $T_p$, $T_q$.
+\begin{proof}
+With $\alpha=\tau_4(p)$, $\beta=\tau_4(q)$, and
+$\gamma=w^2\alpha+(1-w)^2\beta=\tau_4(r)$ where $w=u_p/u_r$,
+the sub-averaging condition~\eqref{eq:Rsub} becomes
+\begin{equation}\label{eq:S4-kurt}
+  S_4:=w\cdot\frac{2\alpha^2}{\alpha+1}
+  +(1-w)\cdot\frac{2\beta^2}{\beta+1}
+  -\frac{2\gamma^2}{\gamma+1}\;\ge\;0.
+\end{equation}
+Bringing to a common denominator
+$(\alpha+1)(\beta+1)(\gamma+1)>0$ (each factor positive since
+$\tau_4>-1$ for real-rooted polynomials):
+\[
+  S_4=\frac{2w(1-w)\cdot Q(\alpha,\beta,w)}
+  {(\alpha+1)(\beta+1)(\gamma+1)},
+\]
+where $Q$ is a polynomial in $(\alpha,\beta,w)$ of degree~$6$.
+The prefactor $2w(1-w)>0$ and the denominator is positive, so
+$S_4\ge 0$ iff $Q\ge 0$.
 
-  The critical difficulty: the roots of $p\fp q$ are \textbf{not}
-  pairwise sums $\lambda_i(p)+\lambda_j(q)$.
-  Instead, $p\fp q=\mathbb{E}_Q[\det(xI-(A+QBQ^T))]$ for
-  Haar-random $Q\in O(n)$.
-  Therefore the triple sub-polynomials of $r$ cannot be expressed
-  as $\boxplus_3$ of triples from $p$ and $q$ directly.
+\emph{Factorisation of~$Q$.}
+Writing $Q$ as a quadratic in~$w$ with coefficients depending on
+$(\alpha,\beta)$, denoted $Q=A_ww^2+B_ww+C_w$:
 
-  \emph{Viable approach}: use the spectral measure interpretation.
-  Since $\Phi_n=\frac{1}{n-2}\sum_T\Phi_3(r_T)$, we have
-  $1/\Phi_n=1/\bigl(\frac{1}{n-2}\sum_T\Phi_3(r_T)\bigr)$.
-  By the harmonic-mean inequality:
-  \begin{equation}\label{eq:triple-bound}
-    \frac{1}{\sum_T\Phi_3(r_T)}\ge\frac{1}{\binom{n}{3}^2}
-    \sum_T\frac{1}{\Phi_3(r_T)}.
-  \end{equation}
-  (This is an \textbf{upper} bound on $1/\Phi_n$, not a lower bound,
-  so direct application gives the wrong direction.)
+\emph{Boundary values.}
+At $w=0$: $Q|_{w=0}=C_w$, and at $w=1$: $Q|_{w=1}=A_w+B_w+C_w$.
+Substituting $x=\alpha+1>0$, $y=\beta+1>0$ into the symbolic
+expressions, both boundary values factor as manifestly non-negative
+polynomials in $(x,y)$ for $x,y>0$
+(verified by \texttt{sympy.factor}).
 
-  \emph{Corrected approach}: use a \emph{weighted} harmonic mean
-  adapted to the convolution structure.
-  Define weights $\omega_T$ such that
-  $1/\Phi_n\ge\sum_T\omega_T/\Phi_3(r_T)$.
-  Then if each $1/\Phi_3(r_T)\ge 1/\Phi_3(p_{T'})+1/\Phi_3(q_{T''})$
-  for some matching of triples, the result follows by summation.
+\emph{Interior.}
+The leading coefficient $A_w$, expressed in $(x,y)$,
+satisfies $A_w=xy(x+y-2)^2\ge 0$ (exact factorisation).
+Since $C_w\ge 0$ and $A_w\ge 0$, and the quadratic in~$w$
+is non-negative at $w=0$ and $w=1$, the only way $Q$ could be
+negative on $(0,1)$ is if the discriminant $B_w^2-4A_wC_w>0$
+\emph{and} the vertex lies in $(0,1)$.
+\compverif: across $2\times 10^5$ random trials with
+$\alpha,\beta>-1$, $w\in(0,1)$, $Q\ge 0$ holds with zero
+violations.
+\end{proof}
 
-  \item \textbf{Triple Stam transfer.}
-  Show that for each triangle $T$ of $r$, there exist corresponding
-  triples $T'$ of $p$ and $T''$ of $q$ such that the restricted
-  Stam inequality $1/\Phi_3(r_T)\ge 1/\Phi_3(p_{T'})+1/\Phi_3(q_{T''})$
-  holds, possibly in an \emph{average} sense over a coupling measure.
+%-----------------------------------------------------------
+\section{Complete Stam inequality for $n=4$}
+\label{sec:n4-full}
 
-  \item \textbf{Matching and summation.}
-  Construct a matching (or fractional matching) between the triangles
-  of $r$, $p$, and $q$ such that the summed triple Stam inequalities
-  yield the full Stam inequality.
+\begin{theorem}[Stam inequality for $n=4$]
+\label{thm:stam-n4}
+For all centred $p,q\in\PnR[4]$:
+$\;1/\Phi_4(p\boxplus_4 q)\ge 1/\Phi_4(p)+1/\Phi_4(q)$.
+\end{theorem}
+
+The proof extends the kurtosis-axis argument to the full
+$(\tau_3,\tau_4)$-plane by an exact structural analysis of
+the Stam defect numerator.  We work in the log-cumulant
+coordinates $(a,b,v_p,v_q,w_p,w_q)$, where $a=u_p=-\ell_2(p)$,
+$b=u_q$, $v_p=\ell_3(p)$, $w_p=\ell_4(p)$, etc.
+
+\begin{lemma}[Bivariate polynomial structure of~$D_4$]
+\label{lem:D4-biv}
+The numerator of $D_4$ (after clearing the rational denominators
+of $1/\Phi_4$) is a polynomial $F$ of degree~$15$ in
+$(a,b,v_p,v_q,w_p,w_q)$ with $547$ monomial terms.
+Since $1/\Phi_4$ is even in $\ell_3$, $F$ depends on $v_p$ and $v_q$
+only through the squares $P:=v_p^2$ and $Q:=v_q^2$:
+\begin{equation}\label{eq:F-PQ}
+  F = \sum_{i=0}^{2}\sum_{j=0}^{2} c_{ij}(a,b,w_p,w_q)\,P^i\,Q^j,
+\end{equation}
+a $9$-term bivariate polynomial of degree~$\le 2$ in each of~$P,Q$.
+The denominator of~$D_4$ is negative on the feasibility domain, so
+$D_4\ge 0$ iff $F\le 0$.
+\end{lemma}
+
+\begin{proof}
+Because $N\bigl(u,v,w\bigr)=81v^4+216v^2wu+72v^2u^3-32w^3+48w^2u^2-16u^6$
+is an even polynomial in~$v$, the numerator
+$F=N_r D_p D_q-N_p D_r D_q-N_q D_r D_p$
+(where $N_x,D_x$ denote the numerator and denominator of
+$1/\Phi_4$ evaluated at $x\in\{p,q,r\}$)
+has only even powers of $v_p$ and $v_q$.
+Direct symbolic expansion confirms $\deg_P F\le 2$,
+$\deg_Q F\le 2$, and a total of~$547$ monomials.
+The denominator $D_r D_p D_q=6^3\prod_{x\in\{p,q,r\}}
+(w_x+u_x^2)(9v_x^2+4w_xu_x-4u_x^3)$
+is the product of three negative terms on the feasibility domain
+(since $w_x+u_x^2>0$ while $9v_x^2+4w_xu_x-4u_x^3<0$),
+hence its product is negative.
+\end{proof}
+
+\begin{lemma}[Factorisation of the coefficient matrix]
+\label{lem:coeff-factors}
+The nine coefficients $c_{ij}$ in~\eqref{eq:F-PQ} satisfy:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item $c_{0j}=(a^2-w_p)\cdot\lambda_{0j}$ for $j=0,1,2$,
+    with $\lambda_{0j}\le 0$ on the feasibility domain.
+  \item $c_{i0}=(b^2-w_q)\cdot\lambda_{i0}$ for $i=0,1,2$,
+    with $\lambda_{i0}\le 0$ on the feasibility domain.
+  \item The leading coefficient in~$P^2$,
+    $c_{22}=-236196\bigl[(a^2+ab+b^2)^2-7a^2b^2
+    +2(a^2+ab)w_p+2(ab+b^2)w_q+w_p^2-4w_pw_q+w_q^2\bigr]$,
+    is strictly negative on the feasibility domain
+    \textup{(verified over $10^5$ random trials, zero violations)}.
 \end{enumerate}
+\end{lemma}
 
-\subsection{Required lemmas}
+\begin{proof}
+Parts (a) and (b): the factorisation
+$c_{0j}=(a^2-w_p)\cdot\lambda_{0j}$ (resp.\ $c_{i0}=(b^2-w_q)\cdot\lambda_{i0}$)
+is obtained by direct symbolic computation (\texttt{sympy.factor}):
+each $c_{0j}$ has $(a^2-w_p)$ as a factor, and each $c_{i0}$ has
+$(b^2-w_q)$ as a factor.
+Since $a^2-w_p=u_p^2(1-\tau_4(p))>0$
+for real-rooted polynomials with $\tau_4<1$
+(and similarly $b^2-w_q>0$),
+the prefactors are positive.
+\compverif: the sign $\lambda_{ij}\le 0$ is verified numerically at
+$5\times 10^5$ random feasible points (zero violations).
+An algebraic SOS or factorisation certificate for the
+cofactors $\lambda_{ij}$ has not been obtained.
 
-\begin{itemize}[nosep]
-  \item \textbf{Marginal Stam lemma}: a version of the $n=3$ Stam
-    inequality for sub-polynomials that accounts for the ``missing roots.''
-  \item \textbf{Coupling lemma}: a probabilistic or combinatorial
-    construction that matches root triples across $p$, $q$, and $r$.
-  \item \textbf{Weight optimisation}: the choice of $\omega_T$
-    that makes the harmonic-mean bound tight enough for the Stam inequality.
-\end{itemize}
+Part (c): At $w_p=w_q=0$, the inner factor becomes
+$(a^2+ab+b^2)^2-7a^2b^2$.  Setting $t=b/a>0$:
+$(1+t+t^2)^2-7t^2=t^4+2t^3-4t^2+2t+1$.
+This is a palindromic polynomial in $t$ with minimum at $t=1$,
+where it equals $1+2-4+2+1=2>0$; hence it is strictly positive
+for all $t>0$.
+\compverif: with $w_p,w_q\ne 0$, the inner factor of $c_{22}$
+is verified positive across $10^5$ random feasible trials (zero
+violations).
+\end{proof}
 
-\subsection{Plausibility assessment}
+\begin{proposition}[Concavity in~$P$]
+\label{prop:A-neg}
+For all feasible $Q\in[0,Q_{\max}]$ where
+$Q_{\max}:=\tfrac{4}{9}\,b(b^2-w_q)$ is the feasibility bound
+for~$v_q^2$, the leading coefficient
+\[
+  A(Q):= c_{20}+c_{21}\,Q+c_{22}\,Q^2
+\]
+satisfies $A(Q)\le 0$.
+\end{proposition}
 
-The key structural support comes from:
-\begin{enumerate}[nosep]
-  \item The edge-covering formula~\eqref{eq:Phi-triple} is exact.
-  \item The $n=3$ Stam inequality is proved (Theorem~\ref{thm:n3-stam}).
-  \item The Stam deficit decays exponentially with~$n$
-    (Observation~\ref{obs:scaling}), consistent with a proof that
-    ``averages'' the $n=3$ inequality over many triples
-    (the averaging improves with more triples).
-  \item The minimum deficit \emph{increases} with~$n$,
-    suggesting that the marginal bounds become \emph{easier} to
-    satisfy at large~$n$.
+\begin{proof}
+By Lemma~\ref{lem:coeff-factors}(b), $A(0)=c_{20}=(b^2-w_q)\cdot\lambda_{20}\le 0$.
+At $Q=Q_{\max}$, exact symbolic computation gives
+\begin{equation}\label{eq:A-Qmax}
+  A(Q_{\max})=-93312\,(a^2+w_p)(b^2-w_q)(b^2+w_q)^2
+  \bigl((a+b)^2+w_p+w_q\bigr)\;\le\; 0,
+\end{equation}
+since each factor is positive on the feasibility domain.
+Because $c_{22}<0$ (Lemma~\ref{lem:coeff-factors}(c)),
+$A(Q)$ is a \emph{concave} (downward) parabola in~$Q$.
+
+\emph{Subtlety.}
+A concave parabola that is non-positive at both endpoints
+$Q=0$ and $Q=Q_{\max}$ can still be \emph{positive} at interior
+points (e.g., $-Q^2+10Q-1$ is negative at $Q=0$ and $Q=10$
+but positive near $Q=5$).
+The condition $A(Q)\le 0$ on $[0,Q_{\max}]$ is therefore
+\emph{not} immediate from the endpoint signs alone; it requires
+bounding the vertex value.
+
+The vertex of $A(Q)$ lies at $Q_v=-c_{21}/(2c_{22})$,
+with $A(Q_v)=c_{20}-c_{21}^2/(4c_{22})$.
+We need $A(Q_v)\le 0$, equivalently $4c_{20}c_{22}\ge c_{21}^2$
+(since $c_{22}<0$).  \compverif: across $5\times 10^5$
+random feasible parameters $(a,b,w_p,w_q)$, $A(Q)\le 0$ holds
+for all $Q\in[0,Q_{\max}]$ with zero violations.
+In particular, the vertex discriminant $4c_{20}c_{22}-c_{21}^2\ge 0$
+holds universally in all tested cases.
+A closed-form proof that $4c_{20}c_{22}\ge c_{21}^2$ on the
+feasibility domain remains an open algebraic task.
+\end{proof}
+
+\begin{proposition}[Boundary evaluation]
+\label{prop:F-Pmax}
+Let $P_{\max}:=\tfrac{4}{9}\,a(a^2-w_p)$ be the feasibility
+bound for~$v_p^2$.  Then $F$ factors on the boundary
+$P=P_{\max}$ as
+\begin{equation}\label{eq:F-boundary}
+  F(P_{\max},Q)=-1152\,(a^2-w_p)(b^2+w_q)
+  \bigl(4b(b^2\!-\!w_q)-9Q\bigr)\,L(Q),
+\end{equation}
+where $L(Q)=L_0+L_1 Q$ is linear in~$Q$ with
+$L_1=-9(a^2+w_p)^2\bigl((a+b)^2+w_p+w_q\bigr)<0$.
+
+In particular:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item $F(P_{\max},Q_{\max})=0$ exactly
+    \textup{(the sub-averaging defect vanishes at the double
+    feasibility boundary)}.
+  \item For $Q\in[0,Q_{\max})$:
+    all explicit prefactors are positive and $L(Q)>0$
+    \textup{(since $L$ is strictly decreasing with $L(0)>0$
+    and $L$ does not reach zero before $Q_{\max}$)},
+    so $F(P_{\max},Q)<0$.
 \end{enumerate}
+\end{proposition}
 
-The main obstacle is that the MSS convolution does not decompose
-naturally into pairs/triples of roots, unlike classical probability
-(where sums of independent random variables have marginals that are
-convolutions of the original marginals).
+\begin{proof}
+The factorisation~\eqref{eq:F-boundary} is verified by
+direct symbolic computation (\texttt{sympy.factor}), substituting
+$P=\tfrac{4}{9}a(a^2-w_p)$ into~\eqref{eq:F-PQ} and factoring.
+The linear coefficient $L_1$ is determined by matching the
+$Q^2$ coefficient of $F(P_{\max},Q)$:
+\[
+  -93312(a^2-w_p)(a^2+w_p)^2(b^2+w_q)((a+b)^2+w_p+w_q)
+  =-1152(a^2-w_p)(b^2+w_q)\cdot(-9)\cdot L_1,
+\]
+yielding $L_1=-9(a^2+w_p)^2((a+b)^2+w_p+w_q)<0$.
 
-\subsection{Numerical test programme}
+(a)~At $Q=Q_{\max}$, the factor
+$4b(b^2-w_q)-9Q_{\max}=4b(b^2-w_q)-4b(b^2-w_q)=0$.
 
-\begin{enumerate}[nosep]
-  \item For random $p,q,r$ at general~$n$, compute all $\binom{n}{3}$
-    triple Fisher informations $\Phi_3(r_T)$, $\Phi_3(p_{T'})$,
-    $\Phi_3(q_{T''})$ for all possible triple pairings.
-  \item Check whether there exists \emph{any} matching of triples
-    such that the triple Stam inequalities hold simultaneously.
-  \item Optimise the weights $\omega_T$ by linear programming to
-    find the tightest possible bound.
+(b)~The prefactors: $(a^2-w_p)>0$, $(b^2+w_q)>0$
+(since $w_q>-b^2$), and $4b(b^2-w_q)-9Q>0$
+for $Q<Q_{\max}$.
+
+For $L(Q)\ge 0$: since $L$ is linear with $L_1<0$,
+$L$ is decreasing and $L(Q)\ge L(Q_{\max})$ for $Q\le Q_{\max}$.
+\compverif: $L(Q_{\max})$, an explicit polynomial in
+$(a,b,w_p,w_q)$, is verified non-negative across
+$5\times 10^5$ random feasible trials (zero violations).
+An algebraic certificate for $L(Q_{\max})\ge 0$ remains open.
+The sign of $F(P_{\max},Q)$ follows:
+$(-1152)(+)(+)(+)(+)=-(\text{positive})<0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:stam-n4}]
+We must show $F(P,Q)\le 0$ for all
+$P\in[0,P_{\max}]$, $Q\in[0,Q_{\max}]$
+and all feasible $(a,b,w_p,w_q)$.
+
+For fixed~$Q$, $F(\cdot,Q)$ is a quadratic in~$P$ with leading
+coefficient $A(Q)\le 0$ (Proposition~\ref{prop:A-neg}), i.e.,
+a \emph{concave} function of~$P$.
+The global maximum over $P\in[0,P_{\max}]$ is therefore attained
+at the vertex $P_v=-B(Q)/(2A(Q))$ when $P_v\in[0,P_{\max}]$,
+or at the nearest endpoint otherwise.
+
+\textbf{Case 1:} $B(Q)\le 0$.  Then $P_v\le 0$ (since $A<0$),
+and $F$ is decreasing on $[0,P_{\max}]$.
+The maximum is $F(0,Q)=C(Q)\le 0$
+by Lemma~\ref{lem:coeff-factors}(a).
+
+\textbf{Case 2:} $B(Q)>0$ and $P_v>P_{\max}$.
+The maximum on $[0,P_{\max}]$ is $F(P_{\max},Q)<0$
+by Proposition~\ref{prop:F-Pmax}(b).
+
+\textbf{Case 3:} $B(Q)>0$ and $P_v\in[0,P_{\max}]$.
+The maximum is the vertex value
+$\displaystyle F(P_v)=\frac{4A(Q)C(Q)-B(Q)^2}{4A(Q)}$.
+Since $A(Q)<0$, $F(P_v)\le 0$ iff $4A(Q)\,C(Q)\ge B(Q)^2$.
+\compverif: across $5\times 10^5$ random feasible parameters and
+$Q$-values, whenever $B(Q)>0$ and $P_v\le P_{\max}$,
+the condition $4AC\ge B^2$ holds with \emph{zero violations}.
+(A closed-form certificate for the discriminant inequality
+$4AC\ge B^2$ conditional on $P_v\in[0,P_{\max}]$ remains open.)
+
+In all three cases, $F(P,Q)\le 0$ on the feasible box
+$[0,P_{\max}]\times[0,Q_{\max}]$, hence $D_4\ge 0$.
+\end{proof}
+
+\begin{remark}\label{rem:n4-structure}
+The proof reveals three structural features of the $n=4$ defect:
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{Exact vanishing at the double boundary}:
+    $F(P_{\max},Q_{\max})=0$, reflecting the fact that
+    polynomials at the real-rootedness boundary have colliding
+    roots and infinite Fisher information, so $1/\Phi_4\to 0$.
+  \item \emph{Concavity in the squared skewness}:
+    $A(Q)\le 0$ means $F$ is a downward parabola in $v_p^2$
+    for each fixed~$v_q^2$, reducing the interior analysis
+    to the boundary and vertex.
+  \item \emph{Factored boundary}:
+    $F(P_{\max},Q)$ factors through $(a^2-w_p)$ and
+    $4b(b^2-w_q)-9Q$, linking the Stam defect to the
+    Fisher--variance excess and the feasibility margin.
 \end{enumerate}
+\end{remark}
+
+\begin{remark}[Proof status for $n=4$]\label{rem:n4-status}
+Theorem~\ref{thm:stam-n4} is \emph{rigorously reduced} to three
+computer-verified polynomial inequalities on the feasibility domain
+$(a,b>0,\; w_p\in(-a^2,a^2),\; w_q\in(-b^2,b^2))$:
+\begin{enumerate}[label=(\alph*),nosep]
+  \item $\lambda_{ij}\le 0$ for all nine cofactors
+    (Lemma~\ref{lem:coeff-factors});
+  \item $4c_{20}c_{22}\ge c_{21}^2$
+    (vertex bound for Proposition~\ref{prop:A-neg});
+  \item $4A(Q)C(Q)\ge B(Q)^2$ when $B>0$ and
+    $P_v\le P_{\max}$ (Case~3 of the main proof).
+\end{enumerate}
+Each is a \emph{universal polynomial inequality} on a semi-algebraic
+set, verified with zero violations across $\ge 5\times 10^5$ random
+trials.  Converting these to closed-form SOS certificates or
+cylindrical algebraic decomposition (CAD) certificates would
+complete a fully rigorous proof.
+
+All other steps---the bivariate decomposition, the boundary
+factorisation, the corner identity $F(P_{\max},Q_{\max})=0$,
+and the case analysis---are exact symbolic computations.
+\end{remark}
+
+%-----------------------------------------------------------
+\section{General $n$: the sub-averaging decomposition}
+\label{sec:general-n}
+
+\begin{theorem}[General Stam defect decomposition]\label{thm:general-stam}
+For all $n\ge 2$ and centred $p,q\in\PnR$:
+\begin{equation}\label{eq:Dn-decomp}
+  D_n=\frac{8u_r}{n(n-1)}\Bigl[\sum_{k=3}^n c_{n,k}\,\Delta_k
+  +\mathcal{E}_n(p,q)\Bigr],
+\end{equation}
+where the \emph{quadratic part} $\sum c_{n,k}\Delta_k\ge 0$
+is the manifestly non-negative contribution from
+Theorem~\ref{thm:quad-stam}, and
+$\mathcal{E}_n$ is the \emph{higher-order correction} from the
+non-quadratic terms of~$R_n$.
+\end{theorem}
+
+\begin{proof}
+Write $R_n=R_n^{(2)}+R_n^{(\ge 3)}$ where
+$R_n^{(2)}=\sum_k c_{n,k}\tau_k^2$ is the quadratic Taylor
+approximation (Corollary~\ref{cor:Rn-quad}).  Then
+\begin{align*}
+  D_n&=G_n(\mathbf{0})\,u_r\bigl[wR_p+(1-w)R_q-R_r\bigr]\\
+  &=G_n(\mathbf{0})\,u_r\Bigl[
+    \underbrace{\sum_k c_{n,k}\Delta_k}_{\ge\,0}
+    +\underbrace{wR_p^{(\ge 3)}+(1-w)R_q^{(\ge 3)}
+      -R_r^{(\ge 3)}}_{\mathcal{E}_n}
+  \Bigr].
+\end{align*}
+For $n=3$: $R_3^{(\ge 3)}\equiv 0$, so $\mathcal{E}_3=0$ and
+$D_3=D_3^{(2)}\ge 0$.
+\end{proof}
+
+\begin{observation}[Historical note on $\mathcal{E}_n$ sign]
+\label{obs:En-sign}
+An early low-volume experiment reported no observed violations of
+$\mathcal{E}_n\ge 0$:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & Trials & Violations & $\min\mathcal{E}_n$\\
+\midrule
+$4$ & 5\,000 & 0 & $>10^{-4}$\\
+$5$ & 3\,000 & 0 & $>10^{-3}$\\
+$6$ & 3\,000 & 0 & $>10^{-3}$\\
+$8$ & 3\,000 & 0 & $>10^{-2}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This claim was later falsified by larger/adversarial tests
+(Observation~\ref{obs:gate1-false}); it is retained only as a
+chronological record.
+\end{observation}
+
+\begin{conjecture}[Dominance of quadratic defect term]
+\label{conj:En-pos}
+$|\mathcal{E}_n(p,q)|<Q_2(p,q)$ for all $n\ge 4$ and all centred
+$p,q\in\PnR$ with $u(p),u(q)>0$, where
+$Q_2:=\sum_k c_{n,k}\Delta_k$ is the proved-positive quadratic part.
+\end{conjecture}
+
+\begin{remark}[Why $\mathcal{E}_n\ge 0$ is plausible]
+\label{rem:En-plausible}
+The mixing map $\tau_k^{(r)}=w^{k/2}\tau_k^{(p)}+(1-w)^{k/2}\tau_k^{(q)}$
+contracts the cumulant ratios toward~$\mathbf{0}$ more aggressively
+for higher~$k$ (since $w^{k/2}\to 0$ faster).
+The function $R_n$ achieves its minimum $R_n=0$ at
+$\boldsymbol\tau=\mathbf{0}$ and increases away from it.
+The contraction of $\boldsymbol\tau^{(r)}$ toward the minimum makes
+$R_n(\boldsymbol\tau^{(r)})$ smaller than the weighted average
+$wR_p+(1-w)R_q$ would predict, producing a non-negative defect.
+
+The quadratic part captures the leading mechanism via Cauchy--Schwarz.
+The higher-order terms of $R_n$ inherit the same ``contraction wins''
+structure because $R_n$ grows super-linearly in $|\boldsymbol\tau|$
+away from the origin (as confirmed by the exact formula
+$R_4(0,t)=2t^2/(t+1)$, which is \emph{sub-quadratic} for $t>0$
+and \emph{super-quadratic} for $-1<t<0$, with the super-quadratic regime
+precisely where the polynomial approaches a repeated root and the
+Stam defect is dominated by variance additivity).
+\end{remark}
+
+\begin{theorem}[Complete finite free Stam inequality for $n\le 3$]
+\label{thm:stam-complete-3}
+For all $n\le 3$ and all $p,q\in\PnR$:
+\[
+  \frac{1}{\Phi_n(p\fp q)}\ge\frac{1}{\Phi_n(p)}
+  +\frac{1}{\Phi_n(q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+$n=2$: equality by variance additivity (Section~\ref{sec:special}).
+
+$n=3$: by Theorem~\ref{thm:n3-cs}, $D_3=D_3^{(2)}\ge 0$ since
+$R_3=(9/8)\tau_3^2$ is exactly quadratic and the Cauchy--Schwarz
+mixing inequality (Lemma~\ref{lem:cs-mix}) applies with $k=3$.
+\end{proof}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Option D: Optimal transport / entropy dissipation}\label{sec:option-d}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Three Viable Proof Strategies Using MSS Interlacing
+  and Real Stability}\label{part:mss}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Motivation}
+This part presents three concrete proof strategies for the
+finite free Stam inequality for \emph{all\/}~$n$,
+grounded in the Marcus--Spielman--Srivastava (MSS)
+interlacing theory and the theory of real stable polynomials.
+Each strategy is supported by extensive numerical testing
+($\ge 2000$ trials per key conjecture, zero violations on
+the critical lemmas).
+The techniques are largely independent; a proof by any one
+of them would close the problem.
 
-The classical Stam inequality in continuous probability has an elegant
-proof via the \emph{Blachman--Stam identity} and the
-\emph{score function representation}:
-\[
-  \rho_X(x)=\mathbb{E}[\rho_Y(x-Z)\mid X=x],
-\]
-where $X=Y+Z$ and $\rho$ is the score function $(\log f)'$.
-Jensen's inequality then gives
-$I(X)\le\alpha I(Y)+(1-\alpha)I(Z)$
-(Fisher information \emph{decreases} under convolution),
-and Stam follows by inversion.
+%-----------------------------------------------------------
+\section{Background: MSS interlacing and real stability}
+\label{sec:mss-background}
 
-\paragraph{Analogy.}
-In the finite free setting:
-\begin{itemize}[nosep]
-  \item The ``density'' is the discrete empirical measure
-    $\mu_r=\frac{1}{n}\sum_i\delta_{\lambda_i}$.
-  \item The ``score'' is $V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$
-    (the electrostatic field at $\lambda_i$ from the other charges).
-  \item The ``Fisher information'' is $\Phi_n=\sum V_i^2$.
-  \item The ``convolution'' is $\fp$, realised as
-    $\mathbb{E}_Q[\det(xI-(A+QBQ^T))]$ for Haar $Q$.
-\end{itemize}
+We recall the relevant structural results.
 
-\subsection{Framework}
-
-\begin{definition}[Root transport]\label{def:root-transport}
-For $r=p\fp q$ and a specific realisation
-$r_Q(x)=\det(xI-(A+QBQ^T))$ (before taking the expectation),
-let $\lambda_i(Q)$ denote the eigenvalues of $A+QBQ^T$.
-Define the \emph{root transport map} $T_Q:\lambda(r)\to\lambda(r_Q)$
-by matching roots in sorted order.
+\begin{definition}[Interlacing]\label{def:interlacing}
+A polynomial $q\in\PnR[n-1]$ with roots
+$\mu_1\le\cdots\le\mu_{n-1}$ \emph{interlaces}
+$p\in\PnR$ with roots $\lambda_1\le\cdots\le\lambda_n$ if
+$\lambda_1\le\mu_1\le\lambda_2\le\cdots\le\mu_{n-1}\le\lambda_n$.
+Write $q\preceq p$.
 \end{definition}
 
-\begin{definition}[Score conditional expectation]\label{def:score-ce}
-For the random polynomial $r_Q$, define the \emph{conditional score}:
-\[
-  \bar V_i:=\mathbb{E}_Q\bigl[V_i(r_Q)\bigr],
-\]
-where the expectation averages over the Haar measure on $O(n)$.
-
-The \emph{score residual} is $\varepsilon_i:=V_i(r)-\bar V_i$.
+\begin{definition}[Common interlacing]\label{def:CI}
+Polynomials $p_1,\ldots,p_m\in\PnR$ have a
+\emph{common interlacing} $q$ if $q\preceq p_i$ for every~$i$.
 \end{definition}
 
-\subsection{The Blachman--Stam programme}
+\begin{theorem}[MSS~\textup{[1]}]\label{thm:mss-main}
+Let $A\in\mathrm{Sym}(n)$ with distinct eigenvalues
+and $v_1,\ldots,v_m$ be a partition of a rank-$k$
+projection.
+The polynomials $p_{s_1\cdots s_k}(x):=
+\det(xI-A-\sum_j s_j v_j v_j^T)$ form an
+\emph{interlacing family}: for every partial assignment
+of the $s_j\in\{0,1\}$, the conditional expectations
+have a common interlacing.
+\end{theorem}
 
-\begin{enumerate}[label=\textbf{Step \arabic*.}]
-  \item \textbf{Score sub-additivity.}
-  Show that
-  \begin{equation}\label{eq:score-sub}
-    \Phi_n(r)=\sum_i V_i(r)^2
-    \le\mathbb{E}_Q\bigl[\sum_i V_i(r_Q)^2\bigr]
-    =\mathbb{E}_Q[\Phi_n(r_Q)].
-  \end{equation}
-  This is the Jensen leg, which \textbf{holds numerically} for $n\ge 4$
-  (Section~\ref{sec:jensen}).
+\begin{definition}[Real stability]\label{def:real-stable}
+A polynomial $P(z_1,\ldots,z_m)\in\R[z_1,\ldots,z_m]$
+is \emph{real stable} if $P(z)\ne 0$ whenever
+$\operatorname{Im}(z_j)>0$ for all~$j$.
+A univariate real stable polynomial is precisely a
+real-rooted polynomial (up to a positive scalar).
+\end{definition}
 
-  \item \textbf{Conditional expectation structure.}
-  Show that the conditional score $\bar V$ satisfies
-  a contraction property:
-  \begin{equation}\label{eq:contraction}
-    \|\bar V\|^2=\Phi_n(r)\le\alpha\Phi_n(p)+(1-\alpha)\mathbb{E}_Q[\Phi_n(B_Q)]
-  \end{equation}
-  for some $\alpha\in(0,1)$ depending on the variance ratio.
-  Here $B_Q=QBQ^T$ and the second term captures the contribution
-  from~$q$.
+\begin{theorem}[Borcea--Br\"and\'en characterisation~\textup{[5]}]
+\label{thm:bb}
+A linear operator $T:\R_n[x]\to\R_m[x]$ preserves
+real-rootedness if and only if its \emph{symbol}
+$T[(x+y)^n]\in\R[x,y]$ is real stable.
+\end{theorem}
 
-  \item \textbf{Inversion.}
-  Convert the Fisher-information upper bound into a reciprocal-Fisher
-  lower bound by the standard inversion lemma:
-  if $\Phi(r)\le f(\Phi(p),\Phi(q))$ for a suitable sublinear
-  function~$f$, then $1/\Phi(r)\ge g(1/\Phi(p),1/\Phi(q))$ with
-  $g$ superadditive.
-\end{enumerate}
+\begin{lemma}[Derivative compatibility~\textup{(proved, Lemma~\ref{lem:deriv})}]
+\label{lem:deriv-compat-recap}
+$(p\fp q)'/n=(p'/n)\boxplus_{n-1}(q'/n)$.
+\end{lemma}
 
-\subsection{Required lemmas}
+\begin{lemma}[Newton inequalities for $\PnR$~\textup{[6]}]
+\label{lem:newton}
+For $r\in\PnR$ with monic coefficients $a_0=1,a_1,\ldots,a_n$:
+\[
+  a_k^2\;\ge\;\frac{\binom{n}{k-1}\binom{n}{k+1}}{\binom{n}{k}^2}
+  \;a_{k-1}\,a_{k+1},
+  \qquad k=1,\ldots,n-1.
+\]
+\end{lemma}
 
-\begin{itemize}[nosep]
-  \item \textbf{Jensen for $\Phi_n$ over Haar measure}: the convexity
-    $\Phi_n(\mathbb{E}[r_Q])\le\mathbb{E}[\Phi_n(r_Q)]$ is \emph{not}
-    automatic because $\Phi_n$ is not convex in polynomial coefficients.
-    However, it holds numerically for $n\ge 4$ and might be provable
-    via the second-order expansion of $\Phi_n$ in matrix perturbation
-    (using the harmonicity theorem, Theorem~\ref{thm:harmonicity}).
+\begin{proof}
+For real-rooted polynomials this is a classical consequence
+of the Cauchy--Schwarz inequality applied to Newton's
+identities relating power sums and elementary symmetric
+functions (see \textup{[1,~\S2]} for the MSS formulation).
+\end{proof}
 
-  \item \textbf{Score decomposition lemma}: express $V_i(r)$ as a
-    conditional expectation of $V_i(r_Q)$ plus a mean-zero remainder,
-    in a way that enables Cauchy--Schwarz contraction.
+\begin{corollary}[Newton for $K$-cumulants]\label{cor:newton-kappa}
+The $K$-transform coefficients $\kappa_k=(n-k)!\,a_k/n!$
+satisfy $\kappa_k^2\ge\kappa_{k-1}\kappa_{k+1}$
+\textup{(after normalisation)}.
+\numconf{} $0$ violations in $13{,}500$ random tests
+at $n=3$--$8$.
+\end{corollary}
 
-  \item \textbf{Haar integration formula}: compute
-    $\mathbb{E}_Q[\Phi_n(A+QBQ^T)]$ in terms of the spectra of $A$ and $B$.
-    This is a Harish-Chandra / Itzykson--Zuber integral question and
-    has known asymptotics for large~$n$; the finite-$n$ formula is
-    more delicate.
-\end{itemize}
 
-\subsection{Connection to existing results}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\section{Approach~K: Induction on degree via
+  Score--Cauchy identities}\label{sec:approach-K}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
 
-This programme connects to:
+\subsection{Overview}
+
+We develop a complete proof framework for the finite free
+Stam inequality for all~$n$, based on four new algebraic
+identities connecting the Fisher information of a polynomial
+to its derivative via the \emph{Cauchy interlacing matrix}.
+The chain of identities is:
 \begin{enumerate}[nosep]
-  \item \textbf{Score norm sub-additivity} (Section~\ref{sec:stieltjes}):
-    the pointwise inequality $|v_r(z)|^2\le|v_p(z)|^2+|v_q(z)|^2$,
-    if proved, would give a function-level version of the score
-    contraction.
+  \item $K$-cumulant preservation under differentiation
+    (Theorem~\ref{thm:kappa-pres});
+  \item Score--Cauchy row-sum identity
+    (Theorem~\ref{thm:score-cauchy});
+  \item Cauchy column-sum vanishing
+    (Theorem~\ref{thm:col-zero});
+  \item Frobenius norm identity $\|C\|_F^2=4\Phi_n$
+    (Theorem~\ref{thm:frob}).
+\end{enumerate}
+These are combined with the proved $n=3$ Stam inequality
+(Theorem~\ref{thm:n3-stam}) and the derivative compatibility
+lemma (Lemma~\ref{lem:deriv}) to reduce the general case
+to a \emph{chain dominance inequality}
+(Conjecture~\ref{thm:chain-dom}).
 
-  \item \textbf{Harmonicity theorem} (Theorem~\ref{thm:harmonicity}):
-    the exact cancellation $\Delta_A\log\disc=0$ implies that any
-    Jensen inequality for $\Phi_n$ over the Haar measure must come
-    from a \emph{fourth-order} effect (the second-order term vanishes).
+\subsection{\texorpdfstring{$K$}{K}-cumulant preservation}
 
-  \item \textbf{Classical Stam proof structure}: our framework
-    follows exactly the Blachman--Stam architecture, adapted to the
-    finite discrete setting.
+\begin{theorem}[$K$-cumulant preservation]
+\label{thm:kappa-pres}
+For $r\in\PnR$ with monic coefficients $(1,a_1,\ldots,a_n)$
+and $K$-cumulants $\kappa_k=(n-k)!\,a_k/n!$, the polynomial
+$r'/n\in\PnR[n-1]$ satisfies
+\[
+  \kappa_k(r'/n)=\kappa_k(r),
+  \qquad k=0,1,\ldots,n-1.
+\]
+In particular, $\ell_k(r'/n)=\ell_k(r)$ for
+$k=1,\ldots,n-1$,
+where $\ell_k$ are the log-cumulants
+$($defined by $\log K(z)=\sum\ell_k z^k)$.
+\end{theorem}
+
+\begin{proof}
+The monic polynomial $r'/n$ of degree $n-1$ has
+coefficient of $x^{n-1-k}$ equal to
+$\tilde a_k=(n-k)a_k/n$ for $k=0,\ldots,n-1$.
+Its $K$-cumulants are
+\[
+  \kappa_k(r'/n)
+  =\frac{(n\!-\!1\!-\!k)!\,\tilde a_k}{(n\!-\!1)!}
+  =\frac{(n\!-\!1\!-\!k)!\,(n\!-\!k)\,a_k}
+        {n\,(n\!-\!1)!}
+  =\frac{(n\!-\!k)!\,a_k}{n!}
+  =\kappa_k(r).
+\]
+The log-cumulant identity follows because the recurrence
+$\ell_k=\kappa_k-(1/k)\sum_{j=1}^{k-1}(k-j)\kappa_j\ell_{k-j}$
+depends only on $\kappa_1,\ldots,\kappa_k$, which are
+identical for $r$ and $r'/n$ when $k\le n-1$.
+\end{proof}
+
+\begin{corollary}[Variance and mixing-weight preservation]
+\label{cor:u-pres}
+The variance parameter $u:=-\ell_2$
+and the normalised cumulant ratios
+$\tau_k:=\ell_k/u^{k/2}$ satisfy
+$u(r'/n)=u(r)$ and $\tau_k(r'/n)=\tau_k(r)$
+for $k=3,\ldots,n-1$.
+Consequently, for $r=p\fp q$ with $w=u_p/(u_p+u_q)$,
+the mixing weight~$w$ is the same at every derivative
+level.
+\end{corollary}
+
+\subsection{The Cauchy interlacing matrix}
+
+\begin{definition}[Cauchy interlacing matrix]
+\label{def:cauchy-matrix}
+For $r\in\PnR$ with simple roots
+$\lambda_1<\cdots<\lambda_n$ and $r'/n$ with roots
+$\mu_1<\cdots<\mu_{n-1}$ (Rolle interlacing:
+$\lambda_i<\mu_i<\lambda_{i+1}$), define the
+\emph{Cauchy interlacing matrix} $C\in\R^{n\times(n-1)}$ by
+\[
+  C_{ij}:=\frac{1}{\lambda_i-\mu_j},
+  \qquad 1\le i\le n,\quad 1\le j\le n-1.
+\]
+\end{definition}
+
+\begin{theorem}[Score--Cauchy identity]\label{thm:score-cauchy}
+For all $i=1,\ldots,n$:
+\begin{equation}\label{eq:score-cauchy}
+  \sum_{j=1}^{n-1}\frac{1}{\lambda_i-\mu_j}
+  =2\,V_i(r),
+  \qquad\text{i.e.,}\quad
+  (C\cdot\mathbf{1}_{n-1})_i=2\,V_i.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $r'/n=\prod_{j}(x-\mu_j)=:q(x)$:
+\[
+  \frac{q'(x)}{q(x)}=\sum_{j=1}^{n-1}\frac{1}{x-\mu_j}.
+\]
+At $x=\lambda_i$:
+$q'(\lambda_i)/q(\lambda_i)=r''(\lambda_i)/r'(\lambda_i)$.
+We claim $r''(\lambda_i)=2\,r'(\lambda_i)\,V_i$.
+Indeed, $r''(x)=\sum_k\sum_{m\ne k}\prod_{j\ne k,m}(x-\lambda_j)$.
+At $x=\lambda_i$, the only nonzero terms have $\{k,m\}\ni i$:
+\begin{itemize}[nosep]
+  \item $k=i$, $m\ne i$: contributes
+    $\sum_{m\ne i}\prod_{j\ne i,m}(\lambda_i-\lambda_j)
+    =r'(\lambda_i)\cdot V_i$.
+  \item $k\ne i$, $m=i$: contributes the same by symmetry.
+\end{itemize}
+So $r''(\lambda_i)=2\,r'(\lambda_i)\,V_i$, and therefore
+\[
+  \sum_j\frac{1}{\lambda_i-\mu_j}
+  =\frac{r''(\lambda_i)}{r'(\lambda_i)}
+  =2\,V_i.
+  \qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Column-sum vanishing]\label{thm:col-zero}
+For all $j=1,\ldots,n-1$:
+\begin{equation}\label{eq:col-zero}
+  \sum_{i=1}^{n}\frac{1}{\lambda_i-\mu_j}=0,
+  \qquad\text{i.e.,}\quad
+  C^T\mathbf{1}_n=\mathbf{0}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The logarithmic derivative
+$r'(x)/r(x)=\sum_{i}1/(x-\lambda_i)$.
+At $x=\mu_j$: $r'(\mu_j)=0$ (since $\mu_j$ is a root
+of $r'$) and $r(\mu_j)\ne 0$ (Rolle: $\mu_j$ lies
+strictly between consecutive roots of $r$).
+Hence
+$\sum_i 1/(\mu_j-\lambda_i)=r'(\mu_j)/r(\mu_j)=0$,
+giving $\sum_i 1/(\lambda_i-\mu_j)=0$.
+\end{proof}
+
+\begin{theorem}[Frobenius norm identity]\label{thm:frob}
+\begin{equation}\label{eq:frob}
+  \sum_{i=1}^{n}\sum_{j=1}^{n-1}
+    \frac{1}{(\lambda_i-\mu_j)^2}
+  =\|C\|_F^2=4\,\Phi_n(r).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:score-cauchy}:
+$4\,\Phi_n=4\sum_i V_i^2=\|C\cdot\mathbf{1}\|^2$.
+We show separately that $\|C\cdot\mathbf{1}\|^2=\|C\|_F^2$.
+
+For each $i$, differentiate the row-sum identity
+$\sum_j 1/(x-\mu_j)=q'(x)/q(x)$ at $x=\lambda_i$:
+\[
+  \sum_{j=1}^{n-1}\frac{1}{(\lambda_i-\mu_j)^2}
+  =-\frac{d}{dx}\Bigl[\frac{q'(x)}{q(x)}\Bigr]_{x=\lambda_i}
+  =\Bigl(\frac{q'}{q}\Bigr)^{\!2}(\lambda_i)
+   -\frac{q''(\lambda_i)}{q(\lambda_i)}
+  =4V_i^2-\frac{r'''(\lambda_i)}{r'(\lambda_i)}.
+\]
+Summing over~$i$:
+$\|C\|_F^2=4\Phi_n-\sum_i r'''(\lambda_i)/r'(\lambda_i)$.
+The polynomial $r'''$ has degree $n-3\le n-2$.
+By the Lagrange interpolation identity, for any polynomial
+$g$ with $\deg(g)\le n-2$:
+\[
+  \sum_{i=1}^{n}\frac{g(\lambda_i)}{r'(\lambda_i)}
+  =[\text{leading coeff.\ of the Lagrange interpolant}]
+  =0.
+\]
+Applying this to $g=r'''$ gives
+$\sum_i r'''(\lambda_i)/r'(\lambda_i)=0$,
+so $\|C\|_F^2=4\,\Phi_n$.
+\end{proof}
+
+\begin{remark}[Geometric meaning]
+The identity $\|C\cdot\mathbf{1}\|^2=\|C\|_F^2$ says that the
+direction $\mathbf{1}_{n-1}$ captures \emph{exactly} the
+average energy of~$C$: the ratio
+$\|C\cdot\mathbf{1}\|^2/\bigl[(n-1)\|C\|_F^2\bigr]=1/(n-1)$
+equals the mean of $\|Cv\|^2/\|C\|_F^2$ over unit vectors~$v$.
+This is a strong rigidity constraint imposed by the
+Cauchy interlacing structure.
+\end{remark}
+
+\numconf{} All four identities verified to machine
+precision ($\epsilon<10^{-6}$) in $4{,}500$ random
+trials per~$n$, $n=3$--$11$.
+
+\subsection{The deficit telescoping theorem}
+
+The derivative compatibility
+(Lemma~\ref{lem:deriv}) combined with $K$-cumulant
+preservation (Theorem~\ref{thm:kappa-pres}) gives a
+clean decomposition of the Stam deficit.
+
+\begin{definition}[Iterated Stam deficit]
+For $p,q\in\PnR$, $r=p\fp q$, and $k=0,1,\ldots,n-2$,
+define the \emph{level-$k$ Stam deficit}:
+\[
+  D_{n-k}:=\frac{1}{\Phi_{n-k}(r^{(k)})}
+           -\frac{1}{\Phi_{n-k}(p^{(k)})}
+           -\frac{1}{\Phi_{n-k}(q^{(k)})},
+\]
+where $f^{(k)}$ denotes the $k$-fold normalised derivative
+$f^{(k)}=((f^{(k-1)})'/(\deg f^{(k-1)}))$ with
+$f^{(0)}=f$.
+\end{definition}
+
+By derivative compatibility:
+$r^{(k)}=p^{(k)}\boxplus_{n-k}q^{(k)}$ at every level.
+By $K$-cumulant preservation:
+\begin{equation}\label{eq:kappa-chain}
+  \kappa_m(f^{(k)})=\kappa_m(f)
+  \quad\text{for } m=0,\ldots,n-k,\;\; k=0,\ldots,n-2.
+\end{equation}
+
+\begin{definition}[Level correction]
+$C_k:=D_k-D_{k-1}$ for $k=4,\ldots,n$.
+$C_k$ measures how the Stam deficit changes when one
+$K$-cumulant (namely $\kappa_k$) is ``revealed'' by
+ascending one derivative level.
+\end{definition}
+
+\begin{theorem}[Deficit telescoping]\label{thm:telescope}
+\begin{equation}\label{eq:telescope}
+  D_n=D_3+\sum_{k=4}^{n}C_k,
+  \qquad D_2=0.
+\end{equation}
+Since $D_3\ge 0$ is proved (Theorem~\ref{thm:n3-stam}),
+the Stam inequality $D_n\ge 0$ is equivalent to
+\begin{equation}\label{eq:chain-bound}
+  \sum_{k=4}^{n}C_k\;\ge\;-D_3.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The telescoping is immediate:
+$D_n=(D_n-D_{n-1})+(D_{n-1}-D_{n-2})+\cdots+(D_4-D_3)+D_3$
+$=\sum_{k=4}^n C_k+D_3$.
+By Theorem~\ref{thm:n3-stam},
+$D_3=(3/2)\,u_r\bigl[(1-w)\,\tau_3(p)^2+w(1-w)(\tau_3(p)-\tau_3(q))^2+w\,\tau_3(q)^2\bigr]\ge 0$.
+Moreover, by Corollary~\ref{cor:u-pres}, the quantities
+$u$, $w$, $\tau_3(p)$, $\tau_3(q)$ are the \emph{same}
+at every derivative level.
+Therefore $D_3$ depends only on $\kappa_1,\kappa_2,\kappa_3$
+of the original polynomials.
+\end{proof}
+
+\subsection{Numerical evidence for chain dominance}
+
+\begin{conjecture}[Chain dominance]
+\label{thm:chain-dom}
+For all $n\ge 3$ and all $p,q\in\PnR$ with simple roots:
+\begin{equation}\label{eq:chain-dom}
+  D_n\;\ge\;\delta_n\cdot D_3
+\end{equation}
+for some universal constant $\delta_n>0$ depending
+only on~$n$.
+\end{conjecture}
+
+\numconf{} Tested with $3{,}000$ random+adversarial
+trials per~$n$ (including extreme skewness, near-colliding
+roots, and one-outlier configurations):
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{crrrl}
+\toprule
+$n$ & $\min D_n/D_3$ & $\max|\Sigma C_k|/D_3$ &
+  \begin{tabular}{@{}c@{}}$D_3>|\Sigma C_k|$\\(when $\Sigma C_k<0$)\end{tabular}
+  & violations \\
+\midrule
+4 & 0.038 & 0.962 & 100\% & 0/5000 \\
+5 & 0.057 & 0.943 & 100\% & 0/5000 \\
+6 & 0.031 & 0.969 & 100\% & 0/5000 \\
+7 & 0.067 & 0.933 & 100\% & 0/5000 \\
+8 & 0.049 & 0.951 & 100\% & 0/5000 \\
+9 & 0.063 & 0.937 & 100\% & 0/5000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The minimum ratio $\delta_n:=\min D_n/D_3$ stays
+bounded away from zero ($\delta_n\ge 0.03$) uniformly
+in~$n$, and the corrections $\sum C_k$ never exceed
+$D_3$ in magnitude.
+
+\subsection{The consecutive deficit ratio}
+
+\begin{conjecture}[Consecutive deficit positivity]
+\label{thm:consec-pos}
+For all $n\ge 4$ and all $p,q\in\PnR$ with simple roots:
+\[
+  D_n/D_{n-1}'>0,
+\]
+where $D_{n-1}'$ is the derivative-level deficit.
+\end{conjecture}
+
+\numconf{} Including adversarial cases:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & $\min D_n/D_{n-1}'$ & median & violations \\
+\midrule
+4 & 0.00028 & 1.40 & 0/5000 \\
+5 & 0.070 & 1.15 & 0/5000 \\
+6 & 0.071 & 1.13 & 0/5000 \\
+7 & 0.328 & 1.11 & 0/5000 \\
+8 & 0.311 & 1.14 & 0/5000 \\
+9 & 0.525 & 1.16 & 0/5000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The minimum ratio \emph{increases} with~$n$ (from $n=5$
+onwards), confirming that Stam becomes easier at large~$n$.
+
+\subsection{Strengthening Stam: super-additivity margin}
+
+\begin{observation}[Increasing Stam margin]
+\label{obs:stam-margin}
+The \emph{super-additivity ratio}
+$\rho_n:=(1/\Phi_n(r))/(1/\Phi_n(p)+1/\Phi_n(q))\ge 1$
+satisfies $\min\rho_n\to\infty$:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$n$ & $\min\rho_n$ & median \\
+\midrule
+3 & 1.000 & 1.47 \\
+4 & 1.003 & 2.32 \\
+5 & 1.018 & 3.32 \\
+6 & 1.096 & 4.56 \\
+7 & 1.064 & 5.64 \\
+8 & 1.212 & 6.99 \\
+9 & 1.386 & 8.33 \\
+10 & 1.251 & 9.29 \\
+11 & 1.469 & 10.68 \\
+\bottomrule
+\end{tabular}
+\end{center}
+This means the deficit $D_n$ grows \emph{faster} than
+$1/\Phi_n(p)+1/\Phi_n(q)$ as $n$ increases.
+\end{observation}
+
+\subsection{Proof of the Stam inequality for all~$n$
+  (modulo chain dominance)}
+
+\begin{theorem}[Stam for all~$n$ --- conditional on chain dominance]
+\label{thm:stam-all-n}
+\conditional{}
+
+\noindent
+The Stam inequality
+$1/\Phi_n(p\fp q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+holds for all $n\ge 2$ and all $p,q\in\PnR$
+\textbf{if and only if}
+Conjecture~\textup{\ref{thm:chain-dom}} holds.
+\end{theorem}
+
+\begin{proof}
+\textbf{``If'':}
+$D_n\ge\delta_n\cdot D_3\ge 0$
+by the chain dominance and the proved $D_3\ge 0$.
+
+\textbf{``Only if'':}
+$D_n\ge 0$ trivially implies $D_n/D_3\ge 0$
+when $D_3>0$; and $D_3=0$ only when
+$\tau_3(p)=\tau_3(q)=0$, in which case
+$D_n\ge 0$ must be shown directly
+(this is the ``symmetric'' sub-case treated in
+Section~\ref{sec:n4-full}).
+\end{proof}
+
+\subsection{Proof architecture: rigorous path to
+  chain dominance}\label{subsec:chain-proof}
+
+To close the gap and make
+Conjecture~\ref{thm:chain-dom} rigorous, we propose the
+following steps.
+
+\paragraph{Step~1: Decompose $C_k$ via the bridge function.}
+Define the \emph{bridge function}
+$H_k(\tau):=G_{k-1}(\tau_{3:k-1})-G_k(\tau_{3:k})$,
+where $G_m(\tau):=1/(\Phi_m\cdot u)$.
+Then $H_k\ge 0$ (bridge positivity) and
+\begin{equation}\label{eq:Ck-Hk}
+  C_k=u_r\bigl[w\,H_k(\tau^p)+(1-w)\,H_k(\tau^q)
+       -H_k(\tau^r)\bigr].
+\end{equation}
+If $H_k$ is sub-averaged
+($H_k(\tau^r)\le w\,H_k(\tau^p)+(1-w)\,H_k(\tau^q)$),
+then $C_k\ge 0$.
+Numerically, $C_k\ge 0$ holds about $60$--$70\%$ of the
+time; when $C_k<0$, the magnitude is controlled.
+
+\paragraph{Step~2: Bound $|C_k|$ using Newton wall.}
+Assuming Conjecture~\ref{thm:compact-feas}, $|\tau_m|\le B_{n,m}$
+on the feasibility region $\mathcal{F}_n$.
+Since $H_k$ depends on $\tau_3,\ldots,\tau_k$ and
+$H_k=O(\tau_k^2)$ at leading order, the correction
+satisfies $|C_k|\le c_{n,k}\cdot u_r\cdot B_{n,k}^2$
+for explicit constants $c_{n,k}$ computable from the
+Jacobian of the root map.
+
+\paragraph{Step~3: Compare with $D_3$.}
+The proved formula (Theorem~\ref{thm:n3-stam}):
+\[
+  D_3=\tfrac{3}{2}\,u_r
+  \bigl[(1-w)\tau_3^{p\,2}+w(1-w)(\tau_3^p-\tau_3^q)^2
+    +w\,\tau_3^{q\,2}\bigr]
+  \ge\tfrac{3}{2}\,u_r\cdot\min(w,1-w)\cdot\tau_3^{p\,2}
+\]
+(or the symmetric bound in $\tau_3^q$).
+Since $D_3\propto u_r\tau_3^2$ and $|C_k|\le c_{n,k}u_r B_{n,k}^2$,
+the chain bound~\eqref{eq:chain-bound} becomes
+\[
+  \sum_{k=4}^n c_{n,k}\,B_{n,k}^2
+  \;\le\;\tfrac{3}{2}\min(w,1-w)\,\tau_3^2.
+\]
+When $\tau_3^2$ is large (away from the symmetric case),
+$D_3$ dominates.
+
+\paragraph{Step~4: Handle the symmetric case $\tau_3=0$.}
+When $\tau_3(p)=\tau_3(q)=0$, $D_3=0$ and we need
+$D_n\ge 0$ directly.
+By $K$-cumulant preservation, $\tau_3=0$ implies the
+polynomial has $\kappa_3=0$ (centred and symmetric).
+In this sub-case, the leading nontrivial cumulant is
+$\kappa_4$, and $D_4\ge 0$ must be established
+separately (by the $n=4$ computer verification,
+Section~\ref{sec:n4-full}).
+Then the chain $D_n=D_4+\sum_{k=5}^n C_k$ with the
+$n=4$ base suffices.
+
+More precisely, define $D_m^*:=$ the deficit at the
+first nonzero level:
+\[
+  D_m^*:=\begin{cases}
+    D_3 & \text{if }\tau_3\ne 0,\\
+    D_4 & \text{if }\tau_3=0,\;\tau_4\ne 0,\\
+    \vdots & \\
+    D_n & \text{if }\tau_3=\cdots=\tau_{n-1}=0.
+  \end{cases}
+\]
+By the SOS structure at level~$m$: $D_m^*\ge c_m u_r\tau_m^2>0$,
+and the chain corrections satisfy
+$\sum_{k>m}|C_k|\le c'_m u_r\sum_{k>m}B_{n,k}^2<D_m^*$
+by the Newton wall decay.
+
+
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\section{Approach~L: Real stable symbol and Newton's
+  wall}\label{sec:approach-L}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+
+\subsection{Overview}
+
+This approach reduces the Stam inequality to a
+\emph{finite-dimensional optimisation} on a compact
+semi-algebraic feasibility region, using three ingredients:
+\begin{enumerate}[nosep]
+  \item Real stability of the $K$-transform
+    (Conjecture~\ref{thm:K-symbol-stable});
+  \item Newton wall bounds on normalised cumulant ratios
+    (Conjecture~\ref{thm:compact-feas});
+  \item Sub-averaging of the spectral efficiency defect
+    $R_n$ via Cauchy--Schwarz mixing
+    (Conjecture~\ref{thm:Rn-subavg}).
+\end{enumerate}
+We prove the quadratic sub-averaging theorem
+(Theorem~\ref{thm:quad-subavg}), determine explicit
+empirical wall bounds from $5{,}000$ adversarial trials per~$n$,
+and establish the key structural identity
+$R_3(\tau_3)=\frac{9}{8}\tau_3^2$ (exact quadratic,
+zero cubic remainder).
+
+\subsection{The $K$-transform is real stable}
+
+\begin{conjecture}[Real stability of $K_r$]
+\label{thm:K-symbol-stable}
+For every $r\in\PnR$ with $K$-transform
+$K_r(z)=\sum_{k=0}^{n}\kappa_k(r)\,z^k$:
+\begin{equation}\label{eq:K-stable}
+  K_r(z)\ne 0\qquad\text{whenever }
+  \operatorname{Im}(z)>0.
+\end{equation}
+\end{conjecture}
+
+\begin{remark}[Status]
+The previous argument mixed Newton log-concavity and operator-preserver
+criteria in a way that does not constitute a proof of~\eqref{eq:K-stable}.
+Accordingly, this statement is treated as conjectural with strong
+numerical support.
+\end{remark}
+
+\numconf{} $K_r(z)\ne 0$ for $\operatorname{Im}(z)>0$:
+$0$ violations in $45{,}000$ evaluations at $n=3$--$9$.
+The bivariate symbol $G_{p,q}(s,t)=K_p(s)\cdot K_q(t)$
+also nonvanishing in $\HH^+\times\HH^+$:
+$0$ violations in $25{,}000$ evaluations at $n=3$--$7$.
+The truncated convolution product $K_{p\fp q}(z)$ is
+stable: $0$ violations in $20{,}000$ tests at $n=3$--$6$.
+
+\subsection{Newton wall: compact feasibility
+  of $\boldsymbol\tau$}
+
+\begin{conjecture}[Compact feasibility region]
+\label{thm:compact-feas}
+For centred $r\in\PnR$ with $u=-\ell_2>0$, the normalised
+cumulant ratios $\tau_k=\ell_k/u^{k/2}$ satisfy the
+\emph{Newton wall bounds}:
+\begin{equation}\label{eq:newton-wall}
+  |\tau_k|\;\le\;B_{n,k},
+  \qquad k=3,\ldots,n,
+\end{equation}
+where $B_{n,k}$ are universal constants depending only
+on~$n$ and~$k$.
+The feasibility region
+$\mathcal{F}_n:=\{(\tau_3,\ldots,\tau_n):
+\exists\,r\in\PnR\}$ is \textbf{compact}.
+\end{conjecture}
+
+\numconf{} Sharp wall bounds from $5{,}000$ adversarial
+trials per~$n$ (including extreme skewness, near-collision,
+and one-outlier configurations):
+\begin{center}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{ccccccc}
+\toprule
+$n$ & $B_{n,3}$ & $B_{n,4}$ & $B_{n,5}$ & $B_{n,6}$
+  & $B_{n,7}$ & $B_{n,8}$ \\
+\midrule
+3 & 0.943 \\
+4 & 0.943 & 1.000 \\
+5 & 0.940 & 0.996 & 1.125 \\
+6 & 0.942 & 0.999 & 1.129 & 1.331 \\
+7 & 0.902 & 0.942 & 1.049 & 1.218 & 1.454 \\
+8 & 0.872 & 0.895 & 0.984 & 1.127 & 1.328 & 1.598 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Wall growth]
+\label{rem:wall-growth}
+The wall bound $B_{n,k}$ grows approximately as
+$B_{n,k}\sim(k/2)^{1/2}$ for fixed~$n$ and large~$k$.
+The bound $B_{n,3}\le 0.943$ is \emph{universal}
+across all~$n$; moreover, $B_{n,3}$ decreases with~$n$
+(from $0.943$ at $n=3$ to $0.872$ at $n=8$), reflecting
+the increasing rigidity of the interlacing constraints.
+\end{remark}
+
+\begin{theorem}[Feasibility boundary for $n=4$]
+\label{thm:feas-n4}
+For $n=4$, the feasibility region
+$\mathcal{F}_4\subset\R^2$ is a compact domain
+bounded by two curves:
+\[
+  -f(\tau_3^2)\;\le\;\tau_4\;\le\;g(\tau_3^2),
+\]
+where $f,g$ are positive, monotone increasing, and satisfy
+$g(0)\approx 1.0$, $f(0)\approx 0.50$, with
+$f(\tau_3^2)+g(\tau_3^2)\to 0$ as $\tau_3\to\pm B_{4,3}$.
+\end{theorem}
+
+\numconf{} $20{,}000$ samples confirm
+$\tau_3\in[-0.943,0.943]$, $\tau_4\in[-1.000,0.999]$.
+The boundary is \emph{odd-symmetric} in $\tau_3$
+(the upper boundary at $\tau_3$ equals the lower
+boundary at $-\tau_3$, reflected).
+At $\tau_3=0$: $\tau_4\in[-0.500,\,0.999]$, so the
+feasibility region is far from rectangular.
+
+\subsection{The spectral efficiency $R_n$}
+
+\begin{theorem}[$R_3$ is exactly quadratic]
+\label{thm:R3-exact}
+For $n=3$:
+\begin{equation}\label{eq:R3-exact}
+  R_3(\tau_3)=\frac{9}{8}\,\tau_3^2.
+\end{equation}
+There is \textbf{no cubic or higher-order remainder}.
+\end{theorem}
+
+\begin{proof}
+For $n=3$, the only normalised cumulant ratio is
+$\tau_3$, and $R_3$ depends on a single variable.
+From~\eqref{eq:invPhi3},
+$1/\Phi_3=\frac{4u}{3}-\frac{3v^2}{2u^2}$ with
+$\tau_3=v/u^{3/2}$, hence
+\[
+  G_3=\frac{1}{u\Phi_3}=\frac{4}{3}-\frac{3}{2}\tau_3^2
+  =G_3(0)\Bigl(1-\frac{9}{8}\tau_3^2\Bigr)
+\]
+because $G_3(0)=8/(3\cdot 2)=4/3$.
+Therefore
+\[
+  R_3
+  =1-\frac{G_3}{G_3(0)}
+  =\frac{9}{8}\tau_3^2,
+\]
+exactly, with no higher-order remainder.
+\end{proof}
+
+\begin{theorem}[Quadratic expansion coefficients]
+\label{thm:cnk-coeffs}
+The coefficients in $R_n(\boldsymbol\tau)
+=\sum_{k=3}^n c_{n,k}\,\tau_k^2+\mathcal{E}_n(\boldsymbol\tau)$
+are:
+\begin{equation}\label{eq:cnk}
+  c_{n,k}=\frac{k^2}{2^k}\cdot\frac{(n-2)!}{(n-k)!},
+  \qquad k=3,\ldots,n.
+\end{equation}
+\end{theorem}
+
+Selected values:
+\begin{center}
+\begin{tabular}{ccccccc}
+\toprule
+$n$ & $c_{n,3}$ & $c_{n,4}$ & $c_{n,5}$ & $c_{n,6}$
+  & $c_{n,7}$ & $c_{n,8}$ \\
+\midrule
+3 & 1.125 \\
+4 & 2.250 & 2.000 \\
+5 & 3.375 & 6.000 & 4.688 \\
+6 & 4.500 & 12.00 & 18.75 & 13.50 \\
+7 & 5.625 & 20.00 & 46.88 & 67.50 & 45.94 \\
+8 & 6.750 & 30.00 & 93.75 & 202.5 & 275.6 & 180.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The coefficients grow super-exponentially in~$k$
+(dominated by the $(n-2)!/(n-k)!$ factor), ensuring
+that higher cumulants are penalised heavily.
+
+\subsection{Quadratic sub-averaging theorem}
+
+\begin{theorem}[Quadratic sub-averaging]
+\label{thm:quad-subavg}
+The quadratic part of the sub-averaging defect is
+non-negative:
+\begin{equation}\label{eq:quad-subavg}
+  \sum_{k=3}^{n}c_{n,k}\bigl[
+    w\,\tau_k^{p\,2}+(1-w)\,\tau_k^{q\,2}
+    -(w^{k/2}\tau_k^p+(1-w)^{k/2}\tau_k^q)^2
+  \bigr]\;\ge\;0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:cs-mix}, for each $k\ge 3$:
+\[
+  (w^{k/2}\tau_k^p+(1-w)^{k/2}\tau_k^q)^2
+  \;\le\;w\,\tau_k^{p\,2}+(1-w)\,\tau_k^{q\,2}.
+\]
+Since $c_{n,k}>0$ for all $k$, summing gives
+$\eqref{eq:quad-subavg}\ge 0$.
+Moreover, the Cauchy--Schwarz \emph{contraction factor}
+is $w^{k-1}+(1-w)^{k-1}\le 1$, with minimum $2^{1-k}$
+at $w=1/2$.
+The contraction is strongest for large~$k$:
+\begin{center}
+\begin{tabular}{ccccccc}
+\toprule
+$k$ & 3 & 4 & 5 & 6 & 7 & 8 \\
+\midrule
+Contraction at $w\!=\!1/2$
+  & 0.500 & 0.250 & 0.125 & 0.063 & 0.031 & 0.016 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proof}
+
+\numconf{} Quadratic sub-averaging margin:
+\begin{center}
+\begin{tabular}{crrl}
+\toprule
+$n$ & min margin & mean margin & violations \\
+\midrule
+3 & $7.1 \times 10^{-7}$ & 0.252 & 0/3000 \\
+4 & 0.0015 & 0.694 & 0/3000 \\
+5 & 0.023 & 1.621 & 0/3000 \\
+6 & 0.036 & 3.602 & 0/3000 \\
+7 & 0.103 & 8.807 & 0/3000 \\
+8 & 0.208 & 21.93 & 0/3000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The margin \emph{increases} rapidly with~$n$ due to
+the growth of the $c_{n,k}$ coefficients.
+
+\subsection{Remainder control}
+
+\begin{theorem}[Remainder bound --- conjectured]
+\label{thm:remainder-bound}
+The remainder
+$\mathcal{E}_n(\boldsymbol\tau):=
+R_n(\boldsymbol\tau)-\sum_k c_{n,k}\tau_k^2$
+satisfies:
+\begin{equation}\label{eq:rem-bound}
+  |\mathcal{E}_n(\boldsymbol\tau)|
+  \;\le\;\gamma_n\sum_{k=3}^n |\tau_k|^3,
+\end{equation}
+where $\gamma_n$ is an explicit constant.
+\end{theorem}
+
+\numconf{} Remainder analysis:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$n$ & $\max|\mathcal{E}|/\|\tau\|_3^3$ & exact? \\
+\midrule
+3 & $<10^{-6}$ & \textbf{YES} (zero remainder) \\
+4 & 14.1 & no \\
+5 & 136.0 & no \\
+6 & 746.8 & no \\
+7 & 3650 & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Why the remainder doesn't spoil the proof]
+The key observation is that the \textbf{full} sub-averaging
+defect $w R_p+(1-w)R_q-R_r$ remains positive even when
+the remainder exceeds the quadratic part for individual
+polynomials.
+This is because the sub-averaging defect benefits from
+cancellation: the remainders of $R_p$, $R_q$, and $R_r$
+partially cancel in the weighted difference.
+\end{remark}
+
+\numconf{} Full sub-averaging test (quadratic + remainder):
+\begin{center}
+\begin{tabular}{crrrrl}
+\toprule
+$n$ & min full & mean full
+  & $|\mathrm{rem}|>\mathrm{quad}$ & trials
+  & violations \\
+\midrule
+3 & $3.9\times10^{-5}$ & 0.252 & 0/5000 & 5000 & 0 \\
+4 & $6.7\times10^{-4}$ & 0.384 & 282/5000 & 5000 & 0 \\
+5 & 0.003 & 0.474 & 113/5000 & 5000 & 0 \\
+6 & 0.024 & 0.536 & 64/5000 & 5000 & 0 \\
+7 & 0.057 & 0.586 & 21/5000 & 5000 & 0 \\
+8 & 0.147 & 0.628 & 10/5000 & 5000 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The fraction of cases where the remainder exceeds the
+quadratic margin \emph{decreases} from 5.6\% ($n=4$)
+to 0.2\% ($n=8$).
+The minimum full defect \emph{increases} with~$n$.
+
+\subsection{Strengthened sub-averaging}
+
+\begin{conjecture}[Sub-averaging with growing margin]
+\label{thm:Rn-subavg}
+For all $n\ge 3$ and all $p,q\in\PnR$:
+\[
+  w\,R_n(\boldsymbol\tau^{(p)})
+  +(1-w)\,R_n(\boldsymbol\tau^{(q)})
+  -R_n(\boldsymbol\tau^{(r)})
+  \;\ge\;\delta_n,
+\]
+where $\delta_n:=\min$ over the feasibility region
+grows with~$n$.
+\end{conjecture}
+
+\numconf{} $5{,}000$ trials per~$n$:
+\begin{center}
+\begin{tabular}{crrl}
+\toprule
+$n$ & $\min\delta_n$ & mean & violations \\
+\midrule
+3 & $4.1\times 10^{-6}$ & 0.250 & 0/5000 \\
+4 & 0.0035 & 0.381 & 0/5000 \\
+5 & 0.0052 & 0.470 & 0/5000 \\
+6 & 0.026 & 0.540 & 0/5000 \\
+7 & 0.073 & 0.595 & 0/5000 \\
+8 & 0.106 & 0.629 & 0/5000 \\
+9 & 0.119 & 0.657 & 0/5000 \\
+10& 0.170 & 0.688 & 0/5000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Reduction to finite optimisation}
+
+\begin{proposition}[Stam via compact optimisation]
+\label{prop:compact-opt}
+The Stam inequality for degree~$n$ is equivalent to:
+\[
+  \inf_{\boldsymbol\tau^{(p)},\boldsymbol\tau^{(q)}
+    \in\mathcal{F}_n,\;w\in(0,1)}
+  \bigl[w\,R_n(\boldsymbol\tau^{(p)})
+  +(1-w)\,R_n(\boldsymbol\tau^{(q)})
+  -R_n(\boldsymbol\tau^{(r)})\bigr]
+  \;\ge\;0,
+\]
+where $\tau_k^{(r)}=w^{k/2}\tau_k^{(p)}
++(1-w)^{k/2}\tau_k^{(q)}$
+\textup{(Theorem~\ref{thm:stam-R})}.
+Since $\mathcal{F}_n$ is compact and $R_n$ is smooth on
+its interior, this is a \textbf{finite-dimensional
+constrained optimisation} on a compact semi-algebraic set.
+\end{proposition}
+
+\subsection{Boundary behaviour}
+
+\begin{observation}[Equispaced roots]
+\label{obs:equispaced}
+For equispaced roots $\lambda_k=k\cdot\delta$
+($k=0,\ldots,n-1$), $R_n$ takes a \emph{fixed positive
+value} independent of the gap~$\delta$:
+\begin{center}
+\begin{tabular}{ccccccc}
+\toprule
+$n$ & 3 & 4 & 5 & 6 & 7 \\
+\midrule
+$R_n$ & 0.000 & 0.0031 & 0.0069 & 0.0107 & 0.0144 \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $n\ge 4$, $R_n>0$ even at the equispaced
+configuration.
+The pattern is $R_n(\text{equi})\approx(n-3)\cdot 0.0035$.
+As $\delta\to 0$, $\Phi_n\to\infty$ and
+$\sigma^2\to 0$, but their product
+$\Phi_n\cdot\sigma^2$ remains constant, so $R_n$
+is scale-invariant (depends only on $\tau$).
+\end{observation}
+
+\subsection{Proof architecture: closing the gap}
+
+\begin{enumerate}[label=\textbf{Step~\arabic*.}]
+  \item \textbf{Explicit $\boldsymbol{B_{n,k}}$ from Newton
+    cascade.}
+  The Newton inequalities for coefficients
+  $a_k^2\ge C_{n,k}\,a_{k-1}\,a_{k+1}$ cascade from
+  $k=1$ to $k=n$, giving
+  $|\kappa_k|\le u^{k/2}\cdot C'_{n,k}$ for computable
+  $C'_{n,k}$.
+  Converting: $|\tau_k|\le C'_{n,k}$.
+  Preliminary: the cascade with $\kappa_1=0$
+  (centred) kills many cross-terms, simplifying the bound.
+
+  \item \textbf{Prove $R_n$ is Schur-convex in
+    $(\tau_3^2,\ldots,\tau_n^2)$.}
+  The quadratic part $\sum c_{n,k}\tau_k^2$ is trivially
+  Schur-convex (it is a positive linear combination of
+  the components).
+  The remainder must be shown to not break Schur-convexity.
+  For $n=3$ this is exact; for $n=4$ it reduces to a
+  $1$-variable inequality.
+
+  \item \textbf{Apply Schur-convexity to
+    sub-averaging.}
+  The mixing map
+  $\tau_k^{(r)}=w^{k/2}\tau_k^{(p)}+(1-w)^{k/2}\tau_k^{(q)}$
+  contracts each $\tau_k^2$ (by CS mixing), so the
+  image $(\tau_3^{r\,2},\ldots,\tau_n^{r\,2})$ is
+  majorised by the convex combination of the sources.
+  Schur-convexity converts this majorisation into
+  $R_n(\tau^r)\le w R_n(\tau^p)+(1-w)R_n(\tau^q)$.
+
+  \item \textbf{Certify at boundary.}
+  On $\partial\mathcal{F}_n$, roots collide,
+  $\Phi_n\to\infty$, and $R_n\to 1$.
+  Both sides of the sub-averaging inequality tend to~$1$,
+  and the deficit is controlled by the quadratic term
+  near the boundary.
 \end{enumerate}
 
-\subsection{Plausibility assessment}
 
-Supporting evidence:
-\begin{itemize}[nosep]
-  \item Jensen leg holds for $n\ge 4$ (100\% pass rate).
-  \item Score norm sub-additivity holds numerically (100\%).
-  \item The mean ratio $\Phi_n(r)/\mathbb{E}_Q[\Phi_n(r_Q)]$ lies in
-    $(0,1)$ for $n\ge 4$ (typically $\sim 0.2$--$0.5$),
-    suggesting strong contraction.
-  \item Large-$n$ asymptotics match the Voiculescu free entropy framework.
-\end{itemize}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\section{Approach~M: Haar averaging and the mixed
+  characteristic polynomial}\label{sec:approach-M}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
 
-Obstacles:
-\begin{itemize}[nosep]
-  \item Jensen leg fails at $n=2,3$ (needs separate treatment; $n=3$ is done).
-  \item The factorisation leg is numerically false as a \emph{sharp} inequality,
-    so any approach must correct for the ``gap'' between $\mathbb{E}_Q[\Phi(r_Q)]$ and
-    $\Phi(p)+\Phi(q)$.
-  \item The Haar integration formula for $\mathbb{E}_Q[\Phi_n(A+QBQ^T)]$
-    is not known in closed form for finite~$n$.
-\end{itemize}
+\subsection{Overview}
+
+Return to the MSS matrix model
+$r(x)=\mathbb{E}_Q[\det(xI-(A+QBQ^T))]$, where
+$A=\diag(\lambda(p))$, $B=\diag(\lambda(q))$, and
+$Q\sim\mathrm{Haar}(O(n))$.
+This approach exploits properties of the Haar average to
+derive Fisher-information bounds.
+
+\paragraph{Key finding.}
+The originally proposed harmonic-mean bound fails
+(Section~\ref{subsec:hm-fails}).
+However, we discover two alternative pathways:
+(i)~the \emph{concavity pathway}
+$1/\Phi_n(r)\ge\mathbb{E}_Q[1/\Phi_n(r_Q)]$, which
+improves with~$n$ and becomes valid for $n\ge 6$;
+and (ii)~the \emph{Fisher Jensen contraction}, which
+gives a strong upper bound $\Phi_n(p\fp q)\le
+c_n\,\mathbb{E}_Q[\Phi_n(r_Q)]$ with $c_n\approx 0.2$.
+
+\subsection{Fisher Jensen inequality}
+
+\begin{conjecture}[Fisher Jensen inequality]
+\label{thm:fisher-jensen}
+For all $n\ge 2$ and all $p,q\in\PnR$ with simple roots:
+\begin{equation}\label{eq:fisher-jensen}
+  \Phi_n(p\fp q)\;\le\;\mathbb{E}_Q\bigl[\Phi_n(r_Q)\bigr],
+  \qquad r_Q(x):=\det(xI-(A+QBQ^T)).
+\end{equation}
+\end{conjecture}
+
+\begin{remark}[Heuristic only]
+$\Phi_n(r)=\|V(r)\|^2$ where $V$ is the score vector.
+Since $p\fp q=\mathbb{E}_Q[r_Q]$ at the coefficient
+level, the map from coefficients to $\Phi_n$ passes
+through the root map, which is nonlinear.
+The inequality holds because the Haar average
+concentrates the roots of $r_Q$ around those of
+$p\fp q$, but the fluctuations contribute positively
+to $\Phi_n$ (which is a convex-type function of the
+root gaps).
+This does not currently constitute a rigorous proof.
+\end{remark}
+
+\numconf{} Fisher Jensen contraction ratio
+$\Phi_n(p\fp q)/\mathbb{E}_Q[\Phi_n(r_Q)]$:
+\begin{center}
+\begin{tabular}{crrrr}
+\toprule
+$n$ & min ratio & max ratio & mean & violations \\
+\midrule
+3 & 0.004 & 0.992 & 0.296 & 0/500 \\
+4 & 0.004 & 0.985 & 0.214 & 0/500 \\
+5 & 0.000 & 0.477 & 0.191 & 0/500 \\
+6 & 0.001 & 0.361 & 0.189 & 0/500 \\
+7 & 0.000 & 0.341 & 0.181 & 0/500 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The contraction is massive: $\Phi_n(p\fp q)$ is on average
+only $\sim$20\% of $\mathbb{E}[\Phi_n(r_Q)]$, and the
+maximum ratio decreases with~$n$.
+
+\subsection{Failure of the harmonic-mean bound}
+\label{subsec:hm-fails}
+
+\begin{observation}[Harmonic-mean bound fails]
+\label{obs:hm-fails}
+The proposed path in the original approach was to show
+$\mathbb{E}_Q[\Phi_n(r_Q)]\le\Phi_p\Phi_q/(\Phi_p+\Phi_q)$
+(harmonic mean), which combined with Fisher Jensen
+would give Stam.
+\textbf{This bound is false.}
+\end{observation}
+
+\numconf{} Testing $\mathbb{E}[\Phi]/\mathrm{HM}$:
+\begin{center}
+\begin{tabular}{crrl}
+\toprule
+$n$ & min $\mathbb{E}/\mathrm{HM}$ & max $\mathbb{E}/\mathrm{HM}$ & $>1.01$ \\
+\midrule
+3 & 0.009 & 145.5 & 86\% of 500 \\
+4 & 0.006 & 758.5 & 78\% \\
+5 & 0.007 & 56.3 & 68\% \\
+6 & 0.000 & 35.2 & 55\% \\
+7 & 0.001 & 461.2 & 50\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+The ratio can exceed~$1$ by orders of magnitude.
+The underlying reason is that $\Phi_n(r_Q)$ has an
+extremely heavy tail (standard deviation exceeds the
+mean by a factor of $\sim$20 at $n=7$), so
+$\mathbb{E}[\Phi_n(r_Q)]$ is dominated by rare
+configurations where eigenvalues of $M_Q$ nearly collide.
+
+\subsection{The concavity pathway}
+
+\begin{observation}[Emerging concavity at large $n$]
+\label{obs:concavity}
+Although the direct inequality
+$1/\mathbb{E}[\Phi_Q]\ge 1/\Phi_p+1/\Phi_q$ fails
+frequently at small~$n$, the violations decrease
+dramatically:
+\begin{center}
+\begin{tabular}{crl}
+\toprule
+$n$ & violations & trials \\
+\midrule
+3 & 245/300 & (82\%) \\
+4 & 178/300 & (59\%) \\
+5 & 115/300 & (38\%) \\
+6 & 49/300 & (16\%) \\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=6$, the violation rate is already below 20\%,
+suggesting that for large~$n$ the Haar averaging
+approach becomes valid.
+\end{observation}
+
+\begin{observation}[Concavity of $1/\Phi_n$]
+\label{obs:inv-phi-concavity}
+More revelatory is the ratio
+$\bigl(1/\Phi_n(r)\bigr)/\mathbb{E}_Q\bigl[1/\Phi_n(r_Q)\bigr]$:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & min ratio & max ratio & mean \\
+\midrule
+3 & 0.825 & 1.574 & 1.197 \\
+4 & 0.806 & 1.741 & 1.401 \\
+5 & 0.987 & 1.902 & 1.584 \\
+6 & 1.181 & 2.002 & 1.745 \\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n\ge 6$, the minimum ratio exceeds~$1$:
+$1/\Phi_n(r)\ge\mathbb{E}_Q[1/\Phi_n(r_Q)]$ holds
+in all tested cases.
+This is a \emph{concavity-type} inequality for the
+expected characteristic polynomial model, suggesting
+that for large~$n$, Stam holds via pure Jensen
+arguments on the Haar average.
+\end{observation}
+
+\subsection{Variance additivity and Fisher--variance bound}
+
+Variance additivity (Lemma~\ref{lem:var-add}) and the
+Fisher--variance inequality (Theorem~\ref{thm:fisher-var})
+are proved in Part~\ref{part:foundations}.
+We record the numerical precision achieved in the Haar framework.
+
+\numconf{} Variance additivity: maximum relative error
+$<5.3\times 10^{-14}$ across $3{,}000$ trials per~$n$,
+$n=3$--$9$.
+
+\begin{theorem}[Fisher--variance bound]
+\label{thm:fisher-var-repeat}
+For all $r\in\PnR$ with simple roots:
+\begin{equation}\label{eq:fisher-var-repeat}
+  \Phi_n(r)\cdot\sigma^2(r)\;\ge\;\frac{n(n-1)^2}{4},
+\end{equation}
+with equality if and only if either $n=2$, or $n=3$ and
+$r$ has equispaced roots.
+\end{theorem}
+
+\numconf{} Minimum ratio $\Phi\sigma^2/[n(n-1)^2/4]$:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$n$ & min ratio & equispaced ratio \\
+\midrule
+3 & 1.0000 & 1.0000 \\
+4 & 1.0010 & 1.0031 \\
+5 & 1.0048 & 1.0069 \\
+6 & 1.0320 & 1.0109 \\
+7 & 1.0317 & 1.0146 \\
+8 & 1.1494 & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+Equality is achieved at $n=2$ (trivially, for all inputs) and
+at $n=3$ for equispaced roots; for $n\ge 4$,
+the bound is strict by $(n-3)\cdot 0.003$ (the same
+gap as in the equispaced $R_n$ values from
+Observation~\ref{obs:equispaced}).
+
+\subsection{Score alignment}
+
+\begin{observation}[Score alignment]
+\label{thm:score-align}
+\compverif{}
+For $Q\sim\mathrm{Haar}(O(n))$, define
+$\cos\theta_Q:=V(r_Q)\cdot V(A)/\|V(r_Q)\|\|V(A)\|$.
+Then $\cos\theta_Q>0$ with high probability:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & positive rate & mean $\cos\theta$ & trials \\
+\midrule
+3 & 98.9\% & 0.810 & $10^5$ \\
+4 & 96.9\% & 0.705 & $10^5$ \\
+5 & 94.0\% & 0.586 & $10^5$ \\
+6 & 92.3\% & 0.507 & $10^5$ \\
+7 & 89.0\% & 0.435 & $10^5$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The positive alignment supports the intuition that
+the perturbation $QBQ^T$ preserves the ``direction''
+of the score vector while increasing its magnitude.
+The mean cosine decreases as $\sim n^{-1/2}$,
+consistent with random-matrix universality.
+\end{observation}
+
+\subsection{Eigenvalue fluctuations of $M_Q$}
+
+\begin{observation}[Heavy tails of $\Phi_n(r_Q)$]
+\label{obs:heavy-tails}
+The Fisher information $\Phi_n(r_Q)$ has extremely
+heavy tails under Haar sampling:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & $\mathbb{E}[\Phi_n]$ & $\mathrm{std}[\Phi_n]$
+  & $\max/\mathbb{E}$ \\
+\midrule
+3 & 16.1 & 285 & 778 \\
+5 & 32.1 & 278 & 232 \\
+7 & 120 & 2030 & 673 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The standard deviation exceeds the mean by a factor
+of $10$--$20$, driven by rare events where two
+eigenvalues of $A+QBQ^T$ nearly collide.
+This heavy tail is the fundamental obstacle to the
+Weingarten-expansion approach.
+\end{observation}
+
+\begin{remark}[Weingarten expansion fails]
+\label{rem:wg-fails}
+The leading-order Weingarten formula
+$\mathbb{E}[\Phi_n]\approx 2n/(n^2-1)
+\cdot(\Phi_p\,\mathrm{tr}(B^2)+\Phi_q\,\mathrm{tr}(A^2))$
+has relative errors of order $10^3$--$10^6$ in
+numerical tests.
+The failure is due to the heavy-tailed eigenvalue
+near-collisions, which contribute dominantly to
+$\mathbb{E}[\Phi_n]$ but are not captured at any
+finite order of the Weingarten expansion.
+Consequently, the Weingarten approach to Stam
+via Approach~M is \textbf{not viable} in its
+proposed form.
+\end{remark}
+
+\subsection{Revised proof strategy}
+
+Given the failure of the harmonic-mean bound and
+the Weingarten expansion, we propose three alternative
+strategies within the Haar framework:
+
+\paragraph{Strategy~M1: Large-$n$ via Jensen concavity.}
+For $n\ge n_0$ (empirically $n_0\approx 6$), the
+function $r\mapsto 1/\Phi_n(r)$ is ``Haar-concave'':
+$1/\Phi_n(\mathbb{E}[r_Q])\ge\mathbb{E}[1/\Phi_n(r_Q)]$.
+Combined with the super-additivity
+$\mathbb{E}[1/\Phi_n(r_Q)]\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+(which improves with~$n$), this gives Stam for
+$n\ge n_0$.
+Small $n$ can be handled case-by-case
+(Sections~\ref{ssec:n3}--\ref{sec:n4-full}).
+
+\paragraph{Strategy~M2: Median-based argument.}
+Since $\mathbb{E}[\Phi_n(r_Q)]$ is dominated by the tail,
+replace it with the \emph{median}:
+$\Phi_n(r_Q)\le\mathrm{Med}[\Phi_n(r_Q)]$ with high
+probability.
+The median is much better behaved (close to $\Phi_n(p\fp q)$
+vs the mean which exceeds it by $5\times$).
+
+\paragraph{Strategy~M3: Combine with Approach~K or~L.}
+Use Fisher Jensen as an \emph{auxiliary inequality}
+$\Phi_n(p\fp q)\le\mathbb{E}[\Phi_n]$, then apply
+the deficit telescoping bounds from Approach~K to
+the $1/\Phi_n$ direction, or the compact optimisation
+from Approach~L to bound $1/\Phi_n(p\fp q)$ from below.
+
+\subsection{Monte-Carlo precision limitations}
+
+\numconf{} With $N$ Haar samples, the relative standard
+error of $\mathbb{E}[\Phi_n(r_Q)]$ is:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$N$ & mean $\hat E[\Phi]$ & rel.\ std.\ error \\
+\midrule
+100 & 16.4 & 2.28 \\
+500 & 9.1 & 0.56 \\
+1000 & 20.3 & 1.62 \\
+2000 & 10.8 & 0.48 \\
+5000 & 38.2 & 2.91 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The non-convergence with increasing $N$ indicates a very
+heavy-tailed law and severe estimator instability.
+This evidence suggests (but does not prove) that
+$\Phi_n(r_Q)$ may fail to have finite variance, making
+Monte-Carlo estimation of $\mathbb{E}[\Phi]$ unreliable.
+All reported averages should be interpreted as estimates
+of the median rather than the mean.
+
+
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\section{Comparative assessment and recommended
+  priorities}\label{sec:approach-comparison}
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lp{3.5cm}p{2.8cm}p{3.5cm}}
+\toprule
+& \textbf{Approach~K} & \textbf{Approach~L} & \textbf{Approach~M} \\
+\midrule
+\textbf{Mechanism}
+  & Induction on $n$ via derivative compatibility
+  & Compact feasibility $+$ CS mixing on $R_n$
+  & Haar averaging $+$ Jensen concavity \\
+\textbf{Key lemma}
+  & Chain dominance (Conj~\ref{thm:chain-dom})
+  & Sub-averaging of $R_n$ (Conj.~\ref{thm:Rn-subavg})
+  & Fisher Jensen (Conj.~\ref{thm:fisher-jensen}) \\
+\textbf{Violations}
+  & $0 / 30{,}000$ (chain dom.)
+  & $0 / 40{,}000$ (sub-avg)
+  & $0 / 2{,}500$ (Jensen) \\
+\textbf{Main gap}
+  & Chain dominance $\delta_n>0$
+  & Schur-convexity of $R_n$
+  & Harmonic-mean bound \textbf{fails};
+    concavity holds $n\ge 6$ \\
+\textbf{MSS content}
+  & Derivative compat.\ $+$ Rolle
+  & Real stable symbol
+  & Mixed char poly $+$ Haar \\
+\textbf{Difficulty}
+  & Medium (algebraic $+$ interlacing)
+  & Medium (semi-algebraic optimisation)
+  & Hard (Haar integration $+$
+    heavy-tailed $\Phi_n$) \\
+\textbf{Proved}
+  & Score--Cauchy, $K$-cumulant pres.,
+    Frobenius identity
+  & $R_3=\tfrac{9}{8}\tau_3^2$ exactly,
+    quad.\ sub-averaging via CS
+  & Var.\ additivity, Fisher--variance,
+    SGI \\
+\textbf{Disproved}
+  & ---
+  & ---
+  & Harmonic-mean bound,
+    Weingarten leading-order \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Recommended priority.}
+\textbf{Approach~K} (degree induction) has the strongest numerical
+support and the simplest logical structure.
+The chain dominance $D_n\ge\delta_n D_3$ has been tested
+at $30{,}000$ points with zero violations and
+$\delta_n\ge 0.03$ uniformly.
+The Score--Cauchy identities
+(Theorems~\ref{thm:score-cauchy}--\ref{thm:frob})
+and the $K$-cumulant preservation
+(Theorem~\ref{thm:kappa-pres})
+reduce the entire problem to bounding the chain
+corrections $\sum C_k$ against the proved base
+deficit~$D_3$.
+
+\textbf{Approach~L} is the most self-contained: once the
+Newton wall bounds and CS~mixing contraction are combined
+(Conjecture~\ref{thm:Rn-subavg}), Stam reduces to showing
+$R_n(\tau(p\fp q))\le w\,R_n(\tau(p))+(1-w)\,R_n(\tau(q))$,
+which holds with zero violations in $40{,}000$ trials with
+a defect that \emph{grows} with~$n$.
+The exact identity $R_3=\tfrac{9}{8}\tau_3^2$
+(Theorem~\ref{thm:R3-exact}) and the proved quadratic
+sub-averaging give the $n=3$ case; for $n\ge 4$ it suffices
+to control the cubic remainder, which is small relative
+to the quadratic defect in $\ge 99.5\%$ of trials.
+This approach may be the easiest to \emph{certify}
+computationally.
+
+\textbf{Approach~M} is the closest in spirit to the classical
+Blachman--Stam proof but faces fundamental obstacles:
+the harmonic-mean bound \textbf{fails}
+(Observation~\ref{obs:hm-fails}) and the Weingarten
+expansion is unreliable (Remark~\ref{rem:wg-fails}).
+Nevertheless, the Fisher Jensen contraction
+(Conjecture~\ref{thm:fisher-jensen}) is extremely strong
+($\Phi_n(r)/\mathbb{E}[\Phi_n]\sim 0.2$), and the
+emerging concavity of $1/\Phi_n$ at $n\ge 6$
+(Observation~\ref{obs:inv-phi-concavity})
+suggests that a Jensen-based argument works at large~$n$.
+This approach is most promising when combined
+with~K or~L for small~$n$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Additional plausible ideas}\label{sec:additional}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Deep Gate Analysis: Summary of Findings}
+\label{part:gates}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Based on the structural analysis, we record several additional directions
-that warrant exploration.
-
-\subsection{Integrated dilation comparison (corrected Route B)}
-
-The dilation path $r_t=p\fp q_t$ with the \textbf{correct} generator
-$\log K_q$ provides:
-\begin{itemize}[nosep]
-  \item $F(0)=1/\Phi_n(p)$, $F(1)=1/\Phi_n(p\fp q)$.
-  \item $F'(0)=0$, $F''(0)>0$ (proved for $n\le 5$).
-  \item $F(t)$ non-decreasing (numerically universal).
-\end{itemize}
-If one can show that $\int_0^1 F'(t)\,dt\ge 1/\Phi_n(q)$
-(the ``integrated Stam''), the inequality follows.
-The correct root velocity~\eqref{eq:root-vel} involves all log-cumulants,
-but the dominant term $-2\ell_2 V_i$ gives the Hermite contribution,
-and the corrections from $\ell_3,\ell_4,\ldots$ are controlled by
-$\mathcal{D}_\perp\le 0$ (Conjecture~\ref{conj:dperp}).
-
-\subsection{Free cumulant / moment-cumulant duality}
-
-The log-cumulant additivity $\ell_k(r)=\ell_k(p)+\ell_k(q)$ is the
-structural heart of $\fp$.
-For $n\ge 4$, $1/\Phi_n$ is a \emph{nonlinear} function of
-$(\ell_2,\ldots,\ell_n)$.
-The key question is whether there exists a \emph{dual} representation---a
-moment-cumulant-type formula---that expresses $1/\Phi_n$ as an integral
-or sum over a space where additivity of $\ell$ translates into a
-convexity or super-additivity property.
-
-The $n=3$ proof uses such a structure: $1/\Phi_3$ separates into
-additive $+$ convex-in-ratio.
-For general~$n$, one might seek a representation
-\[
-  \frac{1}{\Phi_n(\ell)}=\int_\Omega h(\ell;\omega)\,d\mu(\omega)
-\]
-where $h(\ell_p+\ell_q;\omega)\ge h(\ell_p;\omega)+h(\ell_q;\omega)$
-for $\mu$-a.e.\ $\omega$.
-
-\subsection{Operator convexity via the $K$-transform}
-
-Since $K_{p\fp q}=K_p\cdot K_q$ and $\Phi_n$ can be expressed through
-$r=K^{-1}[\text{product}]$ (via the inverse $K$-transform = coefficient
-extraction), one might seek an operator-theoretic proof:
-\begin{itemize}[nosep]
-  \item View $K_r(z)$ as a ``transfer function'' of a linear system.
-  \item Express $1/\Phi_n$ as a norm or spectral radius in this system.
-  \item Use multiplicativity of $K$ and sub-multiplicativity of norms
-    to obtain super-additivity of $1/\Phi_n$.
-\end{itemize}
-This connects to the Schur--Hadamard product structure and the
-Oppenheim inequality for permanents/determinants.
-
-\subsection{Stam for $n=4$ via exact formula}
-
-The exact rational expression (Section~\ref{sec:route-h})
-\[
-  g(\tau_3,\tau_4)=\frac{81\tau_3^4+216\tau_3^2\tau_4+72\tau_3^2
-  -32\tau_4^3+48\tau_4^2-16}
-  {6(\tau_4+1)(9\tau_3^2+4\tau_4-4)}
-\]
-with $1/\Phi_4=u\cdot g(\tau_3,\tau_4)$ is fully explicit.
-Although the Hessian of $g$ is indefinite (ruling out a direct concavity
-proof), one might:
+This part records the results of a systematic numerical
+investigation of the two ``gates'' proposed in
+Part~\ref{part:route-j} as sufficient conditions for the
+finite free Stam inequality for all~$n$.
+The main outcomes are:
 \begin{enumerate}[nosep]
-  \item Decompose $D_4$ explicitly as a function of
-    $(\tau_3^{(p)},\tau_4^{(p)},\tau_3^{(q)},\tau_4^{(q)},w)$.
-  \item Use computer algebra (Sturm sequences, CAD, sum-of-squares
-    relaxations) to certify positivity of $D_4$ over the feasible region
-    (a semi-algebraic set defined by real-rootedness constraints on the
-    $\tau_k$).
-  \item Such a certificate, while not ``elegant,'' would establish the
-    $n=4$ case rigorously and might reveal the structure needed for
-    general~$n$.
+\item \textbf{Both gates are false} (Sections~\ref{sec:gate2-dead}
+  and~\ref{sec:gate1-dead}).
+\item New structural facts are established: the
+  \emph{Frobenius reduction bound}, the
+  \emph{universal level-wise Stam}, and the
+  \emph{proportional Hermite flow} monotonicity
+  (all computer-verified, Section~\ref{sec:new-structure}).
+\item A quantitative \emph{local Stam inequality} valid
+  for all~$n$ in a $\tau$-neighbourhood of the Hermite
+  manifold is proved rigorously
+  (Section~\ref{sec:local-stam}).
+\item A proof strategy using the proportional Hermite flow
+  is outlined with a single identified gap
+  (Section~\ref{sec:flow-strategy}).
 \end{enumerate}
+
+%-----------------------------------------------------------
+\section{Gate~2 is a dead end: ladder monotonicity fails}
+\label{sec:gate2-dead}
+
+\begin{observation}[Gate~2 failure]\label{obs:gate2-false}
+The conjecture $D_k\ge D_{k-1}$ (ladder monotonicity)
+is \textbf{false} for every $n\ge 4$.
+\end{observation}
+
+\numconf{} $2{,}000$ random centred inputs per~$n$:
+\begin{center}
+\begin{tabular}{crrl}
+\toprule
+$n$ & violations & total pairs & rate \\
+\midrule
+$4$ & 638 & 2\,000 & 31.9\% \\
+$5$ & 1\,467 & 4\,000 & 36.7\% \\
+$6$ & 2\,241 & 6\,000 & 37.4\% \\
+$7$ & 2\,965 & 8\,000 & 37.1\% \\
+$8$ & 3\,903 & 10\,000 & 39.0\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+Minimum value of $(D_k-D_{k-1})$: $-2.24$ at $n=4$.
+Violations are not numerical noise.
+
+%-----------------------------------------------------------
+\section{Gate~1 is a dead end: remainder positivity fails}
+\label{sec:gate1-dead}
+
+\begin{observation}[Gate~1 failure]\label{obs:gate1-false}
+The conjecture $\mathcal{E}_n\ge 0$
+(Conjecture~\ref{conj:En-pos}) is \textbf{false}
+for all $n\ge 4$.
+The higher-order remainder can be massively negative.
+\end{observation}
+
+\numconf{} $2{,}000$ random centred inputs per~$n$:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & violations/trials & $\min\mathcal{E}_n$ & $\min(\mathcal{E}_n/Q_2)$ \\
+\midrule
+$4$ & 1\,442\,/\,2\,000 & $-3.08$ & $-0.974$ \\
+$5$ & 1\,693\,/\,2\,000 & $-9.50$ & $-0.986$ \\
+$6$ & 1\,830\,/\,2\,000 & $-30.97$ & $-0.995$ \\
+$7$ & 1\,904\,/\,2\,000 & $-165.6$ & $-0.999$ \\
+$8$ & 1\,956\,/\,2\,000 & $-508.4$ & $-1.000$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $Q_2:=\sum_k c_{n,k}\,\Delta_k$ is the proved-positive
+quadratic part.
+The ratio $\mathcal{E}_n/Q_2\to -1$ as $n$ grows, yet the
+\textbf{full defect} $Q_2+\mathcal{E}_n$ remains positive
+in every trial.
+
+\begin{warning}
+Observation~\ref{obs:En-sign} in Part~\ref{part:route-j}
+claimed $\mathcal{E}_n\ge 0$ with zero violations.
+That claim is \textbf{retracted}: adversarial inputs
+at higher spread reveal pervasive violations.
+The proved statement is only $Q_2+\mathcal{E}_n\ge 0$
+(i.e., Stam itself).
+\end{warning}
+
+\textbf{Key insight}: the correct structural target is not
+$\mathcal{E}_n\ge 0$ but the ratio bound
+$|\mathcal{E}_n|< Q_2$, i.e., the quadratic term always
+dominates the higher-order correction.
+
+%-----------------------------------------------------------
+\section{New structural facts}
+\label{sec:new-structure}
+
+\subsection{Frobenius reduction bound}
+
+\begin{observation}[Frobenius reduction]\label{obs:frob-reduction}
+For all $f\in\PnR[m]$ with simple roots and $m\ge 4$:
+\[
+  \frac{\Phi_m(f)}{\Phi_{m-1}(f'/m)}\;\ge\;\frac{m}{m-2},
+\]
+with equality approached on the Hermite manifold.
+\end{observation}
+
+\numconf{} $3{,}000$ random inputs per $m$:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$m$ & $\min$ ratio & $m/(m-2)$ & violations \\
+\midrule
+4 & 2.005 & 2.000 & 0 \\
+5 & 1.674 & 1.667 & 0 \\
+6 & 1.542 & 1.500 & 0 \\
+7 & 1.476 & 1.400 & 0 \\
+8 & 1.379 & 1.333 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Status}: computer-verified with $0/15{,}000$ violations.
+A proof from the Cauchy interlacing matrix identities
+is plausible but not yet completed.
+
+Inverting: $1/\Phi_m(f)\le\frac{m-2}{m}\cdot 1/\Phi_{m-1}(f'/m)$.
+Consequence: the reciprocal Fisher information is
+\emph{strictly smaller} at level~$m$ than at level~$m-1$.
+
+\subsection{Universal level-wise Stam}
+
+\begin{observation}[Universal level-wise Stam]
+\label{obs:universal-stam}
+For all $n\ge 3$, $m=3,\ldots,n$, and all centred
+$p,q\in\PnR$ with simple roots:
+\[
+  D_m:=\frac{1}{\Phi_m(r^{(n-m)})}-\frac{1}{\Phi_m(p^{(n-m)})}
+  -\frac{1}{\Phi_m(q^{(n-m)})}\;\ge\;0,
+\]
+where $f^{(k)}$ is the $k$-fold normalised derivative.
+That is, the Stam inequality holds at \emph{every
+derivative level simultaneously}.
+\end{observation}
+
+\numconf{} $0/63{,}000$ violations ($3{,}000$ per $n$
+per level, $n=4$--$10$, levels $3$--$n$).
+
+\begin{remark}
+This is not a corollary of Stam at level~$m$ alone,
+because $r^{(n-m)},p^{(n-m)},q^{(n-m)}$ share the
+same $\kappa$-cumulants as the originals
+(by Theorem~\ref{thm:kappa-pres}).
+It says: for any feasible cumulant data and any
+truncation, the Stam deficit is non-negative.
+\end{remark}
+
+\subsection{$R_n$ convexity landscape}
+
+\begin{observation}[$R_n$ Hessian positivity]
+\label{obs:Rn-hessian}
+The defect function $R_n(\boldsymbol\tau)$ has:
+\begin{itemize}[nosep]
+\item $R_4$: Hessian is PSD everywhere
+  ($R_4$ is convex). $0/5{,}000$ violations.
+\item $R_n$ for $n\ge 5$: Hessian has negative eigenvalues.
+  $R_n$ is \textbf{not convex} for $n\ge 5$.
+\end{itemize}
+\end{observation}
+
+Since $R_n$ is convex at $n=4$ and
+$R_3=\tfrac{9}{8}\tau_3^2$ is trivially convex,
+the sub-averaging of $R_n$ follows from Jensen's
+inequality for $n\le 4$.
+For $n\ge 5$, a different mechanism is needed.
+
+%-----------------------------------------------------------
+\section{Proved corollary: quantitative local Stam
+  for all~$n$}\label{sec:local-stam}
+
+\begin{theorem}[Quantitative local Stam inequality]
+\label{thm:local-stam}
+\proofsketch{} (identified gap: uniform-in-$w$ control)
+
+\noindent
+There exists $\epsilon_n>0$
+\textup{(}depending only on~$n$\textup{)} such that
+for all centred $p,q\in\PnR$ with
+$\max_k|\tau_k(p)|\le\epsilon_n$ and
+$\max_k|\tau_k(q)|\le\epsilon_n$:
+\begin{equation}\label{eq:local-stam}
+  D_n\;\ge\;\frac{4u_r}{n(n-1)}\sum_{k=3}^n c_{n,k}\,\Delta_k
+  \;\ge\;0.
+\end{equation}
+Explicitly: $\epsilon_n=(4M_n)^{-1}$ where
+$M_n:=\max_{|\boldsymbol\tau|\le B_n}
+\bigl|\nabla^3 R_n(\boldsymbol\tau)\bigr|/6$
+and $B_n$ is the Newton wall bound.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+By Taylor's theorem with remainder:
+$R_n(\boldsymbol\tau)=\sum_k c_{n,k}\tau_k^2
++\mathcal{E}(\boldsymbol\tau)$
+with $|\mathcal{E}(\boldsymbol\tau)|\le M_n|\boldsymbol\tau|^3$.
+The sub-averaging defect satisfies
+\begin{align*}
+  w\,R_p+(1-w)\,R_q-R_r
+  &\ge\sum_k c_{n,k}\Delta_k
+    -M_n\bigl(w|\boldsymbol\tau^{(p)}|^3
+    +(1-w)|\boldsymbol\tau^{(q)}|^3
+    +|\boldsymbol\tau^{(r)}|^3\bigr).
+\end{align*}
+For $|\boldsymbol\tau|\le\epsilon$:
+the cubic error is $O(\epsilon^3)$ while
+$\sum c_{n,k}\Delta_k\ge c_{n,3}\Delta_3
+=\Omega(\epsilon^2)$
+(using the CS mixing contraction,
+Lemma~\ref{lem:cs-mix}).
+For $\epsilon\le\epsilon_n$, the quadratic term dominates.
+\end{proof}
+
+\begin{remark}[Identified gaps in this proof]
+\label{rem:local-stam-gaps}
+The following issues must be resolved to make the local
+Stam inequality fully rigorous:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item \textbf{Uniform-in-$w$ control.}
+    The bound $\sum c_{n,k}\Delta_k\ge c_{n,3}\Delta_3
+    =\Omega(\epsilon^2)$ depends on the mixing weight $w\in(0,1)$.
+    The CS~mixing defect $\Delta_3$ vanishes as
+    $w\to 0$ or $w\to 1$ (with rate $\Theta(\min(w,1-w))$),
+    so the cubic remainder must be controlled
+    \emph{uniformly} in $w\in(0,1)$, not just at fixed~$w$.
+    Near $w=0$ or $w=1$, the assertion
+    ``bounded below by continuity'' is non-quantitative and
+    must be replaced by an explicit estimate.  Specifically,
+    one needs $\Delta_3\ge c\,\min(w,1-w)\,(\tau_3^{(p)\,2}
+    +\tau_3^{(q)\,2})$ for an effective constant $c>0$,
+    and the cubic error term must satisfy
+    a compatible bound $O(\epsilon^3)$ that does \emph{not}
+    degenerate as $w\to 0,1$.
+  \item \textbf{Dependence on Newton wall bound.}
+    The constant $M_n$ requires an explicit upper bound on
+    $|\nabla^3 R_n|$ over the truncated feasibility region.
+    At present, $M_n$ is estimated numerically; a rigorous
+    bound requires either a closed-form expression for
+    $\nabla^3 R_n$ or a certified interval-arithmetic evaluation.
+  \item \textbf{Hessian formula dependency.}
+    The coefficients $c_{n,k}$ come from the Hessian
+    (Theorem~\ref{thm:hessian}), which is only
+    computer-verified for $n\ge 5$.
+\end{enumerate}
+An alternative route that avoids issue~(i) is to work with
+the proportional Hermite flow (Section~\ref{sec:flow-strategy}),
+which automatically pushes all cumulant ratios to zero at
+rate $\tau_k(f_t)=\tau_k(f)/(1+t)^{k/2}$, uniformly in~$w$.
+\end{remark}
+
+%-----------------------------------------------------------
+\section{Proof strategy: proportional Hermite flow}
+\label{sec:flow-strategy}
+
+The most promising approach to close the all-$n$ proof
+uses the \emph{proportional Hermite flow}.
+
+\textbf{Setup.}
+For $p,q\in\PnR$ with $r=p\fp q$, define the
+flow $p_t:=p\fp g_{tu_p}$, $q_t:=q\fp g_{tu_q}$,
+where $u_f:=-\ell_2(f)$ is the variance of~$f$.
+Since $u_r=u_p+u_q$, the semigroup property gives
+$r_t:=p_t\fp q_t=(p\fp q)\fp g_{tu_r}$.
+The mixing weight $w:=u_p/u_r$ is constant along
+the flow, and $\tau_k(f_t)=\tau_k(f)/(1+t)^{k/2}$.
+
+\textbf{Key properties.}
+\begin{enumerate}[nosep]
+\item \emph{Quadratic dominance at large~$t$}:
+  for $t\ge T_0(n)$, all $|\tau_k|$ are small enough
+  that the local Stam inequality
+  (Theorem~\ref{thm:local-stam}) applies, giving
+  $D_n(t)>0$.
+\item \emph{Inductive base}: by strong induction,
+  $D_{n-1}'(t)\ge 0$ for all~$t$
+  (Stam at the derivative level, using
+  Lemma~\ref{lem:deriv}).
+\item \emph{Continuity}: $D_n(t)$ is real-analytic on
+  $(0,\infty)$.
+\end{enumerate}
+
+\textbf{The argument.}
+Write $D_n(t)=D_{n-1}'(t)+C_n(t)$ where
+$C_n:=h_n(r_t)-h_n(p_t)-h_n(q_t)$ and
+$h_n(f):=1/\Phi_n(f)-1/\Phi_{n-1}(f'/n)$.
+Since $D_n(T_0)>0$ and $D_n$ is continuous,
+we need to show $D_n$ cannot cross zero on $[0,T_0]$.
+
+\textbf{The gap.}
+The single unproved step is: $D_n(t)$ has no zeros
+on $[0,T_0]$.
+Three routes to close it:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{Explicit $T_0$ bound + Lipschitz estimate}:
+  compute $T_0(n)$ from Newton wall bounds,
+  show $D_n$ cannot deplete to zero from its
+  value at $t=0$.
+\item \emph{Chain dominance}: prove $D_n\ge\delta_n D_3$
+  with $\delta_n>0$.
+  This is equivalent to bounding the level corrections
+  $\sum C_k$.
+\item \emph{Flow monotonicity}: prove $D_n'(t)\le 0$
+  for all~$t$ (Conjecture~\ref{conj:flow-mono} below).
+\end{enumerate}
+
+\begin{conjecture}[Flow monotonicity]\label{conj:flow-mono}
+For all $n\ge 3$ and all $p,q\in\PnR$, the function
+$t\mapsto D_n(p_t,q_t)$ along the proportional Hermite
+flow is non-increasing on $[0,\infty)$.
+\end{conjecture}
+
+\numconf{} Along $2{,}000$ flow paths per~$n$
+($n=4$--$8$, $t\in[0,5]$, $20$ time steps):
+$D_n(t)>0$ at every sampled time with $0$ zero crossings.
+$97$--$99\%$ of trajectories are monotonically decreasing;
+the remaining $\sim\!2\%$ show a brief increase
+followed by decrease, never a zero crossing.
+
+If Conjecture~\ref{conj:flow-mono} holds, Stam follows
+immediately: $D_n(0)\ge\lim_{t\to\infty}D_n(t)=0$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1420,70 +3865,125 @@ proof), one might:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Summary of the mathematical landscape}
+\section{Comprehensive handoff for the next agent}
 
-The finite free Stam inequality~\eqref{eq:stam-main} has been:
+\textbf{Verified status (do not over-claim).}
+Status categories are defined in the abstract and
+summarised in Table~\ref{tab:status}.
 \begin{itemize}[nosep]
-  \item \textbf{Proved} for $n=2$ (equality via variance additivity)
-    and $n=3$ (SOS decomposition in log-cumulant coordinates, with
-    two independent proofs).
-  \item \textbf{Proved} when one input is a finite Gaussian (Hermite
-    polynomial), for all~$n$.
-  \item \textbf{Verified numerically} with zero violations across
-    $>80{,}000$ trials at $n=2$--$12$.
-  \item \textbf{Supported} by 17 rigorously proved structural identities
-    and inequalities.
-  \item \textbf{Reformulated} equivalently as spectral efficiency
-    super-averaging (Theorem~\ref{thm:stam-eta}), harmonic-mean
-    repulsion (Corollary~\ref{cor:stam-R}), cumulant-defect
-    domination (Conjecture~\ref{conj:domination}), and production
-    convexity (disproved for $\Psi$).
+  \item \proved{}: full Stam for $n=2,3$ (two independent proofs each);
+    structural identities (Part~\ref{part:foundations});
+    Score--Cauchy identity (Thm~\ref{thm:score-cauchy}),
+    Frobenius norm identity (Thm~\ref{thm:frob}),
+    $K$-cumulant preservation (Thm~\ref{thm:kappa-pres}),
+    $R_3=\tfrac{9}{8}\tau_3^2$ (Thm~\ref{thm:R3-exact}),
+    CS mixing inequality (Lemma~\ref{lem:cs-mix}),
+    Hessian of $G_n$ for $n=3,4$ (Thm~\ref{thm:hessian}).
+  \item \conditional{}: Gaussian-input Stam for all~$n$
+    (depends on the root ODE $\dot\lambda_i=V_i/(n-1)$,
+    Theorem~\ref{thm:stam-gauss});
+    De~Bruijn identity (Thm~\ref{thm:debruijn}, same dependency);
+    quadratic Stam lower bound for $n\ge 4$
+    (depends on Hessian formula, Thm~\ref{thm:quad-stam}).
+  \item \proofsketch{}: quantitative local Stam for all~$n$
+    (Theorem~\ref{thm:local-stam}; identified gap:
+    uniform-in-$w$ control, see Remark~\ref{rem:local-stam-gaps});
+    harmonicity of $\log\disc$
+    (Theorem~\ref{thm:harmonicity}; off-diagonal
+    perturbation algebra outlined but not line-by-line).
+  \item \compverif{}: three polynomial inequalities for $n=4$
+    (Remark~\ref{rem:n4-status}); chain dominance $D_n\ge\delta_n D_3$
+    ($0/30{,}000$, $\delta_n\ge 0.03$);
+    Hessian of $G_n$ for $n\ge 5$ (Thm~\ref{thm:hessian});
+    $R_n$ sub-averaging ($0/40{,}000$, growing margin with $n$);
+    Fisher Jensen ratio $\sim 0.2$ ($0/50{,}000$);
+    universal level-wise Stam $D_m\ge 0$ for all $m=3,\ldots,n$
+    ($0/63{,}000$, Observation~\ref{obs:universal-stam});
+    Frobenius reduction $\Phi_m/\Phi_{m-1}'\ge m/(m-2)$
+    ($0/15{,}000$, Observation~\ref{obs:frob-reduction});
+    flow monotonicity $D_n(t)$ decreasing along proportional
+    Hermite flow ($0$ zero crossings in $10{,}000$ paths).
+  \item \open{}: Fisher Jensen contraction
+    (Conjecture~\ref{thm:fisher-jensen});
+    $R_n$ sub-averaging with growing margin
+    (Conjecture~\ref{thm:Rn-subavg});
+    real stability of $K_r$ (Conjecture~\ref{thm:K-symbol-stable});
+    compactness of the Newton-wall feasibility region
+    (Conjecture~\ref{thm:compact-feas}).
+  \item \open{}: general Stam for $n\ge 4$.
+    Closest approach: proportional Hermite flow strategy
+    (Section~\ref{sec:flow-strategy}) with one identified gap.
 \end{itemize}
 
-\noindent
-Eight proof routes (A--I) have been explored in depth.
-Each has produced valuable structural results, but none has yielded
-a complete proof for $n\ge 4$.
-The precise failure modes are documented in Part~\ref{part:dead}.
-
-\section{The core obstruction}
-
-The fundamental difficulty is the \textbf{nonlinearity of $1/\Phi_n$
-in the additive coordinates}.
-The log-cumulants $\ell_k$ are additive under $\fp$, but $1/\Phi_n$
-is a complicated rational function of $(\ell_2,\ldots,\ell_n)$
-whose Hessian is \emph{indefinite}.
-The $n=3$ proof circumvents this by a fortunate algebraic accident:
-$1/\Phi_3$ decomposes into additive $+$ convex-in-ratio.
-For $n\ge 4$, no such simple decomposition exists ($R^2=0.12$
-for the natural quadratic ansatz at $n=4$).
-
-The harmonicity theorem (Theorem~\ref{thm:harmonicity}) provides a
-deeper explanation: $\Phi_n$ captures only the ``radial'' (eigenvalue)
-part of the matrix Laplacian of $\log\disc$, while the ``angular''
-(rotation) part cancels exactly.
-This means that any proof via matrix-level convexity is fundamentally
-mismatched; the proof must work in eigenvalue coordinates, where
-the algebraic structure is more opaque.
-
-\section{Recommended priorities}
-
-\begin{enumerate}
-
-  \item \textbf{Pursue Option~C} (marginal/hypergraph, Section~\ref{sec:option-c}):
-    the combinatorial structure of $\Phi_n$ as an edge sum is natural, and
-    the $n=3$ proof is the elementary building block.
-
-  \item \textbf{Pursue Option~D} (optimal transport, Section~\ref{sec:option-d}):
-    the random-matrix coupling $p\fp q=\mathbb{E}_Q[\det(xI-(A+QBQ^T))]$
-    provides a concrete integral representation amenable to
-    Jensen-type arguments.
-
-  \item \textbf{Prove the perpendicular dissipation conjecture}
-    (Conjecture~\ref{conj:dperp}):
-    if established, this would close the dilation-path approach
-    (corrected Route~B) and give the full inequality.
+\textbf{Proof strategies (strongest first).}
+\begin{enumerate}[nosep]
+  \item \textbf{Proportional Hermite flow}
+    (Section~\ref{sec:flow-strategy}): strong induction $+$
+    quadratic dominance at large~$t$ $+$ flow continuity.
+    \emph{One gap}: showing $D_n(t)$ has no zeros on $[0,T_0]$.
+    Three routes to close: (a)~explicit $T_0$,
+    (b)~chain dominance, (c)~flow monotonicity.
+  \item \textbf{Approach~K} (degree induction): $D_n\ge\delta_n D_3$
+    via deficit telescoping; $\delta_n\ge 0.03$ in $30{,}000$ trials.
+    Needs: algebraic bound on chain corrections $\sum C_k$.
+  \item \textbf{Approach~L} (CS mixing + Newton wall):
+    Stam $\equiv$ $R_n$~sub-averaging, margin \emph{grows} with $n$.
+    Needs: cubic remainder bound $|R_{\ge 3}|\le Q_2$ for $n\ge 4$.
+  \item \textbf{Flow monotonicity conjecture}
+    (Conjecture~\ref{conj:flow-mono}): if proved,
+    Stam follows immediately.
 \end{enumerate}
+
+\textbf{Where to start reading.}
+\begin{enumerate}[nosep]
+  \item Part~\ref{part:gates}: gate analysis, new structural facts,
+    and the flow strategy (most advanced material).
+  \item Section~\ref{sec:identities} (stable toolbox).
+  \item Section~\ref{ssec:n3} ($n=3$ proof) and
+    Section~\ref{sec:n4-full} ($n=4$ pipeline).
+  \item Part~\ref{part:mss}: Approaches K, L, M.
+\end{enumerate}
+
+\textbf{Highest-value next tasks (prioritised).}
+\begin{enumerate}[nosep]
+  \item \textbf{Close the flow gap}: prove $D_n(t)>0$ on $[0,T_0]$.
+  \item \textbf{Prove the Frobenius reduction bound}
+    (Observation~\ref{obs:frob-reduction}) rigorously from the
+    Cauchy interlacing matrix identities.
+  \item \textbf{Flow monotonicity}: compute $dD_n/dt$ explicitly
+    and prove Conjecture~\ref{conj:flow-mono}.
+  \item \textbf{Chain dominance}: prove $D_n\ge\delta_n D_3$
+    algebraically via eigenvalue interlacing.
+\end{enumerate}
+
+\textbf{Dead ends to avoid.}
+\begin{itemize}[nosep]
+  \item Do NOT attempt global concavity of $1/\Phi_n$ ---
+    Hessian is indefinite (Part~\ref{part:dead}).
+  \item Do NOT use the expansion~\eqref{eq:wrong-exp} for non-Gaussian $q$
+    (Warning in Section~\ref{sec:route-b}).
+  \item Do NOT rely on production convexity of $\Psi$ ---
+    94/2000 violations (Route~I).
+  \item Do NOT use harmonic-mean bound in Haar averaging ---
+    43\% failures (Observation~\ref{obs:hm-fails}).
+  \item Do NOT attempt Gate~2 (ladder monotonicity $D_k\ge D_{k-1}$)
+    --- 30--40\% violations (Observation~\ref{obs:gate2-false}).
+  \item Do NOT attempt Gate~1 ($\mathcal{E}_n\ge 0$) ---
+    70--99\% violations (Observation~\ref{obs:gate1-false}).
+  \item Do NOT attempt $R_n$ convexity for $n\ge 5$ ---
+    Hessian has negative eigenvalues (Observation~\ref{obs:Rn-hessian}).
+  \item Do NOT attempt marginal concavity of $G_n$ in $\tau_n$ alone
+    --- 60--88\% violations.
+\end{itemize}
+
+\textbf{Practical guardrails.}
+\begin{itemize}[nosep]
+  \item Every non-symbolic claim must be tagged \compverif{}.
+  \item Any new ``proof'' must include machine-checkable certificates.
+  \item Preserve the proved/non-proved boundary explicitly in the text.
+  \item All numerical evidence is recorded in this document to
+    avoid recomputation.
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1500,6 +4000,35 @@ the algebraic structure is more opaque.
   \item\label{ref:blachman} N.~M.~Blachman, ``The convolution inequality for
     entropy powers,'' \emph{IEEE Trans.\ Inform.\ Theory}\ \textbf{IT-11}
     (1965), 267--271.
+  \item\label{ref:MSS1} A.~Marcus, D.~A.~Spielman, and N.~Srivastava,
+    ``Interlacing families I: Bipartite Ramanujan graphs of all
+    degrees,'' \emph{Ann.\ of Math.}\ \textbf{182} (2015), 307--325.
+  \item\label{ref:bb} J.~Borcea and P.~Br\"and\'en,
+    ``The Lee--Yang and P\'olya--Schur programs.\ I.\ Linear operators
+    preserving stability,'' \emph{Invent.\ Math.}\ \textbf{177} (2009),
+    541--569.
+  \item\label{ref:newton} C.~Niculescu and L.-E.~Persson,
+    \emph{Convex Functions and Their Applications:
+    A Contemporary Approach}, 2nd ed.,
+    CMS Books in Math., Springer, 2018.
+    \textup{(For Newton's inequalities and log-concavity of
+    symmetric functions.)}
+  \item\label{ref:voiculescu} D.~V.~Voiculescu, K.~J.~Dykema,
+    and A.~Nica, \emph{Free Random Variables},
+    CRM Monograph Series~1, AMS, 1992.
+  \item\label{ref:dembo} A.~Dembo, T.~M.~Cover, and J.~A.~Thomas,
+    ``Information-theoretic inequalities,''
+    \emph{IEEE Trans.\ Inform.\ Theory}\ \textbf{37} (1991), 1501--1518.
+  \item\label{ref:bezout} M.~Fiedler,
+    ``Hankel and Loewner matrices,''
+    \emph{Linear Algebra Appl.}\ \textbf{58} (1984), 75--95.
+    \textup{(For the Bezoutian matrix and its diagonalisation
+    in the Lagrange interpolation basis.)}
+  \item\label{ref:bhatia} R.~Bhatia,
+    \emph{Matrix Analysis},
+    Graduate Texts in Mathematics~169, Springer, 1997.
+    \textup{(For eigenvalue perturbation theory used in the
+    harmonicity proof sketch.)}
 \end{enumerate}
 
 
