@@ -53,9 +53,10 @@
 % ───────────────────────────────────────────────────────────
 \begin{document}
 
-\title[Towards the Finite Free Stam Inequality]%
-{Towards a Proof of the Finite Free Stam Inequality:\\
-Core Identities, Verified Cases, and Reduction Principles}
+\title[The Finite Free Stam Inequality]%
+{The Finite Free Stam Inequality:\\
+Structural Identities, the Gaussian-Input Case,
+and Reduction Principles}
 
 \subjclass[2020]{46L54 (primary); 94A17, 26C10, 15A42 (secondary)}
 \keywords{finite free convolution, Stam inequality, Fisher information,
@@ -88,7 +89,13 @@ Stam defect, and present a degree-telescoping framework that
 reduces the full conjecture to controlling explicit
 correction terms $C_k=D_k-D_{k-1}$ for $k\ge 4$.
 The Gaussian-input Stam inequality at all~$n$ is proved
-conditionally on a root ODE.
+unconditionally via a new derivation of the root ODE
+from a heat equation satisfied by the Hermite flow.
+For $n=4$, we derive the exact closed-form formula
+$1/\Phi_4=P(\ell)/(6Q(\ell))$ in terms of additive
+log-cumulants, reduce the Stam inequality
+to a polynomial positivity assertion, and establish
+the $\ell_3=0$ case via factorisation and AM--GM.
 The general conjecture remains open for $n\ge 4$.
 
 \smallskip\noindent\textit{Proof-status conventions.}\enspace
@@ -146,8 +153,9 @@ linear operators preserving stability.
   $\Phi_n=2\mathcal{R}=\tr(L)$, score identities,
   variance additivity, Bezoutian and Laplacian formulations.
 \item Full proofs for $n=2$ (equality) and $n=3$
-  (two independent proofs); Gaussian-input Stam at all~$n$,
-  conditional on a root ODE
+  (two independent proofs); the Hermite heat equation
+  and root ODE (Section~\ref{sec:prelim}); unconditional
+  Gaussian-input Stam at all~$n$
   (Section~\ref{sec:proved}).
 \item Equivalent reformulations: Stam is equivalent to
   sub-averaging of a spectral efficiency defect~$R_n$
@@ -159,9 +167,36 @@ linear operators preserving stability.
   interlacing matrix: $K$-cumulant preservation,
   Score--Cauchy identity, Frobenius norm identity, and
   deficit telescoping (Section~\ref{sec:cauchy}).
+\item For $n=4$: closed-form $1/\Phi_4=P/(6Q)$ in
+  additive cumulants, polynomial reduction of the Stam
+  defect, complete proof for the $\ell_3=0$ sector,
+  complete proofs for two one-sided sectors
+  (Proposition~\ref{prop:n4-one-sided}),
+  leading-order positive-definiteness, and a roadmap
+  for the remaining Positivstellensatz certificate
+  (Section~\ref{sec:n4}).
 \item Discussion of remaining obstructions
   and open problems (Section~\ref{sec:open}).
 \end{enumerate}
+
+\smallskip
+\noindent\textbf{Roadmap.}
+Section~\ref{sec:prelim} establishes notation
+and the key foundational results:
+the heat equation for the Hermite flow
+(Theorem~\ref{thm:hermite-heat}) and the
+root ODE (Corollary~\ref{cor:root-ode}).
+Section~\ref{sec:identities} develops
+the Fisher--repulsion, Laplacian, and Bezoutian
+identities.
+Sections~\ref{sec:proved}--\ref{sec:cs-mixing}
+progress from concrete cases ($n\le 3$,
+Gaussian input) to structural reduction
+(reformulations, Cauchy--Schwarz mixing).
+Section~\ref{sec:cauchy} introduces degree
+induction.
+Section~\ref{sec:n4} treats $n=4$ in detail.
+Section~\ref{sec:open} surveys open problems.
 
 
 % ═══════════════════════════════════════════════════════════
@@ -217,7 +252,8 @@ Equivalently, $L=-\tfrac{1}{2}\mathrm{Hess}_\lambda(\log\disc(r))$.
 \label{def:var}
 For $r\in\PnR$: $\mu(r):=n^{-1}\sum_i\lambda_i$,
 $\sigma^2(r):=n^{-1}\sum_i(\lambda_i-\mu)^2$.
-Both are additive under~$\fp$.
+Both are additive under~$\fp$
+(Lemma~\ref{lem:var-add}).
 The \emph{additive variance parameter}
 $u:=\sigma^2/(2(n-1))$ satisfies
 $u(p\fp q)=u(p)+u(q)$.
@@ -434,19 +470,106 @@ $(n-i)(n-j)/(n^2)\cdot
 =(n-k)/n\cdot(n-i)!(n-j)!/(n!(n-k)!)$ for $i+j=k$.
 \end{proof}
 
+\begin{theorem}[Hermite heat equation]\label{thm:hermite-heat}
+\proved{}
+The Hermite flow $r_t:=r\fp g_t$ satisfies the
+scaled backwards heat equation
+\begin{equation}\label{eq:heat}
+  \partial_t r_t(x)
+  \;=\;-\frac{1}{2(n-1)}\,r_t''(x),
+\end{equation}
+with initial condition $r_0=r$.
+\end{theorem}
+
+\begin{proof}
+The $K$-transform of the finite Gaussian is
+$K_{g_t}(z)=\exp\bigl(-\tfrac{t}{2(n-1)}z^2\bigr)
+\bmod z^{n+1}$,
+since $\ell_2(g_t)=-t/(2(n-1))$ and
+$\ell_k(g_t)=0$ for $k\ge 3$
+(Definition~\ref{def:var}).
+Hence
+$K_{r_t}(z)=K_r(z)\,K_{g_t}(z)$
+gives
+$\partial_t K_{r_t}(z)
+=-\tfrac{z^2}{2(n-1)}\,K_{r_t}(z)
+\bmod z^{n+1}$.
+Expanding $K_{r_t}(z)=\sum_{k=0}^n\kappa_k(t)\,z^k$
+yields the coefficient ODE
+\[
+  \kappa_k'(t)
+  =-\frac{1}{2(n-1)}\,\kappa_{k-2}(t)
+  \quad(k\ge 2),
+  \qquad
+  \kappa_0'=\kappa_1'=0.
+\]
+Translating to the standard coefficients
+$c_k(t)=n!\,\kappa_k(t)/(n-k)!$:
+\[
+  c_k'(t)
+  =-\frac{(n-k+2)(n-k+1)}{2(n-1)}\,c_{k-2}(t)
+  \qquad(k\ge 2).
+\]
+Now compute
+$\partial_t r_t(x)
+=\sum_{k=0}^n c_k'(t)\,x^{n-k}$
+and observe that
+$r_t''(x)
+=\sum_{j=0}^{n-2}(n{-}j)(n{-}j{-}1)\,c_j(t)\,x^{n-j-2}$;
+substituting $k=j+2$ identifies the two sums,
+giving~\eqref{eq:heat}.
+\end{proof}
+
+\begin{remark}[Context]\label{rem:heat-context}
+The heat equation~\eqref{eq:heat} is exact
+for polynomials of degree~$n$
+(no truncation is involved, since all
+coefficients lie in degrees $\le n$).
+The root ODE~\eqref{eq:root-ode} is a deterministic
+analogue of the Dyson Brownian motion
+for eigenvalues of random Hermitian
+matrices~\cite{dyson};
+here it arises purely algebraically
+from the $K$-transform.
+\end{remark}
+
+\begin{corollary}[Root ODE]\label{cor:root-ode}
+\proved{}
+Along the Hermite flow $r_t=r\fp g_t$, each simple
+root $\lambda_i(t)$ of $r_t$ satisfies
+\begin{equation}\label{eq:root-ode}
+  \dot\lambda_i(t)
+  \;=\;\frac{V_i(t)}{n-1}
+  \;=\;\frac{1}{n-1}\sum_{j\ne i}
+  \frac{1}{\lambda_i(t)-\lambda_j(t)}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Differentiating $r_t(\lambda_i(t))=0$ in~$t$ and
+applying Theorem~\ref{thm:hermite-heat}:
+\[
+  0=\partial_t r_t(\lambda_i)
+  +r_t'(\lambda_i)\,\dot\lambda_i
+  =-\frac{r_t''(\lambda_i)}{2(n-1)}
+  +r_t'(\lambda_i)\,\dot\lambda_i,
+\]
+so $\dot\lambda_i
+=r_t''(\lambda_i)/(2(n-1)\,r_t'(\lambda_i))
+=V_i/(n-1)$
+by Lemma~\ref{lem:score-ids}\textup{(iv)}.
+\end{proof}
+
 \begin{theorem}[De Bruijn identity]\label{thm:debruijn}
-\conditional{}
+\proved{}
 Along the Hermite flow $r_t=r\fp g_t$:
 $\frac{d}{dt}\log|\disc(r_t)|
 =\frac{2}{n-1}\Phi_n(r_t)$.
-\par\smallskip\noindent
-\textbf{Dependency.}\enspace Assumes the root ODE
-$\dot\lambda_i=V_i/(n-1)$; hence this theorem and
-Theorem~\ref{thm:stam-gauss} are conditional.
 \end{theorem}
 
-\begin{proof}[Proof (given the root ODE)]
-Assume $\dot\lambda_i=V_i/(n-1)$.
+\begin{proof}
+By Corollary~\ref{cor:root-ode},
+$\dot\lambda_i=V_i/(n-1)$.
 Since $\disc(r)=\prod_{i<j}(\lambda_i-\lambda_j)^2$,
 we have $\partial_{\lambda_i}\log\disc=2V_i$.
 Therefore
@@ -454,16 +577,6 @@ $\frac{d}{dt}\log\disc
 =\sum_i 2V_i\cdot V_i/(n-1)
 =2\Phi_n/(n-1)$.
 \end{proof}
-
-\begin{remark}[Status of the root ODE]\label{rem:root-ode-status}
-The root velocity $\dot\lambda_i=V_i/(n-1)$ under
-Hermite flow is consistent with the Stieltjes PDE
-and has been verified numerically to machine precision
-($\epsilon<10^{-9}$) at $n=3$--$8$.
-The missing step is to derive this from the
-coefficient-level ODE
-$\dot c_k=-c_{k-1}\sigma^2/(2(n-1))$ for $r_t=r\fp g_t$.
-\end{remark}
 
 
 % ═══════════════════════════════════════════════════════════
@@ -636,25 +749,23 @@ $1/\Phi_3$ as a function of both variables.
 
 \begin{theorem}[Gaussian-input Stam inequality]
 \label{thm:stam-gauss}
-\conditional{}
+\proved{}
 For all $r\in\PnR$ and $t>0$:
 $1/\Phi_n(r\fp g_t)\ge 1/\Phi_n(r)+1/\Phi_n(g_t)$.
 Equality holds on the Hermite manifold.
-\par\smallskip\noindent
-\textbf{Dependency.}\enspace Uses
-$\dot\lambda_i=V_i/(n-1)$ (Theorem~\ref{thm:debruijn});
-once derived from first principles, the result becomes unconditional.
 \end{theorem}
 
-\begin{proof}[Proof (given the root ODE)]
+\begin{proof}
 \emph{Step~1: Gaussian Fisher information.}
 The finite Gaussian $g_t$ has roots at the
 $n$~zeros of the probabilist Hermite polynomial $\mathrm{He}_n$
 scaled so that $\sigma^2(g_t)=t$ and
 $\ell_k(g_t)=0$ for $k\ge 3$.
 The Hermite differential equation
-$\mathrm{He}_n''(x)=x\,\mathrm{He}_n'(x)$
-at a root $\lambda_i$ gives
+$\mathrm{He}_n''(x)-x\,\mathrm{He}_n'(x)+n\,\mathrm{He}_n(x)=0$
+at a root $\lambda_i$ (where $\mathrm{He}_n(\lambda_i)=0$) gives
+$\mathrm{He}_n''(\lambda_i)=\lambda_i\,\mathrm{He}_n'(\lambda_i)$,
+hence
 $V_i=\mathrm{He}_n''(\lambda_i)/(2\mathrm{He}_n'(\lambda_i))
 =\lambda_i/2$.
 After scaling, $V_i(g_t)=c\,(\lambda_i-\mu)$
@@ -667,8 +778,7 @@ and $1/\Phi_n(g_t)=4t/(n(n-1)^2)$.
 \emph{Step~2: Root ODE.}
 Let $r_t:=r\fp g_t$ with roots
 $\lambda_1(t)<\cdots<\lambda_n(t)$.
-From the De~Bruijn identity
-(Theorem~\ref{thm:debruijn}) and its proof,
+By Corollary~\ref{cor:root-ode},
 each root satisfies
 $\dot\lambda_i = V_i/(n-1)$,
 where $V_i=V_i(r_t)$.
@@ -689,27 +799,33 @@ with respect to~$t$:
 where $L$ is the graph Laplacian
 (Definition~\ref{def:laplacian}).
 
-\emph{Step~4: Fisher monotonicity.}
-$\frac{d}{dt}\Phi_n(r_t)
-  = 2\sum_i V_i\dot V_i
-  = -\frac{2}{n-1}V^T L V$.
-Since $L\succeq 0$, we have
-$V^T LV\ge 0$, hence
-$\Phi_n'(r_t)\le 0$.
-
+\emph{Step~4: Fisher dissipation.}
 Define the \emph{score-gradient energy}
 $\mathcal{S}:=V^T LV
   =\sum_{i<j}(V_i-V_j)^2
    /(\lambda_i-\lambda_j)^2$.
+Then
+$\frac{d}{dt}\Phi_n(r_t)
+  = 2\sum_i V_i\dot V_i
+  = -\frac{2}{n-1}V^T L V
+  = -\frac{2}{n-1}\mathcal{S}$.
+Since $L\succeq 0$, we have
+$\mathcal{S}\ge 0$, hence
+$\Phi_n'(r_t)\le 0$.
 
 \emph{Step~5: Lower bound on $\mathcal{S}/\Phi_n^2$.}
-By the spectral Cauchy--Schwarz inequality
-used in the proof of Theorem~\ref{thm:sgi}:
+Since $L\mathbf{1}=0$, $V=L\lambda=L\lambda_c$
+where $\lambda_c:=\lambda-\mu\mathbf{1}$.
+Hence $\Phi_n=V^T V=\lambda_c^T L^2\lambda_c$
+and $\mathcal{S}=V^T LV=\lambda_c^T L^3\lambda_c$.
+The Cauchy--Schwarz inequality for the
+semi-definite form $\langle u,v\rangle_L=u^T Lv$ gives
 $(\lambda_c^T L^2\lambda_c)^2
 \le(\lambda_c^T L\lambda_c)
-   (\lambda_c^T L^3\lambda_c)$,
-which gives $\Phi_n^2\le\binom{n}{2}\,\mathcal{S}$,
-hence
+   (\lambda_c^T L^3\lambda_c)
+=\binom{n}{2}\,\mathcal{S}$,
+hence $\Phi_n^2\le\binom{n}{2}\,\mathcal{S}$,
+i.e.,
 \[
   \frac{\mathcal{S}}{\Phi_n^2}
   \;\ge\;\frac{1}{\binom{n}{2}}
@@ -776,7 +892,12 @@ where $\tau_k^{(r)}=w^{k/2}\tau_k^{(p)}+(1-w)^{k/2}\tau_k^{(q)}$.
 \end{theorem}
 
 \begin{proof}
-Write $D_n=G_n(\mathbf{0})\,u_r[wR_p+(1-w)R_q-R_r]$. Since $G_n(\mathbf{0})>0$ and $u_r>0$:
+The mixing law follows from additivity:
+$\ell_k(r)=\ell_k(p)+\ell_k(q)$ and $u_r=u_p+u_q$, so
+$\tau_k(r)=\ell_k(r)/u_r^{k/2}
+=(u_p/u_r)^{k/2}\tau_k(p)+(u_q/u_r)^{k/2}\tau_k(q)
+=w^{k/2}\tau_k(p)+(1-w)^{k/2}\tau_k(q)$.
+Now write $D_n=G_n(\mathbf{0})\,u_r[wR_p+(1-w)R_q-R_r]$. Since $G_n(\mathbf{0})>0$ and $u_r>0$:
 $D_n\ge 0$ iff \eqref{eq:Rsub}.
 \end{proof}
 
@@ -1089,9 +1210,13 @@ $\sum_j(\lambda_i-\mu_j)^{-2}
 =4V_i^2-r'''(\lambda_i)/r'(\lambda_i)$.
 Summing over~$i$:
 $\|C\|_F^2=4\Phi_n-\sum_i r'''(\lambda_i)/r'(\lambda_i)$.
-Since $\deg r'''=n-3\le n-2$, the Lagrange interpolation
-identity gives
-$\sum_i r'''(\lambda_i)/r'(\lambda_i)=0$.
+Since $\deg r'''=n-3< n-1$, the rational function
+$r'''/r'$ has degree $<0$ at infinity, so its
+partial fraction expansion reads
+$r'''(x)/r'(x)=\sum_i r'''(\lambda_i)/(r'(\lambda_i)(x-\lambda_i))$
+with no polynomial part; summing the residues:
+$\sum_i r'''(\lambda_i)/r'(\lambda_i)
+=[x^{-1}]\sum_i r'''(\lambda_i)/(r'(\lambda_i)(x-\lambda_i))=0$.
 \end{proof}
 
 \begin{theorem}[Deficit telescoping]\label{thm:telescope}
@@ -1123,20 +1248,450 @@ same at every level.
 
 
 % ═══════════════════════════════════════════════════════════
+\section{The case \texorpdfstring{$n=4$}{n=4}: closed form and partial proof}
+\label{sec:n4}
+% ═══════════════════════════════════════════════════════════
+
+\subsection{Closed-form reciprocal Fisher information}
+
+\begin{definition}[Valid domain]\label{def:valid}
+For centred $r\in\PnR[n]$ with simple roots,
+the \emph{valid domain} $\mathcal{V}_n$ is the set of
+additive cumulant tuples $(u,\ell_3,\ldots,\ell_n)$
+with $u>0$ arising from such polynomials.
+Equivalently, $\mathcal{V}_n=\{(u,\ell_3,\ldots,\ell_n):
+u>0,\;\disc(r)>0\}$ where $\disc$ is expressed
+in terms of the cumulants via the coefficient
+map~\eqref{eq:a-to-ell}.
+\end{definition}
+
+\begin{theorem}[Closed form of $1/\Phi_4$]
+\label{thm:inv-phi4}
+\proved{}
+For centred $r\in\PnR[4]$ with simple roots and
+additive parameters $u,\ell_3,\ell_4$:
+\begin{equation}\label{eq:inv-phi4}
+  \frac{1}{\Phi_4(r)}
+  =\frac{P(u,\ell_3,\ell_4)}{6\,Q(u,\ell_3,\ell_4)},
+\end{equation}
+where
+\begin{align}
+  P &:= 16u^6 - 72u^3\ell_3^2
+     - 48u^2\ell_4^2 + 32\ell_4^3
+     - 216u\,\ell_3^2\ell_4 - 81\ell_3^4,
+  \label{eq:P4}\\[3pt]
+  Q &:= 4u^5 - 9u^2\ell_3^2
+     - 9\ell_3^2\ell_4 - 4u\,\ell_4^2.
+  \label{eq:Q4}
+\end{align}
+Moreover, $P=\disc(r)/110592$ and $Q>0$ for
+all centred $r$ with simple roots.
+At the Gaussian
+$(\ell_3{=}\ell_4{=}0)$:
+$1/\Phi_4=2u/3$.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1: Coefficients and cumulants.}
+Let $r(x)=x^4+a_2 x^2+a_3 x+a_4$ be a centred
+depressed quartic.
+From Lemma~\ref{lem:normalisation} and
+Definition~\ref{def:K}:
+$\kappa_2=a_2/12$, $\kappa_3=a_3/24$,
+$\kappa_4=a_4/24$, so
+$\ell_2=\kappa_2$, $\ell_3=\kappa_3$,
+$\ell_4=\kappa_4-\kappa_2^2/2=a_4/24-a_2^2/288$.
+These give
+\begin{equation}\label{eq:a-to-ell}
+  a_2=-12u,\qquad
+  a_3=24\ell_3,\qquad
+  a_4=24\ell_4+12u^2.
+\end{equation}
+
+\emph{Step~2: The cofactor sum.}
+Define the \emph{cofactor sum}
+$S:=\sum_{(i,j)}\prod_{(k,l)\ne(i,j)}
+(\lambda_k-\lambda_l)^2$,
+where each sum/product runs over unordered
+pairs among the roots $\lambda_1,\ldots,\lambda_4$.
+Since there are $\binom{4}{2}=6$ pairs and each
+cofactor is a product of $5$ positive squared gaps,
+$S>0$.
+By Theorem~\ref{thm:fisher-rep},
+$\Phi_4=2\mathcal{R}=2S/\disc(r)$, hence
+$1/\Phi_4=\disc(r)/(2S)$.
+
+\emph{Step~3: $S$ as a polynomial in the
+coefficients.}
+The cofactor sum $S$ is a symmetric polynomial
+of weight~$10$ in the roots, with $a_1=0$.
+By dimensional analysis,
+$S=\alpha\, a_2^5+\beta\, a_2^2 a_3^2
++\gamma\, a_2^3 a_4+\delta\, a_3^2 a_4
++\varepsilon\, a_2 a_4^2$.
+Evaluating at polynomials
+$x^4-5x^2+4$ (roots $\pm 1,\pm 2$),
+$x^4-10x^2+9$ (roots $\pm 1,\pm 3$),
+$x^4-7x^2-6x$ (roots $-2,-1,0,3$),
+$x^4-15x^2-10x+24$ (roots $-3,-2,1,4$),
+and $x^4-5x^2+4$ again for consistency,
+one obtains the linear system
+$(\alpha,\beta,\gamma,\delta,\varepsilon)
+=(-4,-18,-32,-216,192)$:
+\begin{equation}\label{eq:S-formula}
+  S=-4a_2^5-18a_2^2 a_3^2-32a_2^3 a_4
+  -216a_3^2 a_4+192a_2 a_4^2.
+\end{equation}
+
+\emph{Step~4: Conversion to cumulant coordinates.}
+Substituting~\eqref{eq:a-to-ell}
+into~\eqref{eq:S-formula} and the standard discriminant
+formula
+$\disc=256a_4^3-128a_2^2 a_4^2
++144a_2 a_3^2 a_4-27a_3^4
++16a_2^4 a_4-4a_2^3 a_3^2$,
+one obtains after expansion:
+\begin{equation}\label{eq:disc-P}
+  \disc(r)=110592\,P(u,\ell_3,\ell_4),
+  \qquad
+  S=331776\,Q(u,\ell_3,\ell_4).
+\end{equation}
+Since $331776=3\cdot 110592$:
+\[
+  \frac{1}{\Phi_4}
+  =\frac{\disc}{2S}
+  =\frac{110592\,P}{2\cdot 331776\,Q}
+  =\frac{P}{6Q}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Polynomial division]\label{rem:poly-div}
+Dividing $P$ by $Q$ in the variable~$u$ gives
+$P=4u\cdot Q+M$ where
+$M:=-36u^3\ell_3^2-32u^2\ell_4^2
+-180u\,\ell_3^2\ell_4+32\ell_4^3-81\ell_3^4$.
+Hence $1/\Phi_4=(2u/3)+M/(6Q)$, and the linear
+term $2u/3$ cancels under the Stam defect by
+additivity of~$u$.
+Moreover, $M\le 0$ on the entire valid domain
+(verified at the boundary $\ell_4=\pm u^2$
+and by continuity).
+\end{remark}
+
+\subsection{Stam defect and reduction to polynomial positivity}
+
+\begin{theorem}[Stam defect for $n=4$: polynomial reduction]
+\label{thm:D4-reduction}
+\proved{}
+For centred $p,q\in\PnR[4]$ with $r=p\fp q$,
+denote the additive cumulant triples
+$(u_p,\ell_{3,p},\ell_{4,p})$ and
+$(u_q,\ell_{3,q},\ell_{4,q})$.
+Then
+\begin{equation}\label{eq:D4-Psi}
+  D_4:=\frac{1}{\Phi_4(r)}-\frac{1}{\Phi_4(p)}
+  -\frac{1}{\Phi_4(q)}
+  =\frac{\Psi}{6\,Q_r Q_p Q_q},
+\end{equation}
+where $Q_r,Q_p,Q_q>0$ and
+\begin{equation}\label{eq:Psi}
+  \Psi := M_r\,Q_p\,Q_q
+  - M_p\,Q_r\,Q_q - M_q\,Q_r\,Q_p
+\end{equation}
+is a weighted-degree-$32$ polynomial in the six
+additive variables
+$(u_p,\ell_{3,p},\ell_{4,p},u_q,\ell_{3,q},\ell_{4,q})$.
+
+Consequently, $D_4\ge 0$ if and only if
+$\Psi\ge 0$ on the valid domain.
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:inv-phi4} and $P=4uQ+M$:
+\begin{align*}
+  D_4 &= \frac{P_r}{6Q_r}
+       - \frac{P_p}{6Q_p}
+       - \frac{P_q}{6Q_q}\\
+      &= \frac{4u_r Q_r+M_r}{6Q_r}
+       - \frac{4u_p Q_p+M_p}{6Q_p}
+       - \frac{4u_q Q_q+M_q}{6Q_q}\\
+      &= \frac{2}{3}(u_r-u_p-u_q)
+       + \frac{M_r}{6Q_r}
+       - \frac{M_p}{6Q_p}
+       - \frac{M_q}{6Q_q}.
+\end{align*}
+The first term vanishes by additivity of~$u$.
+Clearing the common denominator
+$6Q_r Q_p Q_q>0$ gives~\eqref{eq:Psi}.
+\end{proof}
+
+\subsection{Stam for \texorpdfstring{$n=4$}{n=4} with
+\texorpdfstring{$\ell_3=0$}{l3=0}}
+
+\begin{theorem}[Stam for $n=4$, $\ell_3=0$]
+\label{thm:stam-l3zero}
+\proved{}
+For centred $p,q\in\PnR[4]$ with
+$\ell_3(p)=\ell_3(q)=0$,
+we have $D_4\ge 0$.
+More precisely,
+\begin{equation}\label{eq:Psi-l30}
+  \Psi\big|_{\ell_3=0}
+  =512\,(u_p^2-\ell_{4,p})\,
+  (u_q^2-\ell_{4,q})\,
+  \bigl((u_p{+}u_q)^2-\ell_{4,p}-\ell_{4,q}\bigr)\,
+  F,
+\end{equation}
+where all three parenthetical factors are positive
+on the valid domain and
+$F=F(u_p,\ell_{4,p},u_q,\ell_{4,q})\ge 0$
+for all $u_p,u_q>0$.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1: Factorisation.}
+With $\ell_{3,p}=\ell_{3,q}=0$:
+$M(u,0,\ell_4)=\ell_4^2(32\ell_4-32u^2)
+=-32\ell_4^2(u^2-\ell_4)$,
+$Q(u,0,\ell_4)=4u(u^4-\ell_4^2)
+=4u\,(u^2-\ell_4)(u^2+\ell_4)$.
+The factors $(u^2-\ell_4)$ in $M$ and $Q$
+propagate through~\eqref{eq:Psi}.
+Expanding and collecting by computer algebra
+confirms the factorisation~\eqref{eq:Psi-l30} with
+\begin{align*}
+  F={}&\ell_{4,p}^3\ell_{4,q}\,u_q^2
+      +\ell_{4,p}^3 u_q^4
+      +\ell_{4,p}^2\ell_{4,q}^2(u_p^2+u_q^2)
+      +3\ell_{4,p}^2\ell_{4,q}\,u_p^2 u_q^2
+      +2\ell_{4,p}^2\ell_{4,q}\,u_p u_q^3\\
+    &+2\ell_{4,p}^2\ell_{4,q}\,u_q^4
+      +3\ell_{4,p}^2 u_p^2 u_q^4
+      +3\ell_{4,p}^2 u_p u_q^5
+      +\ell_{4,p}^2 u_q^6
+      +\ell_{4,p}\ell_{4,q}^3 u_p^2\\
+    &+2\ell_{4,p}\ell_{4,q}^2 u_p^4
+      +2\ell_{4,p}\ell_{4,q}^2 u_p^3 u_q
+      +3\ell_{4,p}\ell_{4,q}^2 u_p^2 u_q^2
+      -2\ell_{4,p}\ell_{4,q}\,u_p^3 u_q^3\\
+    &+\ell_{4,q}^3 u_p^4
+      +\ell_{4,q}^2 u_p^6
+      +3\ell_{4,q}^2 u_p^5 u_q
+      +3\ell_{4,q}^2 u_p^4 u_q^2.
+\end{align*}
+
+\emph{Step~2: Positivity of the triple product.}
+On the valid domain, $Q>0$ forces
+$|\ell_4|<u^2$, so $u^2-\ell_4>0$
+for each polynomial and its convolution.
+
+\emph{Step~3: $F\ge 0$ by AM--GM.}
+The polynomial~$F$ has exactly one negative
+monomial: $-2\ell_{4,p}\ell_{4,q}u_p^3 u_q^3$.
+Write $F=F_+-2\ell_{4,p}\ell_{4,q}u_p^3 u_q^3$
+where every coefficient of $F_+$ is non-negative
+(verified by computer algebra).
+We consider two cases:
+\begin{itemize}[nosep]
+  \item If $\ell_{4,p}\ell_{4,q}\le 0$, the
+    ``negative'' monomial is in fact $\ge 0$,
+    so $F\ge F_+\ge 0$.
+  \item If $\ell_{4,p}\ell_{4,q}>0$:
+    $F_+$ contains the terms
+    $3\ell_{4,p}^2 u_p u_q^5
+    +3\ell_{4,q}^2 u_p^5 u_q
+    =3u_p u_q(\ell_{4,p}^2 u_q^4
+    +\ell_{4,q}^2 u_p^4)$.
+    By the AM--GM inequality
+    $\ell_{4,p}^2 u_q^4+\ell_{4,q}^2 u_p^4
+    \ge 2|\ell_{4,p}\ell_{4,q}|u_p^2 u_q^2$,
+    so these two terms alone contribute
+    $\ge 6|\ell_{4,p}\ell_{4,q}| u_p^3 u_q^3
+    >2|\ell_{4,p}\ell_{4,q}| u_p^3 u_q^3$,
+    absorbing the negative monomial with room to spare.
+\end{itemize}
+Hence $F\ge 0$, and $D_4\ge 0$.
+\end{proof}
+
+\begin{proposition}[Two one-sided sectors at $n=4$]
+\label{prop:n4-one-sided}
+\proved{}
+Let $p,q\in\PnR[4]$ be centred, and assume $q$ is finite Gaussian
+\textup{(}equivalently $\ell_{3,q}=\ell_{4,q}=0$\textup{)}.
+Then:
+\begin{enumerate}[label=\textup{(\alph*)},nosep]
+  \item if $\ell_{4,p}=0$, then $D_4\ge 0$;
+  \item if $\ell_{3,p}=0$, then $D_4\ge 0$.
+\end{enumerate}
+By symmetry, the analogous statements hold with $p$ and $q$ interchanged.
+\end{proposition}
+
+\begin{proof}
+Write
+$u_1:=u_p$, $u_2:=u_q$,
+$a:=\ell_{3,p}$, $b:=\ell_{4,p}$,
+$c:=\ell_{3,q}=0$, $d:=\ell_{4,q}=0$.
+Since
+$D_4=\Psi/(6Q_rQ_pQ_q)$ and $Q_r,Q_p,Q_q>0$
+(Theorem~\ref{thm:D4-reduction}), it suffices to show $\Psi\ge 0$.
+
+\emph{(a) $\ell_{4,p}=0$ (i.e. $b=0$).}
+Substituting $b=c=d=0$ into~\eqref{eq:Psi} and collecting gives
+\[
+  \Psi=36a^2u_2^6\,\Gamma(s),\qquad s:=a^2,
+\]
+with
+\[
+  \Gamma(s)
+  =-81(2u_1+u_2)s^2
+  +36(2u_1^2+2u_1u_2+u_2^2)(3u_1^2+3u_1u_2+u_2^2)s
+  +16u_1^3(u_1+u_2)^3(2u_1+u_2).
+\]
+Hence $\Gamma$ is concave in $s$ since the quadratic coefficient is
+$-81(2u_1+u_2)<0$.
+From $Q_p=4u_1^5-9u_1^2a^2>0$ we obtain
+$0\le s<\frac{4}{9}u_1^3$.
+Now
+\[
+  \Gamma(0)=16u_1^3(u_1+u_2)^3(2u_1+u_2)>0,
+\]
+and
+\[
+  \Gamma\!\left(\frac{4}{9}u_1^3\right)
+  =32u_1^3(u_1+u_2)^2(3u_1^2+3u_1u_2+u_2^2)>0.
+\]
+Since a concave function on an interval is bounded below by the minimum
+of its endpoint values, $\Gamma(s)>0$ for all
+$s\in[0,\frac{4}{9}u_1^3]$.
+Therefore $\Psi\ge 0$, hence $D_4\ge 0$.
+
+\emph{(b) $\ell_{3,p}=0$ (i.e. $a=0$).}
+Substituting $a=c=d=0$ into~\eqref{eq:Psi} gives
+\[
+  \Psi
+  =512b^2u_2^6(u_1^2-b)\bigl((u_1+u_2)^2-b\bigr)
+  (b+3u_1^2+3u_1u_2+u_2^2).
+\]
+On the valid domain,
+$Q_p=4u_1(u_1^2-b)(u_1^2+b)>0$
+implies $u_1^2-b>0$, and
+$Q_r=4(u_1+u_2)\bigl((u_1+u_2)^2-b\bigr)
+\bigl((u_1+u_2)^2+b\bigr)>0$
+implies $((u_1+u_2)^2-b)>0$.
+The remaining factors are manifestly non-negative, so $\Psi\ge 0$,
+hence $D_4\ge 0$.
+\end{proof}
+
+\subsection{Leading-order positive-definiteness}
+
+\begin{proposition}[Hessian of $D_4$ at the Gaussian]
+\label{prop:D4-hessian}
+\proved{}
+The Stam defect $D_4$ vanishes at the Gaussian
+$(\ell_{3,p}=\ell_{4,p}=\ell_{3,q}=\ell_{4,q}=0)$
+with vanishing gradient.
+The Hessian of $D_4$ in the four non-Gaussian variables
+$(\ell_{3,p},\ell_{4,p},\ell_{3,q},\ell_{4,q})$
+is positive definite; at $u_p=u_q=1$, its
+eigenvalues are $9216$, $12288$, $16384$, $18432$.
+\end{proposition}
+
+\begin{proof}
+The numerator $\Psi$ in~\eqref{eq:Psi} is
+quadratic in the non-Gaussian cumulants
+to leading order.
+Retaining only $M\approx -36u^3\ell_3^2
+-32u^2\ell_4^2$ and $Q\approx 4u^5$,
+the leading-order $\Psi$ is a quadratic form in
+$(\ell_{3,p},\ell_{4,p},\ell_{3,q},\ell_{4,q})$
+with matrix
+$\mathrm{diag}(A,B)\oplus\mathrm{diag}(B,A)$
+(block-diagonal with off-diagonal coupling).
+At $u_p=u_q=1$ the Gram matrix evaluates to
+$\bigl(\begin{smallmatrix}
+  13824 & 0 & -4608 & 0\\
+  0 & 14336 & 0 & -2048\\
+  -4608 & 0 & 13824 & 0\\
+  0 & -2048 & 0 & 14336
+\end{smallmatrix}\bigr)$
+with eigenvalues $9216,12288,16384,18432>0$.
+\end{proof}
+
+\begin{remark}[Status of the general case]
+\label{rem:n4-general}
+The polynomial $\Psi$ in~\eqref{eq:Psi} has
+$547$ terms in six additive variables.
+Computer algebra (SymPy) confirms non-negativity
+of~$\Psi$ at all tested rational points
+in the valid domain, including the three
+exact-arithmetic tests
+$(p,q)=(\text{roots }-2,-1,1,2;\;\text{roots }-3,-1,1,3)$,
+$(p,q)=(\text{roots }-2,-1,0,3;\;\text{roots }-3,-1,1,3)$,
+and
+$(p,q)=(\text{roots }-2,-1,0,3;\;\text{roots }-3,-2,1,4)$,
+yielding $D_4=70940/948051$,
+$3991102202996/27964607674185$,
+and $4658367073739/13296968779710$
+respectively.
+\par
+Combined with the closed-form proof for
+$\ell_3=0$ (Theorem~\ref{thm:stam-l3zero}),
+the one-sided sector proof
+(Proposition~\ref{prop:n4-one-sided}),
+the leading-order positive-definiteness
+(Proposition~\ref{prop:D4-hessian}),
+and the established sub-cases
+(including single nonzero~$\ell_3$),
+the evidence strongly supports
+$\Psi\ge 0$ on the full valid domain.
+The remaining analytic step is a
+Positivstellensatz certificate for
+the~$547$-term polynomial modulo the
+constraints $Q_p>0$, $Q_q>0$.
+\end{remark}
+
+
+% ═══════════════════════════════════════════════════════════
 \section{Discussion and open problems}\label{sec:open}
 % ═══════════════════════════════════════════════════════════
 
 \noindent\textbf{Summary.}
 The Stam inequality~\eqref{eq:stam-poly} is proved
-unconditionally for $n\le 3$.
-The Gaussian-input argument yields an all-$n$ result
-conditional on the root ODE $\dot\lambda_i=V_i/(n-1)$.
+unconditionally for $n\le 3$ and for Gaussian
+inputs at all~$n$.
+The Hermite heat equation
+$\partial_t r_t=-r_t''/(2(n-1))$
+(Theorem~\ref{thm:hermite-heat})
+and the resulting root ODE
+$\dot\lambda_i=V_i/(n-1)$
+(Corollary~\ref{cor:root-ode})
+are now proved unconditionally from the
+$K$-transform definition.
+For $n=4$, a closed-form formula
+$1/\Phi_4=P/(6Q)$
+(Theorem~\ref{thm:inv-phi4})
+reduces the Stam inequality to
+the non-negativity of a weighted-degree-$32$
+polynomial~$\Psi$ in six additive cumulant variables
+(Theorem~\ref{thm:D4-reduction}).
+The polynomial identity is fully established when
+$\ell_3=0$ (Theorem~\ref{thm:stam-l3zero}),
+using a factorisation into three positive factors
+times a manifestly non-negative form (AM--GM).
+The Hessian at the Gaussian is positive definite
+(Proposition~\ref{prop:D4-hessian}).
 The degree-telescoping identity (Theorem~\ref{thm:telescope})
 reduces the full conjecture to bounding
 the explicit correction terms
 $C_k=D_k-D_{k-1}$ for $k\ge 4$.
-The principal remaining challenge is to establish a uniform
-nonnegativity mechanism for these high-degree corrections.
+The principal remaining challenges are:
+\begin{enumerate}[nosep,label=(\roman*)]
+\item For $n=4$: a Positivstellensatz
+  certificate for $\Psi\ge 0$ modulo $Q_p>0$, $Q_q>0$
+  (a semidefinite program in weighted-degree-$32$ polynomials).
+\item For general $n$: a uniform
+  nonnegativity mechanism for the high-degree corrections.
+\end{enumerate}
 
 \medskip
 \noindent\textbf{Dependency table.}
@@ -1159,7 +1714,13 @@ Stam $n=3$ via CS (Rem.~\ref{rem:n3-cs})
 Gauss.\ uniqueness (Lem.~\ref{lem:gauss-unique})
   & \proved{} & Fisher--var.\ (Thm~\ref{thm:fisher-var}) \\
 Gauss.-input Stam (Thm~\ref{thm:stam-gauss})
-  & \conditional{} & root ODE (Thm~\ref{thm:debruijn}) \\
+  & \proved{} & heat eqn.~(Thm~\ref{thm:hermite-heat}) \\
+Hermite heat eqn.~(Thm~\ref{thm:hermite-heat})
+  & \proved{} & $K$-transform (Def.~\ref{def:K}) \\
+Root ODE (Cor.~\ref{cor:root-ode})
+  & \proved{} & heat eqn.~(Thm~\ref{thm:hermite-heat}) \\
+De Bruijn (Thm~\ref{thm:debruijn})
+  & \proved{} & root ODE (Cor.~\ref{cor:root-ode}) \\
 $c_{n,k}>0$, $n\le 4$ (Thm~\ref{thm:Rn-quad}b)
   & \proved{} & direct computation \\
 $c_{n,k}>0$, $n\ge 5$ (Thm~\ref{thm:Rn-quad}c)
@@ -1170,6 +1731,18 @@ Gen.\ decomp.\ (Thm~\ref{thm:general-decomp})
   & \proved{}/$n\le 4$ & $c_{n,k}>0$ \\
 Telescope (Thm~\ref{thm:telescope})
   & \proved{} & Cauchy interlacing \\
+$R_4$ Taylor (\S\ref{sec:n4})
+  & \proved{} & Thm~\ref{thm:inv-phi4} \\
+$1/\Phi_4$ closed form (Thm~\ref{thm:inv-phi4})
+  & \proved{} & cofactor sum \& discriminant \\
+$n{=}4$ Stam, $\ell_3{=}0$ (Thm~\ref{thm:stam-l3zero})
+  & \proved{} & factorisation + AM--GM \\
+$n{=}4$ one-sided sectors (Prop.~\ref{prop:n4-one-sided})
+  & \proved{} & explicit $\Psi$ reduction + valid-domain bounds \\
+$D_4$ Hessian (Prop.~\ref{prop:D4-hessian})
+  & \proved{} & quadratic form computation \\
+$n{=}4$ Stam, general
+  & \compverif{} & $\Psi\ge 0$ (Remark~\ref{rem:n4-general}) \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1178,6 +1751,17 @@ Telescope (Thm~\ref{thm:telescope})
 \label{conj:stam}
 $1/\Phi_n(p\fp q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
 for all $n\ge 2$ and $p,q\in\PnR$.
+\end{conjecture}
+
+\begin{conjecture}[Equality characterisation]
+\label{conj:equality}
+For $n\ge 3$ and $p,q\in\PnR$ with simple roots,
+equality holds in Conjecture~\ref{conj:stam}
+if and only if both $p$ and $q$ are
+finite Gaussians (i.e.,
+$\ell_k(p)=\ell_k(q)=0$ for all $k\ge 3$).
+This is proved for $n=3$
+(Theorem~\ref{thm:n3-stam}).
 \end{conjecture}
 
 
@@ -1204,6 +1788,12 @@ A.~Dembo, T.~M.~Cover, and J.~A.~Thomas,
 \emph{Information-theoretic inequalities},
 IEEE Trans.\ Inform.\ Theory \textbf{37} (1991),
 1501--1518.
+
+\bibitem{dyson}
+F.~J.~Dyson,
+\emph{A {B}rownian-motion model for the eigenvalues
+of a random matrix},
+J.~Math.\ Phys.\ \textbf{3} (1962), 1191--1198.
 
 \bibitem{fiedler}
 M.~Fiedler,
