@@ -1,0 +1,1208 @@
+\documentclass[10pt,a4paper]{amsart}
+
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,
+  citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\allowdisplaybreaks
+\setlength{\jot}{6pt}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlist{itemsep=2pt,topsep=3pt,parsep=0pt,partopsep=0pt}
+
+% ─── theorem environments ───
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ─── custom macros ───
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PnR}[1][n]{\mathcal{P}^{\R}_{#1}}
+\newcommand{\fp}{\boxplus_n}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Bez}{Bez}
+\DeclareMathOperator{\rank}{rank}
+
+
+% ───────────────────────────────────────────────────────────
+\begin{document}
+
+\title[The Finite Free Stam Inequality]%
+{The Finite Free Stam Inequality:\\
+Structural Identities, the Gaussian-Input Case,
+and Reduction Principles}
+
+\subjclass[2020]{46L54 (primary); 94A17, 26C10, 15A42 (secondary)}
+\keywords{finite free convolution, Stam inequality, Fisher information,
+real-rooted polynomials, Marcus--Spielman--Srivastava convolution}
+
+\date{\today}
+
+\begin{abstract}
+Let $\PnR$ denote the set of monic, degree-$n$, real-rooted
+polynomials and let $\fp$ be the Marcus--Spielman--Srivastava
+finite free additive convolution.
+For $r\in\PnR$ with simple roots
+$\lambda_1<\cdots<\lambda_n$, the
+\emph{finite free Fisher information} is
+$\Phi_n(r):=\sum_{i=1}^n V_i^2$, where
+$V_i:=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$.
+We prove the \emph{finite free Stam inequality}
+\[
+  \frac{1}{\Phi_n(p\fp q)}\;\ge\;
+  \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)},
+  \qquad p,q\in\PnR,
+\]
+for all $n\ge 2$, confirming a conjecture of D.~Shlyakhtenko.
+The proof, due to Garza~Vargas, Srivastava, and
+Stier~\cite{GVS}, proceeds in three steps:
+(1)~a Jacobian identity relating score vectors under
+convolution, derived from the commutation of $\fp$
+with differential operators;
+(2)~a contraction inequality for the Jacobian of the
+root map, established via variance additivity and
+a convexity result of Bauschke et al.~\cite{BGLS}
+on hyperbolic polynomials;
+(3)~Blachman's classical argument adapted to the
+finite free setting.
+We also develop structural identities
+($\Phi_n=2\mathcal{R}=\tr(L)$, Bezoutian representation),
+the Hermite heat equation and root ODE,
+and give independent proofs for $n\le 3$ and
+for Gaussian inputs at all~$n$.
+\end{abstract}
+
+\maketitle
+
+% ═══════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:intro}
+% ═══════════════════════════════════════════════════════════
+
+The classical Stam inequality~\cite{stam} states that
+for independent continuous random variables $X,Y$ with
+finite Fisher informations $J(X),J(Y)$:
+\begin{equation}\label{eq:classical-stam}
+  \frac{1}{J(X+Y)}\;\ge\;\frac{1}{J(X)}+\frac{1}{J(Y)}.
+\end{equation}
+This is a cornerstone of information theory, closely related
+to the entropy power inequality~\cite{blachman} and the
+Cram\'er--Rao bound (see~\cite{dembo} for a survey).
+
+Marcus, Spielman, and Srivastava~\cite{MSS2,MSS1}
+introduced the \emph{finite free additive convolution}
+$\fp$ on monic real-rooted polynomials of degree~$n$,
+a finite-dimensional analogue of free additive
+convolution in the sense
+of~\cite{voiculescu}.
+A natural question is whether the Stam
+inequality~\eqref{eq:classical-stam} has a polynomial
+analogue.
+Define the \emph{finite free Fisher information} of
+$r\in\PnR$ with simple roots
+$\lambda_1<\cdots<\lambda_n$ by
+$\Phi_n(r):=\sum_{i=1}^n
+(\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1})^{2}$.
+The \emph{finite free Stam inequality}, conjectured by
+D.~Shlyakhtenko and proved by Garza~Vargas, Srivastava,
+and Stier~\cite{GVS}, states that for all $p,q\in\PnR$:
+\begin{equation}\label{eq:stam-poly}
+  \frac{1}{\Phi_n(p\fp q)}\;\ge\;
+  \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\end{equation}
+Preserving real-rootedness under $\fp$ is guaranteed
+by~\cite{MSS2}; see~\cite{bb} for the connection to
+linear operators preserving stability.
+
+\noindent\textbf{Contributions.}
+\begin{enumerate}[nosep,label=(\roman*)]
+\item Full proof of the Stam inequality for all $n\ge 2$
+  (Section~\ref{sec:full-proof}), following~\cite{GVS}.
+\item Structural identities
+  (Section~\ref{sec:identities}):
+  $\Phi_n=2\mathcal{R}=\tr(L)$, score identities,
+  variance additivity, Bezoutian and Laplacian formulations.
+\item The Hermite heat equation
+  and root ODE (Section~\ref{sec:prelim});
+  independent proofs for $n\le 3$ and
+  Gaussian-input Stam at all~$n$
+  (Section~\ref{sec:proved}).
+\end{enumerate}
+
+\smallskip
+\noindent\textbf{Roadmap.}
+Section~\ref{sec:prelim} establishes notation
+and the key foundational results:
+the heat equation for the Hermite flow
+(Theorem~\ref{thm:hermite-heat}) and the
+root ODE (Corollary~\ref{cor:root-ode}).
+Section~\ref{sec:identities} develops
+the Fisher--repulsion, Laplacian, and Bezoutian
+identities.
+Section~\ref{sec:proved} gives independent proofs
+for small cases ($n\le 3$, Gaussian input).
+Section~\ref{sec:full-proof} presents the full
+proof for all~$n$.
+Section~\ref{sec:discussion} concludes.
+
+
+% ═══════════════════════════════════════════════════════════
+\section{Preliminaries}\label{sec:prelim}
+% ═══════════════════════════════════════════════════════════
+
+\begin{definition}[MSS convolution~\cite{MSS2}]
+\label{def:mss}
+For $p(x)=\sum_{k=0}^n a_k x^{n-k}$ and $q(x)=\sum_{k=0}^n b_k x^{n-k}$ with $a_0=b_0=1$,
+the \emph{finite free additive convolution} $r=p\fp q$ is defined by $r(x)=\sum_{k=0}^n c_k x^{n-k}$ with
+\[
+  c_k=\sum_{i+j=k}\frac{(n-i)!\,(n-j)!}{n!\,(n-k)!}\,a_i b_j.
+\]
+By~\cite{MSS2}, $\fp$ preserves $\PnR$.
+\end{definition}
+
+\begin{definition}[$K$-transform and log-cumulants]
+\label{def:K}
+Define
+\[
+  \kappa_k(r):=\frac{(n-k)!\,c_k(r)}{n!},
+  \qquad
+  K_r(z):=\sum_{k=0}^{n}\kappa_k(r)\,z^k.
+\]
+Then
+\[
+  K_{p\fp q}(z)=K_p(z)\cdot K_q(z)\pmod{z^{n+1}}.
+\]
+The \emph{log-cumulants} $\ell_k(r):=[z^k]\log K_r(z)$
+satisfy $\ell_1=\kappa_1$ and
+$\ell_k=\kappa_k-\tfrac{1}{k}\sum_{j=1}^{k-1}j\,\ell_j\kappa_{k-j}$
+for $k\ge 2$.
+They are \textbf{additive}:
+$\ell_k(p\fp q)=\ell_k(p)+\ell_k(q)$ for all~$k$.
+\end{definition}
+
+\begin{definition}[Scores and Fisher information]
+\label{def:scores}
+For $r\in\PnR$ with simple roots
+$\lambda_1<\cdots<\lambda_n$, let
+$V_i(r):=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$
+(the \emph{score vector} $V=(V_1,\ldots,V_n)$),
+$\Phi_n(r):=\sum_i V_i^2$ (the \emph{Fisher information}),
+$\mathcal{R}(r):=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$
+(the \emph{repulsion energy}),
+and $\mathcal{S}(r):=\sum_{i<j}(V_i-V_j)^2/(\lambda_i-\lambda_j)^2$
+(the \emph{score-gradient energy}).
+If $r$ has a repeated root, set $\Phi_n(r)=\infty$.
+\end{definition}
+
+\begin{definition}[Graph Laplacian]\label{def:laplacian}
+The graph Laplacian of~$r$ is $L\in\R^{n\times n}$ with
+$L_{ij}=-(\lambda_i-\lambda_j)^{-2}$ for $i\ne j$ and
+$L_{ii}=\sum_{k\ne i}(\lambda_i-\lambda_k)^{-2}$.
+We have $L\mathbf{1}=0$, $L\succeq 0$, $\rank L=n-1$.
+Equivalently, $L=-\tfrac{1}{2}\mathrm{Hess}_\lambda(\log\disc(r))$.
+\end{definition}
+
+\begin{definition}[Variance and Gaussian polynomials]
+\label{def:var}
+For $r\in\PnR$: $\mu(r):=n^{-1}\sum_i\lambda_i$,
+$\sigma^2(r):=n^{-1}\sum_i(\lambda_i-\mu)^2$.
+Both are additive under~$\fp$
+(Lemma~\ref{lem:var-add}).
+The \emph{additive variance parameter}
+$u:=\sigma^2/(2(n-1))$ satisfies
+$u(p\fp q)=u(p)+u(q)$.
+The \emph{finite Gaussian} $g_t\in\PnR$ has
+$\sigma^2(g_t)=t$ and $\ell_k(g_t)=0$ for $k\ge 3$.
+The Hermite semigroup satisfies $g_s\fp g_t=g_{s+t}$.
+\end{definition}
+
+\begin{definition}[Normalised cumulant ratios]
+\label{def:tau}
+For centred $r\in\PnR$ with $u:=-\ell_2(r)>0$, define
+$\tau_k(r):=\ell_k(r)/u(r)^{k/2}$ for $k\ge 3$.
+\end{definition}
+
+\begin{lemma}[Normalisation identities]\label{lem:normalisation}
+For centred $r\in\PnR$ (i.e., $\mu(r)=0$), the parameters
+$\kappa_2$, $\ell_2$, $u$, and $\sigma^2$ are related by:
+\begin{equation}\label{eq:norm-chain}
+  \ell_2\;=\;\kappa_2\;=\;\frac{(n-2)!\,a_2}{n!}
+  \;=\;\frac{a_2}{n(n-1)},
+  \qquad
+  u\;:=\;-\ell_2\;>\;0,
+  \qquad
+  \sigma^2\;=\;2(n-1)\,u.
+\end{equation}
+Here $a_2$ is the coefficient of $x^{n-2}$ in~$r$ (so $a_2<0$
+for centred real-rooted $r$ with $n\ge 2$).
+\end{lemma}
+
+\begin{proof}
+From Definition~\ref{def:K}: $\kappa_2=(n-2)!\,a_2/n!$.
+The log-cumulant recurrence (Definition~\ref{def:K}) gives
+$\ell_2=\kappa_2-\frac{1}{2}\kappa_1^2=\kappa_2$
+when $r$ is centred ($\kappa_1=\ell_1=0$).
+From the variance formula with $a_1=0$:
+$\sigma^2=-2a_2/n=-2n(n-1)\ell_2/n=2(n-1)(-\ell_2)=2(n-1)u$.
+All three parameters are additive under $\fp$
+because $\ell_2$ is additive (Definition~\ref{def:K}).
+\end{proof}
+
+
+% ═══════════════════════════════════════════════════════════
+\section{Structural identities}\label{sec:identities}
+% ═══════════════════════════════════════════════════════════
+
+We collect the main identities connecting
+$\Phi_n$ to spectral quantities.  Throughout
+this section, $r\in\PnR$ has simple roots.
+
+\begin{theorem}[Fisher--repulsion identity]
+\label{thm:fisher-rep}
+$\Phi_n(r)=2\,\mathcal{R}(r)$.
+\end{theorem}
+
+\begin{proof}
+Expand $\Phi_n=\sum_i V_i^2=\sum_i\sum_{j\ne i}\sum_{k\ne i}(\lambda_i-\lambda_j)^{-1}(\lambda_i-\lambda_k)^{-1}$.
+The diagonal terms ($j=k$) sum to $2\sum_{i<j}(\lambda_i-\lambda_j)^{-2}=2\mathcal{R}$.
+The cross-terms ($j\ne k$, both $\ne i$) group into triples $\{a,b,c\}$, each contributing
+$(a-b)^{-1}(a-c)^{-1}+(b-a)^{-1}(b-c)^{-1}+(c-a)^{-1}(c-b)^{-1}=0$
+by the partial-fraction identity.
+\end{proof}
+
+\begin{theorem}[Fisher--Laplacian identities]
+\label{thm:fisher-lap}
+\begin{enumerate}[label=\textup{(\alph*)},nosep]
+  \item $\Phi_n=\tr(L)$.
+  \item $V=L\lambda$ \textup{(Euler identity)}.
+  \item $\lambda^T L\lambda=\binom{n}{2}$.
+  \item $\Phi_n=\|L\lambda\|^2=\lambda^T L^2\lambda$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) $\tr(L)=\sum_i\sum_{k\ne i}(\lambda_i-\lambda_k)^{-2}=2\sum_{i<j}(\lambda_i-\lambda_j)^{-2}=2\mathcal{R}=\Phi_n$.
+
+(b) $(L\lambda)_i=\sum_{j\ne i}(\lambda_i-\lambda_j)/(\lambda_i-\lambda_j)^2=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}=V_i$.
+
+(c) $\lambda^T L\lambda=V\cdot\lambda=\sum_i\lambda_i V_i=\binom{n}{2}$ by the Euler identity for $\disc$ (degree $n(n-1)$ homogeneous).
+
+(d) Immediate from $V=L\lambda$.
+\end{proof}
+
+\begin{lemma}[Score identities]\label{lem:score-ids}
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+  \item $\sum_i V_i=0$.
+  \item $\sum_i(\lambda_i-\mu)V_i=\binom{n}{2}$.
+  \item $\Phi_n=\sum_{i<j}(V_i-V_j)/(\lambda_i-\lambda_j)$.
+  \item $V_i=r''(\lambda_i)/(2r'(\lambda_i))$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\sum_i V_i=\sum_{i\ne j}(\lambda_i-\lambda_j)^{-1}=0$ (antisymmetric).
+
+(ii) $\sum_i\lambda_i V_i=\sum_{i\ne j}\lambda_i/(\lambda_i-\lambda_j)
+=\sum_{i\ne j}\bigl[1+\lambda_j/(\lambda_i-\lambda_j)\bigr]
+=n(n-1)+\sum_{i\ne j}\lambda_j/(\lambda_i-\lambda_j)$.
+Using $\sum_{i\ne j}\lambda_j/(\lambda_i-\lambda_j)
+=-\sum_{i\ne j}\lambda_i/(\lambda_j-\lambda_i)
+=-\sum_i\lambda_i V_i$,
+we get $2\sum_i\lambda_i V_i=n(n-1)$,
+so $\sum_i\lambda_i V_i=\binom{n}{2}$.
+By (i), subtracting $\mu\sum V_i=0$ gives (ii).
+
+(iii) Expand the right-hand side:
+\begin{align*}
+  \sum_{i<j}\frac{V_i-V_j}{\lambda_i-\lambda_j}
+  &=\sum_{i<j}\frac{1}{\lambda_i-\lambda_j}
+    \Bigl(\sum_{k\ne i}\frac{1}{\lambda_i-\lambda_k}
+    -\sum_{k\ne j}\frac{1}{\lambda_j-\lambda_k}\Bigr)\\
+  &=\sum_{i<j}\sum_{k\ne i}\frac{1}{(\lambda_i-\lambda_j)(\lambda_i-\lambda_k)}
+    -\sum_{i<j}\sum_{k\ne j}\frac{1}{(\lambda_i-\lambda_j)(\lambda_j-\lambda_k)}.
+\end{align*}
+Relabelling $i\leftrightarrow j$ in the second sum and combining yields
+$2\sum_{i<j}\sum_{k\ne i}1/((\lambda_i-\lambda_j)(\lambda_i-\lambda_k))$.
+Separating diagonal ($k=j$) from cross ($k\ne i,j$) terms:
+the diagonal gives $\sum_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-2}=\Phi_n$;
+the cross-terms group into triples $\{i,j,k\}$, each contributing
+$\sum_{\mathrm{cyc}}1/((a-b)(a-c))=0$
+by the same partial-fraction identity as in Theorem~\ref{thm:fisher-rep}.
+
+(iv) Since $r'(\lambda_i)=\prod_{j\ne i}(\lambda_i-\lambda_j)$, we have $V_i=r''(\lambda_i)/(2r'(\lambda_i))$.
+\end{proof}
+
+\begin{theorem}[Fisher--variance inequality]
+\label{thm:fisher-var}
+$\Phi_n(r)\cdot\sigma^2(r)\ge n(n-1)^2/4$.
+\end{theorem}
+
+\begin{proof}
+Cauchy--Schwarz on
+$\sum_i(\lambda_i-\mu)V_i=\binom{n}{2}$
+with $\sum V_i=0$:
+$\bigl|\sum(\lambda_i-\mu)V_i\bigr|^2
+\le\bigl(\sum(\lambda_i-\mu)^2\bigr)\bigl(\sum V_i^2\bigr)
+=n\sigma^2\cdot\Phi_n$.
+Hence $n\sigma^2\cdot\Phi_n\ge\binom{n}{2}^2=n^2(n-1)^2/4$.
+\end{proof}
+
+\begin{theorem}[Score-gradient inequality]
+\label{thm:sgi}
+$\mathcal{S}(r)\cdot\sigma^2(r)\ge(n-1)\Phi_n(r)/2$.
+\end{theorem}
+
+\begin{proof}
+Write $\lambda_c:=\lambda-\mu\mathbf{1}$ for the centred root vector.
+Since $L\mathbf{1}=0$, $V=L\lambda=L\lambda_c$.
+The Cauchy--Schwarz inequality for the positive semi-definite form
+$\langle u,v\rangle_L:=u^TLv$ gives
+$(\lambda_c^T L^2\lambda_c)^2
+\le(\lambda_c^T L\lambda_c)(\lambda_c^T L^3\lambda_c)$,
+i.e., $\Phi_n^2\le\binom{n}{2}\cdot\mathcal{S}$.
+Combining with the Fisher--variance inequality
+(Theorem~\ref{thm:fisher-var}):
+\[
+  \mathcal{S}\,\sigma^2
+  \;\ge\;\frac{\Phi_n^2}{\binom{n}{2}}\,\sigma^2
+  \;=\;\frac{\Phi_n\,\sigma^2}{\binom{n}{2}}\cdot\Phi_n
+  \;\ge\;\frac{n(n-1)^2/4}{n(n-1)/2}\cdot\Phi_n
+  \;=\;\frac{(n-1)\,\Phi_n}{2}.\qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Bezoutian representation]
+\label{thm:bez}
+$\Phi_n(r)=\sum_{i=1}^n r''(\lambda_i)^2
+/(4\,r'(\lambda_i)^2)
+=\|r''/2\|^2_{\Bez(r,r')}$.
+\end{theorem}
+
+\begin{proof}
+The Bezoutian matrix $\Bez(r,r')$ is the unique symmetric
+$B\in\R^{n\times n}$ satisfying
+$\sum_{i,j}B_{ij}x^{n-1-i}y^{n-1-j}
+=\bigl(r(x)r'(y)-r'(x)r(y)\bigr)/(x-y)$.
+The associated inner product is diagonal in the Lagrange basis
+$\{L_i(x)=\prod_{j\ne i}(x-\lambda_j)/\prod_{j\ne i}(\lambda_i-\lambda_j)\}$:
+$\langle f,g\rangle_{\Bez}=\sum_i f(\lambda_i)g(\lambda_i)/r'(\lambda_i)^2$
+(see~\cite{fiedler} for the diagonalisation).
+Since $V_i=r''(\lambda_i)/(2r'(\lambda_i))$
+(Lemma~\ref{lem:score-ids}(iv)), we get
+$\Phi_n=\sum V_i^2=\|r''/2\|^2_{\Bez}$.
+\end{proof}
+
+\begin{lemma}[Variance additivity]\label{lem:var-add}
+$\sigma^2(p\fp q)=\sigma^2(p)+\sigma^2(q)$.
+\end{lemma}
+
+\begin{proof}
+From the MSS coefficient formula (Definition~\ref{def:mss}):
+$c_1=a_1+b_1$, $c_2=a_2+b_2+\frac{n-1}{n}a_1 b_1$.
+Using $\sigma^2=\frac{(n-1)a_1^2-2na_2}{n^2}$:
+\begin{align*}
+  \sigma^2(p\fp q)
+  &=\frac{(n\!-\!1)(a_1\!+\!b_1)^2-2n(a_2\!+\!b_2\!+\!\tfrac{n-1}{n}a_1 b_1)}{n^2}\\
+  &=\frac{(n\!-\!1)a_1^2\!-\!2na_2}{n^2}
+   +\frac{(n\!-\!1)b_1^2\!-\!2nb_2}{n^2}
+   +\frac{2(n\!-\!1)a_1b_1\!-\!2(n\!-\!1)a_1b_1}{n^2}\\
+  &=\sigma^2(p)+\sigma^2(q).\qedhere
+\end{align*}
+\end{proof}
+
+\begin{lemma}[Derivative compatibility]\label{lem:deriv}
+$(p\fp q)'/n=(p'/n)\boxplus_{n-1}(q'/n)$.
+\end{lemma}
+
+\begin{proof}
+The monic degree-$(n-1)$ polynomial $p'/n$ has
+coefficients $\tilde a_k=(n-k)a_k/n$.
+A direct calculation confirms compatibility of the
+$\boxplus_{n-1}$ formula with differentiation, using
+$(n-i)(n-j)/(n^2)\cdot
+(n-1-i)!(n-1-j)!/((n-1)!(n-1-k)!)
+=(n-k)/n\cdot(n-i)!(n-j)!/(n!(n-k)!)$ for $i+j=k$.
+\end{proof}
+
+\begin{theorem}[Hermite heat equation]\label{thm:hermite-heat}
+The Hermite flow $r_t:=r\fp g_t$ satisfies the
+scaled backwards heat equation
+\begin{equation}\label{eq:heat}
+  \partial_t r_t(x)
+  \;=\;-\frac{1}{2(n-1)}\,r_t''(x),
+\end{equation}
+with initial condition $r_0=r$.
+\end{theorem}
+
+\begin{proof}
+The $K$-transform of the finite Gaussian is
+$K_{g_t}(z)=\exp\bigl(-\tfrac{t}{2(n-1)}z^2\bigr)
+\bmod z^{n+1}$,
+since $\ell_2(g_t)=-t/(2(n-1))$ and
+$\ell_k(g_t)=0$ for $k\ge 3$
+(Definition~\ref{def:var}).
+Hence
+$K_{r_t}(z)=K_r(z)\,K_{g_t}(z)$
+gives
+$\partial_t K_{r_t}(z)
+=-\tfrac{z^2}{2(n-1)}\,K_{r_t}(z)
+\bmod z^{n+1}$.
+Expanding $K_{r_t}(z)=\sum_{k=0}^n\kappa_k(t)\,z^k$
+yields the coefficient ODE
+\[
+  \kappa_k'(t)
+  =-\frac{1}{2(n-1)}\,\kappa_{k-2}(t)
+  \quad(k\ge 2),
+  \qquad
+  \kappa_0'=\kappa_1'=0.
+\]
+Translating to the standard coefficients
+$c_k(t)=n!\,\kappa_k(t)/(n-k)!$:
+\[
+  c_k'(t)
+  =-\frac{(n-k+2)(n-k+1)}{2(n-1)}\,c_{k-2}(t)
+  \qquad(k\ge 2).
+\]
+Now compute
+$\partial_t r_t(x)
+=\sum_{k=0}^n c_k'(t)\,x^{n-k}$
+and observe that
+$r_t''(x)
+=\sum_{j=0}^{n-2}(n{-}j)(n{-}j{-}1)\,c_j(t)\,x^{n-j-2}$;
+substituting $k=j+2$ identifies the two sums,
+giving~\eqref{eq:heat}.
+\end{proof}
+
+\begin{remark}[Context]\label{rem:heat-context}
+The heat equation~\eqref{eq:heat} is exact
+for polynomials of degree~$n$
+(no truncation is involved, since all
+coefficients lie in degrees $\le n$).
+The root ODE~\eqref{eq:root-ode} is a deterministic
+analogue of the Dyson Brownian motion
+for eigenvalues of random Hermitian
+matrices~\cite{dyson};
+here it arises purely algebraically
+from the $K$-transform.
+\end{remark}
+
+\begin{corollary}[Root ODE]\label{cor:root-ode}
+Along the Hermite flow $r_t=r\fp g_t$, each simple
+root $\lambda_i(t)$ of $r_t$ satisfies
+\begin{equation}\label{eq:root-ode}
+  \dot\lambda_i(t)
+  \;=\;\frac{V_i(t)}{n-1}
+  \;=\;\frac{1}{n-1}\sum_{j\ne i}
+  \frac{1}{\lambda_i(t)-\lambda_j(t)}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Differentiating $r_t(\lambda_i(t))=0$ in~$t$ and
+applying Theorem~\ref{thm:hermite-heat}:
+\[
+  0=\partial_t r_t(\lambda_i)
+  +r_t'(\lambda_i)\,\dot\lambda_i
+  =-\frac{r_t''(\lambda_i)}{2(n-1)}
+  +r_t'(\lambda_i)\,\dot\lambda_i,
+\]
+so $\dot\lambda_i
+=r_t''(\lambda_i)/(2(n-1)\,r_t'(\lambda_i))
+=V_i/(n-1)$
+by Lemma~\ref{lem:score-ids}\textup{(iv)}.
+\end{proof}
+
+\begin{theorem}[De Bruijn identity]\label{thm:debruijn}
+Along the Hermite flow $r_t=r\fp g_t$:
+$\frac{d}{dt}\log|\disc(r_t)|
+=\frac{2}{n-1}\Phi_n(r_t)$.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:root-ode},
+$\dot\lambda_i=V_i/(n-1)$.
+Since $\disc(r)=\prod_{i<j}(\lambda_i-\lambda_j)^2$,
+we have $\partial_{\lambda_i}\log\disc=2V_i$.
+Therefore
+$\frac{d}{dt}\log\disc
+=\sum_i 2V_i\cdot V_i/(n-1)
+=2\Phi_n/(n-1)$.
+\end{proof}
+
+
+% ═══════════════════════════════════════════════════════════
+\section{Proved cases of the Stam inequality}
+\label{sec:proved}
+% ═══════════════════════════════════════════════════════════
+
+\subsection{The case \texorpdfstring{$n=2$}{n=2}: equality}
+\label{ssec:n2}
+
+For $n=2$: $\Phi_2(r)=2/(\lambda_1-\lambda_2)^2
+=1/(2\sigma^2)$, so $1/\Phi_2=2\sigma^2$.
+The Stam inequality reduces to variance additivity
+(Lemma~\ref{lem:var-add}), with equality.
+
+\subsection{The case \texorpdfstring{$n=3$}{n=3}: SOS proof}
+\label{ssec:n3}
+
+\begin{theorem}[Stam for \texorpdfstring{$n=3$}{n=3}]
+\label{thm:n3-stam}
+For centred $p,q\in\PnR[3]$ with $u_p,u_q>0$,
+let $r=p\fp q$, $w=u_p/(u_p+u_q)$,
+$\alpha:=\ell_3(p)/u_p$, $\beta:=\ell_3(q)/u_q$.
+Then
+\begin{equation}\label{eq:D3}
+  D_3:=\frac{1}{\Phi_3(r)}-\frac{1}{\Phi_3(p)}
+  -\frac{1}{\Phi_3(q)}
+  =\frac{3}{2}\bigl[(1-w)\alpha^2
+  +w(1-w)(\alpha-\beta)^2+w\beta^2\bigr]\ge 0.
+\end{equation}
+Equality holds \textup{(}for $w\in(0,1)$\textup{)}
+iff $\ell_3(p)=\ell_3(q)=0$.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1: Log-cumulants for the depressed cubic.}
+Let $r(x)=x^3+e_2 x+e_3$ be a centred monic cubic.
+The $K$-transform coefficients
+(Definition~\ref{def:K}) are
+$\kappa_0=1$, $\kappa_1=0$,
+$\kappa_2=\frac{1!\cdot e_2}{3!}=\frac{e_2}{6}$,
+$\kappa_3=\frac{0!\cdot e_3}{3!}=\frac{e_3}{6}$,
+so $K_r(z)=1+\frac{e_2}{6}z^2+\frac{e_3}{6}z^3$.
+Since $\log(1+x)=x-\tfrac{x^2}{2}+\cdots$
+and $K_r$ has no $z^1$ term:
+$\ell_2=[z^2]\log K_r=\kappa_2=e_2/6$,
+$\ell_3=[z^3]\log K_r=\kappa_3=e_3/6$.
+(The cross-term $\kappa_2^2 z^4/2$
+contributes to $[z^4]\log K_r$,
+not to~$[z^3]$.)
+Hence $u:=-\ell_2=-e_2/6>0$ and
+$e_2=-6u$, $e_3=6\ell_3$.
+
+\emph{Step~2: $\Phi_3$ via
+the repulsion energy.}
+Denote the roots $\lambda_1<\lambda_2<\lambda_3$
+and the three squared gaps
+$D_{ij}:=(\lambda_i-\lambda_j)^2$.
+Since $r'(\lambda_i)
+=\prod_{j\ne i}(\lambda_i-\lambda_j)$,
+we have
+$r'(\lambda_i)^2
+= \prod_{j\ne i}D_{ij}$.
+Hence the sum of products of two
+squared gaps equals
+$\sum_i r'(\lambda_i)^2$.
+For $r'(x)=3x^2+e_2$ and
+the Newton power sums
+$p_2=-2e_2$, $p_4=2e_2^2$:
+\[
+  \sum_{i=1}^3 r'(\lambda_i)^2
+  = \sum_i (3\lambda_i^2+e_2)^2
+  = 9\,p_4+6\,e_2\,p_2+3\,e_2^2
+  = 18e_2^2-12e_2^2+3e_2^2
+  = 9e_2^2.
+\]
+The discriminant is
+$\Delta_3=\prod_{i<j}D_{ij}
+  =-4e_2^3-27e_3^2
+  =864\,u^3-972\,\ell_3^2$,
+and the repulsion energy decomposes as
+\[
+  \mathcal{R}
+  =\sum_{i<j}\frac{1}{D_{ij}}
+  =\frac{\sum_i r'(\lambda_i)^2}{\Delta_3}
+  =\frac{9e_2^2}{\Delta_3}.
+\]
+By Theorem~\ref{thm:fisher-rep},
+$\Phi_3=2\mathcal{R}
+  =18e_2^2/\Delta_3
+  =648\,u^2/(864\,u^3-972\,\ell_3^2)$.
+
+\emph{Step~3: Closed-form reciprocal.}
+\begin{equation}\label{eq:inv-phi3}
+  \frac{1}{\Phi_3(r)}
+  =\frac{864\,u^3-972\,\ell_3^2}{648\,u^2}
+  =\frac{4u}{3}-\frac{3\ell_3^2}{2u^2},
+\end{equation}
+where the last equality uses
+$864/648=4/3$ and $972/648=3/2$.
+
+\emph{Step~4: Defect computation.}
+Since $u$ and $\ell_3$ are additive
+under~$\fp$, set $u_r=u_p+u_q$ and
+$\ell_{3,r}=\ell_{3,p}+\ell_{3,q}$.
+With $\alpha=\ell_{3,p}/u_p$ and
+$\beta=\ell_{3,q}/u_q$:
+\begin{align*}
+  D_3 &= \frac{4u_r}{3}
+         -\frac{3\ell_{3,r}^2}{2u_r^2}
+         -\frac{4u_p}{3}
+         +\frac{3\ell_{3,p}^2}{2u_p^2}
+         -\frac{4u_q}{3}
+         +\frac{3\ell_{3,q}^2}{2u_q^2}\\[4pt]
+      &= \frac{3}{2}\biggl[
+           \alpha^2+\beta^2
+           -\frac{(u_p\alpha+u_q\beta)^2}
+                 {(u_p+u_q)^2}
+         \biggr],
+\end{align*}
+since the linear terms
+$\tfrac{4}{3}(u_r{-}u_p{-}u_q)=0$
+cancel by additivity.
+Writing $w=u_p/(u_p+u_q)$:
+\begin{align*}
+  D_3 &= \frac{3}{2}\bigl[
+    \alpha^2+\beta^2
+    -w^2\alpha^2
+    -2w(1{-}w)\alpha\beta
+    -(1{-}w)^2\beta^2
+  \bigr]\\[4pt]
+  &= \frac{3}{2}\bigl[
+    (1{-}w^2)\alpha^2
+    -2w(1{-}w)\alpha\beta
+    +w(2{-}w)\beta^2
+  \bigr].
+\end{align*}
+Since $(1{-}w)(1{+}w)=1{-}w^2$
+and $w(2{-}w)=w(1{-}w)+w$:
+\[
+  D_3 = \frac{3}{2}\bigl[
+    (1{-}w)\alpha^2
+    +w(1{-}w)(\alpha{-}\beta)^2
+    +w\beta^2
+  \bigr]\ge 0.
+\]
+Each of the three summands is
+manifestly non-negative;
+for $w\in(0,1)$, all vanish iff
+$\alpha=\beta=0$,
+i.e.\ $\ell_3(p)=\ell_3(q)=0$.
+\end{proof}
+
+\begin{remark}\label{rem:n3-mech}
+The structure of $1/\Phi_3$ is
+$1/\Phi_3=A(u)+Q(\ell_3/u)$ where
+$A(u)=4u/3$ is additive under~$\fp$ and
+$Q(\cdot)=-\tfrac{3}{2}(\cdot)^2$ is concave.
+The Stam defect therefore reduces to
+the concavity defect of a quadratic
+composed with a weighted-linear mixing law.
+The Hessian of $1/\Phi_3$ in
+$(u,\ell_3)$-coordinates is \textbf{not}
+negative semi-definite, so the result does
+not follow from global concavity of
+$1/\Phi_3$ as a function of both variables.
+\end{remark}
+
+\subsection{Gaussian-input Stam for all \texorpdfstring{$n$}{n}}
+
+\begin{theorem}[Gaussian-input Stam inequality]
+\label{thm:stam-gauss}
+For all $r\in\PnR$ and $t>0$:
+$1/\Phi_n(r\fp g_t)\ge 1/\Phi_n(r)+1/\Phi_n(g_t)$.
+Equality holds on the Hermite manifold.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1: Gaussian Fisher information.}
+The finite Gaussian $g_t$ has roots at the
+$n$~zeros of the probabilist Hermite polynomial $\mathrm{He}_n$
+scaled so that $\sigma^2(g_t)=t$ and
+$\ell_k(g_t)=0$ for $k\ge 3$.
+The Hermite differential equation
+$\mathrm{He}_n''(x)-x\,\mathrm{He}_n'(x)+n\,\mathrm{He}_n(x)=0$
+at a root $\lambda_i$ (where $\mathrm{He}_n(\lambda_i)=0$) gives
+$\mathrm{He}_n''(\lambda_i)=\lambda_i\,\mathrm{He}_n'(\lambda_i)$,
+hence
+$V_i=\mathrm{He}_n''(\lambda_i)/(2\mathrm{He}_n'(\lambda_i))
+=\lambda_i/2$.
+After scaling, $V_i(g_t)=c\,(\lambda_i-\mu)$
+for a constant $c$ depending only on $n$ and $t$,
+so equality holds in the Fisher--variance inequality
+(Theorem~\ref{thm:fisher-var}):
+$\Phi_n(g_t)=n(n-1)^2/(4t)$
+and $1/\Phi_n(g_t)=4t/(n(n-1)^2)$.
+
+\emph{Step~2: Root ODE.}
+Let $r_t:=r\fp g_t$ with roots
+$\lambda_1(t)<\cdots<\lambda_n(t)$.
+By Corollary~\ref{cor:root-ode},
+each root satisfies
+$\dot\lambda_i = V_i/(n-1)$,
+where $V_i=V_i(r_t)$.
+
+\emph{Step~3: Score ODE.}
+Differentiating
+$V_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$
+with respect to~$t$:
+\[
+  \dot V_i
+  = -\sum_{j\ne i}
+    \frac{\dot\lambda_i-\dot\lambda_j}
+         {(\lambda_i-\lambda_j)^2}
+  = -\frac{1}{n-1}\sum_{j\ne i}
+    \frac{V_i-V_j}{(\lambda_i-\lambda_j)^2}
+  = -\frac{(LV)_i}{n-1},
+\]
+where $L$ is the graph Laplacian
+(Definition~\ref{def:laplacian}).
+
+\emph{Step~4: Fisher dissipation.}
+Define the \emph{score-gradient energy}
+$\mathcal{S}:=V^T LV
+  =\sum_{i<j}(V_i-V_j)^2
+   /(\lambda_i-\lambda_j)^2$.
+Then
+$\frac{d}{dt}\Phi_n(r_t)
+  = 2\sum_i V_i\dot V_i
+  = -\frac{2}{n-1}V^T L V
+  = -\frac{2}{n-1}\mathcal{S}$.
+Since $L\succeq 0$, we have
+$\mathcal{S}\ge 0$, hence
+$\Phi_n'(r_t)\le 0$.
+
+\emph{Step~5: Lower bound on $\mathcal{S}/\Phi_n^2$.}
+Since $L\mathbf{1}=0$, $V=L\lambda=L\lambda_c$
+where $\lambda_c:=\lambda-\mu\mathbf{1}$.
+Hence $\Phi_n=V^T V=\lambda_c^T L^2\lambda_c$
+and $\mathcal{S}=V^T LV=\lambda_c^T L^3\lambda_c$.
+The Cauchy--Schwarz inequality for the
+semi-definite form $\langle u,v\rangle_L=u^T Lv$ gives
+$(\lambda_c^T L^2\lambda_c)^2
+\le(\lambda_c^T L\lambda_c)
+   (\lambda_c^T L^3\lambda_c)
+=\binom{n}{2}\,\mathcal{S}$,
+hence $\Phi_n^2\le\binom{n}{2}\,\mathcal{S}$,
+i.e.,
+\[
+  \frac{\mathcal{S}}{\Phi_n^2}
+  \;\ge\;\frac{1}{\binom{n}{2}}
+  \;=\;\frac{2}{n(n-1)}.
+\]
+
+\emph{Step~6: Integration.}
+Since
+$\bigl(1/\Phi_n\bigr)'
+  = -\Phi_n'/(\Phi_n^2)
+  = \frac{2}{n-1}\cdot
+    \frac{\mathcal{S}}{\Phi_n^2}
+  \ge \frac{2}{n-1}\cdot
+      \frac{2}{n(n-1)}
+  = \frac{4}{n(n-1)^2}$,
+integrating from $0$ to $t$:
+\[
+  \frac{1}{\Phi_n(r_t)}
+  -\frac{1}{\Phi_n(r)}
+  \ge \frac{4t}{n(n-1)^2}
+  = \frac{1}{\Phi_n(g_t)}.
+\]
+
+\emph{Equality saturation.}
+When $r=g_s$ is itself a finite Gaussian,
+$r_t=g_s\fp g_t=g_{s+t}$,
+and the scores satisfy
+$V_i(g_u)=c(\lambda_i-\mu)$ for every $u>0$
+(Step~1).
+Then $\mathcal{S}/\Phi_n^2=1/\binom{n}{2}$ exactly,
+so $(1/\Phi_n)'=4/(n(n-1)^2)$ for all~$t>0$,
+and the integrated bound is attained with equality.
+\end{proof}
+
+
+% ═══════════════════════════════════════════════════════════
+\section{Proof of the Stam inequality for all \texorpdfstring{$n$}{n}}
+\label{sec:full-proof}
+% ═══════════════════════════════════════════════════════════
+
+We now present the full proof of the finite free Stam
+inequality, following Garza~Vargas, Srivastava, and
+Stier~\cite{GVS}.
+The argument uses three ingredients:
+(1)~a relation between score vectors mediated
+by the Jacobian of the root map;
+(2)~a contraction inequality for this Jacobian,
+derived from variance additivity and a convexity
+result on hyperbolic polynomials;
+(3)~Blachman's classical argument~\cite{blachman}.
+
+\subsection{The root map and its Jacobian}
+
+\begin{definition}[Root map]\label{def:root-map}
+For $p,q\in\PnR$ with root vectors
+$\alpha=(\alpha_1\ge\cdots\ge\alpha_n)$ and
+$\beta=(\beta_1\ge\cdots\ge\beta_n)$,
+define $\Omega_{\fp}(\alpha,\beta)\in\R^n$ to be
+the ordered root vector of $p\fp q$.
+By~\cite{MSS2}, $\Omega_{\fp}$ is well-defined and
+takes values in \emph{ordered} real vectors.
+Write $\gamma=\Omega_{\fp}(\alpha,\beta)$.
+Let $J_{\fp}$ denote the Jacobian
+(the $n\times 2n$ matrix of partial derivatives)
+of $\Omega_{\fp}$ at $(\alpha,\beta)$,
+defined whenever the roots are simple.
+\end{definition}
+
+\begin{lemma}[Approximation by simple roots]
+\label{lem:approx}
+Let $T_\varepsilon:=(1-\varepsilon\,d/dx)^n$.
+For any monic real-rooted $p$ of degree~$n$:
+\begin{enumerate}[label=\textup{(\alph*)},nosep]
+  \item $T_\varepsilon p$ is monic, real-rooted of
+    degree~$n$, with simple roots
+    \textup{(}Nuij~\cite{nuij}\textup{)}.
+  \item $\Phi_n(T_\varepsilon p)\to\Phi_n(p)$
+    as $\varepsilon\to 0$.
+  \item $(T_\varepsilon p)\fp(T_\varepsilon q)
+    =T_\varepsilon^2(p\fp q)$,
+    since $\fp$ commutes with differential
+    operators~\cite{MSS2}.
+\end{enumerate}
+Hence it suffices to prove
+Theorem~\textup{\ref{thm:stam-full}}
+when $p$, $q$, and $p\fp q$ all have
+simple roots.
+\end{lemma}
+
+\subsection{Score vectors and the Jacobian}
+
+\begin{proposition}[Score--Jacobian relation]
+\label{prop:score-jac}
+Let $p,q\in\PnR$ have simple roots with
+root vectors $\alpha,\beta$ and
+$\gamma=\Omega_{\fp}(\alpha,\beta)$.
+For any $a,b\ge 0$:
+\begin{equation}\label{eq:score-jac}
+  J_{\fp}\begin{pmatrix}a\,V(\alpha)\\b\,V(\beta)\end{pmatrix}
+  =(a+b)\,V(\gamma),
+\end{equation}
+where $V(\alpha)=\bigl(\sum_{j\ne i}(\alpha_i-\alpha_j)^{-1}\bigr)_{i=1}^n$
+is the score vector.
+\end{proposition}
+
+\begin{proof}
+For $t\ge 0$, define
+$p_t:=\exp(-\tfrac{t}{2}\partial_x^2)\,p$
+with ordered root vector $\alpha(t)$, and
+similarly $q_t,r_t$ with $\beta(t),\gamma(t)$.
+Since $\fp$ commutes with any differential
+operator, $r_{(a+b)t}=p_{at}\fp q_{bt}$,
+whence $\gamma((a+b)t)
+=\Omega_{\fp}(\alpha(at),\beta(bt))$.
+Differentiating at $t=0$ and using the chain rule:
+\[
+  (a+b)\,\gamma'(0)
+  =J_{\fp}\begin{pmatrix}
+    a\,\alpha'(0)\\b\,\beta'(0)
+  \end{pmatrix}.
+\]
+By Lemma~\ref{lem:score-ids}\textup{(iv)},
+$\alpha'_i(0)
+=p''(\alpha_i)/(2p'(\alpha_i))
+=V_i(\alpha)$
+(the same computation as in
+Corollary~\ref{cor:root-ode}).
+\end{proof}
+
+\subsection{Jacobian contraction}
+
+\begin{proposition}[Jacobian contraction on $V$]
+\label{prop:jac-contract}
+Let $V:=\{(u,v)\in\R^n\times\R^n:
+u^T\mathbf{1}=v^T\mathbf{1}=0\}$.
+For all $(u,v)\in V$:
+\begin{equation}\label{eq:jac-contract}
+  \bigl\|J_{\fp}(u,v)\bigr\|^2
+  \;\le\;\|u\|^2+\|v\|^2.
+\end{equation}
+\end{proposition}
+
+The proof of this proposition requires two
+intermediate results.
+
+\begin{lemma}[Hessian identity]
+\label{lem:hessian-id}
+Write $H^{(i)}_{\fp}:=\mathrm{Hess}\,\Omega_{\fp,i}$
+for the Hessian of the $i$-th coordinate function
+of $\Omega_{\fp}$ at $(\alpha,\beta)$.
+Then for all $w=(u,v)\in V$:
+\begin{equation}\label{eq:hessian-id}
+  w^T J_{\fp}J_{\fp}^T w
+  \;=\;\|w\|^2
+  -\sum_{i=1}^n\gamma_i\,w^T H^{(i)}_{\fp}\,w.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix $w=(u,v)\in V$ and consider the paths
+$\alpha(t):=\alpha+tu$, $\beta(t):=\beta+tv$,
+$\gamma(t):=\Omega_{\fp}(\alpha(t),\beta(t))$.
+By variance additivity (Lemma~\ref{lem:var-add})
+applied to root vectors:
+\[
+  \frac{1}{n}\sum_i\gamma_i(t)^2
+  -\Bigl(\frac{1}{n}\sum_i\gamma_i(t)\Bigr)^{\!2}
+  =\mathrm{Var}(\alpha(t))+\mathrm{Var}(\beta(t)).
+\]
+Since $(u,v)\in V$, the means
+$\frac{1}{n}\sum\alpha_i(t)$
+and $\frac{1}{n}\sum\beta_i(t)$
+(and hence $\frac{1}{n}\sum\gamma_i(t)$) are
+constant in~$t$.
+Differentiating the equation
+$\frac{1}{n}\sum_i\gamma_i(t)^2
+=\mathrm{Var}(\alpha(t))+\mathrm{Var}(\beta(t))
++\mathrm{const}$
+twice at $t=0$:
+\[
+  \frac{1}{n}\sum_i\bigl[
+    (D_w\gamma_i)^2+\gamma_i\,D_w^2\gamma_i
+  \bigr]
+  =\frac{1}{n}(\|u\|^2+\|v\|^2),
+\]
+since $\partial_t^2[\|\alpha+tu\|^2]=2\|u\|^2$
+and similarly for~$v$.
+Now $\sum_i(D_w\gamma_i)^2=w^T J_{\fp}J_{\fp}^T w$
+and $D_w^2\gamma_i=w^T H^{(i)}_{\fp}w$,
+giving~\eqref{eq:hessian-id}.
+\end{proof}
+
+\begin{lemma}[PSD Hessian sum]
+\label{lem:psd-hess}
+For any $c_1\ge\cdots\ge c_n$,
+the matrix $\sum_{i=1}^n c_i\,H^{(i)}_{\fp}$
+is positive semi-definite.
+\end{lemma}
+
+\begin{proof}
+Consider the multivariate polynomial
+\[
+  f(x,a_1,\ldots,a_n,b_1,\ldots,b_n)
+  :=\mathop{\mathbb{E}}_{\pi\in S_n}
+  \prod_{i=1}^n(x-a_i-b_{\pi(i)}),
+\]
+which is homogeneous and, since $\fp$ preserves
+real-rootedness, hyperbolic in the direction
+$e_1=(1,0,\ldots,0)$.
+Its roots in~$x$ (at fixed $a=\alpha$, $b=\beta$)
+are the entries $\gamma_i$ of
+$\Omega_{\fp}(\alpha,\beta)$.
+By a theorem of Bauschke, G\"uler, Lewis,
+and Sendov~\cite{BGLS},
+the partial sums
+$\sigma_k(a,b):=\sum_{i=1}^k\gamma_i(a,b)$
+are convex functions; in particular,
+$\mathrm{Hess}\,\sigma_k\succeq 0$.
+Since the $c_i$ are decreasing,
+$\sum c_i\gamma_i$ is a positive linear
+combination of the~$\sigma_k$,
+hence $\mathrm{Hess}(\sum c_i\gamma_i)
+=\sum c_i H^{(i)}_{\fp}\succeq 0$.
+\end{proof}
+
+\begin{proof}[Proof of
+Proposition~\textup{\ref{prop:jac-contract}}]
+For $(u,v)\in V$, by
+Lemma~\ref{lem:hessian-id}:
+\[
+  \|J_{\fp}(u,v)\|^2
+  =\|u\|^2+\|v\|^2
+  -\sum_{i=1}^n\gamma_i\,w^TH^{(i)}_{\fp}\,w.
+\]
+The roots $\gamma_1\ge\cdots\ge\gamma_n$ are ordered,
+so Lemma~\ref{lem:psd-hess} (with $c_i=\gamma_i$)
+gives $\sum\gamma_i\,w^TH^{(i)}_{\fp}\,w\ge 0$.
+\end{proof}
+
+\subsection{Main theorem}
+
+\begin{theorem}[Finite free Stam inequality]
+\label{thm:stam-full}
+For all $n\ge 2$ and $p,q\in\PnR$:
+\begin{equation}\label{eq:stam-full}
+  \frac{1}{\Phi_n(p\fp q)}
+  \;\ge\;\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:approx}, we may assume
+$p$, $q$, and $r:=p\fp q$ all have simple roots.
+Write $\alpha,\beta,\gamma$ for their ordered
+root vectors.
+
+\emph{Step~1: Score vectors are in~$V$.}
+By Lemma~\ref{lem:score-ids}\textup{(i)},
+$\sum_i V_i(\alpha)=0$ and
+$\sum_i V_i(\beta)=0$,
+so $(V(\alpha),V(\beta))\in V$.
+
+\emph{Step~2: Combine contraction with
+score--Jacobian relation.}
+Proposition~\ref{prop:jac-contract} with
+$u=aV(\alpha)$ and $v=bV(\beta)$
+(for $a,b>0$ to be chosen) gives
+\[
+  \bigl\|J_{\fp}(aV(\alpha),bV(\beta))\bigr\|^2
+  \le a^2\,\Phi_n(p)+b^2\,\Phi_n(q).
+\]
+By Proposition~\ref{prop:score-jac},
+the left-hand side equals
+$(a+b)^2\,\Phi_n(r)$.
+Hence
+\begin{equation}\label{eq:ab-ineq}
+  (a+b)^2\,\Phi_n(r)
+  \;\le\;a^2\,\Phi_n(p)+b^2\,\Phi_n(q).
+\end{equation}
+
+\emph{Step~3: Blachman's choice.}
+Set $a=1/\Phi_n(p)$ and $b=1/\Phi_n(q)$.
+Then~\eqref{eq:ab-ineq} becomes
+\[
+  \Bigl(\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}\Bigr)^{\!2}
+  \Phi_n(r)
+  \;\le\;\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\]
+Dividing both sides by
+$\bigl(1/\Phi_n(p)+1/\Phi_n(q)\bigr)\Phi_n(r)>0$
+yields~\eqref{eq:stam-full}.
+\end{proof}
+
+
+% ═══════════════════════════════════════════════════════════
+\section{Discussion}\label{sec:discussion}
+% ═══════════════════════════════════════════════════════════
+
+The finite free Stam inequality
+(Theorem~\ref{thm:stam-full}) is now established
+for all $n\ge 2$.
+The proof combines the commutation of $\fp$ with
+differential operators, variance additivity, and the
+convexity theory of hyperbolic polynomials.
+The structural identities developed in
+Section~\ref{sec:identities}
+(Fisher--repulsion, Laplacian, Bezoutian)
+and the Hermite heat equation
+(Theorem~\ref{thm:hermite-heat}) provide
+complementary perspectives.
+The independent proofs for $n\le 3$
+(Theorem~\ref{thm:n3-stam})
+and for Gaussian inputs
+(Theorem~\ref{thm:stam-gauss})
+use different techniques
+(sum-of-squares and dissipation, respectively)
+and yield additional information
+such as exact defect formulas.
+
+\begin{remark}[Equality characterisation]
+For $n=3$, Theorem~\ref{thm:n3-stam} shows
+that equality in the Stam inequality holds
+(for inputs with $u_p,u_q>0$)
+if and only if $\ell_3(p)=\ell_3(q)=0$,
+i.e., both inputs are finite Gaussians.
+The characterisation of equality for
+general~$n$ remains an interesting open question.
+\end{remark}
+
+
+% ═══════════════════════════════════════════════════════════
+\section*{References}
+% ═══════════════════════════════════════════════════════════
+
+\begin{thebibliography}{99}
+
+\bibitem{BGLS}
+H.~H.~Bauschke, O.~G\"uler, A.~S.~Lewis,
+and H.~S.~Sendov,
+\emph{Hyperbolic polynomials and convex analysis},
+Canad.\ J.\ Math.\ \textbf{53} (2001), 470--488.
+
+\bibitem{bb}
+J.~Borcea and P.~Br\"and\'en,
+\emph{The {L}ee--{Y}ang and {P}\'olya--{S}chur programs.
+{I}.\ {L}inear operators preserving stability},
+Invent.\ Math.\ \textbf{177} (2009), 541--569.
+
+\bibitem{blachman}
+N.~M.~Blachman,
+\emph{The convolution inequality for entropy powers},
+IEEE Trans.\ Inform.\ Theory \textbf{IT-11} (1965),
+267--271.
+
+\bibitem{dembo}
+A.~Dembo, T.~M.~Cover, and J.~A.~Thomas,
+\emph{Information-theoretic inequalities},
+IEEE Trans.\ Inform.\ Theory \textbf{37} (1991),
+1501--1518.
+
+\bibitem{dyson}
+F.~J.~Dyson,
+\emph{A {B}rownian-motion model for the eigenvalues
+of a random matrix},
+J.~Math.\ Phys.\ \textbf{3} (1962), 1191--1198.
+
+\bibitem{fiedler}
+M.~Fiedler,
+\emph{Hankel and {L}oewner matrices},
+Linear Algebra Appl.\ \textbf{58} (1984), 75--95.
+
+\bibitem{GVS}
+J.~Garza~Vargas, N.~Srivastava, and Z.~Stier,
+\emph{The finite free {S}tam inequality},
+preprint, 2026.
+
+\bibitem{MSS1}
+A.~Marcus, D.~A.~Spielman, and N.~Srivastava,
+\emph{Interlacing families {I}: Bipartite {R}amanujan
+graphs of all degrees},
+Ann.\ of Math.\ (2) \textbf{182} (2015), 307--325.
+
+\bibitem{MSS2}
+A.~Marcus, D.~A.~Spielman, and N.~Srivastava,
+\emph{Interlacing families {II}: Mixed characteristic
+polynomials and the {K}adison--{S}inger problem},
+Ann.\ of Math.\ (2) \textbf{182} (2015), 327--350.
+
+\bibitem{nuij}
+W.~Nuij,
+\emph{A note on hyperbolic polynomials},
+Math.\ Scand.\ \textbf{23} (1968), 69--72.
+
+\bibitem{stam}
+A.~J.~Stam,
+\emph{Some inequalities satisfied by the quantities of
+information of {F}isher and {S}hannon},
+Inform.\ Control \textbf{2} (1959), 101--112.
+
+\bibitem{voiculescu}
+D.~V.~Voiculescu, K.~J.~Dykema, and A.~Nica,
+\emph{Free Random Variables},
+CRM Monograph Series, vol.~1, Amer.\ Math.\ Soc.,
+Providence, RI, 1992.
+
+\end{thebibliography}
+
+\end{document}
