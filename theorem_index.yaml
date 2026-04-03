@@ -1,0 +1,31 @@
+schema_version: 0.1.0
+last_updated: 2026-04-03
+status: scaffold-only
+
+id_policy:
+  format: collection.work.local-slug.kind.sequence
+  examples:
+    - books.ma1005.ch01.definition.001
+    - lmfi.memoire.sec01.theorem.003
+    - undergrad.ntypes.section02.proposition.001
+  rules:
+    - ids must be stable once published
+    - ids must be ASCII-safe
+    - ids must encode collection before local work scope
+    - multilingual variants should link through metadata, not through duplicate ids
+
+required_fields:
+  - id
+  - label
+  - collection
+  - source_path
+  - source_locator
+  - language
+  - topic_tags
+  - dependencies
+  - source_ids
+  - proof_status
+  - extraction_status
+  - normalization_status
+
+entries: []

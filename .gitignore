@@ -8,9 +8,16 @@
 !**/*.tex
 !**/*.pdf
 !**/*.m
+!**/*.md
+!**/*.yaml
+!**/.gitkeep
 
 # Keep this file tracked
 !.gitignore
+.agent/**
+.claude/**
+.vscode/**
+.tmp/**
 *.fls
 *.aux
 *.log

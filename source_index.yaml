@@ -1,0 +1,189 @@
+schema_version: 0.1.0
+last_updated: 2026-04-03
+
+authority_tiers:
+  - id: primary-local
+    meaning: author-maintained source within this repository and preferred for local extraction
+  - id: secondary-local
+    meaning: local supporting notes or translations that are useful but not the first canonical source
+  - id: provisional-local
+    meaning: drafts, review materials, or incomplete writeups requiring caution
+
+collection_defaults:
+  books:
+    authority_tier: primary-local
+    extraction_priority: high
+    default_languages: [en, es]
+  lmfi:
+    authority_tier: primary-local
+    extraction_priority: high
+    default_languages: [en, es, fr]
+  undergrad:
+    authority_tier: primary-local
+    extraction_priority: very-high
+    default_languages: [en, es]
+  first-proof:
+    authority_tier: provisional-local
+    extraction_priority: medium
+    default_languages: [en]
+
+sources:
+  - id: books-ma1005-en
+    collection: books
+    title: Differential Equations Course Notes
+    author: Juan Ignacio Padilla Barrientos
+    language: en
+    path: Books/MA 1005_en.tex
+    companion_paths:
+      - Books/chapters_en
+      - Books/style/springer_custom_en.sty
+    source_type: course-notes
+    mathematical_level: early-undergraduate
+    topic_tags: [differential-equations, ode, calculus-review, laplace-transform]
+    prerequisites: [calculus-ii, linear-algebra]
+    scope: six-chapter introductory ordinary differential equations notes
+    reliability_tier: primary-local
+    canonical_use: [definitions, exposition, examples, exercises]
+    notation_warnings:
+      - macro '\LL' denotes Laplace transform in this collection
+    extraction_priority: high
+
+  - id: books-ma1005-es
+    collection: books
+    title: Ecuaciones Diferenciales
+    author: Juan Ignacio Padilla Barrientos
+    language: es
+    path: Books/MA 1005_es.tex
+    companion_paths:
+      - Books/chapters_es
+      - Books/style/springer_custom.sty
+    source_type: course-notes
+    mathematical_level: early-undergraduate
+    topic_tags: [differential-equations, ode, calculus-review, transformada-laplace]
+    prerequisites: [calculo-ii, algebra-lineal]
+    scope: six-chapter introductory ordinary differential equations notes in Spanish
+    reliability_tier: primary-local
+    canonical_use: [definitions, exposition, examples, exercises]
+    notation_warnings:
+      - macro '\LL' denotes Laplace transform in this collection
+    extraction_priority: high
+
+  - id: books-notas-1005-padilla
+    collection: books
+    title: Notas 1005 Padilla
+    author: Juan Ignacio Padilla Barrientos
+    language: es
+    path: Books/Notas 1005 Padilla.tex
+    source_type: course-notes
+    mathematical_level: early-undergraduate
+    topic_tags: [differential-equations]
+    prerequisites: [calculo-ii, algebra-lineal]
+    scope: alternate or legacy MA 1005 notes
+    reliability_tier: secondary-local
+    canonical_use: [comparison, fallback-reference]
+    notation_warnings: []
+    extraction_priority: medium
+
+  - id: lmfi-memoire-en
+    collection: lmfi
+    title: Imaginaries in Pairs of Algebraically Closed Fields
+    author: Juan Ignacio Padilla Barrientos
+    language: en
+    path: LMFI/Memoire/Memoire_en.tex
+    companion_paths:
+      - LMFI/macros.tex
+    source_type: memoir
+    mathematical_level: graduate
+    topic_tags: [model-theory, stability-theory, algebraically-closed-fields, imaginaries]
+    prerequisites: [first-order-logic, model-theory, stability-theory, algebra]
+    scope: long-form graduate model theory writeup
+    reliability_tier: primary-local
+    canonical_use: [reference-proofs, terminology, advanced-exposition]
+    notation_warnings:
+      - macro '\LL' denotes first-order language in LMFI materials
+      - verify theorem provenance against cited external references when extracting
+    extraction_priority: high
+
+  - id: lmfi-td-sheets
+    collection: lmfi
+    title: LMFI Teaching Sheets and Exercises
+    author: Juan Ignacio Padilla Barrientos
+    language: multi
+    path: LMFI
+    source_type: exercise-sheets-and-notes
+    mathematical_level: advanced-undergraduate-to-graduate
+    topic_tags: [logic, computability, model-theory, sets]
+    prerequisites: [proof-writing, logic]
+    scope: TD sheets, exercise sheets, and short topical notes across multiple languages
+    reliability_tier: primary-local
+    canonical_use: [exercise-indexing, topic-mapping, terminology-comparison]
+    notation_warnings:
+      - language variants should be linked, not merged blindly
+    extraction_priority: high
+
+  - id: undergrad-n-types
+    collection: undergrad
+    title: El espacio de n-tipos / Type Space
+    author: Juan Ignacio Padilla Barrientos
+    language: multi
+    path: Undergrad/El espacio de n-tipos
+    source_type: topic-pair
+    mathematical_level: advanced-undergraduate
+    topic_tags: [model-theory, type-spaces]
+    prerequisites: [first-order-logic, topology-basics]
+    scope: bilingual topic writeup on type spaces
+    reliability_tier: primary-local
+    canonical_use: [topic-overview, bilingual-linkage]
+    notation_warnings:
+      - confirm alignment between Spanish and English terminology before normalization
+    extraction_priority: high
+
+  - id: undergrad-o-minimal
+    collection: undergrad
+    title: Estructuras o-minimales / O-minimal structures
+    author: Juan Ignacio Padilla Barrientos
+    language: multi
+    path: Undergrad/Estructuras o-minimales
+    source_type: topic-pair
+    mathematical_level: advanced-undergraduate
+    topic_tags: [model-theory, o-minimality]
+    prerequisites: [first-order-logic, algebra]
+    scope: bilingual topic writeup on o-minimal structures
+    reliability_tier: primary-local
+    canonical_use: [topic-overview, bilingual-linkage]
+    notation_warnings: []
+    extraction_priority: high
+
+  - id: undergrad-numerical-analysis
+    collection: undergrad
+    title: Analisis Numerico
+    author: Juan Ignacio Padilla Barrientos
+    language: es
+    path: Undergrad/Analisis Numerico
+    source_type: mixed-course-material
+    mathematical_level: undergraduate
+    topic_tags: [numerical-analysis, matlab, ode, interpolation, matrices]
+    prerequisites: [calculus, linear-algebra, programming]
+    scope: coursework spanning LaTeX assignments and MATLAB implementations
+    reliability_tier: primary-local
+    canonical_use: [algorithmic-examples, exercise-mapping, computation-linked-study]
+    notation_warnings:
+      - mathematical extraction may require linking .tex and .m artifacts separately
+    extraction_priority: very-high
+
+  - id: first-proof-rounds
+    collection: first-proof
+    title: First Proof Rounds
+    author: Juan Ignacio Padilla Barrientos
+    language: en
+    path: First Proof
+    source_type: proof-training-material
+    mathematical_level: proof-training
+    topic_tags: [proof-writing, olympiad-style, review]
+    prerequisites: [introductory-proof-techniques]
+    scope: review rounds and problem-focused proof drafts
+    reliability_tier: provisional-local
+    canonical_use: [proof-audit, gap-tracking]
+    notation_warnings:
+      - treat review material as provisional until independently checked
+    extraction_priority: medium

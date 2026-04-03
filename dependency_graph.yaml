@@ -1,0 +1,43 @@
+schema_version: 0.1.0
+last_updated: 2026-04-03
+status: scaffold-only
+
+node_policy:
+  node_id_format: topic.slug
+  edge_meaning: prerequisite
+  confidence_levels:
+    - tentative
+    - working
+    - reviewed
+
+seed_nodes:
+  - id: topic.calculus-ii
+    label: Calculus II
+    collection_hint: books
+  - id: topic.linear-algebra
+    label: Linear Algebra
+    collection_hint: books
+  - id: topic.ordinary-differential-equations
+    label: Ordinary Differential Equations
+    collection_hint: books
+  - id: topic.first-order-logic
+    label: First-Order Logic
+    collection_hint: lmfi
+  - id: topic.model-theory
+    label: Model Theory
+    collection_hint: lmfi
+
+edges:
+  - from: topic.calculus-ii
+    to: topic.ordinary-differential-equations
+    confidence: reviewed
+  - from: topic.linear-algebra
+    to: topic.ordinary-differential-equations
+    confidence: reviewed
+  - from: topic.first-order-logic
+    to: topic.model-theory
+    confidence: reviewed
+
+notes:
+  - This file is intentionally sparse in Phase 1.
+  - Cross-collection dependencies should remain conservative until theorem extraction begins.

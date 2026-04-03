@@ -1,0 +1,138 @@
+schema_version: 0.1.0
+last_updated: 2026-04-03
+
+repo:
+  name: math-docs
+  owner: omegaestable
+  mode: hybrid-scaffolding
+  intent: extraction-ready AI-assisted mathematics study lab
+  source_of_truth: tex-first
+
+study_stage:
+  current_phase: phase-1-scaffolding
+  objective: prepare the repository for large-scale mathematical extraction, normalization, and auditing
+  current_policy: schema-first
+
+active_domains:
+  - differential-equations
+  - logic
+  - model-theory
+  - numerical-analysis
+  - real-analysis
+  - algebra
+
+collections:
+  - id: books
+    label: Books
+    path: Books
+    role: course-books-and-teaching-notes
+    languages: [en, es]
+    mathematical_level: early-undergraduate
+    source_authority: primary-local
+    extraction_priority: high
+  - id: lmfi
+    label: LMFI
+    path: LMFI
+    role: masters-study-and-research-notes
+    languages: [en, es, fr]
+    mathematical_level: advanced-undergraduate-to-graduate
+    source_authority: primary-local
+    extraction_priority: high
+  - id: undergrad
+    label: Undergrad
+    path: Undergrad
+    role: topic-organized-coursework-and-projects
+    languages: [en, es]
+    mathematical_level: undergraduate
+    source_authority: primary-local
+    extraction_priority: very-high
+  - id: first-proof
+    label: First Proof
+    path: First Proof
+    role: proof-drafting-and-review-materials
+    languages: [en]
+    mathematical_level: olympiad-and-proof-training
+    source_authority: provisional-local
+    extraction_priority: medium
+
+trusted_note_sets:
+  - id: books-ma1005
+    collection: books
+    paths:
+      - Books/MA 1005_en.tex
+      - Books/MA 1005_es.tex
+      - Books/chapters_en
+      - Books/chapters_es
+    trust_role: canonical-course-notes
+  - id: lmfi-memoire
+    collection: lmfi
+    paths:
+      - LMFI/Memoire/Memoire_en.tex
+      - LMFI/Memoire/Memoire_es.tex
+      - LMFI/Memoire/Memoire_fr.tex
+    trust_role: primary-long-form-study-notes
+
+ignored_paths:
+  - .git/**
+  - .tmp/**
+  - .vscode/**
+  - .claude/**
+  - .agent/**
+  - '**/*.aux'
+  - '**/*.fdb_latexmk'
+  - '**/*.fls'
+  - '**/*.log'
+  - '**/*.out'
+  - '**/*.synctex.gz'
+  - '**/*.toc'
+
+source_preferences:
+  preferred_extensions: [tex]
+  fallback_extensions: [md, pdf]
+  compiled_outputs_are_authoritative: false
+  multilingual_policy: linked-variants-not-duplicates
+
+build_targets:
+  - id: latexmk-pdf
+    command: latexmk -pdf filename.tex
+    purpose: standard-latex-build
+  - id: pdflatex-double-pass
+    command: pdflatex filename.tex
+    purpose: fallback-build
+
+context_entry_points:
+  - AGENTS.md
+  - active_focus.md
+  - lab_manifest.yaml
+  - rigor_policy.md
+  - source_index.yaml
+  - notation_registry.yaml
+  - gap_log.md
+
+preferred_notation_conventions:
+  global_policy: scope-first-explicit-ambiguity
+  set_symbols: ["\\N", "\\Z", "\\Q", "\\R", "\\C"]
+  canonicalization_mode: conservative
+
+reserved_statuses:
+  proof_status:
+    - source-only
+    - source-cited
+    - rederived
+    - checked
+    - gap-present
+    - formalized
+    - counterexample-found
+  extraction_status:
+    - unseen
+    - queued
+    - indexed
+    - partially-extracted
+    - extracted
+    - audited
+  normalization_status:
+    - raw
+    - mapped
+    - canonicalized
+    - conflict-flagged
+    - deprecated

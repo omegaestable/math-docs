@@ -37,3 +37,21 @@ latexmk -pdf filename.tex
 ```
 
 For MATLAB files (`.m`), open and run them in MATLAB.
+
+## Study Lab Scaffolding
+
+The repository now includes an extraction-ready context layer for AI-assisted study and later mass mathematical indexing.
+
+Primary entry points:
+
+- [AGENTS.md](AGENTS.md)
+- [active_focus.md](active_focus.md)
+- [lab_manifest.yaml](lab_manifest.yaml)
+- [rigor_policy.md](rigor_policy.md)
+- [source_index.yaml](source_index.yaml)
+- [notation_registry.yaml](notation_registry.yaml)
+- [gap_log.md](gap_log.md)
+- [theorem_index.yaml](theorem_index.yaml)
+- [dependency_graph.yaml](dependency_graph.yaml)
+
+These files are scaffolding only. Existing LaTeX sources remain authoritative, and the new layer is intended to support future extraction, normalization, provenance tracking, and study planning.
