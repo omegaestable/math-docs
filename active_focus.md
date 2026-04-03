@@ -8,6 +8,14 @@ Phase 1 scaffolding for mass mathematical extraction.
 
 Make the repository extraction-ready by freezing schemas, provenance rules, notation discipline, and collection boundaries before any large-scale theorem or concept extraction.
 
+## Long-Term Direction
+
+Build a wiki-like graph of usable mathematics, starting from early-level sources and growing toward advanced material with explicit provenance, dependencies, and proof status.
+
+## Future Helper Lane
+
+Reserve room for a future Lean or mathlib powered helper that can link formal artifacts to the wiki graph without replacing source-first mathematical study.
+
 ## Collections In Scope
 
 - `Books`
@@ -18,8 +26,8 @@ Make the repository extraction-ready by freezing schemas, provenance rules, nota
 ## This Week
 
 - Establish the root context layer.
-- Seed the source index and notation registry.
-- Record repo-wide gaps that block safe extraction.
+- Finalize extraction protocols and empty index schemas.
+- Add non-mutating extraction tooling for `.tex` structure scans.
 
 ## Unresolved Blockers
 

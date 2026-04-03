@@ -1,0 +1,44 @@
+schema_version: 0.1.0
+last_updated: 2026-04-03
+status: scaffold-only
+
+purpose:
+  description: registry for future links between informal wiki records and formal artifacts such as Lean or mathlib objects
+  current_phase_rule: do not populate until theorem and concept nodes are stable enough to support durable linkage
+
+required_fields:
+  - id
+  - informal_object_id
+  - informal_object_type
+  - formal_system
+  - formal_library
+  - formal_name
+  - formal_path
+  - link_status
+  - confidence
+  - notes
+
+allowed_values:
+  informal_object_type:
+    - theorem
+    - definition
+    - concept
+    - lemma
+    - corollary
+    - proposition
+  formal_system:
+    - lean
+    - coq
+    - isabelle
+    - other
+  link_status:
+    - candidate
+    - mapped
+    - verified
+    - rejected
+  confidence:
+    - low
+    - medium
+    - high
+
+entries: []

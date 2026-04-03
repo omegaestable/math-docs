@@ -1,135 +1,31 @@
 schema_version: 0.1.0
 last_updated: 2026-04-03
+status: scaffold-only
 
 house_policy:
   default_scope: collection-local
   ambiguity_rule: never assume a reused macro has one global meaning
   canonicalization_mode: conservative
 
-entries:
-  - id: sets.naturals
-    latex: '\N'
-    meaning: natural numbers
-    scope: global-house
-    house_notation: '\mathbb{N}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
+required_fields:
+  - id
+  - latex
+  - meaning
+  - scope
+  - house_notation
+  - source_seeds
+  - variants
+  - prohibited_ambiguities
+  - status
 
-  - id: sets.integers
-    latex: '\Z'
-    meaning: integers
-    scope: global-house
-    house_notation: '\mathbb{Z}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
+entries: []
 
-  - id: sets.rationals
-    latex: '\Q'
-    meaning: rational numbers
-    scope: global-house
-    house_notation: '\mathbb{Q}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
+ambiguity_required_fields:
+  - id
+  - macro
+  - collections
+  - issue
+  - required_behavior
+  - status
 
-  - id: sets.reals
-    latex: '\R'
-    meaning: real numbers
-    scope: global-house
-    house_notation: '\mathbb{R}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
-
-  - id: sets.complexes
-    latex: '\C'
-    meaning: complex numbers
-    scope: global-house
-    house_notation: '\mathbb{C}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
-
-  - id: books.operator.laplace-transform
-    latex: '\LL'
-    meaning: Laplace transform
-    scope: collection:books
-    house_notation: '\mathcal{L}'
-    source_seeds:
-      - Books/style/springer_custom_en.sty
-    variants:
-      - '\IL' for inverse Laplace transform
-    prohibited_ambiguities:
-      - do not interpret '\LL' as first-order language inside Books materials
-    status: scoped
-
-  - id: lmfi.object.language
-    latex: '\LL'
-    meaning: first-order language
-    scope: collection:lmfi
-    house_notation: '\mathcal{L}'
-    source_seeds:
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities:
-      - do not interpret '\LL' as Laplace transform inside LMFI materials
-    status: scoped
-
-  - id: lmfi.operator.algebraic-closure
-    latex: '\acl'
-    meaning: algebraic closure operator
-    scope: collection:lmfi
-    house_notation: '\operatorname{acl}'
-    source_seeds:
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
-
-  - id: lmfi.operator.definable-closure
-    latex: '\dcl'
-    meaning: definable closure operator
-    scope: collection:lmfi
-    house_notation: '\operatorname{dcl}'
-    source_seeds:
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities: []
-    status: accepted
-
-  - id: lmfi.operator.type-space
-    latex: '\tp'
-    meaning: type or type-space operator
-    scope: collection:lmfi
-    house_notation: '\operatorname{tp}'
-    source_seeds:
-      - LMFI/Memoire/Memoire_en.tex
-    variants: []
-    prohibited_ambiguities:
-      - verify local author intent before normalizing across all LMFI files
-    status: review-needed
-
-ambiguities:
-  - id: macro-ll-cross-collection
-    macro: '\LL'
-    collections:
-      - books
-      - lmfi
-    issue: same macro reused for distinct mathematical objects
-    required_behavior: preserve collection-local meaning and flag during normalization
-    status: open
+ambiguities: []

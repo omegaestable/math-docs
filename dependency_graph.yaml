@@ -10,33 +10,19 @@ node_policy:
     - working
     - reviewed
 
-seed_nodes:
-  - id: topic.calculus-ii
-    label: Calculus II
-    collection_hint: books
-  - id: topic.linear-algebra
-    label: Linear Algebra
-    collection_hint: books
-  - id: topic.ordinary-differential-equations
-    label: Ordinary Differential Equations
-    collection_hint: books
-  - id: topic.first-order-logic
-    label: First-Order Logic
-    collection_hint: lmfi
-  - id: topic.model-theory
-    label: Model Theory
-    collection_hint: lmfi
+required_node_fields:
+  - id
+  - label
+  - collection_hint
 
-edges:
-  - from: topic.calculus-ii
-    to: topic.ordinary-differential-equations
-    confidence: reviewed
-  - from: topic.linear-algebra
-    to: topic.ordinary-differential-equations
-    confidence: reviewed
-  - from: topic.first-order-logic
-    to: topic.model-theory
-    confidence: reviewed
+required_edge_fields:
+  - from
+  - to
+  - confidence
+
+seed_nodes: []
+
+edges: []
 
 notes:
   - This file is intentionally sparse in Phase 1.

@@ -13,6 +13,21 @@ study_stage:
   objective: prepare the repository for large-scale mathematical extraction, normalization, and auditing
   current_policy: schema-first
 
+long_term_direction:
+  graph_model: wiki-like theorem-and-concept graph
+  growth_strategy: start from early-level sources and move upward conservatively
+  target_objects:
+    - source nodes
+    - concept nodes
+    - theorem nodes
+    - dependency edges
+    - proof objects
+    - notation objects
+  future_formal_helper:
+    planned: true
+    target_stack: lean-mathlib-compatible-helper
+    role: assist navigation, hypothesis checking, and formal linkage without replacing source-backed mathematics
+
 active_domains:
   - differential-equations
   - logic
@@ -108,6 +123,10 @@ context_entry_points:
   - source_index.yaml
   - notation_registry.yaml
   - gap_log.md
+  - formalization_registry.yaml
+  - context/wiki_graph_schema.md
+  - context/study_protocol.md
+  - context/style_guide.md
 
 preferred_notation_conventions:
   global_policy: scope-first-explicit-ambiguity

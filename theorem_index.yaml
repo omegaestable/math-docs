@@ -13,6 +13,7 @@ id_policy:
     - ids must be ASCII-safe
     - ids must encode collection before local work scope
     - multilingual variants should link through metadata, not through duplicate ids
+    - candidate ids generated from scans are provisional until review confirms publication into the theorem index
 
 required_fields:
   - id
