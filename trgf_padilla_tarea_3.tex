@@ -1,0 +1,431 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\geometry{margin=2.35cm}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.55em,topsep=0.45em}
+
+\definecolor{repblue}{HTML}{12324A}
+\definecolor{repteal}{HTML}{2A6F6B}
+\definecolor{repgray}{HTML}{5C6770}
+\definecolor{repline}{HTML}{C8D2DA}
+\definecolor{replight}{HTML}{F4F7F9}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=repblue,
+  urlcolor=repteal,
+  pdftitle={TRGF Padilla Tarea 3},
+  pdfauthor={Juan Ignacio Padilla Barrientos}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{repblue}{TRGF Padilla}}
+\fancyhead[R]{\textcolor{repgray}{Tarea 3}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\topbanner}{%
+  {\color{repblue}\rule{\linewidth}{1.1pt}}\par
+  \vspace{0.9em}
+  \begin{center}
+    {\LARGE\bfseries\color{repblue} TRGF Padilla -- Tarea 3}\par
+    \vspace{0.35em}
+    {\large\color{repteal} Seminario UCR I 2026}\par
+    \vspace{0.55em}
+  \end{center}
+  \vspace{0.55em}
+  {\color{repblue}\rule{\linewidth}{0.8pt}}\par
+}
+
+\newcommand{\problem}[2]{%
+  \par\vspace{1.1em}
+  {\large\bfseries\color{repblue} Problema #1}\par
+  {\color{repteal}\rule{\linewidth}{0.45pt}}\par\smallskip
+  #2
+}
+
+\newcommand{\worklines}[1]{%
+  \par\vspace{0.35em}
+  {\color{repline}\rule{\linewidth}{0.4pt}}\par
+  \begingroup
+  \count0=1
+  \loop
+    \ifnum\count0<#1
+      \vspace{0.72cm}
+      {\color{repline}\rule{\linewidth}{0.4pt}}\par
+      \advance\count0 by 1
+  \repeat
+  \endgroup
+  \vspace{0.35em}
+}
+
+\begin{document}
+
+\color{black}
+\topbanner
+
+{\small\color{repgray}
+Esta version sustituye la plantilla anterior y contiene los ejercicios reales de la tarea de representaciones. El estilo se simplifico para que el documento se vea limpio en PDF y tambien sea comodo para imprimir o editar.}
+
+\problem{1}{%
+\textit{\textquestiondown Para cuales $n$ se cumple que hay un homomorfismo sobreyectivo de grupos $S_{n+1} \to S_n$?}
+}
+\worklines{7}
+
+\problem{2}{%
+Sea $G$ un grupo conmutativo y sea $C$ el conjunto de clases conjugadas de $G$, es decir, el conjunto de clases de equivalencia bajo la relacion
+\[
+  g_1 \sim g_2 \quad \text{si existe } h \in G \text{ tal que } g_2 = h g_1 h^{-1}.
+\]
+Dada una clase conjugada $c \in C$, defina
+\[
+  s_c := \sum_{g \in c} g
+\]
+como un elemento en $\CC[G]$. Demuestre que $s_c$ es un elemento central, es decir, que $s_c$ conmuta con todos los demas elementos del algebra de grupo.
+}
+\worklines{11}
+
+\problem{3}{%
+Utilizando la terminologia del ejercicio anterior, demuestre que
+\[
+  Z(\CC[G]) = \operatorname{span}_{\CC}\langle s_c : c \in C \rangle.
+\]
+Donde, si $A$ es un anillo, $Z(A)$ denota el centro de $A$, es decir, el conjunto de elementos del algebra que conmutan con todos los demas.
+}
+\worklines{10}
+
+\problem{4}{%
+Escriba $\CC[C_4]$ como suma directa de irreps.
+}
+\worklines{8}
+
+\problem{5}{%
+Escriba $\CC[S_3]$ como suma directa de irreps.
+}
+\worklines{9}
+
+\problem{6}{%
+Recuerde que $P_n$ es la representacion $\CC^n$ de $S_n$ donde cada elemento actua permutando los elementos de la base canonica. Verifique que $P_4$ se descompone como la suma directa de la irrep trivial y una irrep de dimension $3$.
+}
+\worklines{10}
+
+\end{document}
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,amsfonts,mathtools,bm}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{booktabs}
+
+\geometry{margin=2.3cm}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist[enumerate]{itemsep=0.75em, topsep=0.5em}
+
+\definecolor{trgfblue}{HTML}{1E3A5F}
+\definecolor{trgfgold}{HTML}{B07A2A}
+\definecolor{trgflight}{HTML}{EEF3F7}
+\definecolor{trgfcream}{HTML}{FAF7F0}
+\definecolor{trgftext}{HTML}{1F252B}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=trgfblue,
+  urlcolor=trgfblue,
+  pdftitle={TRGF Padilla Tarea 3},
+  pdfauthor={Juan Ignacio Padilla Barrientos}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{trgfblue}{TRGF Padilla -- Tarea 3}}
+\fancyhead[R]{\textcolor{trgfblue}{Plantilla de trabajo}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\titlebox}{%
+  \noindent\fcolorbox{trgfblue}{trgflight}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      {\Large\bfseries\color{trgfblue} TRGF Padilla -- Tarea 3}\\[0.4em]
+      {\normalsize\color{trgftext} Plantilla personal de resolucion con boilerplate, referencias y espacios en blanco para el desarrollo.}\\[0.8em]
+      \color{trgftext}
+      \begin{tabular}{@{}p{0.31\linewidth}p{0.31\linewidth}p{0.31\linewidth}@{}}
+        \textbf{Autor:} Juan Ignacio Padilla B. & \textbf{Fecha:} \today & \textbf{Base tematica:} Analisis numerico \\
+        \textbf{Archivo:} \texttt{trgf\_padilla\_tarea\_3.tex} & \textbf{Estado:} Enunciados listos & \textbf{Formato:} trabajo guiado
+      \end{tabular}
+    \end{minipage}%
+  }
+}
+
+\newcommand{\infobox}[2]{%
+  \par\medskip
+  \noindent\fcolorbox{trgfgold}{trgfcream}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      {\bfseries\color{trgfblue} #1}\\[0.3em]
+      \color{trgftext}#2
+    \end{minipage}%
+  }
+  \par\medskip
+}
+
+\newcommand{\problemheader}[2]{%
+  \par\bigskip
+  \noindent\colorbox{trgfblue}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+      \vspace{0.35em}{\color{white}\large\bfseries Problema #1}\hfill{\color{white}\small #2}\vspace{0.35em}
+    }%
+  }
+  \par\medskip
+}
+
+\newcommand{\solutionarea}[1]{%
+  \par\smallskip
+  \noindent\fcolorbox{trgfblue}{trgflight}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      \vspace{#1}
+    \end{minipage}%
+  }
+  \par\medskip
+}
+
+\newcommand{\algorithmlabel}[1]{%
+  \par\medskip{\bfseries\color{trgfblue} #1}\par\smallskip
+}
+
+\begin{document}
+
+\color{trgftext}
+\titlebox
+
+\infobox{Boilerplate de trabajo}{%
+Esta plantilla reorganiza los enunciados de la tarea en un formato limpio de estudio. La estructura esta pensada para separar argumento teorico, calculo numerico, comentarios sobre estabilidad y evidencia computacional. Cada inciso deja un bloque vacio para desarrollar demostraciones, comandos, tablas y observaciones.}
+
+\infobox{Proveniencia y referencias sugeridas}{%
+\begin{itemize}[leftmargin=1.5em]
+  \item Fuente base interna del repositorio: \texttt{Undergrad/Análisis Numérico/Matrices/Tarea 3.tex}.
+  \item Variante paralela en ingles: \texttt{Undergrad/Análisis Numérico/Matrices/Tarea 3\_en.tex}.
+  \item Referencia clasica para algebra lineal numerica: Lloyd N. Trefethen y David Bau III, \emph{Numerical Linear Algebra}.
+  \item Referencia general para interpolacion, SVD y factorizaciones: Richard L. Burden, J. Douglas Faires y Annette M. Burden, \emph{Numerical Analysis}.
+  \item Para cada inciso conviene registrar scripts, comandos y tolerancias utilizados antes de escribir las conclusiones finales.
+\end{itemize}}
+
+\problemheader{1}{Matriz de Vandermonde e interpolacion}
+
+Considere el problema de interpolacion de Lagrange: encontrar un polinomio $p$ de grado a lo sumo $n$ cuya grafica incluya los puntos $\{(x_i,y_i)\}_{i=0}^n$. Escriba
+\[
+  p(x) = \sum_{k=0}^{n} a_k x^k.
+\]
+Entonces interpolar equivale a encontrar los coeficientes $\{a_k\}$ que satisfacen las $n+1$ ecuaciones
+\[
+  p(x_i) = \sum_{k=0}^{n} a_k x_i^k = y_i, \qquad i=0,\dots,n,
+\]
+lo cual puede escribirse matricialmente como $A\bm{x}=\bm{b}$, donde
+\[
+  \bm{x} = \begin{bmatrix} a_0 \\ \vdots \\ a_n \end{bmatrix},
+  \qquad
+  \bm{b} = \begin{bmatrix} y_0 \\ \vdots \\ y_n \end{bmatrix},
+\]
+y $A$ es la matriz de Vandermonde
+\[
+  A = \begin{bmatrix}
+  1 & x_0 & \dots & x_0^n \\
+  1 & x_1 & \dots & x_1^n \\
+  \vdots & \vdots & \ddots & \vdots \\
+  1 & x_n & \dots & x_n^n
+  \end{bmatrix} \in \R^{(n+1)\times(n+1)}.
+\]
+En este ejercicio se usaran nodos equidistantes en el intervalo $[-1,1]$, es decir,
+\[
+  x_j = -1 + 2\frac{j}{n}, \qquad j=0,\dots,n.
+\]
+
+\begin{enumerate}[label=\alph*)]
+  \item Demuestre que $A$ es invertible.
+  \solutionarea{5.2cm}
+
+  \item Para $n=40$, construya la matriz $A$. Calcule el numero de condicion de $A$, su rango y su determinante. \textit{Sugerencia:} puede utilizar los comandos \texttt{vander}, \texttt{rank}, \texttt{det} y \texttt{cond} de MATLAB. Comente si la matriz es invertible desde el punto de vista numerico.
+  \solutionarea{5.4cm}
+
+  \item Para resolver el sistema $A\bm{x}=\bm{b}$, basta ejecutar el comando $\bm{\tilde{x}}=\texttt{A\textbackslash b}$. Considere $f(x)=(1+25x^2)^{-1}$ y estime
+  \[
+    \|f(\texttt{xx})-p(\texttt{xx})\|_\infty,
+    \qquad \text{donde } \texttt{xx}=\texttt{linspace(-1,1,1e3)}.
+  \]
+  \solutionarea{4.9cm}
+
+  \item Calcule la descomposicion en valores singulares de $A$ mediante
+  \[
+    \texttt{[U,S,V]=svd(A)}.
+  \]
+  De este modo,
+  \[
+    \tilde{x}=VS^{-1}U^Tb.
+  \]
+  Estime nuevamente $\|f(\texttt{xx})-p(\texttt{xx})\|_\infty$. Plotee los valores singulares de $A$ en una escala semilogaritmica, comente el comportamiento y determine el rango numerico de la matriz. \textit{Sugerencia:} la funcion \texttt{diag} puede ser de utilidad.
+  \solutionarea{5.8cm}
+
+  \item Sea $A=USV^T$ una descomposicion en valores singulares. La pseudoinversa de $A$ se define por
+  \[
+    A^+ = VS^+U^T,
+  \]
+  donde $S^+$ se obtiene invirtiendo los valores singulares positivos de $S$. Defina el vector de tolerancias
+  \[
+    \texttt{tol = 10.\string^(-linspace(2,17))}.
+  \]
+  Para cada entrada \texttt{j} de \texttt{tol}, defina $S_j$ reemplazando por cero los valores singulares menores que \texttt{tol(j)}$\sigma_1$. Calcule
+  \[
+    \texttt{x\_svd}=(VS_j^+U^T)b,
+  \]
+  y luego la norma $\|f(\texttt{xx})-p(\texttt{xx})\|_\infty$. Grafique el error en funcion del vector de tolerancias. Comente y explique el comportamiento observado.
+  \solutionarea{6.5cm}
+
+  \item Para un valor de tolerancia que minimice el error del inciso anterior, plotee en una misma grafica $f(\texttt{xx})$, $p(\texttt{xx})$ y los nodos de interpolacion. Discuta que tan buena es la aproximacion.
+  \solutionarea{4.9cm}
+
+  \item Ahora use \texttt{tol = 1e-5}. Plotee en una misma grafica $f(\texttt{xx})$, $p(\texttt{xx})$ y los nodos de interpolacion. Indique si se observa el fenomeno de Runge y explique por que.
+  \solutionarea{5.0cm}
+\end{enumerate}
+
+\problemheader{2}{Compresion de imagenes mediante SVD}
+
+En este ejercicio se utiliza la descomposicion en valores singulares para comprimir imagenes de manera basica. Una imagen de dimension $m\times n$ consiste de $mn$ pixeles. En una imagen a color, cada pixel contiene tres valores enteros $(r_p,g_p,b_p)\in[0,255]^3$, correspondientes a las componentes roja, verde y azul. Por tanto, una imagen se guarda como una matriz de tamano $m\times n\times 3$.
+
+\begin{enumerate}[label=\alph*)]
+  \item Considere la imagen suministrada \texttt{photo}. Para leerla puede usar el comando
+  \[
+    \texttt{RGB = imread('photo.jpg')}.
+  \]
+  Determine cuantos pixeles tiene la imagen almacenada en \texttt{RGB} y que tipo de entradas tiene esa matriz. \textit{Sugerencia:} ejecute \texttt{whos RGB} y comente el resultado.
+  \solutionarea{4.8cm}
+
+  \item Para utilizar la SVD, convierta la matriz \texttt{RGB} a formato doble mediante
+  \[
+    \texttt{RGB = im2double(RGB)}.
+  \]
+  \solutionarea{3.6cm}
+
+  \item Calcule la descomposicion en valores singulares de \texttt{RGB} = $USV^T$ para cada una de las tres matrices de color. Luego calcule la aproximacion de rango $5$
+  \[
+    A_5 = \sum_{i=1}^{5} \sigma_i u_i v_i^T.
+  \]
+  En una misma ventana, usando \texttt{subplot}, muestre la imagen original, la imagen guardada en $A_5$ y el error $|\texttt{RGB}-A_5|$. Comente sus resultados. \textit{Sugerencia:} el comando \texttt{imshow(RGB)} muestra la imagen dada en \texttt{RGB}.
+  \solutionarea{6.0cm}
+
+  \item Para cada matriz \texttt{RGB(:,:,i)}, determine el numero $r_i$ de valores singulares $\sigma_k$ tales que $\sigma_k > 0.01\sigma_1$ y tome $R_1=\max r_i$. Para este valor de $R_1$, calcule la mejor aproximacion $A_{R_1}$ de rango $R_1$. Repita el procedimiento con el umbral $\sigma_k > 0.005\sigma_1$, denote el nuevo rango por $R_2$ y la aproximacion correspondiente por $A_{R_2}$. Dibuje ambas aproximaciones en una misma ventana y comente las diferencias entre ellas. \textit{Sugerencia:} el comando \texttt{diag(S)} extrae la diagonal de \texttt{S}.
+  \solutionarea{6.2cm}
+
+  \item Finalmente, guarde la imagen $A_{R_2}$ en formatos \texttt{.bmp} y \texttt{.jpg} mediante comandos del tipo
+  \[
+    \texttt{imwrite(A\_R2,'photo\_comp.bmp')} \quad \text{y} \quad \texttt{imwrite(A\_R2,'photo\_comp.jpg')}.
+  \]
+  Compare el tamano de ambos archivos con el tamano original de la imagen inicial. Recuerde que el formato \texttt{.jpg} comprime por defecto y esta optimizado para ese fin.
+  \solutionarea{5.4cm}
+\end{enumerate}
+
+\problemheader{3}{Estabilidad de la factorizacion QR}
+
+En las notas se discuten tres algoritmos para calcular la factorizacion QR de una matriz $A\in\C^{m\times n}$. Para tener una plantilla autocontenida, se reproducen los esquemas de trabajo a continuacion.
+
+\algorithmlabel{Algoritmo 1. Ortogonalizacion de Gram-Schmidt clasica (inestable)}
+\begin{tabbing}
+\hspace{2.6em}\=\hspace{2.6em}\=\kill
+\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
+\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
+Para $j=1,\dots,n$: \\
+\> $\bm{v}_j = \bm{a}_j$ \\
+\> Para $i=1,\dots,j-1$: \\
+\>\> $r_{ij} = \bm{q}_i^*\bm{a}_j$ \\
+\>\> $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$ \\
+\> Fin para \\
+\> $r_{jj} = \|\bm{v}_j\|_2$ \\
+\> $\bm{q}_j = \bm{v}_j/r_{jj}$ \\
+Fin para
+\end{tabbing}
+
+\algorithmlabel{Algoritmo 2. Ortogonalizacion de Gram-Schmidt modificada (estable)}
+\begin{tabbing}
+\hspace{2.6em}\=\hspace{2.6em}\=\kill
+\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
+\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
+$V=A$ \\
+Para $i=1,\dots,n$: \\
+\> $r_{ii} = \|\bm{v}_i\|_2$ \\
+\> $\bm{q}_i = \bm{v}_i/r_{ii}$ \\
+\> Para $j=i+1,\dots,n$: \\
+\>\> $r_{ij} = \bm{q}_i^*\bm{v}_j$ \\
+\>\> $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$ \\
+\> Fin para \\
+Fin para
+\end{tabbing}
+
+\algorithmlabel{Algoritmo 3. Triangularizacion de Householder}
+\begin{tabbing}
+\hspace{2.6em}\=\hspace{2.6em}\=\kill
+\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
+\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
+Para $j=1,\dots,n$: \\
+\> $\bm{x} = A_{j:m,j}$ \\
+\> $\bm{v}_j = \operatorname{sign}(x_1)\|\bm{x}\|_2\bm{e}_1 + \bm{x}$ \\
+\> $\bm{v}_j = \bm{v}_j / \|\bm{v}_j\|_2$ \\
+\> $A_{j:m,j:n} = A_{j:m,j:n} - 2\bm{v}_j(\bm{v}_j^*A_{j:m,j:n})$ \\
+Fin para \\
+$R=A$ y $Q=I$ \\
+Para $j=n,\dots,1$: \\
+\> $Q_{j:m,j:n} = Q_{j:m,j:n} - 2\bm{v}_j(\bm{v}_j^*Q_{j:m,j:n})$ \\
+Fin para
+\end{tabbing}
+
+\begin{enumerate}[label=\alph*)]
+  \item Escriba tres funciones que implementen cada uno de los algoritmos anteriores.
+  \solutionarea{4.6cm}
+
+  \item Defina la matriz $A$ mediante las lineas
+\begin{verbatim}
+m = 80;
+[U,~] = qr(randn(m));
+[V,~] = qr(randn(m));
+S = diag(2.^(-1:-1:-80));
+A = U*S*V;
+\end{verbatim}
+  \solutionarea{3.5cm}
+
+  \item Calcule la factorizacion $QR$ de $A$ utilizando los tres algoritmos anteriores. Para cada uno, calcule $\|A-QR\|_2$ y $\|Q^*Q-I\|_2$. Comente sus resultados, indique cual algoritmo es mejor y compare con el comando de MATLAB \texttt{[q,r] = qr(A)}.
+  \solutionarea{6.6cm}
+\end{enumerate}
+
+\infobox{Cierre sugerido para la version resuelta}{%
+Cuando complete la tarea, conviene agregar una breve conclusion final con tres puntos: comportamiento del numero de condicion en la interpolacion, calidad real de las aproximaciones por SVD en imagenes y estabilidad comparada de los algoritmos QR. Esa sintesis deja el documento listo para estudio o entrega.}
+
+\end{document}
