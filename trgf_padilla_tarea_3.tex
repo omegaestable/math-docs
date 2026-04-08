@@ -84,12 +84,79 @@
 \topbanner
 
 {\small\color{repgray}
-Esta version sustituye la plantilla anterior y contiene los ejercicios reales de la tarea de representaciones. El estilo se simplifico para que el documento se vea limpio en PDF y tambien sea comodo para imprimir o editar.}
+}
 
 \problem{1}{%
 \textit{\textquestiondown Para cuales $n$ se cumple que hay un homomorfismo sobreyectivo de grupos $S_{n+1} \to S_n$?}
 }
-\worklines{7}
+
+\textbf{Respuesta.} Existe un homomorfismo sobreyectivo $S_{n+1}\to S_n$ si y solo si $n\in\{1,2,3\}$.
+
+\medskip
+\textbf{Hecho que usaremos.}
+
+\textit{Primer teorema de isomorfismo:} si $\phi\colon G\to H$ es un homomorfismo sobreyectivo de grupos, entonces $G/\ker\phi\cong H$. En particular, $|\ker\phi|=|G|/|H|$.
+
+\medskip
+\textbf{Lema 1 (Jordan).} Si $m\ge 5$, entonces $A_m$ es simple.
+
+\medskip
+\textbf{Caso $n=1$.}
+$S_2\to S_1=\{e\}$. El unico homomorfismo (el trivial) es sobreyectivo.
+
+\medskip
+\textbf{Caso $n=2$.}
+El homomorfismo signo $\operatorname{sgn}\colon S_3\to\{+1,-1\}$ es sobreyectivo.
+Como $\{+1,-1\}\cong \ZZ/2\ZZ\cong S_2$, obtenemos el homomorfismo sobreyectivo deseado.
+
+\medskip
+\textbf{Caso $n=3$.}
+Considere las tres particiones de $\{1,2,3,4\}$ en dos pares:
+\[
+  P_1=\bigl\{\{1,2\},\{3,4\}\bigr\},\quad
+  P_2=\bigl\{\{1,3\},\{2,4\}\bigr\},\quad
+  P_3=\bigl\{\{1,4\},\{2,3\}\bigr\}.
+\]
+Estas son \emph{todas} las particiones de $\{1,2,3,4\}$ en dos pares
+(hay $\binom{4}{2}/2!=3$).
+Cada $\sigma\in S_4$ actua sobre una particion aplicando $\sigma$ a cada elemento;
+como $\sigma$ es biyeccion, el resultado es otra particion en dos pares,
+y como solo hay tres, $\sigma$ permuta $\{P_1,P_2,P_3\}$; ademas, $(1\;2)$ induce la trasposicion $(P_2\;P_3)$ y $(1\;2\;3)$ induce el $3$-ciclo $(P_1\;P_3\;P_2)$.
+
+\textit{Que $\phi$ es homomorfismo:} esto es inmediato, pues una accion de grupo sobre un conjunto $X$ es precisamente un homomorfismo $G\to S(X)$; aqui $X=\{P_1,P_2,P_3\}$ y $S(X)\cong S_3$.
+
+\textit{Sobreyectividad:}
+la imagen de $\phi$ contiene una trasposicion y un $3$-ciclo en $S_3$.
+En efecto, $\phi((1\;2))=(P_2\;P_3)$ y $\phi((1\;2\;3))=(P_1\;P_3\;P_2)$.
+Un subgrupo de $S_3$ que contiene una trasposicion y un $3$-ciclo es todo $S_3$
+(pues $|S_3|=6$ y el subgrupo generado tiene orden divisible por $2$ y por $3$, asi que es $6$).
+Por tanto $\phi$ es sobreyectivo.
+
+\textit{Nucleo:} por el primer teorema de isomorfismo, $|\ker\phi|=|S_4|/|S_3|=24/6=4$.
+Cada doble-trasposicion intercambia ambos elementos dentro de cada par de cada particion,
+por lo que fija las tres particiones (aplicar la definicion de la accion a $(1\;2)(3\;4)$, $(1\;3)(2\;4)$ y $(1\;4)(2\;3)$).
+Asi, $\ker\phi\supseteq V_4:=\{e,\;(1\;2)(3\;4),\;(1\;3)(2\;4),\;(1\;4)(2\;3)\}$;
+como $|V_4|=4=|\ker\phi|$, concluimos $\ker\phi=V_4$.
+
+\medskip
+\textbf{Caso $n\ge 4$.}
+Supongamos que existe $\phi\colon S_{n+1}\to S_n$ sobreyectivo.
+Entonces $K:=\ker\phi$ es un subgrupo normal de $S_{n+1}$ de orden
+\[
+  |K|=\frac{|S_{n+1}|}{|S_n|}=\frac{(n+1)!}{n!}=n+1.
+\]
+Para $n\ge 4$ se tiene $n+1\ge 5$. Afirmamos que los unicos subgrupos normales de $S_{n+1}$ son
+ $\{e\}$, $A_{n+1}$ y $S_{n+1}$: en efecto, si $N\trianglelefteq S_{n+1}$, entonces $N\cap A_{n+1}\trianglelefteq A_{n+1}$,
+ y por el Lema 1 se tiene $N\cap A_{n+1}=\{e\}$ o $N\cap A_{n+1}=A_{n+1}$. Si $N\cap A_{n+1}=A_{n+1}$,
+ entonces o bien $N=A_{n+1}$ o bien $N$ contiene una permutacion impar, y en este ultimo caso $N=S_{n+1}$.
+ Si $N\cap A_{n+1}=\{e\}$ y $N$ contuviera una permutacion impar $\sigma$, entonces $\sigma^2\in A_{n+1}\cap N=\{e\}$,
+ asi que $\sigma$ seria una trasposicion; como $N$ es normal, contendria todas las trasposiciones, y estas generan $S_{n+1}$,
+ contradiccion. Por tanto, en este caso $N=\{e\}$. Asi, los unicos subgrupos normales de $S_{n+1}$ son:
+\[
+  \{e\}\;(\text{orden }1),\quad A_{n+1}\;\bigl(\text{orden }\tfrac{(n+1)!}{2}\bigr),\quad S_{n+1}\;\bigl(\text{orden }(n+1)!\bigr).
+\]
+Como $n\ge 4$, se tiene $n!\ge 24$. Si $(n+1)!=n+1$, entonces $n!=1$, imposible. Si $\tfrac{(n+1)!}{2}=n+1$, entonces $\tfrac{n!}{2}=1$, es decir, $n!=2$, imposible. Por tanto ninguno de estos ordenes coincide con $n+1$.
+Por tanto no existe subgrupo normal de orden $n+1$ en $S_{n+1}$, y no puede existir tal homomorfismo sobreyectivo. \hfill$\square$
 
 \problem{2}{%
 Sea $G$ un grupo conmutativo y sea $C$ el conjunto de clases conjugadas de $G$, es decir, el conjunto de clases de equivalencia bajo la relacion
@@ -102,7 +169,36 @@ Dada una clase conjugada $c \in C$, defina
 \]
 como un elemento en $\CC[G]$. Demuestre que $s_c$ es un elemento central, es decir, que $s_c$ conmuta con todos los demas elementos del algebra de grupo.
 }
-\worklines{11}
+
+\textbf{Respuesta.}
+Basta demostrar que $h\,s_c = s_c\,h$ para todo $h\in G$,
+pues los elementos $h\in G$ forman una base de $\CC[G]$ como $\CC$-espacio vectorial
+y la igualdad se extiende por linealidad.
+
+Equivalentemente, mostramos que $h\,s_c\,h^{-1}=s_c$.
+Calculamos:
+\[
+  h\,s_c\,h^{-1}
+  = h\Bigl(\sum_{g\in c}g\Bigr)h^{-1}
+  = \sum_{g\in c}hgh^{-1}.
+\]
+Ahora bien, la conjugacion por $h$ es una biyeccion $G\to G$
+que preserva cada clase conjugada: si $g\in c$, entonces $hgh^{-1}\sim g$
+(pues $hgh^{-1}$ es conjugado de $g$), asi que $hgh^{-1}\in c$.
+Por lo tanto la aplicacion $g\mapsto hgh^{-1}$ es una biyeccion $c\to c$
+(es inyectiva por ser restriccion de una biyeccion, y $c$ es finito).
+
+Al reindexar la suma con $g'=hgh^{-1}$, obtenemos
+\[
+  \sum_{g\in c}hgh^{-1}=\sum_{g'\in c}g'=s_c.
+\]
+Concluimos que $h\,s_c\,h^{-1}=s_c$, es decir $h\,s_c=s_c\,h$,
+para todo $h\in G$. Esto muestra que $s_c\in Z(\CC[G])$. \hfill$\square$
+
+\textit{Observacion:} el enunciado dice ``grupo conmutativo'', pero la demostracion
+anterior vale para cualquier grupo finito $G$. Si $G$ es abeliano,
+cada clase conjugada es un conjunto unitario $\{g\}$, $s_c=g$,
+y el resultado se reduce a que $\CC[G]$ es conmutativo.
 
 \problem{3}{%
 Utilizando la terminologia del ejercicio anterior, demuestre que
@@ -111,321 +207,376 @@ Utilizando la terminologia del ejercicio anterior, demuestre que
 \]
 Donde, si $A$ es un anillo, $Z(A)$ denota el centro de $A$, es decir, el conjunto de elementos del algebra que conmutan con todos los demas.
 }
-\worklines{10}
+
+\textbf{Respuesta.}
+
+\textit{Contencion $\supseteq$.}
+$Z(\CC[G])$ es un $\CC$-subespacio de $\CC[G]$, y por el Problema~2 cada $s_c$
+pertenece a $Z(\CC[G])$; luego
+$\operatorname{span}_{\CC}\langle s_c : c\in C\rangle\subseteq Z(\CC[G])$.
+
+\medskip
+\textit{Contencion $\subseteq$.}
+Sea $z=\sum_{g\in G}\alpha_g\,g\in Z(\CC[G])$.
+Para todo $h\in G$ se tiene $hzh^{-1}=z$, es decir
+\[
+  \sum_{g\in G}\alpha_g\,hgh^{-1}
+  =\sum_{g\in G}\alpha_g\,g.
+\]
+Sustituyendo $g'=hgh^{-1}$ en el lado izquierdo
+(biyeccion $G\to G$, con $g=h^{-1}g'h$):
+\[
+  \sum_{g'\in G}\alpha_{h^{-1}g'h}\,g'
+  =\sum_{g'\in G}\alpha_{g'}\,g'.
+\]
+Como los elementos de $G$ son base de $\CC[G]$,
+la igualdad coeficiente a coeficiente da
+\[
+  \alpha_{h^{-1}g'h}=\alpha_{g'}\qquad
+  \text{para todos }g'\in G,\;h\in G.
+\]
+Esto dice que la funcion $g\mapsto\alpha_g$ es constante
+en cada clase conjugada.
+Denotando por $\alpha_c$ el valor comun para $g\in c$,
+agrupamos la suma por clases conjugadas (que particionan $G$):
+\[
+  z=\sum_{c\in C}\;\sum_{g\in c}\alpha_g\,g
+   =\sum_{c\in C}\alpha_c\sum_{g\in c}g
+   =\sum_{c\in C}\alpha_c\,s_c
+   \;\in\;\operatorname{span}_{\CC}\langle s_c:c\in C\rangle.
+\]
+
+De ambas contenciones,
+$Z(\CC[G])=\operatorname{span}_{\CC}\langle s_c:c\in C\rangle$.
+\hfill$\square$
+
+\textit{Observacion:} los $s_c$ son $\CC$-linealmente independientes,
+pues cada $g\in G$ aparece en exactamente un $s_c$ (el de su clase conjugada);
+por tanto, en una relacion $\sum_c\lambda_c s_c=0$, el coeficiente de cualquier
+$g\in c$ es $\lambda_c$, luego $\lambda_c=0$ para toda clase $c$.
+Asi, $\{s_c:c\in C\}$ es una $\CC$-base de $Z(\CC[G])$ y
+$\dim_\CC Z(\CC[G])=|C|$.
 
 \problem{4}{%
 Escriba $\CC[C_4]$ como suma directa de irreps.
 }
-\worklines{8}
+
+\textbf{Respuesta.}
+Sea $C_4=\langle r\mid r^4=e\rangle=\{e,r,r^2,r^3\}$ el grupo ciclico de orden~$4$.
+
+Consideremos la representacion regular
+\[
+  \rho\colon C_4\to GL(\CC[C_4])\cong GL_4(\CC),
+\]
+donde $g\in C_4$ actua por multiplicacion a izquierda sobre $\CC[C_4]$.
+En la base ordenada
+\[
+  \mathcal B=(e,r,r^2,r^3),
+\]
+la matriz de $\rho(r)$ es
+\[
+  P=
+  \begin{pmatrix}
+    0&0&0&1\\
+    1&0&0&0\\
+    0&1&0&0\\
+    0&0&1&0
+  \end{pmatrix},
+\]
+porque
+\[
+  r\cdot e=r,\qquad r\cdot r=r^2,\qquad r\cdot r^2=r^3,\qquad r\cdot r^3=e.
+\]
+
+Como $r^4=e$, se tiene $P^4=I$. Por tanto el polinomio minimo de $P$
+divide a $x^4-1$, y sobre $\CC$ vale
+\[
+  x^4-1=(x-1)(x-i)(x+1)(x+i),
+\]
+que tiene cuatro raices distintas. Luego $P$ es diagonalizable y sus autovalores
+pertenecen a $\{1,i,-1,-i\}$.
+
+Definimos los vectores
+\[
+  v_0=\begin{pmatrix}1\\1\\1\\1\end{pmatrix},\qquad
+  v_1=\begin{pmatrix}1\\-i\\-1\\i\end{pmatrix},\qquad
+  v_2=\begin{pmatrix}1\\-1\\1\\-1\end{pmatrix},\qquad
+  v_3=\begin{pmatrix}1\\i\\-1\\-i\end{pmatrix}.
+\]
+Se verifica directamente que
+\[
+  Pv_0=v_0,\qquad Pv_1=i\,v_1,\qquad Pv_2=-v_2,\qquad Pv_3=-i\,v_3.
+\]
+Asi, los subespacios $\CC v_0$, $\CC v_1$, $\CC v_2$ y $\CC v_3$
+son invariantes por $C_4$ y de dimension~$1$; en particular, son irreducibles.
+
+Si llamamos $\rho_k$ a la representacion $1$-dimensional dada por
+\[
+  \rho_k(r)=i^k,\qquad k=0,1,2,3,
+\]
+entonces
+\[
+  (\CC v_k,\rho|_{\CC v_k})\cong (\CC,\rho_k).
+\]
+
+\medskip
+\textbf{Conclusion.}
+Como representacion de $C_4$, la descomposicion de la representacion regular es
+\[
+  (\CC[C_4],\rho)
+  \;\cong\; (\CC,\rho_0)\oplus(\CC,\rho_1)\oplus(\CC,\rho_2)\oplus(\CC,\rho_3).
+\]
+Equivalentemente,
+\[
+  \CC[C_4]
+  \;=\; \CC v_0\oplus \CC v_1\oplus \CC v_2\oplus \CC v_3,
+\]
+y en cada sumando $\CC v_k$ la accion de $r$ es multiplicacion por $i^k$.
+Esto es consistente con la dimension: $\dim\CC[C_4]=4=1+1+1+1$.
+\hfill$\square$
 
 \problem{5}{%
 Escriba $\CC[S_3]$ como suma directa de irreps.
 }
-\worklines{9}
+
+\begingroup
+\small
+\setlength{\parskip}{0.35em}
+\setlength{\abovedisplayskip}{0.35em}
+\setlength{\belowdisplayskip}{0.35em}
+\setlength{\abovedisplayshortskip}{0.2em}
+\setlength{\belowdisplayshortskip}{0.2em}
+\setlength{\jot}{0.15em}
+
+\textbf{Respuesta.}
+Sea $P_3$ la representacion de permutacion de $S_3$ sobre $\CC^3$,
+donde cada $\sigma\in S_3$ actua permutando la base canonica.
+Consideremos los subespacios
+\[
+  L:=\CC(1,1,1),
+  \qquad
+  V:=\{(z_1,z_2,z_3)\in\CC^3:z_1+z_2+z_3=0\}.
+\]
+Ambos son $S_3$-invariantes: $L$ porque permutar coordenadas deja fijo al vector
+$(1,1,1)$, y $V$ porque permutar coordenadas no cambia la suma $z_1+z_2+z_3$.
+Ademas,
+\[
+  \CC^3=L\oplus V,
+\]
+porque $L\cap V=\{0\}$ y $\dim L+\dim V=1+2=3$.
+Por tanto,
+\[
+  P_3\cong \mathbf 1\oplus V,
+\]
+donde $\mathbf 1$ es la representacion trivial y $V$ tiene dimension $2$.
+
+\medskip
+\textbf{Hecho (Corolario~4.3.15 de Steinberg~\cite[Cor.~4.3.15]{Steinberg}).}
+Si $\chi$ es el caracter de una representacion compleja de un grupo finito $G$,
+entonces la representacion es irreducible si y solo si
+\[
+  \langle \chi,\chi\rangle
+  :=\frac{1}{|G|}\sum_{g\in G}\chi(g)\overline{\chi(g)}=1.
+\]
+Como los caracteres son constantes en clases conjugadas, la suma puede agruparse
+por clases conjugadas.
+
+Veamos que $V$ es irreducible. El caracter de $P_3$ se obtiene contando
+cuantos vectores de la base canonica quedan fijos:
+\[
+  \chi_{P_3}(e)=3,
+  \qquad
+  \chi_{P_3}(\tau)=1\ \text{si }\tau\text{ es una trasposicion},
+  \qquad
+  \chi_{P_3}(c)=0\ \text{si }c\text{ es un }3\text{-ciclo}.
+\]
+Como $P_3\cong \mathbf 1\oplus V$, se sigue que
+\[
+  \chi_V(e)=2,
+  \qquad
+  \chi_V(\tau)=0,
+  \qquad
+  \chi_V(c)=-1.
+\]
+Entonces
+\[
+  \langle \chi_V,\chi_V\rangle
+  =\frac{1}{|S_3|}\Bigl(1\cdot 2^2+3\cdot 0^2+2\cdot (-1)^2\Bigr)
+  =\frac{1}{6}(4+0+2)=1.
+\]
+Por el criterio de irreducibilidad por caracteres, $V$ es irreducible.
+
+Ahora determinamos todas las irreps de $S_3$.
+Las clases conjugadas de $S_3$ son
+\[
+  \{e\},\qquad \{(1\;2),(1\;3),(2\;3)\},\qquad \{(1\;2\;3),(1\;3\;2)\}.
+\]
+Por tanto, sobre $\CC$ hay exactamente tres irreps, salvo equivalencia
+(por el Teorema~4.4.8 de Steinberg~\cite[Thm.~4.4.8]{Steinberg}).
+Las representaciones de dimension $1$ son exactamente dos: la trivial
+y la signo. En efecto, toda representacion $\rho\colon S_3\to \CC^{\times}$
+toma valores en $\CC^{\times}$, y este grupo es abeliano.
+Por tanto, para cualesquiera $g,h\in S_3$ se tiene
+$\rho(ghg^{-1}h^{-1})=1$, de modo que el subgrupo conmutador
+$[S_3,S_3]$ queda contenido en $\ker\rho$.
+Como $[S_3,S_3]=A_3$, se tiene $A_3\subseteq \ker\rho$. En particular,
+si dos elementos de $S_3$ estan en la misma coclase modulo $A_3$,
+entonces $\rho$ toma en ellos el mismo valor. Es decir, la aplicacion
+$\rho$ solo depende de la coclase de $A_3$, y por tanto induce un
+homomorfismo
+\[
+  \overline\rho\colon S_3/A_3 \longrightarrow \CC^{\times}.
+\]
+Como $S_3/A_3\cong C_2$, hay solo dos coclases, y toda representacion de
+dimension $1$ de $S_3$ proviene de un homomorfismo $C_2\to \CC^{\times}$.
+Estas corresponden precisamente a $\mathbf 1$ y $\operatorname{sgn}$.
+
+Si las dimensiones de las irreps son $d_1,d_2,d_3$, entonces
+(por el Corolario~4.4.5 de Steinberg~\cite[Cor.~4.4.5]{Steinberg})
+\[
+  d_1^2+d_2^2+d_3^2=|S_3|=6.
+\]
+Como ya tenemos dos irreps de dimension $1$, la tercera debe satisfacer
+\[
+  1^2+1^2+d_3^2=6,
+\]
+de donde $d_3=2$.
+Esa tercera irrep es precisamente $V$.
+
+Finalmente usamos el hecho general sobre la representacion regular
+(Teorema~4.4.4 de Steinberg~\cite[Thm.~4.4.4]{Steinberg}):
+si $G$ es finito y $W_1,\dots,W_r$ son sus irreps, de dimensiones
+$d_1,\dots,d_r$, entonces
+\[
+  \CC[G]\cong d_1W_1\oplus d_2W_2\oplus \cdots \oplus d_rW_r.
+\]
+Aplicado a $G=S_3$, con irreps $\mathbf 1$, $\operatorname{sgn}$ y $V$,
+obtenemos
+\[
+  \CC[S_3]\cong \mathbf 1\oplus \operatorname{sgn}\oplus V\oplus V.
+\]
+
+Esta es la descomposicion pedida. La comprobacion de dimensiones es
+\[
+  1+1+2+2=6=\dim_\CC \CC[S_3].
+\]
+\hfill$\square$
+\endgroup
 
 \problem{6}{%
 Recuerde que $P_n$ es la representacion $\CC^n$ de $S_n$ donde cada elemento actua permutando los elementos de la base canonica. Verifique que $P_4$ se descompone como la suma directa de la irrep trivial y una irrep de dimension $3$.
 }
-\worklines{10}
 
-\end{document}
-\documentclass[11pt,a4paper]{article}
-
-\usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{geometry}
-\usepackage{amsmath,amssymb,amsfonts,mathtools,bm}
-\usepackage{enumitem}
-\usepackage{xcolor}
-\usepackage{hyperref}
-\usepackage{fancyhdr}
-\usepackage{array}
-\usepackage{booktabs}
-
-\geometry{margin=2.3cm}
-\setlength{\headheight}{14pt}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.5em}
-\setlist[enumerate]{itemsep=0.75em, topsep=0.5em}
-
-\definecolor{trgfblue}{HTML}{1E3A5F}
-\definecolor{trgfgold}{HTML}{B07A2A}
-\definecolor{trgflight}{HTML}{EEF3F7}
-\definecolor{trgfcream}{HTML}{FAF7F0}
-\definecolor{trgftext}{HTML}{1F252B}
-
-\hypersetup{
-  colorlinks=true,
-  linkcolor=trgfblue,
-  urlcolor=trgfblue,
-  pdftitle={TRGF Padilla Tarea 3},
-  pdfauthor={Juan Ignacio Padilla Barrientos}
-}
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\textcolor{trgfblue}{TRGF Padilla -- Tarea 3}}
-\fancyhead[R]{\textcolor{trgfblue}{Plantilla de trabajo}}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-
-\newcommand{\titlebox}{%
-  \noindent\fcolorbox{trgfblue}{trgflight}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
-      {\Large\bfseries\color{trgfblue} TRGF Padilla -- Tarea 3}\\[0.4em]
-      {\normalsize\color{trgftext} Plantilla personal de resolucion con boilerplate, referencias y espacios en blanco para el desarrollo.}\\[0.8em]
-      \color{trgftext}
-      \begin{tabular}{@{}p{0.31\linewidth}p{0.31\linewidth}p{0.31\linewidth}@{}}
-        \textbf{Autor:} Juan Ignacio Padilla B. & \textbf{Fecha:} \today & \textbf{Base tematica:} Analisis numerico \\
-        \textbf{Archivo:} \texttt{trgf\_padilla\_tarea\_3.tex} & \textbf{Estado:} Enunciados listos & \textbf{Formato:} trabajo guiado
-      \end{tabular}
-    \end{minipage}%
-  }
-}
-
-\newcommand{\infobox}[2]{%
-  \par\medskip
-  \noindent\fcolorbox{trgfgold}{trgfcream}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
-      {\bfseries\color{trgfblue} #1}\\[0.3em]
-      \color{trgftext}#2
-    \end{minipage}%
-  }
-  \par\medskip
-}
-
-\newcommand{\problemheader}[2]{%
-  \par\bigskip
-  \noindent\colorbox{trgfblue}{%
-    \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-      \vspace{0.35em}{\color{white}\large\bfseries Problema #1}\hfill{\color{white}\small #2}\vspace{0.35em}
-    }%
-  }
-  \par\medskip
-}
-
-\newcommand{\solutionarea}[1]{%
-  \par\smallskip
-  \noindent\fcolorbox{trgfblue}{trgflight}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
-      \vspace{#1}
-    \end{minipage}%
-  }
-  \par\medskip
-}
-
-\newcommand{\algorithmlabel}[1]{%
-  \par\medskip{\bfseries\color{trgfblue} #1}\par\smallskip
-}
-
-\begin{document}
-
-\color{trgftext}
-\titlebox
-
-\infobox{Boilerplate de trabajo}{%
-Esta plantilla reorganiza los enunciados de la tarea en un formato limpio de estudio. La estructura esta pensada para separar argumento teorico, calculo numerico, comentarios sobre estabilidad y evidencia computacional. Cada inciso deja un bloque vacio para desarrollar demostraciones, comandos, tablas y observaciones.}
-
-\infobox{Proveniencia y referencias sugeridas}{%
-\begin{itemize}[leftmargin=1.5em]
-  \item Fuente base interna del repositorio: \texttt{Undergrad/Análisis Numérico/Matrices/Tarea 3.tex}.
-  \item Variante paralela en ingles: \texttt{Undergrad/Análisis Numérico/Matrices/Tarea 3\_en.tex}.
-  \item Referencia clasica para algebra lineal numerica: Lloyd N. Trefethen y David Bau III, \emph{Numerical Linear Algebra}.
-  \item Referencia general para interpolacion, SVD y factorizaciones: Richard L. Burden, J. Douglas Faires y Annette M. Burden, \emph{Numerical Analysis}.
-  \item Para cada inciso conviene registrar scripts, comandos y tolerancias utilizados antes de escribir las conclusiones finales.
-\end{itemize}}
-
-\problemheader{1}{Matriz de Vandermonde e interpolacion}
-
-Considere el problema de interpolacion de Lagrange: encontrar un polinomio $p$ de grado a lo sumo $n$ cuya grafica incluya los puntos $\{(x_i,y_i)\}_{i=0}^n$. Escriba
+\textbf{Respuesta.}
+Consideremos los subespacios
 \[
-  p(x) = \sum_{k=0}^{n} a_k x^k.
-\]
-Entonces interpolar equivale a encontrar los coeficientes $\{a_k\}$ que satisfacen las $n+1$ ecuaciones
-\[
-  p(x_i) = \sum_{k=0}^{n} a_k x_i^k = y_i, \qquad i=0,\dots,n,
-\]
-lo cual puede escribirse matricialmente como $A\bm{x}=\bm{b}$, donde
-\[
-  \bm{x} = \begin{bmatrix} a_0 \\ \vdots \\ a_n \end{bmatrix},
+  L:=\CC(1,1,1,1),
   \qquad
-  \bm{b} = \begin{bmatrix} y_0 \\ \vdots \\ y_n \end{bmatrix},
+  V:=\{(z_1,z_2,z_3,z_4)\in\CC^4:z_1+z_2+z_3+z_4=0\}.
 \]
-y $A$ es la matriz de Vandermonde
+Ambos son $S_4$-invariantes: $L$ porque permutar coordenadas deja fijo
+al vector $(1,1,1,1)$, y $V$ porque permutar coordenadas no cambia la suma
+$z_1+z_2+z_3+z_4$.
+Ademas, $L\cap V=\{0\}$ y $\dim L+\dim V=1+3=4=\dim\CC^4$, asi que
 \[
-  A = \begin{bmatrix}
-  1 & x_0 & \dots & x_0^n \\
-  1 & x_1 & \dots & x_1^n \\
-  \vdots & \vdots & \ddots & \vdots \\
-  1 & x_n & \dots & x_n^n
-  \end{bmatrix} \in \R^{(n+1)\times(n+1)}.
+  P_4\cong \mathbf 1\oplus V,
 \]
-En este ejercicio se usaran nodos equidistantes en el intervalo $[-1,1]$, es decir,
+donde $\mathbf 1$ denota la representacion trivial (sobre $L$).
+
+\medskip
+\textbf{Irreducibilidad de $V$.}
+Usamos el criterio de irreducibilidad por caracteres
+(Corolario~4.3.15 de Steinberg~\cite[Cor.~4.3.15]{Steinberg}):
+una representacion con caracter $\chi$ es irreducible si y solo si
+$\langle\chi,\chi\rangle=1$.
+
+Las clases conjugadas de $S_4$ son cinco:
 \[
-  x_j = -1 + 2\frac{j}{n}, \qquad j=0,\dots,n.
+\begin{array}{lcc}
+  \text{Tipo de ciclo} & \text{Representante} & \text{Tamano} \\
+  \hline
+  (1,1,1,1) & e & 1 \\
+  (2,1,1)   & (1\;2) & 6 \\
+  (3,1)     & (1\;2\;3) & 8 \\
+  (4)       & (1\;2\;3\;4) & 6 \\
+  (2,2)     & (1\;2)(3\;4) & 3
+\end{array}
 \]
+(Comprobacion: $1+6+8+6+3=24=|S_4|$.)
 
-\begin{enumerate}[label=\alph*)]
-  \item Demuestre que $A$ es invertible.
-  \solutionarea{5.2cm}
+El caracter de la representacion de permutacion $P_4$ cuenta los puntos fijos
+de cada permutacion:
+\[
+  \chi_{P_4}(e)=4,\quad
+  \chi_{P_4}((1\;2))=2,\quad
+  \chi_{P_4}((1\;2\;3))=1,\quad
+  \chi_{P_4}((1\;2\;3\;4))=0,\quad
+  \chi_{P_4}((1\;2)(3\;4))=0.
+\]
+Como $P_4\cong\mathbf 1\oplus V$ y $\chi_{\mathbf 1}\equiv 1$,
+se tiene $\chi_V=\chi_{P_4}-\chi_{\mathbf 1}$:
+\[
+  \chi_V(e)=3,\quad
+  \chi_V((1\;2))=1,\quad
+  \chi_V((1\;2\;3))=0,\quad
+  \chi_V((1\;2\;3\;4))=-1,\quad
+  \chi_V((1\;2)(3\;4))=-1.
+\]
+Calculamos:
+\[
+  \langle\chi_V,\chi_V\rangle
+  =\frac{1}{|S_4|}\sum_{g\in S_4}|\chi_V(g)|^2
+  =\frac{1}{24}\bigl(1\cdot 3^2+6\cdot 1^2+8\cdot 0^2+6\cdot(-1)^2+3\cdot(-1)^2\bigr)
+  =\frac{9+6+0+6+3}{24}=\frac{24}{24}=1.
+\]
+Por el criterio de irreducibilidad, $V$ es una representacion irreducible de dimension~$3$.
 
-  \item Para $n=40$, construya la matriz $A$. Calcule el numero de condicion de $A$, su rango y su determinante. \textit{Sugerencia:} puede utilizar los comandos \texttt{vander}, \texttt{rank}, \texttt{det} y \texttt{cond} de MATLAB. Comente si la matriz es invertible desde el punto de vista numerico.
-  \solutionarea{5.4cm}
+\medskip
+\textbf{Conclusion.}
+\[
+  P_4\;\cong\;\mathbf 1\;\oplus\; V,
+\]
+donde $\mathbf 1$ es la irrep trivial (dimension $1$) y $V$ es una irrep de dimension $3$.
+\hfill$\square$
 
-  \item Para resolver el sistema $A\bm{x}=\bm{b}$, basta ejecutar el comando $\bm{\tilde{x}}=\texttt{A\textbackslash b}$. Considere $f(x)=(1+25x^2)^{-1}$ y estime
-  \[
-    \|f(\texttt{xx})-p(\texttt{xx})\|_\infty,
-    \qquad \text{donde } \texttt{xx}=\texttt{linspace(-1,1,1e3)}.
-  \]
-  \solutionarea{4.9cm}
+\medskip
+\textit{Observacion (caso general).}
+La descomposicion $P_n\cong\mathbf 1\oplus V_n$, con
+$V_n:=\{(z_1,\dots,z_n)\in\CC^n:z_1+\cdots+z_n=0\}$
+irreducible de dimension $n-1$, vale para todo $n\ge 2$.
+La descomposicion como suma directa es identica al caso $n=4$:
+$L=\CC(1,\dots,1)$ y $V_n=\ker(\text{suma})$ son $S_n$-invariantes,
+$L\cap V_n=\{0\}$, y $\dim L+\dim V_n=n$.
+Para la irreducibilidad, el caracter de $P_n$ es
+$\chi_{P_n}(\sigma)=|\operatorname{Fix}(\sigma)|$,
+asi que $\chi_{V_n}(\sigma)=|\operatorname{Fix}(\sigma)|-1$.
+El calculo de $\langle\chi_{V_n},\chi_{V_n}\rangle$ no requiere
+enumerar clases conjugadas: basta usar
+\[
+  \sum_{\sigma\in S_n}|\operatorname{Fix}(\sigma)|=n!,
+  \qquad
+  \sum_{\sigma\in S_n}|\operatorname{Fix}(\sigma)|^2=2\cdot n!,
+\]
+que se demuestran por conteo directo
+(la primera suma cuenta pares $(i,\sigma)$ con $\sigma(i)=i$,
+contribucion $n\cdot(n-1)!=n!$;
+la segunda cuenta pares $((i,j),\sigma)$ con $\sigma(i)=i$ y $\sigma(j)=j$,
+contribucion $n\cdot(n-1)!+n(n-1)\cdot(n-2)!=2\cdot n!$).
+Entonces
+\[
+  \langle\chi_{V_n},\chi_{V_n}\rangle
+  =\frac{1}{n!}\sum_{\sigma\in S_n}(|\operatorname{Fix}(\sigma)|-1)^2
+  =\frac{2n!-2n!+n!}{n!}=1.
+\]
+La representacion $V_n$ se llama la \emph{representacion estandar} de $S_n$.
 
-  \item Calcule la descomposicion en valores singulares de $A$ mediante
-  \[
-    \texttt{[U,S,V]=svd(A)}.
-  \]
-  De este modo,
-  \[
-    \tilde{x}=VS^{-1}U^Tb.
-  \]
-  Estime nuevamente $\|f(\texttt{xx})-p(\texttt{xx})\|_\infty$. Plotee los valores singulares de $A$ en una escala semilogaritmica, comente el comportamiento y determine el rango numerico de la matriz. \textit{Sugerencia:} la funcion \texttt{diag} puede ser de utilidad.
-  \solutionarea{5.8cm}
+\begin{thebibliography}{9}
 
-  \item Sea $A=USV^T$ una descomposicion en valores singulares. La pseudoinversa de $A$ se define por
-  \[
-    A^+ = VS^+U^T,
-  \]
-  donde $S^+$ se obtiene invirtiendo los valores singulares positivos de $S$. Defina el vector de tolerancias
-  \[
-    \texttt{tol = 10.\string^(-linspace(2,17))}.
-  \]
-  Para cada entrada \texttt{j} de \texttt{tol}, defina $S_j$ reemplazando por cero los valores singulares menores que \texttt{tol(j)}$\sigma_1$. Calcule
-  \[
-    \texttt{x\_svd}=(VS_j^+U^T)b,
-  \]
-  y luego la norma $\|f(\texttt{xx})-p(\texttt{xx})\|_\infty$. Grafique el error en funcion del vector de tolerancias. Comente y explique el comportamiento observado.
-  \solutionarea{6.5cm}
+\bibitem{Steinberg}
+Benjamin Steinberg,
+\textit{Representation Theory of Finite Groups: An Introductory Approach},
+Universitext, Springer, 2012.
 
-  \item Para un valor de tolerancia que minimice el error del inciso anterior, plotee en una misma grafica $f(\texttt{xx})$, $p(\texttt{xx})$ y los nodos de interpolacion. Discuta que tan buena es la aproximacion.
-  \solutionarea{4.9cm}
-
-  \item Ahora use \texttt{tol = 1e-5}. Plotee en una misma grafica $f(\texttt{xx})$, $p(\texttt{xx})$ y los nodos de interpolacion. Indique si se observa el fenomeno de Runge y explique por que.
-  \solutionarea{5.0cm}
-\end{enumerate}
-
-\problemheader{2}{Compresion de imagenes mediante SVD}
-
-En este ejercicio se utiliza la descomposicion en valores singulares para comprimir imagenes de manera basica. Una imagen de dimension $m\times n$ consiste de $mn$ pixeles. En una imagen a color, cada pixel contiene tres valores enteros $(r_p,g_p,b_p)\in[0,255]^3$, correspondientes a las componentes roja, verde y azul. Por tanto, una imagen se guarda como una matriz de tamano $m\times n\times 3$.
-
-\begin{enumerate}[label=\alph*)]
-  \item Considere la imagen suministrada \texttt{photo}. Para leerla puede usar el comando
-  \[
-    \texttt{RGB = imread('photo.jpg')}.
-  \]
-  Determine cuantos pixeles tiene la imagen almacenada en \texttt{RGB} y que tipo de entradas tiene esa matriz. \textit{Sugerencia:} ejecute \texttt{whos RGB} y comente el resultado.
-  \solutionarea{4.8cm}
-
-  \item Para utilizar la SVD, convierta la matriz \texttt{RGB} a formato doble mediante
-  \[
-    \texttt{RGB = im2double(RGB)}.
-  \]
-  \solutionarea{3.6cm}
-
-  \item Calcule la descomposicion en valores singulares de \texttt{RGB} = $USV^T$ para cada una de las tres matrices de color. Luego calcule la aproximacion de rango $5$
-  \[
-    A_5 = \sum_{i=1}^{5} \sigma_i u_i v_i^T.
-  \]
-  En una misma ventana, usando \texttt{subplot}, muestre la imagen original, la imagen guardada en $A_5$ y el error $|\texttt{RGB}-A_5|$. Comente sus resultados. \textit{Sugerencia:} el comando \texttt{imshow(RGB)} muestra la imagen dada en \texttt{RGB}.
-  \solutionarea{6.0cm}
-
-  \item Para cada matriz \texttt{RGB(:,:,i)}, determine el numero $r_i$ de valores singulares $\sigma_k$ tales que $\sigma_k > 0.01\sigma_1$ y tome $R_1=\max r_i$. Para este valor de $R_1$, calcule la mejor aproximacion $A_{R_1}$ de rango $R_1$. Repita el procedimiento con el umbral $\sigma_k > 0.005\sigma_1$, denote el nuevo rango por $R_2$ y la aproximacion correspondiente por $A_{R_2}$. Dibuje ambas aproximaciones en una misma ventana y comente las diferencias entre ellas. \textit{Sugerencia:} el comando \texttt{diag(S)} extrae la diagonal de \texttt{S}.
-  \solutionarea{6.2cm}
-
-  \item Finalmente, guarde la imagen $A_{R_2}$ en formatos \texttt{.bmp} y \texttt{.jpg} mediante comandos del tipo
-  \[
-    \texttt{imwrite(A\_R2,'photo\_comp.bmp')} \quad \text{y} \quad \texttt{imwrite(A\_R2,'photo\_comp.jpg')}.
-  \]
-  Compare el tamano de ambos archivos con el tamano original de la imagen inicial. Recuerde que el formato \texttt{.jpg} comprime por defecto y esta optimizado para ese fin.
-  \solutionarea{5.4cm}
-\end{enumerate}
-
-\problemheader{3}{Estabilidad de la factorizacion QR}
-
-En las notas se discuten tres algoritmos para calcular la factorizacion QR de una matriz $A\in\C^{m\times n}$. Para tener una plantilla autocontenida, se reproducen los esquemas de trabajo a continuacion.
-
-\algorithmlabel{Algoritmo 1. Ortogonalizacion de Gram-Schmidt clasica (inestable)}
-\begin{tabbing}
-\hspace{2.6em}\=\hspace{2.6em}\=\kill
-\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
-\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
-Para $j=1,\dots,n$: \\
-\> $\bm{v}_j = \bm{a}_j$ \\
-\> Para $i=1,\dots,j-1$: \\
-\>\> $r_{ij} = \bm{q}_i^*\bm{a}_j$ \\
-\>\> $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$ \\
-\> Fin para \\
-\> $r_{jj} = \|\bm{v}_j\|_2$ \\
-\> $\bm{q}_j = \bm{v}_j/r_{jj}$ \\
-Fin para
-\end{tabbing}
-
-\algorithmlabel{Algoritmo 2. Ortogonalizacion de Gram-Schmidt modificada (estable)}
-\begin{tabbing}
-\hspace{2.6em}\=\hspace{2.6em}\=\kill
-\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
-\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
-$V=A$ \\
-Para $i=1,\dots,n$: \\
-\> $r_{ii} = \|\bm{v}_i\|_2$ \\
-\> $\bm{q}_i = \bm{v}_i/r_{ii}$ \\
-\> Para $j=i+1,\dots,n$: \\
-\>\> $r_{ij} = \bm{q}_i^*\bm{v}_j$ \\
-\>\> $\bm{v}_j = \bm{v}_j - r_{ij}\bm{q}_i$ \\
-\> Fin para \\
-Fin para
-\end{tabbing}
-
-\algorithmlabel{Algoritmo 3. Triangularizacion de Householder}
-\begin{tabbing}
-\hspace{2.6em}\=\hspace{2.6em}\=\kill
-\textbf{Entrada:} matriz $A\in\C^{m\times n}$. \\
-\textbf{Salida:} matriz unitaria $Q$ y triangular superior $R$ tales que $A=QR$. \\
-Para $j=1,\dots,n$: \\
-\> $\bm{x} = A_{j:m,j}$ \\
-\> $\bm{v}_j = \operatorname{sign}(x_1)\|\bm{x}\|_2\bm{e}_1 + \bm{x}$ \\
-\> $\bm{v}_j = \bm{v}_j / \|\bm{v}_j\|_2$ \\
-\> $A_{j:m,j:n} = A_{j:m,j:n} - 2\bm{v}_j(\bm{v}_j^*A_{j:m,j:n})$ \\
-Fin para \\
-$R=A$ y $Q=I$ \\
-Para $j=n,\dots,1$: \\
-\> $Q_{j:m,j:n} = Q_{j:m,j:n} - 2\bm{v}_j(\bm{v}_j^*Q_{j:m,j:n})$ \\
-Fin para
-\end{tabbing}
-
-\begin{enumerate}[label=\alph*)]
-  \item Escriba tres funciones que implementen cada uno de los algoritmos anteriores.
-  \solutionarea{4.6cm}
-
-  \item Defina la matriz $A$ mediante las lineas
-\begin{verbatim}
-m = 80;
-[U,~] = qr(randn(m));
-[V,~] = qr(randn(m));
-S = diag(2.^(-1:-1:-80));
-A = U*S*V;
-\end{verbatim}
-  \solutionarea{3.5cm}
-
-  \item Calcule la factorizacion $QR$ de $A$ utilizando los tres algoritmos anteriores. Para cada uno, calcule $\|A-QR\|_2$ y $\|Q^*Q-I\|_2$. Comente sus resultados, indique cual algoritmo es mejor y compare con el comando de MATLAB \texttt{[q,r] = qr(A)}.
-  \solutionarea{6.6cm}
-\end{enumerate}
-
-\infobox{Cierre sugerido para la version resuelta}{%
-Cuando complete la tarea, conviene agregar una breve conclusion final con tres puntos: comportamiento del numero de condicion en la interpolacion, calidad real de las aproximaciones por SVD en imagenes y estabilidad comparada de los algoritmos QR. Esa sintesis deja el documento listo para estudio o entrega.}
+\end{thebibliography}
 
 \end{document}
