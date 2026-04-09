@@ -1,66 +1,120 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 
 \usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage{newtxtext,newtxmath}
 \usepackage{geometry}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{amsmath,mathtools}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
 
-\geometry{margin=2.35cm}
-\setlength{\headheight}{14pt}
+\geometry{margin=2.5cm,includeheadfoot}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{0.28cm}
+\setlength{\footskip}{0.62cm}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.55em}
-\setlist[enumerate]{leftmargin=2.2em,itemsep=0.55em,topsep=0.45em}
+\setlength{\parskip}{0.28em}
+\setlength{\abovedisplayskip}{0.5em}
+\setlength{\belowdisplayskip}{0.5em}
+\setlength{\abovedisplayshortskip}{0.25em}
+\setlength{\belowdisplayshortskip}{0.25em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.25em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.2em}
 
-\definecolor{repblue}{HTML}{12324A}
-\definecolor{repteal}{HTML}{2A6F6B}
-\definecolor{repgray}{HTML}{5C6770}
-\definecolor{repline}{HTML}{C8D2DA}
-\definecolor{replight}{HTML}{F4F7F9}
+\definecolor{repblue}{gray}{0}
+\definecolor{repteal}{gray}{0}
+\definecolor{repgray}{gray}{0}
+\definecolor{repaccent}{gray}{0}
+\definecolor{repline}{gray}{0}
+\definecolor{replight}{gray}{1}
 
 \hypersetup{
-  colorlinks=true,
-  linkcolor=repblue,
-  urlcolor=repteal,
+  hidelinks,
   pdftitle={TRGF Padilla Tarea 3},
   pdfauthor={Juan Ignacio Padilla Barrientos}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textcolor{repblue}{TRGF Padilla}}
-\fancyhead[R]{\textcolor{repgray}{Tarea 3}}
-\fancyfoot[C]{\thepage}
+\fancyhead[L]{\textcolor{repblue}{\small\itshape TRGF Padilla}}
+\fancyhead[R]{\textcolor{repgray}{\small Seminario UCR I 2026}}
+\fancyfoot[C]{\textcolor{repgray}{\small \thepage/\pageref*{LastPage}}}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \newcommand{\CC}{\mathbb{C}}
 \newcommand{\ZZ}{\mathbb{Z}}
 
-\newcommand{\topbanner}{%
-  {\color{repblue}\rule{\linewidth}{1.1pt}}\par
-  \vspace{0.9em}
-  \begin{center}
-    {\LARGE\bfseries\color{repblue} TRGF Padilla -- Tarea 3}\par
-    \vspace{0.35em}
-    {\large\color{repteal} Seminario UCR I 2026}\par
-    \vspace{0.55em}
-  \end{center}
-  \vspace{0.55em}
-  {\color{repblue}\rule{\linewidth}{0.8pt}}\par
+\tcbset{
+  enhanced,
+  sharp corners,
+  boxrule=0.45pt,
+  arc=0pt,
+  left=0.85em,
+  right=0.85em,
+  top=0.45em,
+  bottom=0.4em,
+  boxsep=0pt
 }
 
+\newcommand{\inlinehead}[2][repblue]{%
+  \par\smallskip
+  {\color{#1}\bfseries #2.}\hspace{0.45em}%
+}
+
+\newcommand{\blockhead}[2][repteal]{%
+  \par\smallskip
+  {\color{#1}\bfseries #2.}\par\nobreak\smallskip
+}
+
+\newcommand{\answer}{\inlinehead{Respuesta}}
+\newcommand{\subhead}[1]{\blockhead{#1}}
+\newcommand{\notehead}[1]{\inlinehead[repgray]{#1}}
+
+\newcommand{\topbanner}{%
+  \begin{tcolorbox}[
+    colback=replight,
+    colframe=repline,
+    borderline west={1.2pt}{0pt}{repblue},
+    borderline east={1.2pt}{0pt}{repteal},
+    left=1.0em,
+    right=1.0em,
+    top=0.7em,
+    bottom=0.55em
+  ]
+    {\Large\bfseries\color{repblue} TRGF Padilla \textemdash\ Tarea 3}\hfill
+    {\color{repaccent}\small\itshape Soluciones}\\[-0.1em]
+    {\normalsize\color{repteal} Seminario UCR I 2026}
+  \end{tcolorbox}
+}
+
+\newcounter{probcnt}
 \newcommand{\problem}[2]{%
-  \par\vspace{1.1em}
+  \stepcounter{probcnt}%
+  \ifnum\value{probcnt}>1\newpage\fi
+  \par\vspace{0.25em}
   {\large\bfseries\color{repblue} Problema #1}\par
-  {\color{repteal}\rule{\linewidth}{0.45pt}}\par\smallskip
-  #2
+  {\color{repline}\rule{\linewidth}{0.55pt}}\par
+  \begin{tcolorbox}[
+    breakable,
+    colback=white,
+    colframe=repline,
+    borderline west={1.6pt}{0pt}{repteal},
+    left=0.7em,
+    right=0.7em,
+    top=0.35em,
+    bottom=0.3em,
+    before skip=0.35em,
+    after skip=0.45em
+  ]
+    #2
+  \end{tcolorbox}
 }
 
 \newcommand{\worklines}[1]{%
@@ -82,35 +136,34 @@
 
 \color{black}
 \topbanner
-
-{\small\color{repgray}
-}
+\small
 
 \problem{1}{%
-\textit{\textquestiondown Para cuales $n$ se cumple que hay un homomorfismo sobreyectivo de grupos $S_{n+1} \to S_n$?}
+\textit{\textquestiondown Para cuáles $n$ se cumple que hay un homomorfismo sobreyectivo de grupos $S_{n+1} \to S_n$?}
 }
 
-\textbf{Respuesta.} Existe un homomorfismo sobreyectivo $S_{n+1}\to S_n$ si y solo si $n\in\{1,2,3\}$.
+\answer
+Existe un homomorfismo sobreyectivo $S_{n+1}\to S_n$ si y solo si
+$n\in\{1,2,3\}$.
 
-\medskip
-\textbf{Hecho que usaremos.}
+\subhead{Hecho que usaremos}
 
-\textit{Primer teorema de isomorfismo:} si $\phi\colon G\to H$ es un homomorfismo sobreyectivo de grupos, entonces $G/\ker\phi\cong H$. En particular, $|\ker\phi|=|G|/|H|$.
+\notehead{Primer teorema de isomorfismo}
+si $\phi\colon G\to H$ es un homomorfismo sobreyectivo de grupos,
+entonces $G/\ker\phi\cong H$. En particular,
+$|\ker\phi|=|G|/|H|$.
 
-\medskip
-\textbf{Lema 1 (Jordan).} Si $m\ge 5$, entonces $A_m$ es simple.
+\subhead{Lema 1 (Jordan)}
+Si $m\ge 5$, entonces $A_m$ es simple.
 
-\medskip
-\textbf{Caso $n=1$.}
-$S_2\to S_1=\{e\}$. El unico homomorfismo (el trivial) es sobreyectivo.
+\subhead{Caso $n=1$}
+$S_2\to S_1=\{e\}$. El único homomorfismo (el trivial) es sobreyectivo.
 
-\medskip
-\textbf{Caso $n=2$.}
+\subhead{Caso $n=2$}
 El homomorfismo signo $\operatorname{sgn}\colon S_3\to\{+1,-1\}$ es sobreyectivo.
 Como $\{+1,-1\}\cong \ZZ/2\ZZ\cong S_2$, obtenemos el homomorfismo sobreyectivo deseado.
 
-\medskip
-\textbf{Caso $n=3$.}
+\subhead{Caso $n=3$}
 Considere las tres particiones de $\{1,2,3,4\}$ en dos pares:
 \[
   P_1=\bigl\{\{1,2\},\{3,4\}\bigr\},\quad
@@ -119,47 +172,56 @@ Considere las tres particiones de $\{1,2,3,4\}$ en dos pares:
 \]
 Estas son \emph{todas} las particiones de $\{1,2,3,4\}$ en dos pares
 (hay $\binom{4}{2}/2!=3$).
-Cada $\sigma\in S_4$ actua sobre una particion aplicando $\sigma$ a cada elemento;
-como $\sigma$ es biyeccion, el resultado es otra particion en dos pares,
-y como solo hay tres, $\sigma$ permuta $\{P_1,P_2,P_3\}$; ademas, $(1\;2)$ induce la trasposicion $(P_2\;P_3)$ y $(1\;2\;3)$ induce el $3$-ciclo $(P_1\;P_3\;P_2)$.
+Cada $\sigma\in S_4$ actúa sobre una partición aplicando $\sigma$ a cada elemento;
+como $\sigma$ es biyección, el resultado es otra partición en dos pares,
+y como solo hay tres, $\sigma$ permuta $\{P_1,P_2,P_3\}$; además,
+$(1\;2)$ induce la transposición $(P_2\;P_3)$ y $(1\;2\;3)$ induce
+el $3$-ciclo $(P_1\;P_3\;P_2)$.
 
-\textit{Que $\phi$ es homomorfismo:} esto es inmediato, pues una accion de grupo sobre un conjunto $X$ es precisamente un homomorfismo $G\to S(X)$; aqui $X=\{P_1,P_2,P_3\}$ y $S(X)\cong S_3$.
+\textit{Que $\phi$ es un homomorfismo:} esto es inmediato, pues una acción
+de grupo sobre un conjunto $X$ es precisamente un homomorfismo
+$G\to S(X)$; aquí $X=\{P_1,P_2,P_3\}$ y $S(X)\cong S_3$.
 
 \textit{Sobreyectividad:}
-la imagen de $\phi$ contiene una trasposicion y un $3$-ciclo en $S_3$.
+la imagen de $\phi$ contiene una transposición y un $3$-ciclo en $S_3$.
 En efecto, $\phi((1\;2))=(P_2\;P_3)$ y $\phi((1\;2\;3))=(P_1\;P_3\;P_2)$.
-Un subgrupo de $S_3$ que contiene una trasposicion y un $3$-ciclo es todo $S_3$
-(pues $|S_3|=6$ y el subgrupo generado tiene orden divisible por $2$ y por $3$, asi que es $6$).
+Un subgrupo de $S_3$ que contiene una transposición y un $3$-ciclo es todo $S_3$
+(pues $|S_3|=6$ y el subgrupo generado tiene orden divisible por $2$ y por $3$, así que es $6$).
 Por tanto $\phi$ es sobreyectivo.
 
-\textit{Nucleo:} por el primer teorema de isomorfismo, $|\ker\phi|=|S_4|/|S_3|=24/6=4$.
-Cada doble-trasposicion intercambia ambos elementos dentro de cada par de cada particion,
-por lo que fija las tres particiones (aplicar la definicion de la accion a $(1\;2)(3\;4)$, $(1\;3)(2\;4)$ y $(1\;4)(2\;3)$).
-Asi, $\ker\phi\supseteq V_4:=\{e,\;(1\;2)(3\;4),\;(1\;3)(2\;4),\;(1\;4)(2\;3)\}$;
-como $|V_4|=4=|\ker\phi|$, concluimos $\ker\phi=V_4$.
-
-\medskip
-\textbf{Caso $n\ge 4$.}
+\subhead{Caso $n\ge 4$}
 Supongamos que existe $\phi\colon S_{n+1}\to S_n$ sobreyectivo.
 Entonces $K:=\ker\phi$ es un subgrupo normal de $S_{n+1}$ de orden
 \[
   |K|=\frac{|S_{n+1}|}{|S_n|}=\frac{(n+1)!}{n!}=n+1.
 \]
-Para $n\ge 4$ se tiene $n+1\ge 5$. Afirmamos que los unicos subgrupos normales de $S_{n+1}$ son
- $\{e\}$, $A_{n+1}$ y $S_{n+1}$: en efecto, si $N\trianglelefteq S_{n+1}$, entonces $N\cap A_{n+1}\trianglelefteq A_{n+1}$,
+Para $n\ge 4$ se tiene $n+1\ge 5$. Afirmamos que los únicos subgrupos
+normales de $S_{n+1}$ son $\{e\}$, $A_{n+1}$ y $S_{n+1}$: en efecto,
+si $N\trianglelefteq S_{n+1}$, entonces $N\cap A_{n+1}\trianglelefteq A_{n+1}$,
  y por el Lema 1 se tiene $N\cap A_{n+1}=\{e\}$ o $N\cap A_{n+1}=A_{n+1}$. Si $N\cap A_{n+1}=A_{n+1}$,
- entonces o bien $N=A_{n+1}$ o bien $N$ contiene una permutacion impar, y en este ultimo caso $N=S_{n+1}$.
- Si $N\cap A_{n+1}=\{e\}$ y $N$ contuviera una permutacion impar $\sigma$, entonces $\sigma^2\in A_{n+1}\cap N=\{e\}$,
- asi que $\sigma$ seria una trasposicion; como $N$ es normal, contendria todas las trasposiciones, y estas generan $S_{n+1}$,
- contradiccion. Por tanto, en este caso $N=\{e\}$. Asi, los unicos subgrupos normales de $S_{n+1}$ son:
+ entonces o bien $N=A_{n+1}$ o bien $N$ contiene una permutación impar, y en este último caso $N=S_{n+1}$.
+ Si $N\cap A_{n+1}=\{e\}$ y $N$ contuviera una permutación impar $\sigma$, entonces $\sigma^2\in A_{n+1}\cap N=\{e\}$.
+ Como $N$ es normal, todo conjugado $\tau$ de $\sigma$ pertenece a $N$;
+ además $\sigma\tau$ es par (producto de dos impares), así que
+ $\sigma\tau\in N\cap A_{n+1}=\{e\}$, es decir $\tau=\sigma$
+ para todo conjugado $\tau$. Luego $\sigma\in Z(S_{n+1})=\{e\}$
+ (para $n+1\ge 3$), contradicción. Por tanto, en este caso $N=\{e\}$.
+ Así, los únicos subgrupos normales de $S_{n+1}$ son:
 \[
-  \{e\}\;(\text{orden }1),\quad A_{n+1}\;\bigl(\text{orden }\tfrac{(n+1)!}{2}\bigr),\quad S_{n+1}\;\bigl(\text{orden }(n+1)!\bigr).
+  \{e\}\;(\text{orden }1),\quad
+  A_{n+1}\;\bigl(\text{orden }\tfrac{(n+1)!}{2}\bigr),\quad
+  S_{n+1}\;\bigl(\text{orden }(n+1)!\bigr).
 \]
-Como $n\ge 4$, se tiene $n!\ge 24$. Si $(n+1)!=n+1$, entonces $n!=1$, imposible. Si $\tfrac{(n+1)!}{2}=n+1$, entonces $\tfrac{n!}{2}=1$, es decir, $n!=2$, imposible. Por tanto ninguno de estos ordenes coincide con $n+1$.
-Por tanto no existe subgrupo normal de orden $n+1$ en $S_{n+1}$, y no puede existir tal homomorfismo sobreyectivo. \hfill$\square$
+Como $n\ge 4$, se tiene $n!\ge 24$. Si $(n+1)!=n+1$, entonces
+$n!=1$, imposible. Si $\tfrac{(n+1)!}{2}=n+1$, entonces
+$\tfrac{n!}{2}=1$, es decir, $n!=2$, imposible. Por tanto ninguno
+de estos órdenes coincide con $n+1$. Por tanto no existe subgrupo
+normal de orden $n+1$ en $S_{n+1}$, y no puede existir tal homomorfismo
+sobreyectivo. \hfill$\square$
 
 \problem{2}{%
-Sea $G$ un grupo conmutativo y sea $C$ el conjunto de clases conjugadas de $G$, es decir, el conjunto de clases de equivalencia bajo la relacion
+Sea $G$ un grupo conmutativo y sea $C$ el conjunto de clases conjugadas
+de $G$, es decir, el conjunto de clases de equivalencia bajo la relación
 \[
   g_1 \sim g_2 \quad \text{si existe } h \in G \text{ tal que } g_2 = h g_1 h^{-1}.
 \]
@@ -167,10 +229,11 @@ Dada una clase conjugada $c \in C$, defina
 \[
   s_c := \sum_{g \in c} g
 \]
-como un elemento en $\CC[G]$. Demuestre que $s_c$ es un elemento central, es decir, que $s_c$ conmuta con todos los demas elementos del algebra de grupo.
+como un elemento en $\CC[G]$. Demuestre que $s_c$ es un elemento central,
+es decir, que $s_c$ conmuta con todos los demás elementos del álgebra de grupo.
 }
 
-\textbf{Respuesta.}
+\answer
 Basta demostrar que $h\,s_c = s_c\,h$ para todo $h\in G$,
 pues los elementos $h\in G$ forman una base de $\CC[G]$ como $\CC$-espacio vectorial
 y la igualdad se extiende por linealidad.
@@ -182,11 +245,11 @@ Calculamos:
   = h\Bigl(\sum_{g\in c}g\Bigr)h^{-1}
   = \sum_{g\in c}hgh^{-1}.
 \]
-Ahora bien, la conjugacion por $h$ es una biyeccion $G\to G$
+Ahora bien, la conjugación por $h$ es una biyección $G\to G$
 que preserva cada clase conjugada: si $g\in c$, entonces $hgh^{-1}\sim g$
-(pues $hgh^{-1}$ es conjugado de $g$), asi que $hgh^{-1}\in c$.
-Por lo tanto la aplicacion $g\mapsto hgh^{-1}$ es una biyeccion $c\to c$
-(es inyectiva por ser restriccion de una biyeccion, y $c$ es finito).
+(pues $hgh^{-1}$ es conjugado de $g$), así que $hgh^{-1}\in c$.
+Por lo tanto la aplicación $g\mapsto hgh^{-1}$ es una biyección $c\to c$
+(es inyectiva por ser restricción de una biyección, y $c$ es finito).
 
 Al reindexar la suma con $g'=hgh^{-1}$, obtenemos
 \[
@@ -195,28 +258,28 @@ Al reindexar la suma con $g'=hgh^{-1}$, obtenemos
 Concluimos que $h\,s_c\,h^{-1}=s_c$, es decir $h\,s_c=s_c\,h$,
 para todo $h\in G$. Esto muestra que $s_c\in Z(\CC[G])$. \hfill$\square$
 
-\textit{Observacion:} el enunciado dice ``grupo conmutativo'', pero la demostracion
+\notehead{Observación} el enunciado dice ``grupo conmutativo'', pero la demostración
 anterior vale para cualquier grupo finito $G$. Si $G$ es abeliano,
 cada clase conjugada es un conjunto unitario $\{g\}$, $s_c=g$,
 y el resultado se reduce a que $\CC[G]$ es conmutativo.
 
 \problem{3}{%
-Utilizando la terminologia del ejercicio anterior, demuestre que
+Utilizando la terminología del ejercicio anterior, demuestre que
 \[
   Z(\CC[G]) = \operatorname{span}_{\CC}\langle s_c : c \in C \rangle.
 \]
-Donde, si $A$ es un anillo, $Z(A)$ denota el centro de $A$, es decir, el conjunto de elementos del algebra que conmutan con todos los demas.
+Donde, si $A$ es un anillo, $Z(A)$ denota el centro de $A$, es decir,
+el conjunto de elementos del álgebra que conmutan con todos los demás.
 }
 
-\textbf{Respuesta.}
+\answer
 
-\textit{Contencion $\supseteq$.}
+\subhead{Contención $\supseteq$}
 $Z(\CC[G])$ es un $\CC$-subespacio de $\CC[G]$, y por el Problema~2 cada $s_c$
 pertenece a $Z(\CC[G])$; luego
 $\operatorname{span}_{\CC}\langle s_c : c\in C\rangle\subseteq Z(\CC[G])$.
 
-\medskip
-\textit{Contencion $\subseteq$.}
+\subhead{Contención $\subseteq$}
 Sea $z=\sum_{g\in G}\alpha_g\,g\in Z(\CC[G])$.
 Para todo $h\in G$ se tiene $hzh^{-1}=z$, es decir
 \[
@@ -224,7 +287,7 @@ Para todo $h\in G$ se tiene $hzh^{-1}=z$, es decir
   =\sum_{g\in G}\alpha_g\,g.
 \]
 Sustituyendo $g'=hgh^{-1}$ en el lado izquierdo
-(biyeccion $G\to G$, con $g=h^{-1}g'h$):
+(biyección $G\to G$, con $g=h^{-1}g'h$):
 \[
   \sum_{g'\in G}\alpha_{h^{-1}g'h}\,g'
   =\sum_{g'\in G}\alpha_{g'}\,g'.
@@ -235,9 +298,9 @@ la igualdad coeficiente a coeficiente da
   \alpha_{h^{-1}g'h}=\alpha_{g'}\qquad
   \text{para todos }g'\in G,\;h\in G.
 \]
-Esto dice que la funcion $g\mapsto\alpha_g$ es constante
+Esto dice que la función $g\mapsto\alpha_g$ es constante
 en cada clase conjugada.
-Denotando por $\alpha_c$ el valor comun para $g\in c$,
+Denotando por $\alpha_c$ el valor común para $g\in c$,
 agrupamos la suma por clases conjugadas (que particionan $G$):
 \[
   z=\sum_{c\in C}\;\sum_{g\in c}\alpha_g\,g
@@ -250,30 +313,24 @@ De ambas contenciones,
 $Z(\CC[G])=\operatorname{span}_{\CC}\langle s_c:c\in C\rangle$.
 \hfill$\square$
 
-\textit{Observacion:} los $s_c$ son $\CC$-linealmente independientes,
+\notehead{Observación} los $s_c$ son $\CC$-linealmente independientes,
 pues cada $g\in G$ aparece en exactamente un $s_c$ (el de su clase conjugada);
-por tanto, en una relacion $\sum_c\lambda_c s_c=0$, el coeficiente de cualquier
+por tanto, en una relación $\sum_c\lambda_c s_c=0$, el coeficiente de cualquier
 $g\in c$ es $\lambda_c$, luego $\lambda_c=0$ para toda clase $c$.
-Asi, $\{s_c:c\in C\}$ es una $\CC$-base de $Z(\CC[G])$ y
+Así, $\{s_c:c\in C\}$ es una $\CC$-base de $Z(\CC[G])$ y
 $\dim_\CC Z(\CC[G])=|C|$.
 
 \problem{4}{%
 Escriba $\CC[C_4]$ como suma directa de irreps.
 }
 
-\textbf{Respuesta.}
-Sea $C_4=\langle r\mid r^4=e\rangle=\{e,r,r^2,r^3\}$ el grupo ciclico de orden~$4$.
+\answer
+Sea $C_4=\langle r\mid r^4=e\rangle=\{e,r,r^2,r^3\}$ el grupo cíclico de orden~$4$.
 
-Consideremos la representacion regular
-\[
-  \rho\colon C_4\to GL(\CC[C_4])\cong GL_4(\CC),
-\]
-donde $g\in C_4$ actua por multiplicacion a izquierda sobre $\CC[C_4]$.
-En la base ordenada
-\[
-  \mathcal B=(e,r,r^2,r^3),
-\]
-la matriz de $\rho(r)$ es
+Consideremos la representación regular
+$\rho\colon C_4\to GL(\CC[C_4])\cong GL_4(\CC)$,
+donde $g\in C_4$ actúa por multiplicación a izquierda sobre $\CC[C_4]$.
+En la base ordenada $\mathcal B=(e,r,r^2,r^3)$, la matriz de $\rho(r)$ es
 \[
   P=
   \begin{pmatrix}
@@ -283,56 +340,51 @@ la matriz de $\rho(r)$ es
     0&0&1&0
   \end{pmatrix},
 \]
-porque
-\[
-  r\cdot e=r,\qquad r\cdot r=r^2,\qquad r\cdot r^2=r^3,\qquad r\cdot r^3=e.
-\]
+ya que $r\cdot e=r$, $r\cdot r=r^2$, $r\cdot r^2=r^3$ y $r\cdot r^3=e$.
 
-Como $r^4=e$, se tiene $P^4=I$. Por tanto el polinomio minimo de $P$
+Como $r^4=e$, se tiene $P^4=I$. Por tanto el polinomio mínimo de $P$
 divide a $x^4-1$, y sobre $\CC$ vale
 \[
   x^4-1=(x-1)(x-i)(x+1)(x+i),
 \]
-que tiene cuatro raices distintas. Luego $P$ es diagonalizable y sus autovalores
+que tiene cuatro raíces distintas. Luego $P$ es diagonalizable y sus autovalores
 pertenecen a $\{1,i,-1,-i\}$.
 
 Definimos los vectores
 \[
-  v_0=\begin{pmatrix}1\\1\\1\\1\end{pmatrix},\qquad
-  v_1=\begin{pmatrix}1\\-i\\-1\\i\end{pmatrix},\qquad
-  v_2=\begin{pmatrix}1\\-1\\1\\-1\end{pmatrix},\qquad
-  v_3=\begin{pmatrix}1\\i\\-1\\-i\end{pmatrix}.
+  \begin{aligned}
+    v_0&=\begin{pmatrix}1\\1\\1\\1\end{pmatrix},
+    & v_1&=\begin{pmatrix}1\\-i\\-1\\i\end{pmatrix},\\[0.35em]
+    v_2&=\begin{pmatrix}1\\-1\\1\\-1\end{pmatrix},
+    & v_3&=\begin{pmatrix}1\\i\\-1\\-i\end{pmatrix}.
+  \end{aligned}
 \]
 Se verifica directamente que
 \[
-  Pv_0=v_0,\qquad Pv_1=i\,v_1,\qquad Pv_2=-v_2,\qquad Pv_3=-i\,v_3.
+  Pv_0=v_0,
+  \qquad
+  Pv_1=i\,v_1,
+  \qquad
+  Pv_2=-v_2,
+  \qquad
+  Pv_3=-i\,v_3.
 \]
-Asi, los subespacios $\CC v_0$, $\CC v_1$, $\CC v_2$ y $\CC v_3$
-son invariantes por $C_4$ y de dimension~$1$; en particular, son irreducibles.
+Así, los subespacios $\CC v_0$, $\CC v_1$, $\CC v_2$ y $\CC v_3$
+son invariantes por $C_4$ y de dimensión~$1$; en particular, son irreducibles.
 
-Si llamamos $\rho_k$ a la representacion $1$-dimensional dada por
-\[
-  \rho_k(r)=i^k,\qquad k=0,1,2,3,
-\]
-entonces
-\[
-  (\CC v_k,\rho|_{\CC v_k})\cong (\CC,\rho_k).
-\]
+Si llamamos $\rho_k$ a la representación $1$-dimensional dada por
+$\rho_k(r)=i^k$, con $k=0,1,2,3$, entonces
+$(\CC v_k,\rho|_{\CC v_k})\cong (\CC,\rho_k)$.
 
-\medskip
-\textbf{Conclusion.}
-Como representacion de $C_4$, la descomposicion de la representacion regular es
+\subhead{Conclusión}
+Como representación de $C_4$, la descomposición de la representación regular es
 \[
   (\CC[C_4],\rho)
   \;\cong\; (\CC,\rho_0)\oplus(\CC,\rho_1)\oplus(\CC,\rho_2)\oplus(\CC,\rho_3).
 \]
 Equivalentemente,
-\[
-  \CC[C_4]
-  \;=\; \CC v_0\oplus \CC v_1\oplus \CC v_2\oplus \CC v_3,
-\]
-y en cada sumando $\CC v_k$ la accion de $r$ es multiplicacion por $i^k$.
-Esto es consistente con la dimension: $\dim\CC[C_4]=4=1+1+1+1$.
+$\CC[C_4]=\CC v_0\oplus \CC v_1\oplus \CC v_2\oplus \CC v_3$,
+y en cada sumando $\CC v_k$ la acción de $r$ es multiplicación por $i^k$.
 \hfill$\square$
 
 \problem{5}{%
@@ -341,16 +393,26 @@ Escriba $\CC[S_3]$ como suma directa de irreps.
 
 \begingroup
 \small
-\setlength{\parskip}{0.35em}
+\setlength{\parskip}{0.25em}
 \setlength{\abovedisplayskip}{0.35em}
 \setlength{\belowdisplayskip}{0.35em}
 \setlength{\abovedisplayshortskip}{0.2em}
 \setlength{\belowdisplayshortskip}{0.2em}
 \setlength{\jot}{0.15em}
 
-\textbf{Respuesta.}
-Sea $P_3$ la representacion de permutacion de $S_3$ sobre $\CC^3$,
-donde cada $\sigma\in S_3$ actua permutando la base canonica.
+\subhead{Hecho (Corolario~4.3.15 de Steinberg~\cite[Cor.~4.3.15]{Steinberg})}
+Si $\chi$ es el carácter de una representación compleja de un grupo finito $G$,
+entonces la representación es irreducible si y solo si
+\[
+  \langle \chi,\chi\rangle
+  :=\frac{1}{|G|}\sum_{g\in G}\chi(g)\overline{\chi(g)}=1.
+\]
+Como los caracteres son constantes en clases conjugadas, la suma puede agruparse
+por clases conjugadas.
+
+\answer
+Sea $P_3$ la representación de permutación de $S_3$ sobre $\CC^3$,
+donde cada $\sigma\in S_3$ actúa permutando la base canónica.
 Consideremos los subespacios
 \[
   L:=\CC(1,1,1),
@@ -359,7 +421,7 @@ Consideremos los subespacios
 \]
 Ambos son $S_3$-invariantes: $L$ porque permutar coordenadas deja fijo al vector
 $(1,1,1)$, y $V$ porque permutar coordenadas no cambia la suma $z_1+z_2+z_3$.
-Ademas,
+Además,
 \[
   \CC^3=L\oplus V,
 \]
@@ -368,25 +430,14 @@ Por tanto,
 \[
   P_3\cong \mathbf 1\oplus V,
 \]
-donde $\mathbf 1$ es la representacion trivial y $V$ tiene dimension $2$.
+donde $\mathbf 1$ es la representación trivial y $V$ tiene dimensión $2$.
 
-\medskip
-\textbf{Hecho (Corolario~4.3.15 de Steinberg~\cite[Cor.~4.3.15]{Steinberg}).}
-Si $\chi$ es el caracter de una representacion compleja de un grupo finito $G$,
-entonces la representacion es irreducible si y solo si
-\[
-  \langle \chi,\chi\rangle
-  :=\frac{1}{|G|}\sum_{g\in G}\chi(g)\overline{\chi(g)}=1.
-\]
-Como los caracteres son constantes en clases conjugadas, la suma puede agruparse
-por clases conjugadas.
-
-Veamos que $V$ es irreducible. El caracter de $P_3$ se obtiene contando
-cuantos vectores de la base canonica quedan fijos:
+Veamos que $V$ es irreducible. El carácter de $P_3$ se obtiene contando
+cuántos vectores de la base canónica quedan fijos:
 \[
   \chi_{P_3}(e)=3,
   \qquad
-  \chi_{P_3}(\tau)=1\ \text{si }\tau\text{ es una trasposicion},
+  \chi_{P_3}(\tau)=1\ \text{si }\tau\text{ es una transposición},
   \qquad
   \chi_{P_3}(c)=0\ \text{si }c\text{ es un }3\text{-ciclo}.
 \]
@@ -413,22 +464,22 @@ Las clases conjugadas de $S_3$ son
 \]
 Por tanto, sobre $\CC$ hay exactamente tres irreps, salvo equivalencia
 (por el Teorema~4.4.8 de Steinberg~\cite[Thm.~4.4.8]{Steinberg}).
-Las representaciones de dimension $1$ son exactamente dos: la trivial
-y la signo. En efecto, toda representacion $\rho\colon S_3\to \CC^{\times}$
+Las representaciones de dimensión $1$ son exactamente dos: la trivial
+y la signo. En efecto, toda representación $\rho\colon S_3\to \CC^{\times}$
 toma valores en $\CC^{\times}$, y este grupo es abeliano.
 Por tanto, para cualesquiera $g,h\in S_3$ se tiene
 $\rho(ghg^{-1}h^{-1})=1$, de modo que el subgrupo conmutador
 $[S_3,S_3]$ queda contenido en $\ker\rho$.
 Como $[S_3,S_3]=A_3$, se tiene $A_3\subseteq \ker\rho$. En particular,
-si dos elementos de $S_3$ estan en la misma coclase modulo $A_3$,
-entonces $\rho$ toma en ellos el mismo valor. Es decir, la aplicacion
+si dos elementos de $S_3$ están en la misma coclase módulo $A_3$,
+entonces $\rho$ toma en ellos el mismo valor. Es decir, la aplicación
 $\rho$ solo depende de la coclase de $A_3$, y por tanto induce un
 homomorfismo
 \[
   \overline\rho\colon S_3/A_3 \longrightarrow \CC^{\times}.
 \]
-Como $S_3/A_3\cong C_2$, hay solo dos coclases, y toda representacion de
-dimension $1$ de $S_3$ proviene de un homomorfismo $C_2\to \CC^{\times}$.
+Como $S_3/A_3\cong C_2$, hay solo dos coclases, y toda representación de
+dimensión $1$ de $S_3$ proviene de un homomorfismo $C_2\to \CC^{\times}$.
 Estas corresponden precisamente a $\mathbf 1$ y $\operatorname{sgn}$.
 
 Si las dimensiones de las irreps son $d_1,d_2,d_3$, entonces
@@ -436,14 +487,14 @@ Si las dimensiones de las irreps son $d_1,d_2,d_3$, entonces
 \[
   d_1^2+d_2^2+d_3^2=|S_3|=6.
 \]
-Como ya tenemos dos irreps de dimension $1$, la tercera debe satisfacer
+Como ya tenemos dos irreps de dimensión $1$, la tercera debe satisfacer
 \[
   1^2+1^2+d_3^2=6,
 \]
 de donde $d_3=2$.
 Esa tercera irrep es precisamente $V$.
 
-Finalmente usamos el hecho general sobre la representacion regular
+Finalmente usamos el hecho general sobre la representación regular
 (Teorema~4.4.4 de Steinberg~\cite[Thm.~4.4.4]{Steinberg}):
 si $G$ es finito y $W_1,\dots,W_r$ son sus irreps, de dimensiones
 $d_1,\dots,d_r$, entonces
@@ -456,18 +507,17 @@ obtenemos
   \CC[S_3]\cong \mathbf 1\oplus \operatorname{sgn}\oplus V\oplus V.
 \]
 
-Esta es la descomposicion pedida. La comprobacion de dimensiones es
-\[
-  1+1+2+2=6=\dim_\CC \CC[S_3].
-\]
 \hfill$\square$
 \endgroup
 
 \problem{6}{%
-Recuerde que $P_n$ es la representacion $\CC^n$ de $S_n$ donde cada elemento actua permutando los elementos de la base canonica. Verifique que $P_4$ se descompone como la suma directa de la irrep trivial y una irrep de dimension $3$.
+Recuerde que $P_n$ es la representación $\CC^n$ de $S_n$ donde cada
+elemento actúa permutando los elementos de la base canónica. Verifique
+que $P_4$ se descompone como la suma directa de la irrep trivial y una
+irrep de dimensión $3$.
 }
 
-\textbf{Respuesta.}
+\answer
 Consideremos los subespacios
 \[
   L:=\CC(1,1,1,1),
@@ -475,100 +525,62 @@ Consideremos los subespacios
   V:=\{(z_1,z_2,z_3,z_4)\in\CC^4:z_1+z_2+z_3+z_4=0\}.
 \]
 Ambos son $S_4$-invariantes: $L$ porque permutar coordenadas deja fijo
-al vector $(1,1,1,1)$, y $V$ porque permutar coordenadas no cambia la suma
-$z_1+z_2+z_3+z_4$.
-Ademas, $L\cap V=\{0\}$ y $\dim L+\dim V=1+3=4=\dim\CC^4$, asi que
-\[
-  P_4\cong \mathbf 1\oplus V,
-\]
-donde $\mathbf 1$ denota la representacion trivial (sobre $L$).
+al vector $(1,1,1,1)$, y $V$ porque permutar coordenadas no cambia la suma.
+Además, $L\cap V=\{0\}$ y $\dim L+\dim V=1+3=4$, así que
+$P_4\cong \mathbf 1\oplus V$,
+donde $\mathbf 1$ denota la representación trivial (sobre $L$).
 
-\medskip
-\textbf{Irreducibilidad de $V$.}
+\subhead{Irreducibilidad de $V$}
 Usamos el criterio de irreducibilidad por caracteres
 (Corolario~4.3.15 de Steinberg~\cite[Cor.~4.3.15]{Steinberg}):
-una representacion con caracter $\chi$ es irreducible si y solo si
-$\langle\chi,\chi\rangle=1$.
+$V$ es irreducible si y solo si $\langle\chi_V,\chi_V\rangle=1$.
 
-Las clases conjugadas de $S_4$ son cinco:
-\[
-\begin{array}{lcc}
-  \text{Tipo de ciclo} & \text{Representante} & \text{Tamano} \\
-  \hline
-  (1,1,1,1) & e & 1 \\
-  (2,1,1)   & (1\;2) & 6 \\
-  (3,1)     & (1\;2\;3) & 8 \\
-  (4)       & (1\;2\;3\;4) & 6 \\
-  (2,2)     & (1\;2)(3\;4) & 3
-\end{array}
-\]
-(Comprobacion: $1+6+8+6+3=24=|S_4|$.)
-
-El caracter de la representacion de permutacion $P_4$ cuenta los puntos fijos
-de cada permutacion:
-\[
-  \chi_{P_4}(e)=4,\quad
-  \chi_{P_4}((1\;2))=2,\quad
-  \chi_{P_4}((1\;2\;3))=1,\quad
-  \chi_{P_4}((1\;2\;3\;4))=0,\quad
-  \chi_{P_4}((1\;2)(3\;4))=0.
-\]
-Como $P_4\cong\mathbf 1\oplus V$ y $\chi_{\mathbf 1}\equiv 1$,
-se tiene $\chi_V=\chi_{P_4}-\chi_{\mathbf 1}$:
-\[
-  \chi_V(e)=3,\quad
-  \chi_V((1\;2))=1,\quad
-  \chi_V((1\;2\;3))=0,\quad
-  \chi_V((1\;2\;3\;4))=-1,\quad
-  \chi_V((1\;2)(3\;4))=-1.
-\]
-Calculamos:
+El carácter de $P_4$ es $\chi_{P_4}(\sigma)=|\operatorname{Fix}(\sigma)|$
+(número de puntos fijos). Como $P_4\cong\mathbf 1\oplus V$ y $\chi_{\mathbf 1}\equiv 1$,
+se tiene $\chi_V(\sigma)=|\operatorname{Fix}(\sigma)|-1$, y por tanto
 \[
   \langle\chi_V,\chi_V\rangle
-  =\frac{1}{|S_4|}\sum_{g\in S_4}|\chi_V(g)|^2
-  =\frac{1}{24}\bigl(1\cdot 3^2+6\cdot 1^2+8\cdot 0^2+6\cdot(-1)^2+3\cdot(-1)^2\bigr)
-  =\frac{9+6+0+6+3}{24}=\frac{24}{24}=1.
+  =\frac{1}{4!}\sum_{\sigma\in S_4}(|\operatorname{Fix}(\sigma)|-1)^2
+  =\frac{1}{4!}\Bigl(\sum_{\sigma}|\operatorname{Fix}(\sigma)|^2
+    -2\sum_{\sigma}|\operatorname{Fix}(\sigma)|+4!\Bigr).
 \]
-Por el criterio de irreducibilidad, $V$ es una representacion irreducible de dimension~$3$.
+Las dos sumas se calculan por conteo directo, sin enumerar clases conjugadas:
 
-\medskip
-\textbf{Conclusion.}
+\notehead{Primera suma}
+$\displaystyle\sum_{\sigma\in S_4}|\operatorname{Fix}(\sigma)|
+=\#\{(i,\sigma):\ \sigma(i)=i\}$.
+Para cada $i\in\{1,2,3,4\}$ hay $3!=6$ permutaciones que fijan $i$,
+así que la suma es $4\cdot 6=24=4!$.
+
+\notehead{Segunda suma}
+$\displaystyle\sum_{\sigma\in S_4}|\operatorname{Fix}(\sigma)|^2
+=\#\{(i,j,\sigma):\ \sigma(i)=i,\;\sigma(j)=j\}$.
+Separamos los pares $(i,j)$ con $i=j$ y $i\ne j$:
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item $i=j$: hay $4$ opciones para $i$ y $3!=6$ permutaciones que fijan $i$.
+Contribución: $4\cdot 6=24$.
+\item $i\ne j$: hay $4\cdot 3=12$ pares y $2!=2$ permutaciones que fijan ambos.
+Contribución: $12\cdot 2=24$.
+\end{itemize}
+Total: $24+24=48=2\cdot 4!$.
+
+Sustituyendo:
 \[
-  P_4\;\cong\;\mathbf 1\;\oplus\; V,
+  \langle\chi_V,\chi_V\rangle
+  =\frac{48-2\cdot 24+24}{24}=\frac{24}{24}=1.
 \]
-donde $\mathbf 1$ es la irrep trivial (dimension $1$) y $V$ es una irrep de dimension $3$.
+Por el criterio de irreducibilidad, $V$ es irreducible de dimensión~$3$.
+
+\subhead{Conclusión}
+$P_4\cong\mathbf 1\oplus V$,
+donde $\mathbf 1$ es la irrep trivial y $V$ es una irrep de dimensión $3$.
 \hfill$\square$
 
-\medskip
-\textit{Observacion (caso general).}
-La descomposicion $P_n\cong\mathbf 1\oplus V_n$, con
-$V_n:=\{(z_1,\dots,z_n)\in\CC^n:z_1+\cdots+z_n=0\}$
-irreducible de dimension $n-1$, vale para todo $n\ge 2$.
-La descomposicion como suma directa es identica al caso $n=4$:
-$L=\CC(1,\dots,1)$ y $V_n=\ker(\text{suma})$ son $S_n$-invariantes,
-$L\cap V_n=\{0\}$, y $\dim L+\dim V_n=n$.
-Para la irreducibilidad, el caracter de $P_n$ es
-$\chi_{P_n}(\sigma)=|\operatorname{Fix}(\sigma)|$,
-asi que $\chi_{V_n}(\sigma)=|\operatorname{Fix}(\sigma)|-1$.
-El calculo de $\langle\chi_{V_n},\chi_{V_n}\rangle$ no requiere
-enumerar clases conjugadas: basta usar
-\[
-  \sum_{\sigma\in S_n}|\operatorname{Fix}(\sigma)|=n!,
-  \qquad
-  \sum_{\sigma\in S_n}|\operatorname{Fix}(\sigma)|^2=2\cdot n!,
-\]
-que se demuestran por conteo directo
-(la primera suma cuenta pares $(i,\sigma)$ con $\sigma(i)=i$,
-contribucion $n\cdot(n-1)!=n!$;
-la segunda cuenta pares $((i,j),\sigma)$ con $\sigma(i)=i$ y $\sigma(j)=j$,
-contribucion $n\cdot(n-1)!+n(n-1)\cdot(n-2)!=2\cdot n!$).
-Entonces
-\[
-  \langle\chi_{V_n},\chi_{V_n}\rangle
-  =\frac{1}{n!}\sum_{\sigma\in S_n}(|\operatorname{Fix}(\sigma)|-1)^2
-  =\frac{2n!-2n!+n!}{n!}=1.
-\]
-La representacion $V_n$ se llama la \emph{representacion estandar} de $S_n$.
+\smallskip
+{\footnotesize\textit{Observación:} el mismo argumento muestra que
+$P_n\cong\mathbf 1\oplus V_n$ con $V_n:=\ker(\text{suma})\subset\CC^n$
+irreducible de dimensión $n-1$ para todo $n\ge 2$
+(la representación estándar de $S_n$).}
 
 \begin{thebibliography}{9}
 
