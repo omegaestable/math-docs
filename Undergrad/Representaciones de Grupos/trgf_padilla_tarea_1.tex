@@ -72,6 +72,7 @@
   {\color{#1}\bfseries #2.}\par\nobreak\smallskip
 }
 
+\newcommand{\answer}{\inlinehead{Respuesta}}
 \newcommand{\subhead}[1]{\blockhead{#1}}
 \newcommand{\notehead}[1]{\inlinehead[repgray]{#1}}
 
@@ -128,7 +129,104 @@
 Calcule el determinante de grupo para $C_2 \times C_3$.
 }
 
-\workspace{12}
+\answer
+\begingroup
+\fontsize{8.8}{10.2}\selectfont
+\setlength{\abovedisplayskip}{0.28em}
+\setlength{\belowdisplayskip}{0.28em}
+\setlength{\abovedisplayshortskip}{0.18em}
+\setlength{\belowdisplayshortskip}{0.18em}
+\setlength{\arraycolsep}{3.2pt}
+\renewcommand{\arraystretch}{0.96}
+
+Ordenemos los elementos de
+\[
+  G=C_2 \times C_3=\langle a,b : a^2=e,\ b^3=e,\ ab=ba\rangle
+\]
+como
+\[
+  e,\ b,\ b^2,\ a,\ ab,\ ab^2.
+\]
+Escribimos $x_0:=x_e$, $x_1:=x_b$, $x_2:=x_{b^2}$, $y_0:=x_a$,
+$y_1:=x_{ab}$, $y_2:=x_{ab^2}$. Como $a^{-1}=a$, $b^{-1}=b^2$,
+$(b^2)^{-1}=b$, $(ab)^{-1}=ab^2$ y $(ab^2)^{-1}=ab$,
+la matriz del determinante de grupo
+\[
+  \Theta_G=\det(x_{gh^{-1}})_{g,h\in G}
+\]
+es
+\[
+  M=
+  \begin{pmatrix}
+    x_0 & x_2 & x_1 & y_0 & y_2 & y_1\\
+    x_1 & x_0 & x_2 & y_1 & y_0 & y_2\\
+    x_2 & x_1 & x_0 & y_2 & y_1 & y_0\\
+    y_0 & y_2 & y_1 & x_0 & x_2 & x_1\\
+    y_1 & y_0 & y_2 & x_1 & x_0 & x_2\\
+    y_2 & y_1 & y_0 & x_2 & x_1 & x_0
+  \end{pmatrix}.
+\]
+
+\subhead{Reducción por bloques}
+Escribamos
+\[
+  A=
+  \begin{pmatrix}
+    x_0 & x_2 & x_1\\
+    x_1 & x_0 & x_2\\
+    x_2 & x_1 & x_0
+  \end{pmatrix},
+  \qquad
+  B=
+  \begin{pmatrix}
+    y_0 & y_2 & y_1\\
+    y_1 & y_0 & y_2\\
+    y_2 & y_1 & y_0
+  \end{pmatrix},
+\]
+de modo que $M=\begin{pmatrix}A&B\\ B&A\end{pmatrix}$. Restando las tres
+primeras filas de las tres últimas y luego sumando las tres últimas columnas a
+las tres primeras, se obtiene
+\begin{align*}
+  \Theta_G
+  &=\det(M)=\det(A+B)\det(A-B) \\
+  &= \det
+  \begin{pmatrix}
+    x_0+y_0 & x_2+y_2 & x_1+y_1\\
+    x_1+y_1 & x_0+y_0 & x_2+y_2\\
+    x_2+y_2 & x_1+y_1 & x_0+y_0
+  \end{pmatrix}
+  \,\det
+  \begin{pmatrix}
+    x_0-y_0 & x_2-y_2 & x_1-y_1\\
+    x_1-y_1 & x_0-y_0 & x_2-y_2\\
+    x_2-y_2 & x_1-y_1 & x_0-y_0
+  \end{pmatrix}.
+\end{align*}
+
+Para la matriz circulante
+\[
+  \det
+  \begin{pmatrix}
+    t_0 & t_2 & t_1\\
+    t_1 & t_0 & t_2\\
+    t_2 & t_1 & t_0
+  \end{pmatrix}
+  =(t_0+t_1+t_2)(t_0^2+t_1^2+t_2^2-t_0t_1-t_0t_2-t_1t_2).
+\]
+Aplicando esto a los dos determinantes anteriores, obtenemos
+\begin{align*}
+  \Theta_{C_2\times C_3}
+  &= (x_0+x_1+x_2+y_0+y_1+y_2) \\
+  &\quad\cdot \Bigl((x_0+y_0)^2+(x_1+y_1)^2+(x_2+y_2)^2 \\
+  &\qquad\qquad -(x_0+y_0)(x_1+y_1)-(x_0+y_0)(x_2+y_2)-(x_1+y_1)(x_2+y_2)\Bigr) \\
+  &\quad\cdot (x_0+x_1+x_2-y_0-y_1-y_2) \\
+  &\quad\cdot \Bigl((x_0-y_0)^2+(x_1-y_1)^2+(x_2-y_2)^2 \\
+  &\qquad\qquad -(x_0-y_0)(x_1-y_1)-(x_0-y_0)(x_2-y_2)-(x_1-y_1)(x_2-y_2)\Bigr).
+\end{align*}
+Esto calcula explícitamente el determinante de grupo de $C_2 \times C_3$.
+\enlargethispage{2\baselineskip}
+\endgroup
 
 \problem{2}{%
 Sea $G$ un grupo finito. Defina
@@ -139,13 +237,56 @@ como el subgrupo de $G$ generado por todos los elementos de la forma
 $ghg^{-1}h^{-1}$. Demuestre que $[G,G]$ es un subgrupo normal de $G$.
 }
 
-\workspace{14}
+\answer
+Escribimos $[g,h]:=ghg^{-1}h^{-1}$ para el conmutador de $g,h\in G$.
+Debemos mostrar que $x[G,G]x^{-1}\subseteq [G,G]$ para todo $x\in G$.
+
+Como $[G,G]$ está generado por conmutadores, todo elemento de $[G,G]$ es un
+producto finito $w=[g_1,h_1]\cdots[g_n,h_n]$.
+Observemos que
+\[
+  xwx^{-1}
+  = (x[g_1,h_1]x^{-1})(x[g_2,h_2]x^{-1})\cdots(x[g_n,h_n]x^{-1}),
+\]
+pues insertar $x^{-1}x=e$ entre factores consecutivos no altera el producto.
+Basta entonces verificar que el conjugado de cada conmutador es otro conmutador.
+
+Sea $[g,h]=ghg^{-1}h^{-1}$ un conmutador arbitrario. Expandiendo:
+\[
+  x\,ghg^{-1}h^{-1}\,x^{-1}
+  = (xgx^{-1})(xhx^{-1})(xg^{-1}x^{-1})(xh^{-1}x^{-1}).
+\]
+Usando que $xg^{-1}x^{-1}=(xgx^{-1})^{-1}$ y
+$xh^{-1}x^{-1}=(xhx^{-1})^{-1}$, obtenemos
+\[
+  x[g,h]x^{-1}
+  = (xgx^{-1})(xhx^{-1})(xgx^{-1})^{-1}(xhx^{-1})^{-1}
+  = [xgx^{-1},\,xhx^{-1}].
+\]
+Como $xgx^{-1},xhx^{-1}\in G$, el lado derecho es un conmutador de elementos
+de $G$ y por tanto pertenece a $[G,G]$.
+
+Se sigue que $x[G,G]x^{-1}\subseteq [G,G]$ para todo $x\in G$, es decir,
+$[G,G]\trianglelefteq G$.\hfill$\blacksquare$
 
 \problem{3}{%
 Demuestre que $G/[G,G]$ es un grupo conmutativo.
 }
 
-\workspace{12}
+\answer
+Escribimos $N:=[G,G]$ y $\bar g:=gN$ para la clase de $g$ en $G/N$.
+Sean $g,h\in G$ arbitrarios. Debemos mostrar que $\bar g\bar h=\bar h\bar g$,
+es decir, que $ghN=hgN$, lo cual equivale a $(hg)^{-1}(gh)\in N$.
+
+Calculamos:
+\[
+  (hg)^{-1}(gh)=g^{-1}h^{-1}gh=[g^{-1},h^{-1}].
+\]
+Como $g^{-1},h^{-1}\in G$, este es un conmutador de elementos de $G$ y por
+tanto pertenece a $[G,G]=N$.
+
+Así, $\bar g\bar h=\bar h\bar g$ para todo $g,h\in G$, y $G/[G,G]$ es
+conmutativo.\hfill$\blacksquare$
 
 \problem{4}{%
 Para un grupo $G$ no conmutativo, se define un carácter de la misma forma
@@ -165,18 +306,172 @@ tal que $\chi = \chi' \circ p$. (O sea, todo carácter se factoriza a través
 de un carácter de un grupo conmutativo.)
 }
 
-\workspace{16}
+\answer
+Escribimos $N:=[G,G]$.
+
+\subhead{$[G,G]\subseteq\ker\chi$}
+Sea $[g,h]=ghg^{-1}h^{-1}$ un conmutador. Como $\chi$ es homomorfismo a
+$\CC^\times$ y $\CC^\times$ es abeliano:
+\[
+  \chi([g,h])
+  =\chi(g)\chi(h)\chi(g)^{-1}\chi(h)^{-1}
+  =1.
+\]
+Así todo conmutador pertenece a $\ker\chi$, y como $\ker\chi$ es subgrupo,
+$[G,G]\subseteq\ker\chi$.
+
+\subhead{Definición de $\chi'$}
+Definimos $\chi'\colon G/N\to\CC^\times$ por $\chi'(gN):=\chi(g)$.
+
+\emph{Buena definición:} si $gN=hN$, entonces $h^{-1}g\in N\subseteq\ker\chi$,
+luego $\chi(h^{-1}g)=1$, es decir, $\chi(g)=\chi(h)$.
+
+\emph{Homomorfismo:} $\chi'(gN\cdot hN)=\chi'(ghN)=\chi(gh)=\chi(g)\chi(h)
+=\chi'(gN)\chi'(hN)$.
+
+Finalmente, $(\chi'\circ p)(g)=\chi'(gN)=\chi(g)$ para todo $g\in G$,
+así que $\chi=\chi'\circ p$.\hfill$\blacksquare$
 
 \problem{5}{%
 Encuentre todos los caracteres de $S_3$.
 }
 
-\workspace{14}
+\answer
+Por el Problema~4, todo carácter $\chi\colon S_3\to\CC^\times$ se
+factoriza a través de $S_3/[S_3,S_3]$, así que basta encontrar
+$[S_3,S_3]$ y luego los caracteres del cociente.
+
+\subhead{Cálculo de $[S_3,S_3]$}
+Computamos un conmutador:
+\[
+  [(12),(13)]
+  = (12)(13)(12)(13)
+  = (132)(12)(13)
+  = (23)(13)
+  = (123).
+\]
+Como $(132)=(123)^{-1}$ y $\langle(123)\rangle = A_3 = \{e,(123),(132)\}$,
+se tiene $A_3\subseteq [S_3,S_3]$.
+
+Para la otra contención, $S_3/A_3\cong C_2$ es abeliano.
+Si $N\trianglelefteq G$ y $G/N$ es abeliano, entonces para todo $g,h\in G$
+se tiene $ghN=hgN$, es decir $(hg)^{-1}gh\in N$, o sea $[g,h]\in N$;
+luego $[G,G]\subseteq N$.
+Aplicando esto con $N=A_3$, obtenemos $[S_3,S_3]\subseteq A_3$.
+
+Por lo tanto $[S_3,S_3]=A_3$.
+
+\subhead{Caracteres}
+El cociente $S_3/A_3\cong C_2=\{1,-1\}$ tiene exactamente dos caracteres, que
+al componerse con la proyección $p\colon S_3\to S_3/A_3$ dan:
+\begin{itemize}
+  \item $\chi_0\colon S_3\to\CC^\times$,\; $\chi_0(\sigma)=1$ para toda
+        $\sigma$ \textup{(carácter trivial)}.
+  \item $\chi_1\colon S_3\to\CC^\times$,\; $\chi_1(\sigma)=\operatorname{sgn}(\sigma)$
+        \textup{(carácter signo):} vale $+1$ en $A_3$ y $-1$ en $S_3\setminus A_3$.
+\end{itemize}
+Estos son todos los caracteres de $S_3$.\hfill$\blacksquare$
 
 \problem{6}{%
 (*) Encuentre y factorice el determinante de grupo de $S_3$.
 }
 
-\workspace{16}
+\answer
+\begingroup
+\fontsize{8.8}{10.2}\selectfont
+\setlength{\abovedisplayskip}{0.28em}
+\setlength{\belowdisplayskip}{0.28em}
+\setlength{\abovedisplayshortskip}{0.18em}
+\setlength{\belowdisplayshortskip}{0.18em}
+\setlength{\arraycolsep}{3.2pt}
+\renewcommand{\arraystretch}{0.96}
+
+Ordenamos $S_3$ como $e,(123),(132),(12),(13),(23)$ (primero~$A_3$, luego
+su clase lateral) y abreviamos
+\[
+  a:=x_e,\; b:=x_{(123)},\; c:=x_{(132)},\;
+  d:=x_{(12)},\; p:=x_{(13)},\; q:=x_{(23)}.
+\]
+
+\subhead{Estructura de bloques}
+Calculando $g_ih_j^{-1}$ para cada par, la matriz
+$M=(x_{g_ih_j^{-1}})$ resulta $M=\bigl(\begin{smallmatrix}A&B\\B&A\end{smallmatrix}\bigr)$ con
+\[
+  A=\begin{pmatrix}a&c&b\\b&a&c\\c&b&a\end{pmatrix},\qquad
+  B=\begin{pmatrix}d&p&q\\p&q&d\\q&d&p\end{pmatrix}.
+\]
+La igualdad de los bloques fuera de la diagonal se verifica usando que
+conjugar $A_3$ por $(12)$ intercambia $(123)\leftrightarrow(132)$;
+la del bloque inferior derecho, porque el producto de dos transposiciones
+distintas es una rotación, así que ese bloque reproduce la tabla de~$A_3$.
+Como en el Problema~1:
+\[
+  \Theta_{S_3}=\det M=\det(A+B)\,\det(A-B).
+\]
+
+\subhead{Factores lineales}
+Cada fila de $A+B$ suma $L_+:=a{+}b{+}c{+}d{+}p{+}q$
+y cada fila de $A-B$ suma $L_-:=a{+}b{+}c{-}d{-}p{-}q$,
+así que $(1,1,1)^{T}$ es autovector de ambas matrices.
+Sumando las tres filas y restando la primera columna de las demás:
+\[
+  \det(A+B)=L_+\cdot\det
+  \begin{pmatrix}
+    a{-}b{-}p{+}q & c{-}b{+}d{-}p\\
+    b{-}c{+}d{-}q & a{-}c{+}p{-}q
+  \end{pmatrix},
+\]
+y análogamente $\det(A-B)=L_-$ multiplicado por el determinante~$2\times 2$
+que se obtiene del anterior al sustituir $(d,p,q)\to-(d,p,q)$.
+
+\subhead{Factor cuadrático}
+Denotemos las entradas del determinante~$2\times 2$ de $A+B$ como
+\[
+  \det\begin{pmatrix}\alpha&\beta\\\gamma&\delta\end{pmatrix}
+  =\alpha\delta-\beta\gamma,
+\]
+con $\alpha=a{-}b{-}p{+}q$, $\beta=c{-}b{+}d{-}p$,
+$\gamma=b{-}c{+}d{-}q$, $\delta=a{-}c{+}p{-}q$.
+Expandimos cada producto por separado.
+
+Producto diagonal:
+\begin{align*}
+  \alpha\delta
+  &= (a{-}b{-}p{+}q)(a{-}c{+}p{-}q)\\
+  &= a^2-ac+ap-aq-ab+bc-bp+bq\\
+  &\quad -ap+cp-p^2+pq+aq-cq+pq-q^2\\
+  &= a^2-ab-ac+bc-p^2-q^2+2pq+cp-bp-cq+bq.
+\end{align*}
+Producto antidiagonal:
+\begin{align*}
+  \beta\gamma
+  &= (c{-}b{+}d{-}p)(b{-}c{+}d{-}q)\\
+  &= cb-c^2+cd-cq-b^2+bc-bd+bq\\
+  &\quad +db-dc+d^2-dq-pb+pc-pd+pq\\
+  &= -b^2-c^2+2bc+d^2-cq+bq-dq-pb+pc-pd+pq.
+\end{align*}
+
+Restando:
+\begin{align*}
+  Q = \alpha\delta-\beta\gamma
+  &= (a^2+b^2+c^2-ab-ac-bc)\\
+  &\quad -(d^2+p^2+q^2-dp-dq-pq).
+\end{align*}
+Cada monomio del segundo grupo ($d^2,p^2,q^2,dp,dq,pq$) tiene grado par
+en las variables $d,p,q$, es decir, es invariante bajo el cambio
+$(d,p,q)\mapsto(-d,-p,-q)$. En consecuencia, al sustituir
+$(d,p,q)\to-(d,p,q)$ en la matriz~$2\times 2$ de $A-B$, su determinante
+vale también~$Q$.
+
+\subhead{Resultado}
+\[
+  \boxed{\;\Theta_{S_3}
+  = L_+\;\cdot\; L_-\;\cdot\; Q^{\,2}\;}
+\]
+con $L_\pm=a{+}b{+}c\pm(d{+}p{+}q)$ y
+$Q=(a^2{+}b^2{+}c^2{-}ab{-}ac{-}bc)-(d^2{+}p^2{+}q^2{-}dp{-}dq{-}pq)$.
+\hfill$\blacksquare$
+\enlargethispage{2\baselineskip}
+\endgroup
 
 \end{document}

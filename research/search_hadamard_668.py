@@ -27,13 +27,14 @@ The search backend uses OR-Tools CP-SAT on the reduced 83-vertex model.
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import os
 import sys
 import time
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Sequence, Tuple
+from typing import Dict, FrozenSet, Iterable, List, Sequence, Set, Tuple
 
 
 P = 167
@@ -517,6 +518,69 @@ def solve_with_cpsat(
 
 
 
+def _prefix_key(spec: BranchSpec, prefix: Dict[int, int]) -> FrozenSet[Tuple[int, str]]:
+    return frozenset((v, spec.color_names[c]) for v, c in prefix.items())
+
+
+def load_completed_prefixes(
+    path: str,
+    branch_key: str,
+    skip_unknown: bool = False,
+) -> Set[FrozenSet[Tuple[int, str]]]:
+    done: Set[FrozenSet[Tuple[int, str]]] = set()
+    if not os.path.isfile(path):
+        return done
+    terminal_statuses = {"INFEASIBLE", "OPTIMAL", "FEASIBLE"}
+    if skip_unknown:
+        terminal_statuses.add("UNKNOWN")
+    with open(path, "r", encoding="utf-8") as fh:
+        for lineno, line in enumerate(fh, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                eprint(f"[resume] warning: malformed JSON on line {lineno} of {path}, skipping")
+                continue
+            if rec.get("branch") != branch_key:
+                continue
+            if rec.get("status") not in terminal_statuses:
+                continue
+            prefix_raw = rec.get("prefix", {})
+            key = frozenset((int(v), c) for v, c in prefix_raw.items())
+            done.add(key)
+    return done
+
+
+def log_prefix_result(
+    path: str,
+    spec: BranchSpec,
+    prefix: Dict[int, int],
+    status: str,
+    wall_time: float,
+    split_depth: int,
+    seed: int,
+    workers: int,
+    time_limit: float,
+) -> None:
+    record = {
+        "branch": spec.key,
+        "prefix": {str(v): spec.color_names[c] for v, c in sorted(prefix.items())},
+        "status": status,
+        "wall_time": round(wall_time, 2),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "split_depth": split_depth,
+        "seed": seed,
+        "workers": workers,
+        "time_limit": time_limit,
+    }
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(record, separators=(",", ":")) + "\n")
+        fh.flush()
+
+
 def run_branch(
     spec: BranchSpec,
     qd: QuotientData,
@@ -530,14 +594,36 @@ def run_branch(
     jobs: int,
     fixes: Dict[int, int],
     out_dir: str,
+    progress_log: str | None = None,
+    skip_unknown: bool = False,
+    prefix_index: int = -1,
 ) -> SolveResult:
     prefixes = generate_prefixes(spec, qd, split_depth, fixes)
     if not prefixes:
         return SolveResult(False, "PREFIX_INFEASIBLE", 0.0, None, None, None)
 
-    selected = [p for i, p in enumerate(prefixes) if i % jobs == job]
+    if prefix_index >= 0:
+        if prefix_index >= len(prefixes):
+            raise SystemExit(
+                f"--prefix-index {prefix_index} out of range (only {len(prefixes)} prefixes)"
+            )
+        selected = [prefixes[prefix_index]]
+    else:
+        selected = [p for i, p in enumerate(prefixes) if i % jobs == job]
     if not selected:
         return SolveResult(False, "NO_PREFIX_FOR_JOB", 0.0, None, None, None)
+
+    # Filter out already-completed prefixes if a progress log exists.
+    if progress_log:
+        done = load_completed_prefixes(progress_log, spec.key, skip_unknown)
+        before = len(selected)
+        selected = [p for p in selected if _prefix_key(spec, p) not in done]
+        skipped = before - len(selected)
+        if skipped:
+            eprint(f"[branch {spec.key}] skipping {skipped} already-completed prefixes")
+        if not selected:
+            eprint(f"[branch {spec.key}] all {before} prefixes already completed")
+            return SolveResult(False, "ALL_SELECTED_PREFIXES_ALREADY_DONE", 0.0, None, None, before)
 
     eprint(
         f"[branch {spec.key}] prefixes total={len(prefixes)} selected_for_job={len(selected)} "
@@ -569,6 +655,12 @@ def run_branch(
             f"[branch {spec.key}] prefix {local_idx}/{len(selected)} status={res.status_name} "
             f"time={res.wall_time:.2f}s"
         )
+
+        if progress_log:
+            log_prefix_result(
+                progress_log, spec, prefix, res.status_name, res.wall_time,
+                split_depth, seed, workers, time_limit,
+            )
 
         if res.found and res.colors is not None:
             verify_reduced_solution(spec, qd, res.colors)
@@ -663,6 +755,22 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         default="solutions_668",
         help="directory where exact verified solutions are written",
     )
+    ap.add_argument(
+        "--progress-log",
+        default=None,
+        help="path to JSONL file for checkpoint/resume; completed prefixes are skipped on restart",
+    )
+    ap.add_argument(
+        "--prefix-index",
+        type=int,
+        default=-1,
+        help="run only this prefix index from the full generated list (0-indexed); -1 means all",
+    )
+    ap.add_argument(
+        "--skip-unknown",
+        action="store_true",
+        help="also skip UNKNOWN (timed-out) prefixes on resume; default is to retry them",
+    )
     return ap.parse_args(list(argv))
 
 
@@ -695,6 +803,9 @@ def main(argv: Sequence[str]) -> int:
                 jobs=args.jobs,
                 fixes=fixes,
                 out_dir=args.out_dir,
+                progress_log=args.progress_log,
+                skip_unknown=args.skip_unknown,
+                prefix_index=args.prefix_index,
             )
             elapsed = time.time() - t0
             eprint(f"[branch {spec.key}] finished status={result.status_name} total_time={elapsed:.2f}s")
