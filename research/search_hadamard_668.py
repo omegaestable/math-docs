@@ -31,6 +31,7 @@ import datetime
 import json
 import os
 import sys
+import threading
 import time
 from collections import Counter
 from dataclasses import dataclass
@@ -44,6 +45,7 @@ BASE_MONO = 20
 
 
 def eprint(*args, **kwargs):
+    kwargs.setdefault("flush", True)
     print(*args, file=sys.stderr, **kwargs)
 
 
@@ -447,6 +449,7 @@ def solve_with_cpsat(
     log_progress: bool,
     fixed_search: bool,
     seed: int,
+    heartbeat_seconds: float,
 ) -> SolveResult:
     try:
         from ortools.sat.python import cp_model
@@ -507,7 +510,28 @@ def solve_with_cpsat(
         solver.parameters.search_branching = cp_model.FIXED_SEARCH
 
     t0 = time.time()
-    status = solver.Solve(model)
+    stop_heartbeat = threading.Event()
+
+    def heartbeat() -> None:
+        if heartbeat_seconds <= 0:
+            return
+        while not stop_heartbeat.wait(heartbeat_seconds):
+            elapsed = time.time() - t0
+            limit_msg = "unbounded"
+            if time_limit > 0:
+                limit_msg = f"{time_limit:.0f}s"
+            eprint(
+                f"[branch {spec.key}] heartbeat elapsed={elapsed:.1f}s "
+                f"prefix_size={len(prefix_fixes)} workers={workers} time_limit={limit_msg}"
+            )
+
+    heartbeat_thread = threading.Thread(target=heartbeat, daemon=True)
+    heartbeat_thread.start()
+    try:
+        status = solver.Solve(model)
+    finally:
+        stop_heartbeat.set()
+        heartbeat_thread.join(timeout=heartbeat_seconds if heartbeat_seconds > 0 else 0)
     elapsed = time.time() - t0
 
     status_name = solver.StatusName(status)
@@ -597,6 +621,7 @@ def run_branch(
     progress_log: str | None = None,
     skip_unknown: bool = False,
     prefix_index: int = -1,
+    heartbeat_seconds: float = 60.0,
 ) -> SolveResult:
     prefixes = generate_prefixes(spec, qd, split_depth, fixes)
     if not prefixes:
@@ -646,6 +671,7 @@ def run_branch(
             log_progress=log_progress,
             fixed_search=fixed_search,
             seed=seed,
+            heartbeat_seconds=heartbeat_seconds,
         )
         res.prefix_index = local_idx
         res.prefix_total = len(selected)
@@ -771,6 +797,12 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         action="store_true",
         help="also skip UNKNOWN (timed-out) prefixes on resume; default is to retry them",
     )
+    ap.add_argument(
+        "--heartbeat-seconds",
+        type=float,
+        default=60.0,
+        help="emit a heartbeat line every N seconds during a prefix solve; 0 disables it",
+    )
     return ap.parse_args(list(argv))
 
 
@@ -806,6 +838,7 @@ def main(argv: Sequence[str]) -> int:
                 progress_log=args.progress_log,
                 skip_unknown=args.skip_unknown,
                 prefix_index=args.prefix_index,
+                heartbeat_seconds=args.heartbeat_seconds,
             )
             elapsed = time.time() - t0
             eprint(f"[branch {spec.key}] finished status={result.status_name} total_time={elapsed:.2f}s")

@@ -1,0 +1,298 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+
+\geometry{margin=2.5cm,includeheadfoot}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{0.28cm}
+\setlength{\footskip}{0.62cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.28em}
+\setlength{\abovedisplayskip}{0.5em}
+\setlength{\belowdisplayskip}{0.5em}
+\setlength{\abovedisplayshortskip}{0.25em}
+\setlength{\belowdisplayshortskip}{0.25em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.25em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.2em}
+
+\definecolor{repblue}{gray}{0}
+\definecolor{repteal}{gray}{0}
+\definecolor{repgray}{gray}{0}
+\definecolor{repaccent}{gray}{0}
+\definecolor{repline}{gray}{0}
+\definecolor{replight}{gray}{1}
+
+\hypersetup{
+  hidelinks,
+  pdftitle={TRGF Padilla Tarea 6},
+  pdfauthor={Juan Ignacio Padilla Barrientos}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{repblue}{\small\itshape TRGF Padilla}}
+\fancyhead[R]{\textcolor{repgray}{\small Seminario UCR I 2026}}
+\fancyfoot[C]{\textcolor{repgray}{\small \thepage/\pageref*{LastPage}}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+
+\tcbset{
+  enhanced,
+  sharp corners,
+  boxrule=0.45pt,
+  arc=0pt,
+  left=0.85em,
+  right=0.85em,
+  top=0.45em,
+  bottom=0.4em,
+  boxsep=0pt
+}
+
+\newcommand{\inlinehead}[2][repblue]{%
+  \par\smallskip
+  {\color{#1}\bfseries #2.}\hspace{0.45em}%
+}
+
+\newcommand{\answer}{\inlinehead{Respuesta}}
+
+\newcommand{\topbanner}{%
+  \begin{tcolorbox}[
+    colback=replight,
+    colframe=repline,
+    borderline west={1.2pt}{0pt}{repblue},
+    borderline east={1.2pt}{0pt}{repteal},
+    left=1.0em,
+    right=1.0em,
+    top=0.7em,
+    bottom=0.55em
+  ]
+    {\Large\bfseries\color{repblue} TRGF Padilla \textemdash\ Tarea 6}\hfill
+    {\color{repaccent}\small\itshape Soluciones}\\[-0.1em]
+    {\normalsize\color{repteal} Seminario UCR I 2026}
+  \end{tcolorbox}
+}
+
+\newcounter{probcnt}
+\newcount\workspacelines
+
+\newcommand{\problem}[2]{%
+  \stepcounter{probcnt}%
+  \ifnum\value{probcnt}>1\newpage\fi
+  \par\vspace{0.25em}
+  {\large\bfseries\color{repblue} Problema #1}\par
+  {\color{repline}\rule{\linewidth}{0.55pt}}\par
+  \begin{tcolorbox}[
+    breakable,
+    colback=white,
+    colframe=repline,
+    borderline west={1.6pt}{0pt}{repteal},
+    left=0.7em,
+    right=0.7em,
+    top=0.35em,
+    bottom=0.3em,
+    before skip=0.35em,
+    after skip=0.45em
+  ]
+    #2
+  \end{tcolorbox}
+}
+
+\newcommand{\workspace}[1]{%
+  \answer
+  \par\vspace{0.35em}
+  {\color{repline}\rule{\linewidth}{0.4pt}}\par
+  \begingroup
+  \workspacelines=1
+  \loop
+    \ifnum\workspacelines<#1
+      \vspace{0.72cm}
+      {\color{repline}\rule{\linewidth}{0.4pt}}\par
+      \advance\workspacelines by 1
+  \repeat
+  \endgroup
+  \vspace{0.35em}
+}
+
+\begin{document}
+
+\color{black}
+\topbanner
+\small
+
+\problem{1}{%
+Sea $(U,\pi)$ una representación de un grupo finito $G$. Suponga que $\chi_U(g) \in \RR$
+para todo $g \in G$. Demuestre que existe un isomorfismo de representaciones
+\[
+  (U,\pi) \cong (U^*, \pi^*).
+\]
+}
+
+\workspace{12}
+
+\problem{2}{%
+Sea $(U,\pi)$ una representación de un grupo $G$. Demuestre que $\chi_U(g)$ es un entero
+algebraico para todo $g \in G$.
+
+\smallskip
+\textit{Puede utilizar que el conjunto de enteros algebraicos es cerrado bajo suma.}
+}
+
+\workspace{12}
+
+\problem{3}{%
+Sea ahora $G = S_4$.
+
+\begin{enumerate}[label=(\alph*),leftmargin=2.4em]
+\item (*) Demuestre que $S_4$ tiene $5$ clases conjugadas. Estas son:
+\[
+  \{e\},
+\]
+\[
+  \{(12), (13), (14), (23), (24), (34)\},
+\]
+\[
+  \{(12)(34), (13)(24), (14)(23)\},
+\]
+\[
+  \{(123), (132), (134), (143), (124), (142), (234), (243)\},
+\]
+\[
+  \{(1234), (1243), (1324), (1342), (1423), (1432)\}.
+\]
+
+\item (*) Demuestre que el subgrupo de $S_4$ dado por
+\[
+  H := \{e, (12)(34), (13)(24), (14)(23)\}
+\]
+es un subgrupo normal. Demuestre además que
+\[
+  S_4/H \cong S_3.
+\]
+
+\item (*) De la parte anterior, existe un morfismo de grupos
+\[
+  \varphi : S_4 \to S_3.
+\]
+Sean $V_{\mathrm{triv}}$ y $V_{\mathrm{sgn}}$ las dos representaciones irreducibles de dimensión
+$1$ de $S_3$. Demuestre que, a través del homomorfismo $\varphi$, estas se pueden entender
+como representaciones irreducibles de $S_4$. Verifique que los caracteres de estas dos
+representaciones están dados por
+\[
+  \begin{array}{c|ccccc}
+    & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
+    \chi_{\mathrm{triv}} & 1 & 1 & 1 & 1 & 1 \\
+    \chi_{\mathrm{sgn}} & 1 & -1 & 1 & 1 & -1
+  \end{array}
+\]
+Pruebe que son ortogonales entre sí y que cada uno tiene norma $1$.
+
+\item Sea $V_2$ la representación irreducible de dimensión $2$ de $S_3$. De nuevo, piense en
+$V_2$ como una representación de $S_4$ por medio de $\varphi$. Demuestre que el carácter de
+esta representación sería:
+\[
+  \begin{array}{c|ccccc}
+    & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
+    \chi_2 & 2 & 0 & 2 & -1 & 0
+  \end{array}
+\]
+Verifique que la norma de $\chi_2$ es $1$ y, por lo tanto, $V_2$ es irreducible.
+
+\item Sea $V$ la representación de $S_4$ de dimensión $4$ dada por permutar los elementos de
+la base canónica $\{e_1, e_2, e_3, e_4\}$. Por ejemplo, en esta representación, las matrices
+que representan a $(12)$, $(123)$ y $(13)(24)$ están dadas por
+\[
+  (12) \mapsto
+  \begin{pmatrix}
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{pmatrix},
+  \qquad
+  (123) \mapsto
+  \begin{pmatrix}
+    0 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1
+  \end{pmatrix},
+\]
+\[
+  (13)(24) \mapsto
+  \begin{pmatrix}
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1 \\
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0
+  \end{pmatrix}.
+\]
+Demuestre que $V$ admite una subrepresentación de dimensión $1$ isomorfa a la representación
+trivial. Sea $V_3$ el complemento ortogonal, de manera que
+\[
+  V \cong V_{\mathrm{triv}} \oplus V_3.
+\]
+Usando que $\chi_V = \chi_{\mathrm{triv}} + \chi_3$, demuestre que el carácter de $V_3$ está dado por
+\[
+  \begin{array}{c|ccccc}
+    & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
+    \chi_3 & 3 & -1 & -1 & 0 & 1
+  \end{array}
+\]
+Demuestre que $\chi_3$ tiene norma $1$ y por lo tanto $V_3$ es irreducible. Verifique además
+que $\chi_3$ es ortogonal a $\chi_{\mathrm{triv}}$, $\chi_{\mathrm{sgn}}$ y $\chi_2$.
+
+\item (*) Escoja una base ortonormal para $V_3$ y determine las matrices que representan a
+$(12)$, $(123)$ y $(1234)$ en esta base. Use esto para verificar de forma alternativa que el
+carácter $\chi_3$ que calculamos arriba es correcto.
+
+\item Sea $V_{3,\mathrm{sgn}}$ la representación de dimensión $3$ dada por
+\[
+  V_{3,\mathrm{sgn}} = V_3 \otimes V_{\mathrm{sgn}}.
+\]
+Utilice el ejercicio $2$ para verificar que el carácter de $V_{3,\mathrm{sgn}}$ está dado por
+\[
+  \begin{array}{c|ccccc}
+    & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
+    \chi_{3,\mathrm{sgn}} & 3 & 1 & -1 & 0 & -1
+  \end{array}
+\]
+Verifique que $\chi_{3,\mathrm{sgn}}$ tiene norma $1$ y por tanto $V_{3,\mathrm{sgn}}$ es una
+representación irreducible de $S_4$. Verifique que es ortogonal a $\chi_{\mathrm{triv}}$,
+$\chi_{\mathrm{sgn}}$, $\chi_2$ y $\chi_3$.
+
+\item Explique por qué $V_{\mathrm{triv}}$, $V_{\mathrm{sgn}}$, $V_2$, $V_3$ y
+$V_{3,\mathrm{sgn}}$ clasifican todas las representaciones irreducibles de $S_4$ salvo
+isomorfismo.
+
+\item (*) Sea $W$ otra representación de $S_4$ tal que su carácter está dado por
+\[
+  \begin{array}{c|ccccc}
+    & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
+    \chi_W & 8 & 0 & 0 & -1 & 0
+  \end{array}
+\]
+Determine cómo se descompone $W$ en suma directa de representaciones irreducibles.
+
+\item (*) Determine cómo se descomponen los posibles tensores de irreps de $S_4$ como suma
+de otras irreps.
+\end{enumerate}
+}
+
+\workspace{28}
+
+\end{document}

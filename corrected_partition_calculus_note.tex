@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{counterexample}[theorem]{Counterexample}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\cc}{\mathfrak{c}}
+\newcommand{\otp}{\operatorname{otp}}
+
+\title{On the relation $\cc \to (\beta,n)^3_2$}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We investigate $\cc\to(\beta,n)^3_2$ for countable $\beta$ and finite $n$.
+We prove the relation for all $\beta\le\omega+1$ (every finite~$n$) and for all countable $\beta$ when $n\le 3$.
+For $n\ge 4$ and $\beta>\omega+1$, the natural transfinite-induction strategy requires a successor extension lemma that is \textbf{false}: we exhibit a coloring of $[\cc]^3$ with no $1$-homogeneous $4$-set in which a specific $0$-homogeneous set of type $\omega$ admits no extension point. The counterexample does not refute the partition relation itself, only this proof strategy.
+\end{abstract}
+
+\section{Notation}
+
+We identify each cardinal with the corresponding initial ordinal. Thus $\cc$ denotes the initial ordinal of cardinality $2^{\aleph_0}$. We use $f$ for colorings.
+
+For ordinals $\kappa$, $\alpha_0$, $\alpha_1$ and finite $r\ge 1$, the notation
+$\kappa \to (\alpha_0,\alpha_1)^r_2$
+means: for every $f:[\kappa]^r\to\{0,1\}$, either there exists $H\subseteq\kappa$ with $\otp(H)=\alpha_0$ and $f\!\restriction_{[H]^r}\equiv 0$, or there exists $H\subseteq\kappa$ with $\otp(H)=\alpha_1$ and $f\!\restriction_{[H]^r}\equiv 1$. The symmetric form $\kappa\to(\gamma)^r_2$ means every such $f$ admits a monochromatic subset of order type $\gamma$.
+
+\section{Assumed external results}
+
+\begin{description}[leftmargin=2em]
+\item[Ramsey's theorem.] $\omega\to(\omega)^r_k$ for all finite $r\ge 1$ and $k\ge 2$.
+\item[Stepping-up lemma (Erd\H{o}s--Rado).] If $\kappa$ is an infinite cardinal with $\kappa^{<\kappa}=\kappa$ and $\kappa\to(\alpha)^r_k$, then $2^\kappa\to(\alpha+1)^{r+1}_k$.
+\end{description}
+
+\section{Elementary reductions}
+
+\begin{lemma}[Symmetric to asymmetric]
+\label{lem:sym-asym}
+If $\mu\to(\alpha)^3_2$, $\beta\le\alpha$, and $n\le\alpha$, then $\mu\to(\beta,n)^3_2$.
+\end{lemma}
+
+\begin{proof}
+Let $f:[\mu]^3\to\{0,1\}$. By hypothesis there is $H\subseteq\mu$ with $\otp(H)=\alpha$ and $f$ constant on $[H]^3$. Fix the order-isomorphism $e:\alpha\to H$.
+
+If $f\!\restriction_{[H]^3}\equiv 0$: the image $e[\beta]$ has order type $\beta$ and $[e[\beta]]^3\subseteq[H]^3$, so every triple from $e[\beta]$ has color~$0$.
+
+If $f\!\restriction_{[H]^3}\equiv 1$: the image $e[n]$ has order type (equivalently, size)~$n$ and $[e[n]]^3\subseteq[H]^3$. For $n<3$, $[e[n]]^3=\varnothing$, so the conclusion holds vacuously.
+\end{proof}
+
+\begin{lemma}[Monotonicity in the domain]
+\label{lem:mono}
+If $\mu\to(\beta,n)^3_2$ and $\nu\ge\mu$, then $\nu\to(\beta,n)^3_2$.
+\end{lemma}
+
+\begin{proof}
+Restrict any $f:[\nu]^3\to\{0,1\}$ to $[\mu]^3$. A witness in $\mu$ is also a witness in $\nu$.
+\end{proof}
+
+\section{Trivial second coordinate}
+
+\begin{proposition}
+\label{prop:trivial}
+Let $\beta\le\kappa$.
+\begin{enumerate}[leftmargin=2em]
+\item $\kappa\to(\beta,2)^3_2$.
+\item $\kappa\to(\beta,3)^3_2$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) Every $2$-element set is vacuously $1$-homogeneous for triples.
+
+(2) If any triple has color~$1$, it is a $1$-homogeneous $3$-set. Otherwise every triple has color~$0$, and any $B\subseteq\kappa$ with $\otp(B)=\beta$ is $0$-homogeneous.
+\end{proof}
+
+\section{The first nontrivial case: $\beta\le\omega+1$}
+
+\begin{theorem}
+\label{thm:omega1}
+$\cc\to(\omega+1)^3_2$.
+\end{theorem}
+
+\begin{proof}
+$\omega^{<\omega}=\omega$. Ramsey gives $\omega\to(\omega)^2_2$. The stepping-up lemma with $\kappa=\omega$, $\alpha=\omega$, $r=2$, $k=2$ yields $2^\omega\to(\omega+1)^3_2$, i.e.\ $\cc\to(\omega+1)^3_2$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:omega1}
+$\cc\to(\beta,n)^3_2$ for every $\beta\le\omega+1$ and every $2\le n<\omega$.
+\end{corollary}
+
+\begin{proof}
+Set $\alpha=\omega+1$ in Lemma~\ref{lem:sym-asym}. Then $\beta\le\alpha$ and $n\le\alpha$ (since $n$ is finite and $\omega+1$ is infinite).
+\end{proof}
+
+\emph{Note.} The stepping-up lemma at $\kappa=\omega$ cannot yield $\cc\to(\omega+2)^3_2$, because the input $\omega\to(\omega+1)^2_2$ is false (every subset of $\omega$ has order type $\le\omega$). The Baumgartner--Hajnal theorem gives $\omega_1\to(\alpha)^2_k$ for all countable $\alpha$, but stepping up from $\kappa=\omega_1$ produces the relation at $2^{\omega_1}>\cc$. A different approach is needed.
+
+\section{Ramsey reduction under the no-clique assumption}
+
+\begin{lemma}
+\label{lem:ramsey-red}
+Let $f:[\cc]^3\to\{0,1\}$ and suppose there is no $1$-homogeneous set of size~$n$. Then every subset $S\subseteq\cc$ of order type $\omega$ contains a $0$-homogeneous subset of order type $\omega$.
+\end{lemma}
+
+\begin{proof}
+Let $e:\omega\to S$ be the increasing bijection. Define $g:[\omega]^3\to\{0,1\}$ by $g(\{i,j,k\})=f(\{e(i),e(j),e(k)\})$. By Ramsey ($\omega\to(\omega)^3_2$), there is an infinite $I\subseteq\omega$ with $g$ constant on $[I]^3$.
+
+The image $e[I]\subseteq S$ has order type $\omega$. If the constant color is~$1$, then $e[I]$ is an infinite $1$-homogeneous set, and any $n$-element subset is a $1$-homogeneous $n$-set, contradicting the assumption. So the constant color is~$0$.
+\end{proof}
+
+\section{The successor extension lemma is false}
+
+The natural strategy to prove $\cc\to(\beta,n)^3_2$ for all countable~$\beta$ is transfinite induction: given a $0$-homogeneous set $A$ of order type $\gamma$, find a point $\xi>\sup A$ such that $A\cup\{\xi\}$ is $0$-homogeneous of type $\gamma+1$. This requires the following lemma.
+
+\begin{quote}
+\textbf{Strong extension lemma (FALSE).}
+Let $f:[\cc]^3\to\{0,1\}$ with no $1$-homogeneous set of size~$n$. For every $0$-homogeneous set $A\subseteq\cc$ and every $\delta>\sup A$, there exists $\xi>\delta$ such that $f(\{x,y,\xi\})=0$ for all $x<y$ in $A$.
+\end{quote}
+
+\begin{counterexample}
+\label{cex:extension}
+There exists a coloring $f:[\cc]^3\to\{0,1\}$ with no $1$-homogeneous set of size~$4$ such that the set $A=\omega$ is $0$-homogeneous but admits no extension point: for every $\xi\ge\omega$, $f(\{0,1,\xi\})=1$.
+\end{counterexample}
+
+\begin{proof}
+For increasing triples $x<y<z$ in $\cc$, define
+\[
+f(\{x,y,z\})=
+\begin{cases}
+0 & \text{if } z<\omega, \\
+0 & \text{if } x\ge\omega, \\
+1 & \text{if } x<y<\omega\le z \text{ and } (x,y)=(0,1), \\
+0 & \text{if } x<y<\omega\le z \text{ and } (x,y)\ne(0,1), \\
+1 & \text{if } x<\omega\le y<z \text{ and } x=0, \\
+0 & \text{if } x<\omega\le y<z \text{ and } x\ne 0.
+\end{cases}
+\]
+
+\emph{$A=\omega$ is $0$-homogeneous.} Every triple $\{x,y,z\}$ with $x<y<z<\omega$ falls into the first case: color~$0$. $\checkmark$
+
+\emph{No extension point.} For any $\xi\ge\omega$, the triple $\{0,1,\xi\}$ satisfies $0<1<\omega\le\xi$ and $(x,y)=(0,1)$, so $f(\{0,1,\xi\})=1$. $\checkmark$
+
+\emph{No $1$-homogeneous $4$-set.} Let $F\subseteq\cc$ with $|F|=4$.
+
+\emph{Case $|F\cap\omega|=4$.} $F\subseteq\omega$: every triple has color~$0$ by the first clause.
+
+\emph{Case $|F\cap\omega|=0$.} $F\subseteq[\omega,\cc)$: every triple has color~$0$ by the second clause.
+
+\emph{Case $|F\cap\omega|=3$.} $F$ contains a triple entirely within $\omega$: color~$0$.
+
+\emph{Case $|F\cap\omega|=1$, $F\cap\omega=\{a\}$.}
+If $a\ne 0$: every triple involving $a$ and two points $\ge\omega$ has color~$0$ (sixth clause); the triple of the three points $\ge\omega$ has color~$0$ (second clause). Not $1$-homogeneous.
+If $a=0$: the triples $\{0,\eta_i,\eta_j\}$ have color~$1$ (fifth clause), but $\{{\eta_1},{\eta_2},{\eta_3}\}$ has color~$0$ (second clause). Not $1$-homogeneous.
+
+\emph{Case $|F\cap\omega|=2$, $F\cap\omega=\{a,b\}$, $a<b$.}
+If $(a,b)\ne(0,1)$: the triples $\{a,b,\xi\}$ have color~$0$ (fourth clause). Not $1$-homogeneous.
+If $(a,b)=(0,1)$: $\{0,1,\xi\}$ and $\{0,1,\eta\}$ have color~$1$; $\{0,\xi,\eta\}$ has color~$1$ (fifth clause). But $\{1,\xi,\eta\}$ has color~$0$ (sixth clause, $x=1\ne 0$). Not $1$-homogeneous.
+
+All cases exhausted. A $1$-homogeneous set of size $m\ge 4$ would contain a $1$-homogeneous $4$-subset; since none exists, $f$ has no $1$-homogeneous set of any finite size $\ge 4$.
+\end{proof}
+
+\begin{remark}
+\label{rmk:not-refutation}
+Counterexample~\ref{cex:extension} does \textbf{not} refute the partition relation $\cc\to(\beta,n)^3_2$. In the same coloring, the set $\{2,3,4,\ldots\}\cup\{\omega,\omega{+}1,\omega{+}2,\ldots\}$ is $0$-homogeneous of order type $\omega\cdot 2$: every mixed triple $\{a,b,\xi\}$ with $2\le a<b<\omega\le\xi$ satisfies $(a,b)\ne(0,1)$ (fourth clause, color~$0$), and every triple $\{a,\xi,\eta\}$ with $2\le a<\omega\le\xi<\eta$ satisfies $a\ne 0$ (sixth clause, color~$0$). What fails is the \emph{strategy} of extending a fixed, previously chosen set.
+\end{remark}
+
+\section{Why the weak extension lemma does not help}
+
+One might weaken the extension lemma to an existential form:
+
+\begin{quote}
+\textbf{Weak extension lemma.} For every $\delta<\cc$ there exist \emph{some} $0$-homogeneous set $A\subseteq\delta$ and some $\xi>\delta$ with $f(\{x,y,\xi\})=0$ for all $x<y$ in $A$.
+\end{quote}
+
+Even if this holds, it does not drive the induction. A set $H$ of order type $\gamma$ has already been constructed. The weak lemma provides a set $A$ and a point $\xi$, but $A$ may have no relationship to $H$: in general $H\not\subseteq A$, so there is no reason for $H\cup\{\xi\}$ to be $0$-homogeneous.
+
+\section{Pattern extraction: what Ramsey does give}
+
+Under the no-clique assumption, the following is the strongest statement we can extract from Ramsey's theorem at the boundary.
+
+\begin{proposition}[Pattern extraction]
+\label{prop:pattern}
+Let $f:[\cc]^3\to\{0,1\}$ with no $1$-homogeneous set of size $n\ge 4$. Let $A\subseteq\cc$ be a countably infinite $0$-homogeneous set. If no $\xi>\sup A$ extends $A$, then there exist $u<v$ in $A$ and a set $X\subseteq(\sup A,\cc)$ with $|X|=\cc$ such that $f(\{u,v,\xi\})=1$ for every $\xi\in X$.
+\end{proposition}
+
+\begin{proof}
+Since no $\xi>\sup A$ extends $A$, for each $\xi\in(\sup A,\cc)$ there is a pair $p_\xi=\{x_\xi,y_\xi\}\in[A]^2$ with $f(\{x_\xi,y_\xi,\xi\})=1$. The set $[A]^2$ is countable and $|(\sup A,\cc)|=|\cc|$ is uncountable, so by pigeonhole there is a fixed pair $\{u,v\}\in[A]^2$ and a set $X$ of cardinality $\cc$ with $f(\{u,v,\xi\})=1$ for all $\xi\in X$.
+\end{proof}
+
+\begin{remark}
+From Proposition~\ref{prop:pattern} one can apply Ramsey to further partition the points of $X$ according to their interaction with $u$ and $v$, obtaining an infinite set $M\subseteq X$ with a constant pattern $\sigma\in\{0,1\}^2$ for $(f(\{u,\xi,\eta\}),\,f(\{v,\xi,\eta\}))$ across all $\xi<\eta$ in $M$. In the pattern $(1,1)$, any two points of $M$ together with $u,v$ form a $1$-homogeneous $4$-set, contradicting the hypothesis when $n=4$. For $n\ge 5$, a $1$-homogeneous subset of $M$ of size $n-2$ would also yield a contradiction, but Ramsey on the countable set $M$ only guarantees monochromatic subsets of order type $\omega$, not of prescribed countable order type $\beta>\omega$. This is exactly where the argument stops.
+\end{remark}
+
+\section{Summary}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\textbf{Range} & \textbf{Status} & \textbf{Reference} \\
+\hline
+$n=2$, all countable $\beta$ & proved & Proposition~\ref{prop:trivial}(1) \\
+$n=3$, all countable $\beta$ & proved & Proposition~\ref{prop:trivial}(2) \\
+$\beta\le\omega+1$, all finite $n$ & proved & Corollary~\ref{cor:omega1} \\
+$n\ge 4$, $\beta>\omega+1$ & gap present & \S\S\,7--9 \\
+\end{tabular}
+\end{center}
+
+\begin{question}
+Is $\cc\to(\omega{+}2,4)^3_2$ provable from Ramsey's theorem and the Erd\H{o}s--Rado stepping-up lemma? This is the first case not settled by the methods of this note.
+\end{question}
+
+\end{document}

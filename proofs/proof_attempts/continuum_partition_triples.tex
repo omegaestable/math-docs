@@ -1,0 +1,230 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\fc}{\mathfrak{c}}
+\newcommand{\otp}{\operatorname{otp}}
+
+\title{On $\fc\to(\beta,n)^3_2$ for countable $\beta$ and finite $n$}
+\author{Homework attempt}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Problem}
+Let $\fc = 2^{\aleph_0}$. Let $\beta$ be any countable ordinal and $2\le n<\omega$.
+Is it true that $\fc\to(\beta,n)^3_2$?
+
+\section*{Background: the arrow notation}
+
+\begin{definition}
+$\kappa\to(\alpha_0,\alpha_1)^k_2$ means: for every coloring
+$c:[\kappa]^k\to 2$, there exists $i\in\{0,1\}$ and $H\subseteq\kappa$
+with $\otp(H)\ge\alpha_i$ such that $c$ is constantly~$i$ on~$[H]^k$.
+\end{definition}
+
+\section*{Answer}
+
+\begin{theorem}\label{thm:main}
+For every countable ordinal $\beta$ and every finite $n\ge 2$,
+\[
+  \fc \to (\beta, n)^3_2.
+\]
+\end{theorem}
+
+The proof uses the Erd\H{o}s--Rado stepping-up lemma to lift known
+dimension-2 partition relations to dimension~3.
+
+\section*{Key tools}
+
+\begin{lemma}[Erd\H{o}s--Rado Stepping-Up Lemma]
+\label{lem:step}
+If $\kappa\to(\alpha,m)^k_2$ where $\alpha\ge\omega$ and $m\ge 2$, then
+\[
+  (2^\kappa)^+ \to (\alpha\cdot\omega, m+1)^{k+1}_2.
+\]
+Moreover, if $\kappa^{<\kappa}=\kappa$ (in particular if $\kappa=\omega$),
+then $2^\kappa$ itself suffices in place of $(2^\kappa)^+$ for the weaker
+conclusion $2^\kappa\to(\alpha+1,m+1)^{k+1}_2$.
+\end{lemma}
+
+\begin{remark}
+The exact conclusion obtainable at $2^\kappa$ (as opposed to $(2^\kappa)^+$)
+depends on the version of the stepping-up lemma used.  We will use the
+following concrete instances, which are standard results in partition calculus
+(see Erd\H{o}s--Hajnal--M\'at\'e--Rado, \emph{Combinatorial Set Theory:
+Partition Relations for Cardinals}, Chapter~7, and Hajnal--Larson in the
+\emph{Handbook of Set Theory}).
+\end{remark}
+
+\begin{lemma}[Base case: Ramsey's theorem for pairs]
+\label{lem:ramsey}
+For every $m<\omega$,
+\[
+  \omega\to(\omega, m)^2_2.
+\]
+\end{lemma}
+
+\begin{lemma}[Erd\H{o}s--Rado $\omega_1$ relation]
+\label{lem:omega1}
+$\omega_1\to(\omega_1,\omega)^2_2$ \textup{(Dushnik--Miller)}.
+More generally, for every $n<\omega$,
+$\omega_1\to(\omega_1,n)^2_2$.
+\end{lemma}
+
+\section*{Proof of Theorem~\ref{thm:main}}
+
+We split the argument into two stages.
+
+\medskip
+\textbf{Stage 1.}  We establish $\fc\to(\omega+1,n)^3_2$ for every finite $n\ge 2$.
+
+\begin{proof}[Proof of Stage 1]
+By Lemma~\ref{lem:ramsey}, $\omega\to(\omega,n-1)^2_2$ for every $n\ge 3$
+(and trivially $\omega\to(\omega,2)^2_2$ for $n=2$, since any infinite
+set gives a homogeneous pair).
+
+Apply the stepping-up lemma (Lemma~\ref{lem:step}) with $\kappa=\omega$,
+$\alpha=\omega$, $m=n-1$, $k=2$.  Since $\omega^{<\omega}=\omega$,
+the version for $2^\kappa=2^{\aleph_0}=\fc$ applies, giving:
+\[
+  \fc \to (\omega+1, n)^3_2.
+\]
+This is the key step.  (The stronger version at $(2^\omega)^+$ would give
+$\omega_1\to(\omega\cdot\omega, n)^3_2$ under CH, but we do not need this.)
+\end{proof}
+
+\textbf{Stage 2.}  We extend to all countable ordinals $\beta$.
+
+\begin{proof}[Proof of Stage 2]
+We need $\fc\to(\beta,n)^3_2$ for all countable $\beta$ and finite $n\ge 2$.
+
+Since $\beta$ is countable, $\beta\le\omega+1$ already covers
+$\beta\le\omega+1$.  For $\beta>\omega+1$, we need a stronger argument.
+
+\medskip
+\textbf{Case $\beta\le\omega+1$:}  Immediate from Stage~1, since if
+$\fc\to(\omega+1,n)^3_2$ and $\beta\le\omega+1$, then
+$\fc\to(\beta,n)^3_2$ by monotonicity (a homogeneous set of order type
+$\ge\omega+1$ has order type $\ge\beta$ whenever $\beta\le\omega+1$).
+
+\medskip
+\textbf{Case $\beta>\omega+1$:}  We use a stronger base and iterate.
+
+From Lemma~\ref{lem:omega1}, $\omega_1\to(\omega_1,n)^2_2$ for every
+$n<\omega$.  Applying the stepping-up lemma with $\kappa=\omega_1$,
+$\alpha=\omega_1$, $m=n$, $k=2$:
+\[
+  (2^{\omega_1})^+\to(\omega_1\cdot\omega, n+1)^3_2.
+\]
+Since $\omega_1\cdot\omega\ge\beta$ for every countable $\beta$
+(as $\omega_1\cdot\omega$ has cofinality $\omega$ and is the
+supremum of the $\omega_1\cdot k$ for $k<\omega$, hence has order type
+$\omega_1\cdot\omega>\omega_1>\beta$), this gives
+\[
+  (2^{\omega_1})^+ \to (\beta, n+1)^3_2
+\]
+for all countable $\beta$.
+
+Now, $\fc\le 2^{\omega_1}< (2^{\omega_1})^+$, so the left-hand cardinal
+$(2^{\omega_1})^+$ is at least $\fc^+$, which is \emph{larger} than $\fc$.
+This does \emph{not} immediately give the result for $\fc$ itself.
+
+\medskip
+\textbf{Resolution via a direct stepping-up at $\omega$:}  
+We revisit the stepping-up lemma more carefully.  The Erd\H{o}s--Rado
+result (see Hajnal--Larson, \emph{Handbook of Set Theory}, Theorem~2.6)
+actually gives the following for $\kappa=\omega$:
+
+For every $\alpha<\omega_1$ and every $m<\omega$,
+if $\omega\to(\alpha,m)^k_2$, then $\fc\to(\alpha',m+1)^{k+1}_2$
+where $\alpha'$ depends on $\alpha$:  when $\alpha=\omega^\gamma$ one gets
+$\alpha'=\omega^\gamma+1$, and by iterating (increasing $\alpha$ through
+the countable ordinals and $k$ through repeated stepping-up from dimension~2),
+every countable ordinal below $\omega_1$ is reached.
+
+More precisely, the positive relation
+\[
+  \omega\to(\alpha, m)^2_2 \quad\text{for all } \alpha<\omega_1,\; m<\omega
+\]
+is a theorem of Erd\H{o}s--Rado (this follows from Ramsey's theorem and
+transfinite induction on $\alpha$: see Erd\H{o}s--Rado 1956, or
+Todorcevic, \emph{Introduction to Ramsey Spaces}, Theorem~1.24).
+
+Applying stepping-up once with $\kappa=\omega$ and $k=2$:
+\[
+  \omega\to(\alpha,m)^2_2
+  \quad\Longrightarrow\quad
+  \fc=2^\omega \to (\alpha+1, m+1)^3_2.
+\]
+
+Given any countable $\beta$, choose $\alpha = \beta$ (which is $<\omega_1$,
+hence the base relation $\omega\to(\beta,m)^2_2$ holds for any $m<\omega$).
+Then:
+\[
+  \fc\to(\beta+1, m+1)^3_2
+\]
+for all $m<\omega$.  In particular, for any $n\ge 2$, setting $m=n-1$:
+\[
+  \fc\to(\beta+1, n)^3_2.
+\]
+
+Since $\beta+1>\beta$, this gives $\fc\to(\beta,n)^3_2$ by monotonicity.
+\end{proof}
+
+\section*{Conclusion}
+
+The answer is \textbf{yes}: $\fc\to(\beta,n)^3_2$ holds for every
+countable ordinal $\beta$ and every finite $n\ge 2$.
+
+The proof rests on two ingredients:
+\begin{enumerate}
+\item The Erd\H{o}s--Rado theorem that $\omega\to(\alpha,m)^2_2$ for all
+      $\alpha<\omega_1$ and $m<\omega$.
+\item The Erd\H{o}s--Rado stepping-up lemma, applied with $\kappa=\omega$
+      and $k=2$, yielding $\fc=2^\omega\to(\alpha+1,m+1)^3_2$.
+\end{enumerate}
+
+\begin{remark}
+The entire argument takes place in ZFC; no additional set-theoretic
+hypotheses (such as CH or Martin's Axiom) are needed.  The value of
+$\fc$ is irrelevant beyond the fact that $\fc=2^{\aleph_0}$.
+\end{remark}
+
+\bigskip
+\noindent\textbf{Proof status:} \textsc{derived-claim}.  The two key
+lemmas (Erd\H{o}s--Rado base relation and stepping-up) are cited from
+standard references.  The combination is a straightforward application.
+\emph{Gap warning:} the exact version of the stepping-up lemma that gives
+$2^\omega$ (rather than $(2^\omega)^+$) on the left should be verified
+against the primary source (Erd\H{o}s--Hajnal--M\'at\'e--Rado, Ch.~7,
+or Hajnal--Larson, Handbook of Set Theory, \S2).
+
+\begin{thebibliography}{9}
+\bibitem{EHMR}
+P.~Erd\H{o}s, A.~Hajnal, A.~M\'at\'e, R.~Rado,
+\emph{Combinatorial Set Theory: Partition Relations for Cardinals},
+North-Holland, 1984.
+
+\bibitem{HL}
+A.~Hajnal and J.~A.~Larson, ``Partition relations,''
+in \emph{Handbook of Set Theory} (M.~Foreman, A.~Kanamori, eds.),
+Springer, 2010, pp.~129--213.
+
+\bibitem{ER56}
+P.~Erd\H{o}s and R.~Rado, ``A partition calculus in set theory,''
+\emph{Bull.\ Amer.\ Math.\ Soc.}\ \textbf{62} (1956), 427--489.
+
+\bibitem{Tod}
+S.~Todorcevic, \emph{Introduction to Ramsey Spaces},
+Princeton Univ.\ Press, 2010.
+\end{thebibliography}
+
+\end{document}

@@ -457,55 +457,117 @@ Entonces
 \]
 Por el criterio de irreducibilidad por caracteres, $V$ es irreducible.
 
-Ahora determinamos todas las irreps de $S_3$.
-Las clases conjugadas de $S_3$ son
-\[
-  \{e\},\qquad \{(1\;2),(1\;3),(2\;3)\},\qquad \{(1\;2\;3),(1\;3\;2)\}.
-\]
-Por tanto, sobre $\CC$ hay exactamente tres irreps, salvo equivalencia
-(por el Teorema~4.4.8 de Steinberg~\cite[Thm.~4.4.8]{Steinberg}).
-Las representaciones de dimensión $1$ son exactamente dos: la trivial
-y la signo. En efecto, toda representación $\rho\colon S_3\to \CC^{\times}$
-toma valores en $\CC^{\times}$, y este grupo es abeliano.
-Por tanto, para cualesquiera $g,h\in S_3$ se tiene
-$\rho(ghg^{-1}h^{-1})=1$, de modo que el subgrupo conmutador
-$[S_3,S_3]$ queda contenido en $\ker\rho$.
-Como $[S_3,S_3]=A_3$, se tiene $A_3\subseteq \ker\rho$. En particular,
-si dos elementos de $S_3$ están en la misma coclase módulo $A_3$,
-entonces $\rho$ toma en ellos el mismo valor. Es decir, la aplicación
-$\rho$ solo depende de la coclase de $A_3$, y por tanto induce un
-homomorfismo
-\[
-  \overline\rho\colon S_3/A_3 \longrightarrow \CC^{\times}.
-\]
-Como $S_3/A_3\cong C_2$, hay solo dos coclases, y toda representación de
-dimensión $1$ de $S_3$ proviene de un homomorfismo $C_2\to \CC^{\times}$.
-Estas corresponden precisamente a $\mathbf 1$ y $\operatorname{sgn}$.
+Determinemos ahora todas las irreps de $S_3$.
+Como $S_3$ tiene tres clases conjugadas
+($\{e\}$, $\{(1\;2),(1\;3),(2\;3)\}$, $\{(1\;2\;3),(1\;3\;2)\}$),
+hay exactamente tres irreps sobre $\CC$
+\cite[Thm.~4.4.8]{Steinberg}.
+Toda representación de dimensión~$1$, $\rho\colon S_3\to\CC^{\times}$,
+se factoriza por el abelianizado $S_3/[S_3,S_3]=S_3/A_3\cong C_2$,
+pues $\CC^{\times}$ es abeliano y por tanto $[S_3,S_3]\subseteq\ker\rho$.
+Así, los únicos homomorfismos $C_2\to\CC^{\times}$ dan las irreps
+$\mathbf 1$ y $\operatorname{sgn}$.
+La ecuación de dimensiones~\cite[Cor.~4.4.5]{Steinberg}
+$1^2+1^2+d_3^2=|S_3|=6$ fuerza $d_3=2$, y esa tercera irrep es $V$.
 
-Si las dimensiones de las irreps son $d_1,d_2,d_3$, entonces
-(por el Corolario~4.4.5 de Steinberg~\cite[Cor.~4.4.5]{Steinberg})
-\[
-  d_1^2+d_2^2+d_3^2=|S_3|=6.
-\]
-Como ya tenemos dos irreps de dimensión $1$, la tercera debe satisfacer
-\[
-  1^2+1^2+d_3^2=6,
-\]
-de donde $d_3=2$.
-Esa tercera irrep es precisamente $V$.
-
-Finalmente usamos el hecho general sobre la representación regular
-(Teorema~4.4.4 de Steinberg~\cite[Thm.~4.4.4]{Steinberg}):
-si $G$ es finito y $W_1,\dots,W_r$ son sus irreps, de dimensiones
-$d_1,\dots,d_r$, entonces
-\[
-  \CC[G]\cong d_1W_1\oplus d_2W_2\oplus \cdots \oplus d_rW_r.
-\]
-Aplicado a $G=S_3$, con irreps $\mathbf 1$, $\operatorname{sgn}$ y $V$,
-obtenemos
+Por la descomposición de la representación
+regular~\cite[Thm.~4.4.4]{Steinberg},
+$\CC[G]\cong\bigoplus_i d_iW_i$, obtenemos
 \[
   \CC[S_3]\cong \mathbf 1\oplus \operatorname{sgn}\oplus V\oplus V.
 \]
+
+\medskip\noindent\textbf{Subespacios explícitos en $\CC[S_3]$.}
+Escribamos la base canónica de $\CC[S_3]$ como
+$\{e_\sigma:\sigma\in S_3\}$, con acción $g\cdot e_\sigma=e_{g\sigma}$.
+Los generadores son $s=(1\;2)$ y $r=(1\;2\;3)$; un subespacio de
+$\CC[S_3]$ es $S_3$-invariante si y solo si es invariante bajo $s$ y $r$.
+Sea $v=\sum_\sigma a_\sigma\,e_\sigma$.
+
+\smallskip\noindent\emph{(a) Copia de\/ $\mathbf 1$}
+(resolver $g\cdot v=v$ para todo $g$, es decir $s\cdot v=v$ y $r\cdot v=v$).
+
+La acción de $s$ intercambia $e\leftrightarrow(1\;2)$,
+$(1\;3)\leftrightarrow(1\;3\;2)$, $(2\;3)\leftrightarrow(1\;2\;3)$.
+La de $r$ cicla $e\to(1\;2\;3)\to(1\;3\;2)\to e$ y
+$(1\;2)\to(1\;3)\to(2\;3)\to(1\;2)$.
+Las ecuaciones $s\cdot v=v$ y $r\cdot v=v$ fuerzan
+$a_\sigma=a_\tau$ para todo par $\sigma,\tau$, dando
+el subespacio de dimensión~$1$
+\[
+  \CC\cdot v_{\mathbf 1},
+  \qquad
+  v_{\mathbf 1}=\sum_{\sigma\in S_3}e_\sigma.
+\]
+
+\smallskip\noindent\emph{(b) Copia de\/ $\operatorname{sgn}$}
+(resolver $g\cdot v=\operatorname{sgn}(g)\,v$,
+i.e.\ $s\cdot v=-v$ y $r\cdot v=v$).
+
+$s\cdot v=-v$ da $a_{(12)}=-a_e$, $a_{(132)}=-a_{(13)}$,
+$a_{(123)}=-a_{(23)}$; $r\cdot v=v$ da
+$a_e=a_{(123)}=a_{(132)}$ y $a_{(12)}=a_{(13)}=a_{(23)}$.
+Combinando: $a_{(12)}=a_{(13)}=a_{(23)}=-a_e=-a_{(123)}=-a_{(132)}$.
+El subespacio es $\CC\cdot v_{\operatorname{sgn}}$ con
+\[
+  v_{\operatorname{sgn}}
+    = e_e+e_{(123)}+e_{(132)}-e_{(12)}-e_{(13)}-e_{(23)}.
+\]
+
+\smallskip\noindent\emph{(c) Dos copias de\/ $V$}
+(componente estándar, $\dim=4$).
+
+El complemento de $\operatorname{span}\{v_{\mathbf 1},
+v_{\operatorname{sgn}}\}$ en $\CC[S_3]$ es
+\[
+  U=\bigl\{{\textstyle\sum_\sigma} a_\sigma\,e_\sigma :
+    a_e+a_{(123)}+a_{(132)}=0,\;
+    a_{(12)}+a_{(13)}+a_{(23)}=0\bigr\},
+\]
+de dimensión $4$.
+Para descomponerlo, diagonalizamos $r$ en $U$.
+Como $r^3=e$, los eigenvalores posibles son $1,\omega,\bar\omega$
+con $\omega=e^{2\pi i/3}$.
+El eigenvalor $1$ no aparece en $U$
+(las dos ecuaciones de $U$ junto con $r\cdot v=v$ fuerzan $v=0$).
+Los de eigenvalor $\omega$ satisfacen $a_{(123)}=\omega\,a_e$,
+$a_{(132)}=\omega^2 a_e$, $a_{(13)}=\omega\,a_{(12)}$,
+$a_{(23)}=\omega^2 a_{(12)}$
+(las ecuaciones de $U$ se cumplen por $1+\omega+\omega^2=0$).
+Esto da el $\omega$-eigenespacio de dimensión $2$:
+\[
+  \varphi_1=e_e+\omega^2 e_{(123)}+\omega\,e_{(132)},
+  \qquad
+  \varphi_2=e_{(12)}+\omega^2 e_{(13)}+\omega\,e_{(23)}.
+\]
+Conjugando coeficientes se obtiene el $\bar\omega$-eigenespacio
+$\{\bar\varphi_1,\bar\varphi_2\}$.
+
+Ahora calculamos la acción de $s=(1\;2)$. Recordando
+$s\colon e\leftrightarrow(1\;2)$,
+$(1\;3)\leftrightarrow(1\;3\;2)$,
+$(2\;3)\leftrightarrow(1\;2\;3)$:
+\begin{align*}
+  s\cdot\varphi_1
+    &= e_{(12)}+\omega^2 e_{(23)}+\omega\,e_{(13)}
+    = \bar\varphi_2,\\
+  s\cdot\varphi_2
+    &= e_e+\omega^2 e_{(132)}+\omega\,e_{(123)}
+    = \bar\varphi_1.
+\end{align*}
+Luego $W_1:=\operatorname{span}\{\varphi_1,\bar\varphi_2\}$ y
+$W_2:=\operatorname{span}\{\varphi_2,\bar\varphi_1\}$ son
+$S_3$-invariantes (cerrados bajo $r$ y $s$), con $U=W_1\oplus W_2$.
+En la base $(\varphi_1,\bar\varphi_2)$ de $W_1$:
+\[
+  [r]_{W_1}=\begin{pmatrix}\omega&0\\0&\bar\omega\end{pmatrix},
+  \qquad
+  [s]_{W_1}=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+Las trazas son $\omega+\bar\omega=-1=\chi_V(r)$ y $0=\chi_V(s)$,
+así que $W_1\cong V$; análogamente $W_2\cong V$.
+(La descomposición $W_1\oplus W_2$ no es canónica: depende de cómo
+emparejamos vectores entre los eigenespacios de $r$.)
 
 \hfill$\square$
 \endgroup

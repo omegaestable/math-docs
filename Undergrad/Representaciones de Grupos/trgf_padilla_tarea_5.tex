@@ -11,6 +11,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\usepackage{lastpage}
 \usepackage[most]{tcolorbox}
 
 \geometry{margin=2.5cm,includeheadfoot}
@@ -35,7 +36,7 @@
 
 \hypersetup{
   hidelinks,
-  pdftitle={TRGF Padilla Tarea 4},
+  pdftitle={TRGF Padilla Tarea 5},
   pdfauthor={Juan Ignacio Padilla Barrientos}
 }
 
@@ -43,11 +44,13 @@
 \fancyhf{}
 \fancyhead[L]{\textcolor{repblue}{\small\itshape TRGF Padilla}}
 \fancyhead[R]{\textcolor{repgray}{\small Seminario UCR I 2026}}
-\fancyfoot[C]{\textcolor{repgray}{\small \thepage}}
+\fancyfoot[C]{\textcolor{repgray}{\small \thepage/\pageref*{LastPage}}}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \newcommand{\CC}{\mathbb{C}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Id}{\operatorname{Id}}
 
 \tcbset{
   enhanced,
@@ -66,6 +69,8 @@
   {\color{#1}\bfseries #2.}\hspace{0.45em}%
 }
 
+\newcommand{\answer}{\inlinehead{Respuesta}}
+
 \newcommand{\topbanner}{%
   \begin{tcolorbox}[
     colback=replight,
@@ -77,12 +82,14 @@
     top=0.7em,
     bottom=0.55em
   ]
-    {\Large\bfseries\color{repblue} TRGF Padilla \textemdash\ Tarea 4}\\[-0.1em]
+    {\Large\bfseries\color{repblue} TRGF Padilla \textemdash\ Tarea 5}\hfill
+    {\color{repaccent}\small\itshape Soluciones}\\[-0.1em]
     {\normalsize\color{repteal} Seminario UCR I 2026}
   \end{tcolorbox}
 }
 
 \newcounter{probcnt}
+\newcount\workspacelines
 
 \newcommand{\problem}[2]{%
   \stepcounter{probcnt}%
@@ -107,7 +114,19 @@
 }
 
 \newcommand{\workspace}[1]{%
-  \par\vspace*{#1\baselineskip}
+  \answer
+  \par\vspace{0.35em}
+  {\color{repline}\rule{\linewidth}{0.4pt}}\par
+  \begingroup
+  \workspacelines=1
+  \loop
+    \ifnum\workspacelines<#1
+      \vspace{0.72cm}
+      {\color{repline}\rule{\linewidth}{0.4pt}}\par
+      \advance\workspacelines by 1
+  \repeat
+  \endgroup
+  \vspace{0.35em}
 }
 
 \begin{document}
@@ -117,107 +136,79 @@
 \small
 
 \problem{1}{%
-Sea $g\in G$ cualquier elemento. Sea $Z_g$ el conjunto de elementos en $G$
-que conmutan con $g$, y sea $C_g$ la clase conjugada de $g$. Demuestre que
-\[
-  |C_g|\,|Z_g| = |G|.
-\]
-En particular, el tamaño de $Z_g$ es el mismo para cualesquiera dos elementos
-en la misma clase conjugada.
+(*) Demuestre que la matriz del producto tensorial de dos matrices es lo que dijimos en clase.
 }
 
-\workspace{14}
+\workspace{10}
 
 \problem{2}{%
-Sea $(U,\pi)$ una representación irreducible de $G$. Sea $a\in G$ un elemento
-central en $G$ (es decir, tal que $ag = ga$ para todo $g\in G$). Demuestre
-que $\pi(a)$ debe ser un operador escalar, es decir, de la forma $\lambda I$.
+Sean $U$, $V$ y $W$ espacios vectoriales sobre un cuerpo $k$. Demuestre que
+\[
+  \Hom_k(U \otimes V, W) \cong \Hom_k(U, \Hom_k(V, W)).
+\]
+}
+
+\workspace{11}
+
+\problem{3}{%
+Calcule las matrices que representan a los elementos de $S_3$ en la representación
+$V_{\mathrm{st}} \otimes V_{\mathrm{st}}$ en alguna base.
+
+\smallskip
+\textit{Para la exposición en clase, me basta con que escoja un elemento de cada clase
+conjugada para mostrar.}
 }
 
 \workspace{13}
 
-\problem{3}{%
-Sean $(U,\pi)$ y $(V,\rho)$ dos representaciones de dimensión finita,
-\textit{isomorfas}, de un grupo finito $G$. Demuestre que
+\problem{4}{%
+Encuentre la fórmula general para la descomposición de
 \[
-  \chi_U = \chi_V,
+  V_{\mathrm{st}}^{\otimes n}
 \]
-es decir, que tienen el mismo carácter.
+en irreps de $S_3$.
 }
 
 \workspace{12}
 
-\problem{4}{%
-Sea $G$ un grupo finito y sea $A=\CC[G]$. Suponga que $A$ se puede descomponer
-como
-\[
-  A = U \oplus V,
-\]
-donde $U$ y $V$ son dos subrepresentaciones. Demuestre que, entonces, tanto
-$U$ como $V$ son ideales a izquierda de $A$, es decir,
-\[
-  A\cdot U = U
-  \qquad\text{y}\qquad
-  A\cdot V = V.
-\]
-}
-
-\workspace{15}
-
 \problem{5}{%
-En el contexto del ejercicio anterior, suponga además que $U$ y $V$ no
-comparten ``factores irreducibles'' en sus descomposiciones en irreps, es
-decir, si
+Sea $C$ una clase conjugada y sea
 \[
-  U = \bigoplus U_i
-  \qquad\text{y}\qquad
-  V = \bigoplus V_j,
+  s_C = \sum_{g\in C} g \in \CC[G].
 \]
-donde todas las $U_i$ y $V_j$ son irreps, entonces se cumple
+Sea $(U,\pi)$ una irrep de $G$. Demuestre que
 \[
-  U_i \not\cong V_j \qquad \text{para todo } i,j.
+  \pi(s_C) = |C|\,\frac{\chi_U(C)}{\dim U}\,\Id,
 \]
-Otra forma de decir esto mismo, por el lema de Schur, es que
-\[
-  \operatorname{Hom}_G(U,V)=0.
-\]
-Demuestre que entonces $U$ y $V$ también son ideales a derecha, es decir,
-\[
-  U\cdot A = U
-  \qquad\text{y}\qquad
-  V\cdot A = V.
-\]
+donde $\chi_U(C)$ es el carácter de la representación evaluado en cualquier $g$ de esa
+clase conjugada.
 }
 
-\workspace{16}
+\workspace{13}
 
 \problem{6}{%
-(*) Sea $f\colon G\to\CC$ una función de clase. Demuestre, con los detalles,
-que
+Sea $\chi_{\mathrm{reg}}$ el carácter de la representación regular, es decir, el álgebra de
+grupo pensada como representación de $G$. Demuestre que
 \[
-  f * f' = f' * f
+  \chi_{\mathrm{reg}}(g) =
+  \begin{cases}
+    |G|, & \text{si } g = e,\\
+    0, & \text{si } g \ne e.
+  \end{cases}
 \]
-para cualquier otra función $f'\colon G\to\CC$.
 }
 
-\workspace{14}
+\workspace{10}
 
 \problem{7}{%
-Sea $c$ una clase conjugada de $G$, y sea
+Sean $(U,\pi)$ y $(V,\rho)$ dos representaciones de $G$. Demuestre que
+$(\Hom_{\CC}(U, V), \tau)$, dada por
 \[
-  s_c = \sum_{g\in c} g \in \CC[G].
+  (\tau(g)f)(u) := \rho(g)f(\pi(g^{-1})u),
 \]
-Sea $(U,\pi)$ una representación irreducible de $G$. Demuestre que $\pi(s_c)$
-es un operador escalar.
-
-\smallskip
-\textit{Recuerde que}
-\[
-  \pi(s_c) = \sum_{g\in c}\pi(g),
-\]
-por definición.
+es, en efecto, una representación.
 }
 
-\workspace{14}
+\workspace{12}
 
 \end{document}

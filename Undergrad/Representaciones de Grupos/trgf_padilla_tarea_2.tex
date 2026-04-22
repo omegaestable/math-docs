@@ -123,7 +123,54 @@ en sí mismo con la operación
 \]
 }
 
-\workspace{12}
+\inlinehead{Demostración}
+Verificamos los axiomas de grupo para $\widehat{G}:=\{\,\chi\colon G\to\CC^{*}\mid\chi\text{ es homomorfismo}\}$.
+
+\inlinehead[repteal]{Cerradura}
+Sean $\chi_1,\chi_2\in\widehat{G}$. Definimos $\chi:=\chi_1\chi_2$ por
+$\chi(g)=\chi_1(g)\,\chi_2(g)$. Para cualesquiera $g,h\in G$:
+\begin{align*}
+  \chi(gh)
+    &= \chi_1(gh)\,\chi_2(gh)
+     = \chi_1(g)\,\chi_1(h)\,\chi_2(g)\,\chi_2(h) \\
+    &= \bigl(\chi_1(g)\,\chi_2(g)\bigr)\bigl(\chi_1(h)\,\chi_2(h)\bigr)
+     = \chi(g)\,\chi(h),
+\end{align*}
+donde reordenamos factores usando que $\CC^{*}$ es conmutativo. Como
+$\chi(g)\in\CC^{*}$ para todo~$g$, se tiene $\chi\in\widehat{G}$.
+
+\inlinehead[repteal]{Asociatividad}
+Para $\chi_1,\chi_2,\chi_3\in\widehat{G}$ y todo $g\in G$:
+\[
+  \bigl((\chi_1\chi_2)\chi_3\bigr)(g)
+    = \chi_1(g)\,\chi_2(g)\,\chi_3(g)
+    = \bigl(\chi_1(\chi_2\chi_3)\bigr)(g),
+\]
+heredada de la asociatividad en $\CC^{*}$.
+
+\inlinehead[repteal]{Elemento neutro}
+Definimos $\chi_0\colon G\to\CC^{*}$ por $\chi_0(g)=1$ para todo~$g$.
+Es homomorfismo: $\chi_0(gh)=1=1\cdot 1=\chi_0(g)\,\chi_0(h)$.
+Para todo $\chi\in\widehat{G}$,
+$(\chi_0\,\chi)(g)=1\cdot\chi(g)=\chi(g)$ y
+$(\chi\,\chi_0)(g)=\chi(g)\cdot 1=\chi(g)$.
+
+\inlinehead[repteal]{Inversos}
+Dado $\chi\in\widehat{G}$, definimos $\chi^{-1}(g):=\chi(g)^{-1}$.
+Está bien definido pues $\chi(g)\in\CC^{*}$, y es homomorfismo:
+\[
+  \chi^{-1}(gh)
+    = \bigl(\chi(g)\,\chi(h)\bigr)^{-1}
+    = \chi(h)^{-1}\chi(g)^{-1}
+    = \chi(g)^{-1}\chi(h)^{-1}
+    = \chi^{-1}(g)\,\chi^{-1}(h),
+\]
+usando la conmutatividad de $\CC^{*}$. Además
+$(\chi\,\chi^{-1})(g)=\chi(g)\chi(g)^{-1}=1=\chi_0(g)$.
+
+\smallskip
+Los cuatro axiomas se verifican, de modo que $(\widehat{G},\cdot)$ es un
+grupo.\hfill$\blacksquare$
 
 \problem{2}{%
 Demuestre el Lema de Schur para grupos conmutativos generales. Es decir, si
@@ -132,7 +179,47 @@ $T \colon V \to V$ es un morfismo de representaciones, entonces $T$ es un
 operador escalar.
 }
 
-\workspace{14}
+\inlinehead{Demostración}
+Sea $(\pi,V)$ una representación irreducible de dimensión finita del grupo
+conmutativo~$G$ sobre~$\CC$, y sea $T\colon V\to V$ un morfismo de
+representaciones, es decir, $T\pi(g)=\pi(g)T$ para todo $g\in G$.
+
+\inlinehead[repteal]{Paso 1: $T$ tiene un valor propio}
+Como $V$ es un $\CC$-espacio vectorial de dimensión finita y $\CC$ es
+algebraicamente cerrado, el polinomio característico de~$T$ tiene al menos
+una raíz $\lambda\in\CC$. Luego existe $\lambda$ tal que
+$\ker(T-\lambda\,\mathrm{Id})\neq\{0\}$.
+
+\inlinehead[repteal]{Paso 2: el eigenespacio es un subespacio invariante}
+Sea $W:=\ker(T-\lambda\,\mathrm{Id})$. Si $v\in W$, entonces para todo
+$g\in G$:
+\[
+  (T-\lambda\,\mathrm{Id})\bigl(\pi(g)v\bigr)
+    = T\pi(g)v - \lambda\,\pi(g)v
+    = \pi(g)Tv - \lambda\,\pi(g)v
+    = \pi(g)(Tv-\lambda v)
+    = \pi(g)\cdot 0 = 0,
+\]
+donde usamos que $T$ conmuta con $\pi(g)$. Así $\pi(g)v\in W$, lo que
+muestra que $W$ es un subespacio $G$-invariante de~$V$.
+
+\inlinehead[repteal]{Paso 3: conclusión por irreducibilidad}
+Como $W\neq\{0\}$ y $W$ es $G$-invariante, la irreducibilidad de~$V$ implica
+$W=V$. Es decir, $(T-\lambda\,\mathrm{Id})v=0$ para todo $v\in V$, lo que
+significa $T=\lambda\,\mathrm{Id}$.
+
+\smallskip
+Concluimos que todo morfismo de representaciones $T\colon V\to V$ es un
+operador escalar.\hfill$\blacksquare$
+
+\smallskip
+\textit{Observación:} La hipótesis de que $G$ sea conmutativo no se usa
+directamente en la demostración anterior; lo que se usa es que $T$ conmuta
+con todos los $\pi(g)$. Sin embargo, cuando $G$ es conmutativo, cada
+$\pi(g)$ es en sí mismo un morfismo de representaciones (pues
+$\pi(g)\pi(h)=\pi(gh)=\pi(hg)=\pi(h)\pi(g)$), así que el lema implica que
+cada $\pi(g)=\lambda_g\,\mathrm{Id}$. Esto fuerza $\dim V=1$: toda irrep de
+un grupo conmutativo sobre~$\CC$ es de dimensión~$1$.
 
 \problem{3}{%
 Sean $M_1,\dots,M_k$ un conjunto de matrices $n\times n$, invertibles, que
@@ -145,7 +232,79 @@ ponemos esa condición para poder usar el ejercicio anterior; recuerde que
 todos los espacios vectoriales son sobre $\CC$.
 }
 
-\workspace{14}
+\inlinehead{Demostración}
+Sea $G=\langle M_1,\dots,M_k\rangle\leq GL_n(\CC)$. Como los $M_i$ son
+invertibles y conmutan dos a dos, $G$ es un grupo conmutativo. La inclusión
+$\pi\colon G\hookrightarrow GL(V)$, con $V=\CC^n$, define una
+representación de~$G$. Procedemos por inducción sobre~$n$.
+
+\inlinehead[repteal]{Base}
+Si $n=1$, toda matriz $1\times 1$ es trivialmente triangular superior.
+
+\inlinehead[repteal]{Paso inductivo}
+Supongamos el resultado válido para dimensión $<n$. Consideremos la familia
+\[
+  \mathcal{S}:=\{\,U\leq V \mid U\neq\{0\},\;\text{$U$ es $G$-invariante}\,\}.
+\]
+$\mathcal{S}$ es no vacía pues $V\in\mathcal{S}$. Como $V$ tiene dimensión
+finita, $\mathcal{S}$ es finita, y por tanto podemos elegir un
+elemento~$W\in\mathcal{S}$ de dimensión mínima. Este~$W$ es una
+subrepresentación irreducible: si existiera $U\subsetneq W$ con
+$U\neq\{0\}$ y $U$ $G$-invariante, entonces $U\in\mathcal{S}$ con
+$\dim U<\dim W$, contradiciendo la minimalidad de~$W$.
+
+Por el Problema~2 (y su observación), toda irrep de un grupo conmutativo
+sobre~$\CC$ tiene dimensión~$1$. Así $W=\langle v_1\rangle$ con
+$M_j\,v_1=\lambda_j\,v_1$ para cada~$j$; es decir, $v_1$ es eigenvector
+simultáneo de todas las~$M_j$.
+
+\inlinehead[repteal]{Paso al cociente}
+Como cada $M_j$ es invertible y preserva~$W$, la restricción $M_j|_W$ es
+biyectiva, de modo que $M_j^{-1}$ también preserva~$W$. Luego cada $M_j$
+induce un operador invertible $\overline{M}_j$ en el cociente $V/W$, de
+dimensión $n-1$. Además,
+\[
+  \overline{M}_i\,\overline{M}_j
+    = \overline{M_iM_j}
+    = \overline{M_jM_i}
+    = \overline{M}_j\,\overline{M}_i,
+\]
+así que $\overline{M}_1,\dots,\overline{M}_k$ conmutan dos a dos.
+
+\inlinehead[repteal]{Conclusión}
+Por hipótesis de inducción, existe una bandera completa
+$G$-invariante en $V/W$:
+\[
+  \{0\}=\overline{V}_0
+    \subset \overline{V}_1
+    \subset \cdots
+    \subset \overline{V}_{n-1}=V/W.
+\]
+Sea $q\colon V\to V/W$ la proyección canónica, definida por
+$q(v)=v+W$. Los subespacios $V_i:=q^{-1}(\overline{V}_{i-1})$ para
+$i=1,\dots,n$, junto con $V_0:=\{0\}$, satisfacen $\dim V_i=i$.
+
+Veamos que cada~$V_i$ es $G$-invariante. Sea $v\in V_i$, es decir,
+$q(v)\in\overline{V}_{i-1}$. El operador inducido
+$\overline{M}_j\colon V/W\to V/W$ se define por
+$\overline{M}_j(u+W):=M_j\,u+W$; esto está bien definido pues $W$ es
+$M_j$-invariante (si $u-u'\in W$ entonces $M_j u-M_j u'=M_j(u-u')\in W$).
+Con esta definición, la proyección $q$ satisface
+\[
+  q(M_j\,v) = M_j\,v + W = \overline{M}_j(v+W) = \overline{M}_j\bigl(q(v)\bigr).
+\]
+Como $q(v)\in\overline{V}_{i-1}$ y $\overline{V}_{i-1}$ es
+$\overline{M}_j$-invariante (por la bandera del cociente), se tiene
+$\overline{M}_j(q(v))\in\overline{V}_{i-1}$. Luego
+$q(M_j\,v)\in\overline{V}_{i-1}$, lo que por definición de preimagen
+significa $M_j\,v\in q^{-1}(\overline{V}_{i-1})=V_i$.
+
+Nótese que $V_1=q^{-1}(\{0\})=\ker q=W=\langle v_1\rangle$.
+
+Eligiendo una base $\mathcal{B}=(v_1,v_2,\dots,v_n)$ adaptada a esta bandera
+(i.e., $v_i\in V_i\setminus V_{i-1}$), cada $M_j$ preserva todos los~$V_i$,
+de modo que $[M_j]_{\mathcal{B}}$ es triangular superior para todo~$j$.
+\hfill$\blacksquare$
 
 \problem{4}{%
 Sean $M_1,\dots,M_k$ un conjunto de matrices $n\times n$, invertibles y
@@ -153,7 +312,74 @@ unitarias, que conmutan dos a dos. Demuestre que estas matrices son
 simultáneamente diagonalizables.
 }
 
-\workspace{14}
+\inlinehead{Demostración}
+Por el Problema~3, existe una base $\mathcal{B}=(v_1,\dots,v_n)$ de~$\CC^n$
+tal que $[M_j]_{\mathcal{B}}$ es triangular superior para todo~$j$.
+Sea $P$ la matriz de cambio de base cuyas columnas son $v_1,\dots,v_n$, de
+modo que $T_j:=P^{-1}M_j\,P$ es triangular superior.
+
+\inlinehead[repteal]{Las $T_j$ son unitarias}
+Como cada $M_j$ es unitaria ($M_j^*M_j=I$), y $P$ es invertible:
+\[
+  T_j^*\,T_j = (P^{-1}M_jP)^*(P^{-1}M_jP)
+             = P^*M_j^*(P^{-1})^*P^{-1}M_jP.
+\]
+En general $T_j$ no es unitaria respecto al producto estándar, pero sí
+respecto al producto $\langle u,w\rangle_P:=\langle Pu,Pw\rangle$, pues
+\[
+  \langle T_j u,T_j w\rangle_P
+    = \langle PT_j u,PT_j w\rangle
+    = \langle M_j Pu,M_j Pw\rangle
+    = \langle Pu,Pw\rangle
+    = \langle u,w\rangle_P,
+\]
+donde usamos que $M_j$ es unitaria.
+
+\inlinehead[repteal]{Ortonormalización que preserva la bandera}
+Denotemos $E_i:=\langle e_1,\dots,e_i\rangle$. Como $T_j$ es triangular
+superior respecto a $(e_1,\dots,e_n)$, la columna~$i$ de~$T_j$ tiene ceros
+debajo de la fila~$i$, es decir, $T_j\,e_i\in E_i$. Luego $T_j$ preserva
+cada~$E_i$: si $x=\sum_{r=1}^{i}\alpha_r e_r\in E_i$, entonces
+$T_j x=\sum_{r=1}^{i}\alpha_r T_j e_r\in E_i$.
+
+Aplicamos Gram--Schmidt al producto $\langle\cdot,\cdot\rangle_P$ sobre la
+lista ordenada $(e_1,\dots,e_n)$. El procedimiento construye
+\[
+  f_i = e_i - \sum_{r=1}^{i-1}
+    \frac{\langle e_i,f_r\rangle_P}{\langle f_r,f_r\rangle_P}\,f_r,
+\]
+y luego normaliza. Como cada~$f_i$ es combinación lineal de
+$e_1,\dots,e_i$ solamente (por la recursión: $f_1$ depende de~$e_1$,
+$f_2$ de~$e_2$ y~$f_1$, etc.), se tiene
+\[
+  \langle f_1,\dots,f_i\rangle = E_i
+  \qquad\text{para todo }i.
+\]
+Por lo tanto las dos bases generan la misma bandera. Como $T_j$ preserva
+$E_i=\langle f_1,\dots,f_i\rangle$, en particular
+$T_j f_i\in\langle f_1,\dots,f_i\rangle$, es decir, al expresar $T_j f_i$
+en la base $(f_r)$ los coeficientes con $r>i$ son cero. Esto significa que
+la matriz $\widetilde{T}_j$ de~$T_j$ en la base $(f_1,\dots,f_n)$ es
+triangular superior.
+
+\inlinehead[repteal]{Triangular superior y unitaria implica diagonal}
+Respecto a la base $(f_i)$, que es ortonormal para $\langle\cdot,\cdot\rangle_P$,
+cada~$\widetilde{T}_j$ es unitaria (pues $T_j$ preserva
+$\langle\cdot,\cdot\rangle_P$). Pero una matriz que es a la vez triangular
+superior y unitaria es diagonal: si $\widetilde{T}_j=(a_{rs})$ con
+$a_{rs}=0$ para $r>s$, la condición de columnas ortonormales da
+$\sum_{r=1}^{s}|a_{rs}|^2=1$. Para $s=1$ esto da $|a_{11}|=1$; para $s=2$,
+$|a_{12}|^2+|a_{22}|^2=1$ y ortogonalidad de columnas~$1$ y~$2$:
+$\bar{a}_{11}a_{12}=0$, con $|a_{11}|=1$ fuerza $a_{12}=0$, luego
+$|a_{22}|=1$. Inductivamente, $a_{rs}=0$ para $r\neq s$.
+
+\inlinehead[repteal]{Conclusión}
+La base $w_i:=Pf_i$ de~$\CC^n$ diagonaliza simultáneamente todas las~$M_j$:
+\[
+  M_j\,w_i = M_j\,Pf_i = P\,T_j\,f_i = P(\lambda_{ji}f_i) = \lambda_{ji}\,w_i,
+\]
+donde $\lambda_{ji}$ es la $i$-ésima entrada diagonal de~$\widetilde{T}_j$.
+\hfill$\blacksquare$
 
 \problem{5}{%
 Sean $G$ y $H$ dos grupos finitos tales que existe un homomorfismo
@@ -171,14 +397,74 @@ que si $V$ es una irrep de $H$, entonces $\operatorname{Res} V$ es una irrep
 de $G$.
 }
 
-\workspace{14}
+\inlinehead{Demostración}
+Primero, $\pi\circ\varphi\colon G\to GL(V)$ es homomorfismo de grupos por
+ser composición de los homomorfismos $\varphi\colon G\to H$ y
+$\pi\colon H\to GL(V)$, de modo que $(V,\pi\circ\varphi)$ es en efecto una
+representación de~$G$.
+
+\inlinehead[repteal]{$\operatorname{Res} V$ es irreducible}
+Sea $W\subseteq V$ un subespacio $G$-invariante bajo $\pi\circ\varphi$, es
+decir, $(\pi\circ\varphi)(g)\,w\in W$ para todo $g\in G$ y todo $w\in W$.
+Veamos que $W$ es también $H$-invariante bajo~$\pi$. Sea $h\in H$ y
+$w\in W$. Como $\varphi$ es sobreyectiva, existe $g\in G$ tal que
+$\varphi(g)=h$, y entonces
+\[
+  \pi(h)\,w = \pi(\varphi(g))\,w = (\pi\circ\varphi)(g)\,w \in W.
+\]
+Así $W$ es un subespacio $H$-invariante de~$V$. Como $(V,\pi)$ es una irrep
+de~$H$, se tiene $W=\{0\}$ o $W=V$. Por lo tanto $(V,\pi\circ\varphi)$ no
+posee subespacios $G$-invariantes propios no triviales, es decir,
+$\operatorname{Res} V$ es una irrep de~$G$.
+\hfill$\blacksquare$
 
 \problem{6}{%
 Demuestre que la representación de dimensión $2$, que vimos en la clase 2 de
 $S_3$, es, en efecto, irreducible.
 }
 
-\workspace{12}
+\inlinehead{Demostración}
+Recordemos la representación estándar de~$S_3$. El grupo actúa sobre
+$\CC^3$ permutando coordenadas; el subespacio
+$V:=\{(x_1,x_2,x_3)\in\CC^3 : x_1+x_2+x_3=0\}$ es invariante y tiene
+dimensión~$2$. Con la base $v_1:=e_1-e_2$, $v_2:=e_2-e_3$, los
+generadores $\sigma:=(12)$ y $\tau:=(123)$ actúan por
+\[
+  \rho(\sigma)
+    = \begin{pmatrix} -1 & -1 \\ 0 & 1 \end{pmatrix},
+  \qquad
+  \rho(\tau)
+    = \begin{pmatrix} -1 & -1 \\ 1 & 0 \end{pmatrix}.
+\]
+
+\inlinehead[repteal]{No existe subespacio invariante de dimensión~$1$}
+Supongamos, por contradicción, que existe $W=\langle w\rangle\subseteq V$,
+$w\neq 0$, invariante bajo~$S_3$. Entonces $w$ sería eigenvector simultáneo
+de $\rho(\sigma)$ y $\rho(\tau)$.
+
+Los eigenvalores de $\rho(\sigma)$ son $\lambda=-1$ y $\lambda=1$
+(raíces de $(-1-\lambda)(1-\lambda)=0$), con eigenvectores $(1,0)$ y
+$(1,-2)$ respectivamente.
+
+Los eigenvalores de $\rho(\tau)$ son las raíces de
+$\lambda^2+\lambda+1=0$, es decir, $\omega=e^{2\pi i/3}$ y
+$\overline{\omega}=e^{-2\pi i/3}$, con eigenvectores complejos.
+
+Verificamos que ningún eigenvector de~$\rho(\sigma)$ es eigenvector
+de~$\rho(\tau)$:
+\begin{itemize}
+  \item $\rho(\tau)(1,0)^t = (-1,1)^t$, que no es múltiplo de~$(1,0)^t$.
+  \item $\rho(\tau)(1,-2)^t = (-1+2,1)^t = (1,1)^t$. Para que fuera
+    $\lambda(1,-2)^t$ necesitaríamos $\lambda=1$ y $-2\lambda=1$, lo cual
+    es imposible.
+\end{itemize}
+No existe eigenvector común, de modo que $V$ no contiene ningún subespacio
+$S_3$-invariante de dimensión~$1$.
+
+\inlinehead[repteal]{Conclusión}
+Los únicos subespacios $S_3$-invariantes de~$V$ son $\{0\}$ y~$V$, por lo
+que $(V,\rho)$ es irreducible.
+\hfill$\blacksquare$
 
 \problem{7}{%
 Demuestre que el subgrupo de $S_4$ dado por
@@ -193,6 +479,48 @@ Utilice los dos ejercicios anteriores para concluir que $P$ genera una irrep
 de $S_4$.
 }
 
-\workspace{16}
+\inlinehead{Demostración}
+
+\inlinehead[repteal]{Parte 1: $K\trianglelefteq S_4$}
+Los elementos de $K\setminus\{e\}$ son exactamente las permutaciones de
+$S_4$ con tipo de ciclo~$(2,2)$: los productos de dos transposiciones
+disjuntas en $\{1,2,3,4\}$ son $(12)(34)$, $(13)(24)$ y $(14)(23)$, y no
+hay otros. Como la conjugación preserva el tipo de ciclo
+($\sigma\tau\sigma^{-1}$ tiene los mismos tamaños de ciclo que~$\tau$), para
+todo $\sigma\in S_4$ se tiene $\sigma K\sigma^{-1}\subseteq K$. Luego $K$
+es un subgrupo normal de~$S_4$.
+
+\inlinehead[repteal]{Parte 2: $S_4/K\cong S_3$}
+Consideramos las tres particiones de $\{1,2,3,4\}$ en dos pares:
+\[
+  P_1=\bigl\{\{1,2\},\{3,4\}\bigr\},\quad
+  P_2=\bigl\{\{1,3\},\{2,4\}\bigr\},\quad
+  P_3=\bigl\{\{1,4\},\{2,3\}\bigr\}.
+\]
+Cada $\sigma\in S_4$ permuta estas tres particiones mediante
+$\sigma\cdot P_i:=\bigl\{\{\sigma(a),\sigma(b)\},\{\sigma(c),\sigma(d)\}\bigr\}$,
+lo que define un homomorfismo $\Phi\colon S_4\to S(\{P_1,P_2,P_3\})\cong S_3$.
+
+\textit{Núcleo.} $\sigma\in\ker\Phi$ si y solo si $\sigma$ fija las tres
+particiones. Fijemos $P_1$: esto significa $\sigma(\{1,2\})=\{1,2\}$ y
+$\sigma(\{3,4\})=\{3,4\}$, o bien $\sigma(\{1,2\})=\{3,4\}$ y
+$\sigma(\{3,4\})=\{1,2\}$. Análogamente para $P_2$ y $P_3$. Verificando
+caso por caso, las únicas permutaciones que fijan simultáneamente las tres
+particiones son $e$, $(12)(34)$, $(13)(24)$ y $(14)(23)$, es decir,
+$\ker\Phi=K$.
+
+\textit{Sobreyectividad.} $|S_4/\!\ker\Phi|=|S_4|/|K|=24/4=6=|S_3|$, así
+que por el primer teorema de isomorfismo,
+$S_4/K\cong\operatorname{im}\Phi=S_3$.
+
+\inlinehead[repteal]{Parte 3: $P$ genera una irrep de $S_4$}
+Sea $\varphi\colon S_4\twoheadrightarrow S_4/K\cong S_3$ la proyección
+canónica (que es un homomorfismo sobreyectivo), y sea $(V,\rho)$ la
+representación estándar de dimensión~$2$ de~$S_3$, que es irreducible por el
+Problema~6. Por el Problema~5, la representación
+$(V,\rho\circ\varphi)$ de~$S_4$ es irreducible, ya que es la restricción de
+una irrep de~$S_3$ a lo largo de un epimorfismo. Concluimos que $P$ genera
+una irrep de~$S_4$ de dimensión~$2$.
+\hfill$\blacksquare$
 
 \end{document}
