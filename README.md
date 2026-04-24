@@ -152,6 +152,25 @@ Example usage:
 c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/index/generate_candidate_ids.py --scan-report .tmp/tex_scan_report.json --output .tmp/candidate_ids.json
 ```
 
+### Integration Check
+
+[scripts/lint/run_repo_integration.py](scripts/lint/run_repo_integration.py) runs a repo-level integration check over the current Python tooling:
+
+- the TeX structure scan
+- candidate ID generation
+- registry validation
+- dependency graph traversal
+- Hadamard search-module setup
+
+It can also compile explicit TeX smoke targets when `pdflatex` is available.
+
+Example usage:
+
+```powershell
+c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/lint/run_repo_integration.py
+c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/lint/run_repo_integration.py --with-tex --tex-target corrected_partition_calculus_note.tex --tex-target "Undergrad/Representaciones de Grupos/trgf_padilla_tarea_6.tex"
+```
+
 ### Review Template
 
 [templates/theorem_candidate_review.md](templates/theorem_candidate_review.md) is the handoff format for promoting a scanned theorem-like candidate into a reviewed theorem node later.
@@ -168,6 +187,18 @@ latexmk -pdf filename.tex
 For MATLAB files, open and run the `.m` files in MATLAB.
 
 Existing source files remain authoritative. The scaffolding layer should not silently rewrite or rename them.
+
+## Python Setup
+
+The Python tooling for this repo is pinned in [requirements.txt](requirements.txt).
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install --upgrade pip
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+This covers the repo's Python scripts only. TeX compilation still requires a separate TeX distribution such as MiKTeX or TeX Live.
 
 ## Standardization Rules
 

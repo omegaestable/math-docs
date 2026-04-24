@@ -1,3 +1,4 @@
+%!LW recipe=pdflatex x3
 \documentclass[10pt,a4paper]{article}
 
 \usepackage[spanish,es-nodecimaldot]{babel}
@@ -116,13 +117,11 @@
 \newcommand{\workspace}[1]{%
   \answer
   \par\vspace{0.35em}
-  {\color{repline}\rule{\linewidth}{0.4pt}}\par
   \begingroup
-  \workspacelines=1
+  \workspacelines=0
   \loop
     \ifnum\workspacelines<#1
       \vspace{0.72cm}
-      {\color{repline}\rule{\linewidth}{0.4pt}}\par
       \advance\workspacelines by 1
   \repeat
   \endgroup
@@ -139,7 +138,63 @@
 (*) Demuestre que la matriz del producto tensorial de dos matrices es lo que dijimos en clase.
 }
 
-\workspace{10}
+\answer
+\medskip
+
+\textbf{Definición (producto de Kronecker).} Dadas matrices $A=(a_{ki})\in M_{m\times n}(k)$
+y $B\in M_{p\times q}(k)$, su \emph{producto de Kronecker} es la matriz de bloques
+\[
+  A\otimes B
+  :=
+  \begin{pmatrix}
+    a_{11}B & a_{12}B & \cdots & a_{1n}B \\
+    a_{21}B & a_{22}B & \cdots & a_{2n}B \\
+    \vdots  &         & \ddots & \vdots  \\
+    a_{m1}B & a_{m2}B & \cdots & a_{mn}B
+  \end{pmatrix}
+  \in M_{mp\times nq}(k).
+\]
+
+\medskip
+\textbf{Demostración.}
+Sean $(U,\pi)$ y $(V,\rho)$ representaciones de $G$ sobre $k$, con bases
+$\mathcal{B}=\{e_1,\ldots,e_m\}$ y $\mathcal{C}=\{f_1,\ldots,f_n\}$ respectivamente.
+El espacio $U\otimes V$ tiene base
+\[
+  \mathcal{B}\otimes\mathcal{C}
+  =\{e_i\otimes f_j : 1\le i\le m,\;1\le j\le n\},
+\]
+ordenada lexicográficamente:
+$(e_1\otimes f_1,\,e_1\otimes f_2,\ldots,e_1\otimes f_n,\;e_2\otimes f_1,\ldots,e_m\otimes f_n)$.
+
+Fijemos $g\in G$ y sean $A=[\pi(g)]_{\mathcal{B}}$ y $B=[\rho(g)]_{\mathcal{C}}$,
+con entradas $a_{ki}$ y $b_{lj}$.
+La representación producto tensorial actúa por
+\[
+  (\pi\otimes\rho)(g)(e_i\otimes f_j)
+  =\pi(g)(e_i)\otimes\rho(g)(f_j).
+\]
+Escribiendo explícitamente en bases,
+\[
+  \pi(g)(e_i)=\sum_{k=1}^m a_{ki}\,e_k,
+  \qquad
+  \rho(g)(f_j)=\sum_{l=1}^n b_{lj}\,f_l,
+\]
+se obtiene
+\[
+  (\pi\otimes\rho)(g)(e_i\otimes f_j)
+  =\sum_{k=1}^{m}\sum_{l=1}^{n} a_{ki}\,b_{lj}\;(e_k\otimes f_l).
+\]
+Por lo tanto, la entrada en la fila $(k,l)$ y columna $(i,j)$ de la matriz
+$[(\pi\otimes\rho)(g)]_{\mathcal{B}\otimes\mathcal{C}}$ es $a_{ki}\,b_{lj}$.
+
+Por otra parte, en $A\otimes B$ el bloque $(k,i)$ es $a_{ki}B$, cuya entrada
+en la fila $l$ y columna $j$ es también $a_{ki}\,b_{lj}$.
+Ambas matrices tienen las mismas entradas, luego
+\[
+  [(\pi\otimes\rho)(g)]_{\mathcal{B}\otimes\mathcal{C}} = A\otimes B.
+\]
+\hfill$\blacksquare$
 
 \problem{2}{%
 Sean $U$, $V$ y $W$ espacios vectoriales sobre un cuerpo $k$. Demuestre que
@@ -148,7 +203,93 @@ Sean $U$, $V$ y $W$ espacios vectoriales sobre un cuerpo $k$. Demuestre que
 \]
 }
 
-\workspace{11}
+\answer
+Definimos primero una aplicación
+\[
+  \Phi\colon \Hom_k(U\otimes V,W) \to \Hom_k(U,\Hom_k(V,W))
+\]
+por la fórmula
+\[
+  \Phi(T)(u)(v):=T(u\otimes v).
+\]
+Esta definición tiene sentido porque, fijo $u\in U$, la aplicación
+$v\mapsto T(u\otimes v)$ es lineal en $v$, ya que $T$ es lineal. Además,
+$u\mapsto \Phi(T)(u)$ también es lineal: si $u_1,u_2\in U$ y
+$\alpha,\beta\in k$, entonces para todo $v\in V$,
+\begin{align*}
+  \Phi(T)(\alpha u_1+\beta u_2)(v)
+  &=T\bigl((\alpha u_1+\beta u_2)\otimes v\bigr) \\
+  &=T\bigl(\alpha(u_1\otimes v)+\beta(u_2\otimes v)\bigr) \\
+  &=\alpha T(u_1\otimes v)+\beta T(u_2\otimes v) \\
+  &=\alpha\Phi(T)(u_1)(v)+\beta\Phi(T)(u_2)(v).
+\end{align*}
+Por tanto, $\Phi(T)\in \Hom_k(U,\Hom_k(V,W))$.
+
+Recíprocamente, sea
+\[
+  F\in \Hom_k(U,\Hom_k(V,W)).
+\]
+Definimos una aplicación
+\[
+  b_F\colon U\times V\to W,
+  \qquad
+  b_F(u,v):=F(u)(v).
+\]
+Como $F$ es lineal y cada $F(u)$ es lineal en $V$, la aplicación $b_F$ es
+bilineal. En efecto,
+\begin{align*}
+  b_F(\alpha u_1+\beta u_2,v)
+  &=F(\alpha u_1+\beta u_2)(v) \\
+  &=(\alpha F(u_1)+\beta F(u_2))(v) \\
+  &=\alpha F(u_1)(v)+\beta F(u_2)(v) \\
+  &=\alpha b_F(u_1,v)+\beta b_F(u_2,v),
+\end{align*}
+y, para $v_1,v_2\in V$ y $\lambda,\mu\in k$,
+\begin{align*}
+  b_F(u,\lambda v_1+\mu v_2)
+  &=F(u)(\lambda v_1+\mu v_2) \\
+  &=\lambda F(u)(v_1)+\mu F(u)(v_2) \\
+  &=\lambda b_F(u,v_1)+\mu b_F(u,v_2).
+\end{align*}
+
+Por la propiedad universal del producto tensorial, existe una única aplicación
+lineal
+\[
+  \widetilde{F}\colon U\otimes V\to W
+\]
+tal que
+\[
+  \widetilde{F}(u\otimes v)=b_F(u,v)=F(u)(v)
+  \qquad
+  \text{para todo }u\in U,\;v\in V.
+\]
+Esto define una segunda aplicación
+\[
+  \Psi\colon \Hom_k(U,\Hom_k(V,W))\to \Hom_k(U\otimes V,W),
+  \qquad
+  \Psi(F):=\widetilde{F}.
+\]
+
+Veamos que $\Phi$ y $\Psi$ son inversas. Si $T\in \Hom_k(U\otimes V,W)$,
+entonces para todo $u\in U$ y $v\in V$,
+\[
+  \Psi(\Phi(T))(u\otimes v)=\Phi(T)(u)(v)=T(u\otimes v).
+\]
+Como ambas aplicaciones son lineales y coinciden en todos los tensores puros,
+se sigue que $\Psi(\Phi(T))=T$.
+
+Análogamente, si $F\in \Hom_k(U,\Hom_k(V,W))$, entonces para todo
+$u\in U$ y $v\in V$,
+\[
+  \Phi(\Psi(F))(u)(v)=\Psi(F)(u\otimes v)=F(u)(v).
+\]
+Por consiguiente, $\Phi(\Psi(F))=F$.
+
+Concluimos que $\Phi$ es un isomorfismo, es decir,
+\[
+  \Hom_k(U \otimes V, W) \cong \Hom_k(U, \Hom_k(V, W)).
+\]
+\hfill$\blacksquare$
 
 \problem{3}{%
 Calcule las matrices que representan a los elementos de $S_3$ en la representación
@@ -159,7 +300,154 @@ $V_{\mathrm{st}} \otimes V_{\mathrm{st}}$ en alguna base.
 conjugada para mostrar.}
 }
 
-\workspace{13}
+\answer
+Las clases conjugadas de $S_3$ son
+\[
+  \{e\},
+  \qquad
+  \{(12),(13),(23)\},
+  \qquad
+  \{(123),(132)\}.
+\]
+Por lo tanto, para la exposición basta tomar como representantes
+$e$, $(12)$ y $(123)$.
+
+Tomemos una base $(v_1,v_2)$ de $V_{\mathrm{st}}$ en la cual
+\[
+  \rho((12))=
+  \begin{pmatrix}
+    -1 & -1 \\
+    0 & 1
+  \end{pmatrix},
+  \qquad
+  \rho((123))=
+  \begin{pmatrix}
+    -1 & -1 \\
+    1 & 0
+  \end{pmatrix}.
+\]
+Sea ahora la base de $V_{\mathrm{st}}\otimes V_{\mathrm{st}}$
+\[
+  \mathcal{B}:=(v_1\otimes v_1,\; v_1\otimes v_2,\; v_2\otimes v_1,\; v_2\otimes v_2).
+\]
+Por el Problema~1, para todo $g\in S_3$ se tiene
+\[
+  [\rho\otimes\rho](g)_{\mathcal{B}} = [\rho(g)]\otimes [\rho(g)].
+\]
+
+\medskip
+\textbf{Representantes de las clases conjugadas.}
+
+Para la identidad,
+\[
+  (\rho\otimes\rho)(e)=I_4.
+\]
+
+Para la transposición $(12)$,
+\[
+  (\rho\otimes\rho)((12))
+  =
+  \begin{pmatrix}
+    -1 & -1 \\
+    0 & 1
+  \end{pmatrix}
+  \otimes
+  \begin{pmatrix}
+    -1 & -1 \\
+    0 & 1
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 1 & 1 & 1 \\
+    0 & -1 & 0 & -1 \\
+    0 & 0 & -1 & -1 \\
+    0 & 0 & 0 & 1
+  \end{pmatrix}.
+\]
+
+Para el $3$-ciclo $(123)$,
+\[
+  (\rho\otimes\rho)((123))
+  =
+  \begin{pmatrix}
+    -1 & -1 \\
+    1 & 0
+  \end{pmatrix}
+  \otimes
+  \begin{pmatrix}
+    -1 & -1 \\
+    1 & 0
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 1 & 1 & 1 \\
+    -1 & 0 & -1 & 0 \\
+    -1 & -1 & 0 & 0 \\
+    1 & 0 & 0 & 0
+  \end{pmatrix}.
+\]
+
+\medskip
+\textbf{Las seis matrices.}
+
+Además,
+\[
+  \rho((132))=\rho((123))^2=
+  \begin{pmatrix}
+    0 & 1 \\
+    -1 & -1
+  \end{pmatrix},
+\]
+\[
+  \rho((23))=\rho((12))\rho((123))=
+  \begin{pmatrix}
+    0 & 1 \\
+    1 & 0
+  \end{pmatrix},
+  \qquad
+  \rho((13))=\rho((123))\rho((12))=
+  \begin{pmatrix}
+    1 & 0 \\
+    -1 & -1
+  \end{pmatrix}.
+\]
+Por consiguiente,
+\[
+  (\rho\otimes\rho)((23))
+  =
+  \begin{pmatrix}
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0
+  \end{pmatrix},
+\]
+\[
+  (\rho\otimes\rho)((13))
+  =
+  \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    -1 & -1 & 0 & 0 \\
+    -1 & 0 & -1 & 0 \\
+    1 & 1 & 1 & 1
+  \end{pmatrix},
+\]
+\[
+  (\rho\otimes\rho)((132))
+  =
+  \begin{pmatrix}
+    0 & 0 & 0 & 1 \\
+    0 & 0 & -1 & -1 \\
+    0 & -1 & 0 & -1 \\
+    1 & 1 & 1 & 1
+  \end{pmatrix}.
+\]
+
+En resumen, en la base $\mathcal{B}$ ya quedaron calculadas las matrices de
+todos los elementos de $S_3$ en $V_{\mathrm{st}}\otimes V_{\mathrm{st}}$, y para la
+exposición basta mostrar las de $e$, $(12)$ y $(123)$, que representan las tres
+clases conjugadas.
+\hfill$\blacksquare$
 
 \problem{4}{%
 Encuentre la fórmula general para la descomposición de
@@ -169,7 +457,93 @@ Encuentre la fórmula general para la descomposición de
 en irreps de $S_3$.
 }
 
-\workspace{12}
+\answer
+Sean
+\[
+  \chi_{\mathrm{triv}}=(1,1,1),
+  \qquad
+  \chi_{\mathrm{sgn}}=(1,-1,1),
+  \qquad
+  \chi_{\mathrm{st}}=(2,0,-1),
+\]
+en el orden de clases conjugadas
+\[
+  \{e\},
+  \qquad
+  \{(12),(13),(23)\},
+  \qquad
+  \{(123),(132)\}.
+\]
+Por Maschke, existen enteros $a_n,b_n,c_n\ge 0$ tales que
+\[
+  V_{\mathrm{st}}^{\otimes n}
+  \cong a_nV_{\mathrm{triv}}\oplus b_nV_{\mathrm{sgn}}\oplus c_nV_{\mathrm{st}}.
+\]
+Si $W\cong U\oplus V$, entonces la matriz de $g$ en $W$ es por bloques diagonales,
+de modo que
+\[
+  \chi_W(g)=\chi_U(g)+\chi_V(g).
+\]
+Por consiguiente,
+\[
+  \chi_n:=\chi_{V_{\mathrm{st}}^{\otimes n}}
+  =a_n\chi_{\mathrm{triv}}+b_n\chi_{\mathrm{sgn}}+c_n\chi_{\mathrm{st}}.
+\]
+
+Además, si $U$ y $V$ son representaciones, entonces
+\[
+  (\rho_U\otimes\rho_V)(g)=\rho_U(g)\otimes\rho_V(g),
+\]
+y como $\operatorname{tr}(A\otimes B)=\operatorname{tr}(A)\operatorname{tr}(B)$,
+se sigue que
+\[
+  \chi_{U\otimes V}(g)=\chi_U(g)\chi_V(g).
+\]
+Por tanto,
+\[
+  \chi_n=\chi_{\mathrm{st}}^n=(2^n,0,(-1)^n).
+\]
+
+Igualando coordenadas en
+\[
+  (2^n,0,(-1)^n)
+  =a_n(1,1,1)+b_n(1,-1,1)+c_n(2,0,-1),
+\]
+obtenemos el sistema
+\[
+  a_n+b_n+2c_n=2^n,
+  \qquad
+  a_n-b_n=0,
+  \qquad
+  a_n+b_n-c_n=(-1)^n.
+\]
+De $a_n-b_n=0$ resulta $a_n=b_n$. Sustituyendo,
+\[
+  2a_n+2c_n=2^n,
+  \qquad
+  2a_n-c_n=(-1)^n,
+\]
+de donde
+\[
+  a_n=b_n=\frac{2^{n-1}+(-1)^n}{3},
+  \qquad
+  c_n=\frac{2^n-(-1)^n}{3}.
+\]
+Así, para todo $n\ge 1$,
+\[
+  V_{\mathrm{st}}^{\otimes n}
+  \cong
+  \frac{2^{n-1}+(-1)^n}{3}\,V_{\mathrm{triv}}
+  \oplus
+  \frac{2^{n-1}+(-1)^n}{3}\,V_{\mathrm{sgn}}
+  \oplus
+  \frac{2^n-(-1)^n}{3}\,V_{\mathrm{st}}.
+\]
+Si se adopta la convención usual $V^{\otimes 0}=\CC$, entonces
+\[
+  V_{\mathrm{st}}^{\otimes 0}\cong V_{\mathrm{triv}}.
+\]
+\hfill$\blacksquare$
 
 \problem{5}{%
 Sea $C$ una clase conjugada y sea
@@ -184,7 +558,34 @@ donde $\chi_U(C)$ es el carácter de la representación evaluado en cualquier $g
 clase conjugada.
 }
 
-\workspace{13}
+\answer
+Sea
+\[
+  T:=\pi(s_C).
+\]
+Por el Problema~2 de la Tarea~3, la misma demostración muestra que $s_C$ es
+central en $\CC[G]$ para cualquier grupo finito. En consecuencia, $T$ conmuta
+con todos los operadores $\pi(h)$, $h\in G$. Entonces, por el mismo argumento
+del Problema~2 de la Tarea~4, como $(U,\pi)$ es irreducible se sigue que
+$T=\lambda I$ para algún $\lambda\in\CC$.
+
+Solo queda calcular $\lambda$. Tomando trazas en ambos lados,
+\[
+  \lambda\,\dim U
+  =\operatorname{tr}(T)
+  =\sum_{g\in C}\operatorname{tr}(\pi(g))
+  =\sum_{g\in C}\chi_U(g)
+  =|C|\,\chi_U(C),
+\]
+ya que el carácter es constante en clases conjugadas. En consecuencia,
+\[
+  \lambda=|C|\,\frac{\chi_U(C)}{\dim U},
+\]
+y así
+\[
+  \pi(s_C)=T=|C|\,\frac{\chi_U(C)}{\dim U}\,\Id.
+\]
+\hfill$\blacksquare$
 
 \problem{6}{%
 Sea $\chi_{\mathrm{reg}}$ el carácter de la representación regular, es decir, el álgebra de
@@ -198,7 +599,54 @@ grupo pensada como representación de $G$. Demuestre que
 \]
 }
 
-\workspace{10}
+\answer
+Consideremos la representación regular izquierda
+\[
+  \rho_{\mathrm{reg}}\colon G\to GL(\CC[G]),
+  \qquad
+  \rho_{\mathrm{reg}}(g)(x)=gx
+  \quad (x\in G),
+\]
+extendida linealmente a $\CC[G]$. Tomemos la base natural de $\CC[G]$
+formada por los elementos de $G$.
+
+Para un $g\in G$ fijo, la transformación $\rho_{\mathrm{reg}}(g)$ permuta esta
+base, pues envía cada vector de la base $x\in G$ al vector de la base $gx$.
+Por tanto, su matriz en esta base es una matriz de permutación y su traza es
+el número de vectores de la base que quedan fijos por la multiplicación por $g$.
+
+Si $g=e$, entonces
+\[
+  \rho_{\mathrm{reg}}(e)=I,
+\]
+de modo que
+\[
+  \chi_{\mathrm{reg}}(e)=\operatorname{tr}(I)=\dim \CC[G]=|G|.
+\]
+
+Si $g\ne e$, un vector de la base $x\in G$ quedaría fijo solo si
+\[
+  gx=x,
+\]
+lo cual implica, multiplicando a la derecha por $x^{-1}$,
+\[
+  g=e,
+\]
+contradicción. Así, $\rho_{\mathrm{reg}}(g)$ no fija ningún vector de la base,
+y por consiguiente su matriz de permutación tiene diagonal nula. Luego
+\[
+  \chi_{\mathrm{reg}}(g)=0.
+\]
+
+Concluimos que
+\[
+  \chi_{\mathrm{reg}}(g)=
+  \begin{cases}
+    |G|, & \text{si } g=e,\\
+    0, & \text{si } g\ne e.
+  \end{cases}
+\]
+\hfill$\blacksquare$
 
 \problem{7}{%
 Sean $(U,\pi)$ y $(V,\rho)$ dos representaciones de $G$. Demuestre que
@@ -209,6 +657,40 @@ $(\Hom_{\CC}(U, V), \tau)$, dada por
 es, en efecto, una representación.
 }
 
-\workspace{12}
+\answer
+Para cada $g\in G$ y $f\in\Hom_{\CC}(U,V)$,
+\[
+  \tau(g)f=\rho(g)\circ f\circ \pi(g^{-1}).
+\]
+Como $\rho(g)$, $f$ y $\pi(g^{-1})$ son lineales, $\tau(g)f$ también es lineal;
+por tanto $\tau(g)f\in\Hom_{\CC}(U,V)$. Además, para $a,b\in\CC$ y
+$f_1,f_2\in\Hom_{\CC}(U,V)$,
+\[
+  \tau(g)(af_1+bf_2)=a\tau(g)f_1+b\tau(g)f_2,
+\]
+de modo que cada $\tau(g)$ es lineal.
+
+Ahora verificamos la ley de representación. Para todo $f\in\Hom_{\CC}(U,V)$ y
+$u\in U$,
+\[
+  (\tau(e)f)(u)=\rho(e)f(\pi(e^{-1})u)=f(u),
+\]
+luego $\tau(e)=\Id$.
+
+Si $g,h\in G$, entonces para todo $f\in\Hom_{\CC}(U,V)$ y $u\in U$,
+\begin{align*}
+  (\tau(g)\tau(h)f)(u)
+  &=\rho(g)(\tau(h)f)(\pi(g^{-1})u) \\
+  &=\rho(g)\rho(h)f(\pi(h^{-1})\pi(g^{-1})u) \\
+  &=\rho(gh)f(\pi((gh)^{-1})u) \\
+  &=(\tau(gh)f)(u).
+\end{align*}
+Por lo tanto,
+\[
+  \tau(g)\tau(h)=\tau(gh).
+\]
+En particular, $\tau(g^{-1})$ es la inversa de $\tau(g)$, así que
+$\tau(g)\in GL(\Hom_{\CC}(U,V))$ para todo $g\in G$. Concluimos que
+$(\Hom_{\CC}(U,V),\tau)$ es una representación de $G$. \hfill$\blacksquare$
 
 \end{document}

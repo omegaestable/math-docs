@@ -126,7 +126,50 @@ En particular, el tamaño de $Z_g$ es el mismo para cualesquiera dos elementos
 en la misma clase conjugada.
 }
 
-\workspace{14}
+\inlinehead{Respuesta} Consideremos la aplicación
+\[
+  \phi\colon G \to C_g,
+  \qquad
+  \phi(x)=xgx^{-1}.
+\]
+Por definición de clase conjugada, $\phi$ es sobreyectiva. Además, para
+$x,y\in G$ se tiene
+\begin{align*}
+  \phi(x)=\phi(y)
+  &\iff xgx^{-1}=ygy^{-1} \\
+  &\iff y^{-1}x\,g=g\,y^{-1}x \\
+  &\iff y^{-1}x\in Z_g \\
+  &\iff xZ_g=yZ_g.
+\end{align*}
+Así, dos elementos de $G$ tienen la misma imagen por $\phi$ exactamente cuando
+pertenecen a la misma clase lateral izquierda de $Z_g$. Por lo tanto,
+$\phi$ induce una biyección
+\[
+  G/Z_g \cong C_g.
+\]
+Como $G$ es finito, concluimos que
+\[
+  |C_g|=[G:Z_g]=\frac{|G|}{|Z_g|},
+\]
+es decir,
+\[
+  |C_g|\,|Z_g|=|G|.
+\]
+
+Para la última afirmación, si $h\in C_g$, existe $a\in G$ tal que
+$h=aga^{-1}$. Entonces, para todo $z\in G$,
+\begin{align*}
+  z\in Z_g
+  &\iff zg=gz \\
+  &\iff (aza^{-1})(aga^{-1})=(aga^{-1})(aza^{-1}) \\
+  &\iff aza^{-1}\in Z_h.
+\end{align*}
+De aquí se sigue que la conjugación por $a$ define una biyección
+$Z_g \to Z_h$, $z\mapsto aza^{-1}$. En particular,
+\[
+  |Z_g|=|Z_h|
+\]
+si $g$ y $h$ están en la misma clase conjugada.\hfill$\blacksquare$
 
 \problem{2}{%
 Sea $(U,\pi)$ una representación irreducible de $G$. Sea $a\in G$ un elemento
@@ -134,7 +177,40 @@ central en $G$ (es decir, tal que $ag = ga$ para todo $g\in G$). Demuestre
 que $\pi(a)$ debe ser un operador escalar, es decir, de la forma $\lambda I$.
 }
 
-\workspace{13}
+\inlinehead{Respuesta} Sea $T:=\pi(a)$. Como $a$ es central en $G$, para todo
+$g\in G$ se tiene
+\[
+  T\pi(g)=\pi(a)\pi(g)=\pi(ag)=\pi(ga)=\pi(g)\pi(a)=\pi(g)T.
+\]
+Es decir, $T$ conmuta con todos los operadores $\pi(g)$.
+
+Como $U$ es un espacio vectorial complejo de dimensión finita, $T$ tiene al
+menos un valor propio $\lambda\in\CC$. Sea
+\[
+  W:=\ker(T-\lambda I).
+\]
+Entonces $W\neq\{0\}$. Veamos que $W$ es $G$-invariante. Si $v\in W$, entonces
+$Tv=\lambda v$, y para todo $g\in G$,
+\[
+  (T-\lambda I)\bigl(\pi(g)v\bigr)
+  = T\pi(g)v-\lambda\pi(g)v
+  = \pi(g)Tv-\lambda\pi(g)v
+  = \pi(g)(Tv-\lambda v)=0.
+\]
+Por lo tanto, $\pi(g)v\in W$, y así $W$ es un subespacio $G$-invariante de
+$U$.
+
+Como $(U,\pi)$ es irreducible y $W\neq\{0\}$, se sigue que $W=U$. Esto
+significa que
+\[
+  (T-\lambda I)u=0
+  \qquad\text{para todo } u\in U,
+\]
+es decir,
+\[
+  \pi(a)=T=\lambda I.
+\]
+Concluimos que $\pi(a)$ es un operador escalar.\hfill$\blacksquare$
 
 \problem{3}{%
 Sean $(U,\pi)$ y $(V,\rho)$ dos representaciones de dimensión finita,
@@ -145,7 +221,32 @@ Sean $(U,\pi)$ y $(V,\rho)$ dos representaciones de dimensión finita,
 es decir, que tienen el mismo carácter.
 }
 
-\workspace{12}
+\inlinehead{Respuesta} Como $(U,\pi)$ y $(V,\rho)$ son isomorfas, existe un
+isomorfismo lineal $T\colon U\to V$ tal que
+\[
+  T\pi(g)=\rho(g)T
+  \qquad\text{para todo } g\in G.
+\]
+Como $T$ es invertible, esto equivale a
+\[
+  \rho(g)=T\pi(g)T^{-1}
+  \qquad\text{para todo } g\in G.
+\]
+Por definición del carácter de una representación de dimensión finita,
+\[
+  \chi_U(g)=\operatorname{tr}(\pi(g))
+  \qquad\text{y}\qquad
+  \chi_V(g)=\operatorname{tr}(\rho(g)).
+\]
+Entonces, para todo $g\in G$,
+\[
+  \chi_V(g)=\operatorname{tr}(\rho(g))
+  =\operatorname{tr}\bigl(T\pi(g)T^{-1}\bigr)
+  =\operatorname{tr}(\pi(g))
+  =\chi_U(g),
+\]
+donde usamos que la traza es invariante bajo conjugación. Por lo tanto,
+$\chi_U=\chi_V$.\hfill$\blacksquare$
 
 \problem{4}{%
 Sea $G$ un grupo finito y sea $A=\CC[G]$. Suponga que $A$ se puede descomponer
@@ -162,7 +263,35 @@ $U$ como $V$ son ideales a izquierda de $A$, es decir,
 \]
 }
 
-\workspace{15}
+\inlinehead{Respuesta} Probemos primero que $U$ es un ideal a izquierda. Sea
+$a\in A$ y $u\in U$. Como $A=\CC[G]$, podemos escribir
+\[
+  a=\sum_{g\in G}\alpha_g g
+  \qquad\text{con } \alpha_g\in\CC.
+\]
+Entonces
+\[
+  a\cdot u=\sum_{g\in G}\alpha_g\,(g\cdot u).
+\]
+Como $U$ es una subrepresentación, se tiene $g\cdot u\in U$ para todo
+$g\in G$. Por linealidad, concluimos que $a\cdot u\in U$. Esto prueba que
+\[
+  A\cdot U\subseteq U.
+\]
+Por otra parte, como $1\in A$, para todo $u\in U$ se tiene
+\[
+  u=1\cdot u\in A\cdot U.
+\]
+Luego $U\subseteq A\cdot U$, y por tanto
+\[
+  A\cdot U=U.
+\]
+
+El mismo argumento aplicado a $V$ muestra que
+\[
+  A\cdot V=V.
+\]
+Así, tanto $U$ como $V$ son ideales a izquierda de $A$.\hfill$\blacksquare$
 
 \problem{5}{%
 En el contexto del ejercicio anterior, suponga además que $U$ y $V$ no
@@ -189,7 +318,72 @@ Demuestre que entonces $U$ y $V$ también son ideales a derecha, es decir,
 \]
 }
 
-\workspace{16}
+\inlinehead{Respuesta} Ya sabemos por el ejercicio anterior que $A=\CC[G]$
+es una representación de $G$ por multiplicación izquierda, y que
+\[
+  A=U\oplus V
+\]
+como suma directa de subrepresentaciones. Denotemos por
+\[
+  p_U\colon A\to U,
+  \qquad
+  p_V\colon A\to V
+\]
+las proyecciones asociadas a esta descomposición; como $U$ y $V$ son
+subrepresentaciones, ambas son morfismos de representaciones.
+
+Fijemos $g\in G$ y definamos
+\[
+  R_g\colon A\to A,
+  \qquad
+  R_g(x)=xg.
+\]
+Si $h\in G$ y $x\in A$, entonces
+\[
+  R_g(h\cdot x)=R_g(hx)=(hx)g=h(xg)=h\cdot R_g(x).
+\]
+Por lo tanto, $R_g$ es un morfismo de representaciones. Consideremos ahora
+\[
+  T_g:=p_V\circ R_g|_U\colon U\to V.
+\]
+Entonces $T_g\in \operatorname{Hom}_G(U,V)$, y por hipótesis
+$\operatorname{Hom}_G(U,V)=0$. Luego $T_g=0$. Así, para todo $u\in U$,
+\[
+  p_V(ug)=0,
+\]
+y como $A=U\oplus V$, esto implica que $ug\in U$. En particular,
+$U\cdot g\subseteq U$ para todo $g\in G$.
+
+Si ahora $a\in A$, escribimos
+\[
+  a=\sum_{g\in G}\alpha_g g
+  \qquad\text{con } \alpha_g\in\CC.
+\]
+Entonces, para $u\in U$,
+\[
+  u\cdot a
+  =u\left(\sum_{g\in G}\alpha_g g\right)
+  =\sum_{g\in G}\alpha_g\,(ug).
+\]
+Como cada $ug$ pertenece a $U$, por linealidad $u\cdot a\in U$. Por tanto,
+\[
+  U\cdot A\subseteq U.
+\]
+La inclusión opuesta es inmediata porque $1\in A$ y, para todo $u\in U$,
+\[
+  u=u\cdot 1\in U\cdot A.
+\]
+Así, $U\cdot A=U$.
+
+El mismo argumento aplicado a
+\[
+  S_g:=p_U\circ R_g|_V\colon V\to U
+\]
+y usando que también $\operatorname{Hom}_G(V,U)=0$, muestra que $vg\in V$
+para todo $v\in V$ y todo $g\in G$. Por linealidad, $V\cdot A\subseteq V$,
+y como $v=v\cdot 1$, se obtiene $V\cdot A=V$.
+
+Concluimos que $U$ y $V$ son ideales a derecha de $A$.\hfill$\blacksquare$
 
 \problem{6}{%
 (*) Sea $f\colon G\to\CC$ una función de clase. Demuestre, con los detalles,
@@ -200,7 +394,46 @@ que
 para cualquier otra función $f'\colon G\to\CC$.
 }
 
-\workspace{14}
+\inlinehead{Respuesta} Usamos la definición usual de convolución:
+\[
+  (f*f')(g)=\sum_{x\in G} f(x)\,f'(x^{-1}g)
+  \qquad\text{para todo } g\in G.
+\]
+Fijemos $g\in G$. Entonces
+\[
+  (f*f')(g)=\sum_{x\in G} f(x)\,f'(x^{-1}g).
+\]
+Hacemos el cambio de variable
+\[
+  y:=x^{-1}g.
+\]
+Como la aplicación $x\mapsto x^{-1}g$ es una biyección de $G$ en $G$, podemos
+reindexar la suma y obtenemos
+\[
+  (f*f')(g)=\sum_{y\in G} f(gy^{-1})\,f'(y).
+\]
+Ahora usamos que $f$ es una función de clase. Observemos que, para todo
+$y\in G$,
+\[
+  gy^{-1}=y\,(y^{-1}g)\,y^{-1},
+\]
+de modo que $gy^{-1}$ y $y^{-1}g$ son conjugados. Como $f$ es constante en
+clases conjugadas, se sigue que
+\[
+  f(gy^{-1})=f(y^{-1}g).
+\]
+Sustituyendo esto en la suma anterior,
+\[
+  (f*f')(g)=\sum_{y\in G} f(y^{-1}g)\,f'(y)
+  =\sum_{y\in G} f'(y)\,f(y^{-1}g)
+  =(f'*f)(g).
+\]
+Como esto vale para todo $g\in G$, concluimos que
+\[
+  f*f'=f'*f.
+\]
+Esto prueba que toda función de clase conmuta, bajo convolución, con cualquier
+otra función $f'\colon G\to\CC$.\hfill$\blacksquare$
 
 \problem{7}{%
 Sea $c$ una clase conjugada de $G$, y sea
@@ -218,6 +451,52 @@ es un operador escalar.
 por definición.
 }
 
-\workspace{14}
+\inlinehead{Respuesta} Sea
+\[
+  T:=\pi(s_c)=\sum_{g\in c}\pi(g).
+\]
+Veamos primero que $T$ conmuta con todos los operadores $\pi(h)$, $h\in G$.
+En efecto, para todo $h\in G$,
+\[
+  \pi(h)\,T\,\pi(h)^{-1}
+  = \sum_{g\in c}\pi(hgh^{-1}).
+\]
+Como la aplicación $g\mapsto hgh^{-1}$ es una biyección de $c$ en sí misma,
+al reindexar la suma obtenemos
+\[
+  \sum_{g\in c}\pi(hgh^{-1})=\sum_{g\in c}\pi(g)=T.
+\]
+Por lo tanto,
+\[
+  \pi(h)T=T\pi(h)
+  \qquad\text{para todo } h\in G.
+\]
+
+Ahora repetimos el argumento del Problema~2. Como $U$ es un
+$\CC$-espacio vectorial de dimensión finita, $T$ tiene al menos un valor
+propio $\lambda\in\CC$. Sea
+\[
+  W:=\ker(T-\lambda I).
+\]
+Entonces $W\neq\{0\}$. Además, si $v\in W$ y $h\in G$, entonces
+\[
+  (T-\lambda I)\bigl(\pi(h)v\bigr)
+  =T\pi(h)v-\lambda\pi(h)v
+  =\pi(h)Tv-\lambda\pi(h)v
+  =\pi(h)(Tv-\lambda v)=0.
+\]
+Así, $\pi(h)v\in W$, y por tanto $W$ es un subespacio $G$-invariante de $U$.
+
+Como $(U,\pi)$ es irreducible y $W\neq\{0\}$, se sigue que $W=U$. Esto
+significa que
+\[
+  (T-\lambda I)u=0
+  \qquad\text{para todo } u\in U,
+\]
+es decir,
+\[
+  \pi(s_c)=T=\lambda I.
+\]
+Concluimos que $\pi(s_c)$ es un operador escalar.\hfill$\blacksquare$
 
 \end{document}

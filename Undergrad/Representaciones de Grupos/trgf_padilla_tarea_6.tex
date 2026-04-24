@@ -1,3 +1,4 @@
+%!LW recipe=pdflatex x3
 \documentclass[10pt,a4paper]{article}
 
 \usepackage[spanish,es-nodecimaldot]{babel}
@@ -115,13 +116,11 @@
 \newcommand{\workspace}[1]{%
   \answer
   \par\vspace{0.35em}
-  {\color{repline}\rule{\linewidth}{0.4pt}}\par
   \begingroup
-  \workspacelines=1
+  \workspacelines=0
   \loop
     \ifnum\workspacelines<#1
       \vspace{0.72cm}
-      {\color{repline}\rule{\linewidth}{0.4pt}}\par
       \advance\workspacelines by 1
   \repeat
   \endgroup
