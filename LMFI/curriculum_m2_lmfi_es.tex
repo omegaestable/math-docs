@@ -1,0 +1,229 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+
+\graphicspath{{LMFI/assets/}{assets/}}
+
+\hypersetup{
+    pdftitle={Currículo y hoja de ruta del M2 LMFI},
+    pdfauthor={Juan Padilla},
+    pdfsubject={Resumen en español del Máster en Lógica y Fundamentos de la Informática},
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    urlcolor=blue!50!black
+}
+
+\definecolor{upblue}{HTML}{0F4C81}
+\definecolor{uplight}{HTML}{EAF2F8}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\emergencystretch}{1.5em}
+\Urlmuskip=0mu plus 1mu\relax
+\urlstyle{same}
+
+\newcolumntype{M}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{J}[1]{>{\justifying\arraybackslash}p{#1}}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\setlength{\LTpre}{0.35em}
+\setlength{\LTpost}{0.65em}
+
+\newcommand{\official}[1]{\href{#1}{\nolinkurl{#1}}}
+\newcommand{\programurl}{https://master.math.u-paris.fr/archive/2020/en/annee/m2-lmfi/}
+\newcommand{\coursecell}[2]{\textbf{#1}\par{\scriptsize\color{upblue}\official{#2}}}
+\newcommand{\metacell}[2]{#1\par{\footnotesize #2}}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\centering
+
+\vspace*{1.5cm}
+\includegraphics[width=0.68\textwidth]{logo-universite-paris-cite.png}\par
+
+\vspace{1.4cm}
+{\Large Documento de síntesis}\par
+\vspace{0.4cm}
+{\huge\bfseries Currículo y hoja de ruta del M2 LMFI}\par
+\vspace{0.35cm}
+{\Large Máster en Lógica y Fundamentos de la Informática}\par
+\vspace{0.45cm}
+{\large Recopilado y traducido por Juan Padilla}\par
+
+\vspace{1.1cm}
+\fcolorbox{upblue}{uplight}{%
+    \parbox{0.9\textwidth}{%
+        \centering
+        \textbf{Fuente principal:} este resumen se basa en el archivo oficial 2020 del programa LMFI de Université de Paris.\\
+        Las fichas enlazadas junto a cada curso son el recurso oficial de referencia.
+    }%
+}\par
+
+\vfill
+
+{\large Versión en español para consulta rápida}\par
+\vspace{0.4cm}
+\href{\programurl}{\programurl}\par
+
+\vfill
+{\small Logotipo institucional actual tomado del sitio oficial de Université Paris Cité.}\par
+
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+
+\section*{Panorama general}
+
+El M2 LMFI es un máster de segundo año dedicado a la lógica matemática y a sus aplicaciones en ciencias de la computación. Según la página anual del programa, la trayectoria oficial combina un primer semestre de formación de base, un segundo semestre de especialización y un trabajo final de investigación supervisado.
+
+\textbf{Objetivo académico.} La salida natural del programa es la continuación hacia doctorado en lógica matemática o en informática fundamental, sin excluir inserción directa en I+D y verificación formal.
+
+\textbf{Condición de ingreso.} Se pide un M1 o equivalente con orientación principal en matemáticas, informática o lógica.
+
+\textbf{Estructura oficial del grado.}
+\begin{itemize}
+\setlength{\itemsep}{0.2em}
+\item curso preliminar intensivo de lógica, opcional;
+\item cuatro cursos troncales en el primer semestre, para un total de 20 ECTS;
+\item cursos avanzados y cursos de apertura en el segundo semestre;
+\item memoria o práctica de investigación supervisada, con 16 ECTS.
+\end{itemize}
+
+\textbf{Requisitos del diploma.} La página del programa fija 60 ECTS distribuidos así: 20 ECTS de cursos troncales, dos cursos avanzados de 8 ECTS cada uno, 8 ECTS adicionales obtenidos con dos cursos de apertura de 4 ECTS o con un tercer curso avanzado, y 16 ECTS de memoria o práctica de investigación.
+
+\textbf{Nota de rigor.} Hay una pequeña discrepancia en las fechas del curso preliminar: la página anual indica del 31 de agosto al 11 de septiembre de 2020, mientras que la ficha del módulo preliminar indica del 2 al 13 de septiembre de 2020. Se conservan ambas referencias porque ambas aparecen en la fuente oficial.
+
+\section*{Hoja de ruta académica}
+
+\textbf{Calendario 2020--2021 según la página anual.}
+\begin{itemize}
+\setlength{\itemsep}{0.2em}
+\item 31 de agosto al 11 de septiembre de 2020: curso intensivo introductorio.
+\item 14 de septiembre al 4 de diciembre de 2020: cursos del primer semestre.
+\item 14 al 18 de diciembre de 2020: exámenes del primer semestre.
+\item 4 de enero al 26 de marzo de 2021: cursos avanzados y de apertura.
+\item 6 al 12 de abril de 2021: exámenes del segundo semestre.
+\item 15 de abril al 30 de septiembre de 2021: memoria o práctica de investigación.
+\end{itemize}
+
+\textbf{Ruta recomendada de lectura del plan.}
+\begin{itemize}
+\setlength{\itemsep}{0.2em}
+\item empezar por la página anual del programa, que fija estructura, ECTS y cronograma;
+\item usar luego las fichas del semestre 1 para identificar la base común;
+\item pasar a las fichas del semestre 2 para escoger la especialización;
+\item cerrar con la memoria de investigación, que constituye el tramo final del grado.
+\end{itemize}
+
+\section*{Módulos y contenidos}
+
+\subsection*{Curso preliminar}
+
+\footnotesize
+\rowcolors{2}{uplight!65}{white}
+\begin{longtable}{@{}M{3.65cm}M{1.35cm}M{2.35cm}M{2.35cm}J{5.05cm}@{}}
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\coursecell{Curso preliminar de lógica}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-prelim/} & \metacell{0 ECTS}{S1} & \metacell{18 h CM}{sin requisito de evaluación} & Patrick Simonetta\par Pierre Letouzey & Introducción intensiva a cálculo proposicional, cálculo de predicados, teoría de conjuntos y programación funcional en OCaml con conexión al lambda-cálculo. La ficha del módulo lo sitúa del 2 al 13 de septiembre de 2020. \\
+\end{longtable}
+\rowcolors{2}{}{}
+
+\normalsize
+
+\subsection*{Semestre 1: base disciplinar}
+
+\footnotesize
+\rowcolors{2}{uplight!65}{white}
+\begin{longtable}{@{}M{3.65cm}M{1.35cm}M{2.35cm}M{2.35cm}J{5.05cm}@{}}
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\coursecell{Teoría de modelos}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-tmfond/} & \metacell{4 ECTS}{S1} & \metacell{2 h CM + 2 h TD}{examen} & Tamara Servi & Fundamentos de lenguajes de primer orden, estructuras, ultraproductos, compacidad, extensiones elementales, teoremas de Löwenheim-Skolem, eliminación de cuantificadores y espacio de tipos. \\
+
+\coursecell{Teoría de conjuntos}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-ensfond/} & \metacell{4 ECTS}{S1} & \metacell{2 h CM + 2 h TD}{examen} & Alessandro Vignati & Axiomas de ZF, ordinales y cardinales, recursión transfinita, aritmética ordinal y cardinal, axioma de elección, ultrafiltros, cofinalidad, estacionariedad, reflexión y universo constructible. \\
+
+\coursecell{Teoría de la demostración}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-dem/} & \metacell{4 ECTS}{S1} & \metacell{2 h CM + 2 h TD}{examen} & Alexis Saurin & Recorrido por cálculo secuencial, eliminación de cortes, teorema de Herbrand, deducción natural, lógica intuicionista y lambda-cálculo, con énfasis en Curry--Howard, realizabilidad y corrección de programas. \\
+
+\coursecell{Calculabilidad e incompletitud}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-calc/} & \metacell{8 ECTS}{S1} & \metacell{4 h CM + 2 h TD}{examen} & Paul Roziere\par Herve Fournier & Curso de gran carga sobre funciones recursivas y modelos de computación, reducciones, complejidad temporal y espacial, circuitos booleanos, aritmetización de la lógica y teoremas de incompletitud de Gödel. \\
+
+\coursecell{Teoría de categorías}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-cat/} & \metacell{4 ECTS}{S1} & \metacell{2 h CM}{examen} & Francois Metayer & Presentación de funtores, transformaciones naturales, límites, colímites, adjunciones, mónadas e introducción breve a categorías superiores, como puente hacia lógica, informática teórica y homotopía. \\
+\end{longtable}
+\rowcolors{2}{}{}
+
+\normalsize
+
+\subsection*{Semestre 2: especialización y apertura}
+
+\footnotesize
+\rowcolors{2}{uplight!65}{white}
+\begin{longtable}{@{}M{3.65cm}M{1.35cm}M{2.35cm}M{2.35cm}J{5.05cm}@{}}
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\rowcolor{upblue!15}
+\textbf{Curso} & \textbf{ECTS / sem.} & \textbf{Carga / eval.} & \textbf{Profesorado} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\coursecell{Teoría clásica de modelos}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-tmoc/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Tomas Ibarlucia & Continuación natural del curso basal de teoría de modelos: tipos, modelos saturados y homogéneos, omisión de tipos, modelos atómicos y primos, omega-estabilidad, conjuntos fuertemente minimales y teoremas de categoricidad. La ficha recomienda haber seguido el curso de primer semestre. \\
+
+\coursecell{Teoría de modelos: cuerpos valuados}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-tmspec/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Silvain Rideau & Estudia eliminación de cuantificadores, principio de Ax--Kochen--Ershov, campos p-ádicos, propiedades de independencia, imaginarios y aspectos geométricos de los cuerpos valuados. La ficha menciona como deseables teoría de Galois y rudimentos de geometría algebraica y teoría de modelos. \\
+
+\coursecell{Teoría de conjuntos: herramientas clásicas}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-ensoc/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Mirna D\v{z}amonja & Curso centrado en modelos internos y externos de ZFC, universo constructible, forcing, independencia de CH, colapso de Lévy, forcing iterado y axioma de Martin. \\
+
+\coursecell{Grandes cardinales}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-ensspec/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Boban Velickovic & Panorama de axiomas de grandes cardinales, propiedades de partición, árboles, indiscernibles, determinación de juegos y jerarquías de fuerza de consistencia. \\
+
+\coursecell{Pruebas y programas: herramientas clásicas}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-ppoc/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Antonio Bucciarelli\par Claudia Faggian & Desarrollo de la correspondencia de Curry--Howard después de los años sesenta: System F, PCF, lógica lineal, semánticas categóricas, interpretaciones interactivas y extensiones probabilísticas. \\
+
+\coursecell{Complejidad descriptiva: de lo discreto a lo continuo}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-compl/} & \metacell{8 ECTS}{S2} & \metacell{4 h CM}{examen} & Arnaud Durand\par Olivier Bournez & Enfoque lógico y descriptivo de la complejidad: caracterizaciones de NP y P, recursión acotada, circuitos, modelos de Blum--Shub--Smale, análisis recursivo, redes neuronales y ecuaciones diferenciales como modelos de computación. La ficha presupone bases de calculabilidad y complejidad. \\
+
+\coursecell{Programación funcional y pruebas formales en Coq}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-preuveform/} & \metacell{8 ECTS}{S2} & \metacell{2 h CM + 2 h TP}{proyecto} & Pierre Letouzey & Mitad curso y mitad práctica en máquina, con proyecto final en Coq. La propia ficha precisa que el módulo se reparte entre las últimas seis semanas del primer semestre y las primeras seis del segundo, aunque administrativamente figura en S2. \\
+
+\coursecell{Álgebra homotópica y categorías superiores}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-alghom/} & \metacell{6 ECTS}{S2} & \metacell{2 h CM}{CC + examen} & Pierre-Louis Curien & Continuación del trabajo categórico hacia categorías enriquecidas, categorías modelo, conjuntos simpliciales y categorías superiores, con atención a los vínculos con teoría de tipos homotópica. La ficha pide base en teoría de categorías. \\
+
+\coursecell{Blockchains, tokens y contratos}{https://master.math.u-paris.fr/archive/2020/en/modules/m2lmfi-block/} & \metacell{4 ECTS}{S2} & \metacell{2 h CM}{examen} & Vincent Danos & Introducción a fundamentos lógicos y computacionales de blockchain, protocolos de consenso, teoría de juegos, economía de validadores, criptoactivos, contratos inteligentes y finanzas descentralizadas. \\
+
+\coursecell{Historia y filosofía de la lógica}{https://master.math.u-paris.fr/archive/2020/en/modules/masterphilo-histoirelogique/} & \metacell{4 ECTS}{S2} & \metacell{2 h CM}{CC + examen} & Brice Halimi & Módulo de apertura orientado a la pregunta por la formalidad de la lógica: esquematicidad, formas lógicas, validez independiente del contenido y el problema de la generalidad absoluta en el siglo XX. \\
+\end{longtable}
+\rowcolors{2}{}{}
+
+\normalsize
+
+\section*{Tramo final de investigación}
+
+La página anual del programa reserva el último bloque para una memoria o práctica de investigación de 16 ECTS. Esta puede desarrollarse, con aprobación de la dirección del máster, en el IMJ-PRG, en IRIF, en otras universidades parisinas o francesas, o en instituciones europeas asociadas. En la lógica del plan de estudios, este tramo transforma la formación de cursos en una primera inserción real en investigación.
+
+\end{document}

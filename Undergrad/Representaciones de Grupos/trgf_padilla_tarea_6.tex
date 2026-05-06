@@ -141,7 +141,34 @@ para todo $g \in G$. Demuestre que existe un isomorfismo de representaciones
 \]
 }
 
-\workspace{12}
+\answer
+Para la representación dual se tiene
+\[
+  \pi^*(g)(\lambda)=\lambda\circ \pi(g^{-1}),
+  \qquad \lambda\in U^*.
+\]
+Por tanto, si $A_g$ es la matriz de $\pi(g)$ en alguna base de $U$, la matriz de
+$\pi^*(g)$ en la base dual es $(A_g^{-1})^t$. Entonces
+\[
+  \chi_{U^*}(g)=\operatorname{tr}\bigl((A_g^{-1})^t\bigr)
+  =\operatorname{tr}(A_g^{-1})=\chi_U(g^{-1}).
+\]
+Como $G$ es finito, $g$ tiene orden finito. Los valores propios de $A_g$ son raíces de
+la unidad, de modo que los valores propios de $A_g^{-1}$ son los conjugados complejos de
+los valores propios de $A_g$. Así,
+\[
+  \chi_U(g^{-1})=\overline{\chi_U(g)}.
+\]
+Por hipótesis $\chi_U(g)\in\RR$ para todo $g\in G$, luego
+\[
+  \chi_{U^*}(g)=\chi_U(g)
+  \qquad (g\in G).
+\]
+Sobre $\CC$, dos representaciones de un grupo finito son isomorfas si y solo si tienen
+el mismo carácter. Por consiguiente,
+\[
+  (U,\pi)\cong (U^*,\pi^*).
+\]
 
 \problem{2}{%
 Sea $(U,\pi)$ una representación de un grupo $G$. Demuestre que $\chi_U(g)$ es un entero
@@ -151,7 +178,32 @@ algebraico para todo $g \in G$.
 \textit{Puede utilizar que el conjunto de enteros algebraicos es cerrado bajo suma.}
 }
 
-\workspace{12}
+\answer
+Usaremos la hipótesis usual de este curso: los elementos considerados tienen orden finito
+en la representación, en particular esto aplica si $G$ es finito. Fijemos $g\in G$ y sea
+$m$ su orden. Entonces
+\[
+  \pi(g)^m=\pi(g^m)=\pi(e)=I.
+\]
+Así, el polinomio minimal de $\pi(g)$ divide a $x^m-1$. Como $x^m-1$ tiene raíces simples
+en $\CC$, la matriz $\pi(g)$ es diagonalizable y todos sus valores propios son raíces
+$m$-ésimas de la unidad. Si estos valores propios son $\lambda_1,\dots,\lambda_n$, entonces
+\[
+  \lambda_i^m=1
+\]
+para cada $i$. Por tanto, cada $\lambda_i$ es entero algebraico, pues es raíz del polinomio
+mónico $x^m-1\in\mathbb Z[x]$.
+
+Finalmente,
+\[
+  \chi_U(g)=\operatorname{tr}(\pi(g))=\lambda_1+\cdots+\lambda_n.
+\]
+Como los enteros algebraicos son cerrados bajo suma, $\chi_U(g)$ es un entero algebraico.
+
+\smallskip
+\textit{Nota de rigor.} Si $G$ fuera un grupo arbitrario sin hipótesis de finitud, el
+enunciado no sería cierto en general. Por ejemplo, una representación de dimensión $1$ de
+\(\mathbb Z\) puede enviar un generador a $1/2$, cuyo carácter no es entero algebraico.
 
 \problem{3}{%
 Sea ahora $G = S_4$.
@@ -249,7 +301,7 @@ Usando que $\chi_V = \chi_{\mathrm{triv}} + \chi_3$, demuestre que el carácter 
 \[
   \begin{array}{c|ccccc}
     & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
-    \chi_3 & 3 & -1 & -1 & 0 & 1
+    \chi_3 & 3 & 1 & -1 & 0 & -1
   \end{array}
 \]
 Demuestre que $\chi_3$ tiene norma $1$ y por lo tanto $V_3$ es irreducible. Verifique además
@@ -267,7 +319,7 @@ Utilice el ejercicio $2$ para verificar que el carácter de $V_{3,\mathrm{sgn}}$
 \[
   \begin{array}{c|ccccc}
     & e & [(12)] & [(12)(34)] & [(123)] & [(1234)] \\
-    \chi_{3,\mathrm{sgn}} & 3 & 1 & -1 & 0 & -1
+    \chi_{3,\mathrm{sgn}} & 3 & -1 & -1 & 0 & 1
   \end{array}
 \]
 Verifique que $\chi_{3,\mathrm{sgn}}$ tiene norma $1$ y por tanto $V_{3,\mathrm{sgn}}$ es una
@@ -292,6 +344,371 @@ de otras irreps.
 \end{enumerate}
 }
 
-\workspace{28}
+\answer
+Trabajamos siempre en el orden de clases
+\[
+  e,\quad [(12)],\quad [(12)(34)],\quad [(123)],\quad [(1234)],
+\]
+cuyos tamaños son
+\[
+  1,\quad 6,\quad 3,\quad 8,\quad 6.
+\]
+Por tanto, si $\alpha$ y $\beta$ son caracteres de $S_4$, entonces
+\[
+  \langle \alpha,\beta\rangle
+  =\frac{1}{24}\Bigl(
+    \alpha_1\overline{\beta_1}
+    +6\alpha_2\overline{\beta_2}
+    +3\alpha_3\overline{\beta_3}
+    +8\alpha_4\overline{\beta_4}
+    +6\alpha_5\overline{\beta_5}
+  \Bigr).
+\]
+
+\begin{enumerate}[label=(\alph*),leftmargin=2.4em]
+\item En $S_n$, dos permutaciones son conjugadas si y solo si tienen el mismo tipo de
+ciclo. Para $S_4$, las particiones de $4$ son
+\[
+  1+1+1+1,\qquad 2+1+1,\qquad 2+2,\qquad 3+1,\qquad 4.
+\]
+Estas dan exactamente cinco clases conjugadas. Sus elementos son, respectivamente:
+\[
+  \{e\},
+\]
+\[
+  \{(12), (13), (14), (23), (24), (34)\},
+\]
+\[
+  \{(12)(34), (13)(24), (14)(23)\},
+\]
+\[
+  \{(123), (132), (134), (143), (124), (142), (234), (243)\},
+\]
+\[
+  \{(1234), (1243), (1324), (1342), (1423), (1432)\}.
+\]
+Los tamaños se obtienen contando: hay $\binom42=6$ transposiciones, tres formas de partir
+cuatro elementos en dos pares, $\binom43\cdot 2=8$ ciclos de longitud $3$, y $(4-1)!=6$
+ciclos de longitud $4$.
+
+\item El conjunto
+\[
+  H=\{e,(12)(34),(13)(24),(14)(23)\}
+\]
+es cerrado bajo producto: el producto de dos dobles transposiciones distintas es la tercera.
+Así $H$ es un subgrupo de $S_4$, isomorfo al grupo de Klein. Además, $H$ es la unión de la
+clase de $e$ con la clase de las dobles transposiciones. Como la conjugación preserva el
+tipo de ciclo, para todo $\sigma\in S_4$ se cumple $\sigma H\sigma^{-1}=H$. Luego
+$H\trianglelefteq S_4$.
+
+Para identificar el cociente, consideremos las tres particiones de $\{1,2,3,4\}$ en dos
+pares:
+\[
+  P_1=\bigl\{\{1,2\},\{3,4\}\bigr\},\quad
+  P_2=\bigl\{\{1,3\},\{2,4\}\bigr\},\quad
+  P_3=\bigl\{\{1,4\},\{2,3\}\bigr\}.
+\]
+Cada $\sigma\in S_4$ permuta el conjunto $\{P_1,P_2,P_3\}$, y por tanto define un
+homomorfismo
+\[
+  \Phi:S_4\longrightarrow S(\{P_1,P_2,P_3\})\cong S_3.
+\]
+El núcleo de esta acción está formado por las permutaciones que fijan las tres particiones;
+estas son precisamente
+\[
+  e,
+  \qquad (12)(34),
+  \qquad (13)(24),
+  \qquad (14)(23).
+\]
+Así $\ker\Phi=H$. Entonces
+\[
+  |\operatorname{im}\Phi|=\frac{|S_4|}{|H|}=\frac{24}{4}=6=|S_3|,
+\]
+de modo que $\Phi$ es sobreyectivo. Por el primer teorema de isomorfismo,
+\[
+  S_4/H\cong S_3.
+\]
+
+\item Sea $\varphi:S_4\twoheadrightarrow S_3$ el epimorfismo anterior. Si
+$(W,\rho)$ es una representación irreducible de $S_3$, entonces
+$(W,\rho\circ\varphi)$ es irreducible como representación de $S_4$: cualquier subespacio
+invariante bajo $\rho\circ\varphi(S_4)$ es invariante bajo $\rho(S_3)$ porque $\varphi$ es
+sobreyectiva.
+
+La imagen de las clases de $S_4$ bajo $\varphi$ tiene el siguiente tipo en $S_3$:
+\[
+  e\mapsto e,
+  \qquad [(12)]\mapsto \text{transposiciones},
+  \qquad [(12)(34)]\mapsto e,
+\]
+\[
+  [(123)]\mapsto \text{$3$-ciclos},
+  \qquad [(1234)]\mapsto \text{transposiciones}.
+\]
+Por tanto, al traer las representaciones trivial y signo de $S_3$ a $S_4$, obtenemos
+\[
+  \chi_{\mathrm{triv}}=(1,1,1,1,1),
+  \qquad
+  \chi_{\mathrm{sgn}}=(1,-1,1,1,-1).
+\]
+Sus normas son
+\[
+  \langle \chi_{\mathrm{triv}},\chi_{\mathrm{triv}}\rangle
+  =\frac{1+6+3+8+6}{24}=1,
+\]
+\[
+  \langle \chi_{\mathrm{sgn}},\chi_{\mathrm{sgn}}\rangle
+  =\frac{1+6+3+8+6}{24}=1.
+\]
+Además,
+\[
+  \langle \chi_{\mathrm{triv}},\chi_{\mathrm{sgn}}\rangle
+  =\frac{1-6+3+8-6}{24}=0.
+\]
+
+\item La representación irreducible de dimensión $2$ de $S_3$ tiene carácter
+\[
+  (2,0,-1)
+\]
+en las clases $e$, transposiciones y $3$-ciclos de $S_3$. Usando la descripción de las
+imágenes de clases del inciso anterior, al verla como representación de $S_4$ obtenemos
+\[
+  \chi_2=(2,0,2,-1,0).
+\]
+Su norma es
+\[
+  \langle \chi_2,\chi_2\rangle
+  =\frac{1\cdot 2^2+6\cdot 0^2+3\cdot 2^2+8\cdot (-1)^2+6\cdot 0^2}{24}
+  =\frac{4+12+8}{24}=1.
+\]
+Por el criterio de irreducibilidad por caracteres, $V_2$ es irreducible como representación
+de $S_4$.
+
+\item En la representación de permutación $V=\CC^4$, el subespacio
+\[
+  L=\CC(e_1+e_2+e_3+e_4)
+\]
+es estable por $S_4$, y la acción sobre $L$ es trivial. Con el producto hermitiano usual,
+su complemento ortogonal es
+\[
+  V_3=L^\perp
+  =\{(z_1,z_2,z_3,z_4)\in\CC^4:z_1+z_2+z_3+z_4=0\}.
+\]
+Este subespacio también es estable por $S_4$, porque permutar coordenadas no cambia la suma.
+Luego
+\[
+  V\cong V_{\mathrm{triv}}\oplus V_3.
+\]
+
+El carácter de $V$ cuenta puntos fijos de la permutación correspondiente. Así,
+\[
+  \chi_V=(4,2,0,1,0).
+\]
+Como $\chi_V=\chi_{\mathrm{triv}}+\chi_3$, se sigue que
+\[
+  \chi_3=(4,2,0,1,0)-(1,1,1,1,1)=(3,1,-1,0,-1).
+\]
+Entonces
+\[
+  \langle \chi_3,\chi_3\rangle
+  =\frac{9+6+3+0+6}{24}=1.
+\]
+Por el criterio de irreducibilidad, $V_3$ es irreducible. Además,
+\[
+  \langle \chi_3,\chi_{\mathrm{triv}}\rangle
+  =\frac{3+6-3-6}{24}=0,
+\]
+\[
+  \langle \chi_3,\chi_{\mathrm{sgn}}\rangle
+  =\frac{3-6-3+6}{24}=0,
+\]
+y
+\[
+  \langle \chi_3,\chi_2\rangle
+  =\frac{6-6}{24}=0.
+\]
+
+\item Tomemos la base ortonormal de $V_3$ dada por
+\[
+  b_1=\frac{e_1-e_2}{\sqrt2},
+  \qquad
+  b_2=\frac{e_1+e_2-2e_3}{\sqrt6},
+  \qquad
+  b_3=\frac{e_1+e_2+e_3-3e_4}{\sqrt{12}}.
+\]
+En esta base, las matrices de $(12)$, $(123)$ y $(1234)$ son
+\[
+  [(12)]_{\mathcal B}
+  =
+  \begin{pmatrix}
+    -1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+  \end{pmatrix},
+\]
+\[
+  [(123)]_{\mathcal B}
+  =
+  \begin{pmatrix}
+    -\frac12 & -\frac{\sqrt3}{2} & 0 \\
+    \frac{\sqrt3}{2} & -\frac12 & 0 \\
+    0 & 0 & 1
+  \end{pmatrix},
+\]
+y
+\[
+  [(1234)]_{\mathcal B}
+  =
+  \begin{pmatrix}
+    -\frac12 & -\frac{\sqrt3}{6} & -\frac{\sqrt6}{3} \\
+    \frac{\sqrt3}{2} & -\frac16 & -\frac{\sqrt2}{3} \\
+    0 & \frac{2\sqrt2}{3} & -\frac13
+  \end{pmatrix}.
+\]
+Sus trazas son, respectivamente,
+\[
+  1,
+  \qquad 0,
+  \qquad -1.
+\]
+Además, la identidad tiene traza $3$ y una doble transposición tiene traza $-1$ en $V_3$
+porque, por el inciso anterior, $\chi_3((12)(34))=\chi_V((12)(34))-1=0-1=-1$.
+Esto recupera
+\[
+  \chi_3=(3,1,-1,0,-1).
+\]
+
+\item Como
+\[
+  V_{3,\mathrm{sgn}}=V_3\otimes V_{\mathrm{sgn}},
+\]
+su carácter es el producto punto a punto de los caracteres:
+\[
+  \chi_{3,\mathrm{sgn}}(g)=\chi_3(g)\chi_{\mathrm{sgn}}(g).
+\]
+Por tanto,
+\[
+  \chi_{3,\mathrm{sgn}}
+  =(3,1,-1,0,-1)(1,-1,1,1,-1)
+  =(3,-1,-1,0,1).
+\]
+Su norma es
+\[
+  \langle \chi_{3,\mathrm{sgn}},\chi_{3,\mathrm{sgn}}\rangle
+  =\frac{9+6+3+0+6}{24}=1,
+\]
+luego $V_{3,\mathrm{sgn}}$ es irreducible. También se verifica
+\[
+  \langle \chi_{3,\mathrm{sgn}},\chi_{\mathrm{triv}}\rangle
+  =\frac{3-6-3+6}{24}=0,
+\]
+\[
+  \langle \chi_{3,\mathrm{sgn}},\chi_{\mathrm{sgn}}\rangle
+  =\frac{3+6-3-6}{24}=0,
+\]
+\[
+  \langle \chi_{3,\mathrm{sgn}},\chi_2\rangle
+  =\frac{6-6}{24}=0,
+\]
+y
+\[
+  \langle \chi_{3,\mathrm{sgn}},\chi_3\rangle
+  =\frac{9-6+3-6}{24}=0.
+\]
+
+\item Hemos construido cinco representaciones irreducibles no isomorfas de $S_4$:
+\[
+  V_{\mathrm{triv}},\quad V_{\mathrm{sgn}},\quad V_2,\quad V_3,
+  \quad V_{3,\mathrm{sgn}}.
+\]
+Son no isomorfas porque sus caracteres son distintos y ortogonales. Además, $S_4$ tiene
+exactamente cinco clases conjugadas, y el número de representaciones irreducibles complejas
+de un grupo finito es igual al número de clases conjugadas. Por tanto estas cinco clasifican
+todas las irreducibles de $S_4$ salvo isomorfismo.
+
+También se puede ver por la suma de cuadrados de dimensiones:
+\[
+  1^2+1^2+2^2+3^2+3^2=24=|S_4|.
+\]
+
+\item Si $W$ tiene carácter
+\[
+  \chi_W=(8,0,0,-1,0),
+\]
+la multiplicidad de una irrep de carácter $\chi$ en $W$ es
+\[
+  \langle \chi_W,\chi\rangle.
+\]
+Calculamos:
+\[
+  \langle \chi_W,\chi_{\mathrm{triv}}\rangle
+  =\frac{8-8}{24}=0,
+  \qquad
+  \langle \chi_W,\chi_{\mathrm{sgn}}\rangle
+  =\frac{8-8}{24}=0,
+\]
+\[
+  \langle \chi_W,\chi_2\rangle
+  =\frac{16+8}{24}=1,
+\]
+\[
+  \langle \chi_W,\chi_3\rangle
+  =\frac{24}{24}=1,
+  \qquad
+  \langle \chi_W,\chi_{3,\mathrm{sgn}}\rangle
+  =\frac{24}{24}=1.
+\]
+Así,
+\[
+  W\cong V_2\oplus V_3\oplus V_{3,\mathrm{sgn}}.
+\]
+
+\item Para descomponer productos tensoriales usamos que
+\[
+  \chi_{A\otimes B}(g)=\chi_A(g)\chi_B(g)
+\]
+y luego tomamos productos internos con los cinco caracteres irreducibles. Como el producto
+tensorial es conmutativo salvo isomorfismo, basta listar los productos siguientes:
+\[
+  V_{\mathrm{triv}}\otimes X\cong X
+  \qquad\text{para toda irrep }X,
+\]
+\[
+  V_{\mathrm{sgn}}\otimes V_{\mathrm{sgn}}\cong V_{\mathrm{triv}},
+  \qquad
+  V_{\mathrm{sgn}}\otimes V_2\cong V_2,
+  \qquad
+  V_{\mathrm{sgn}}\otimes V_3\cong V_{3,\mathrm{sgn}},
+\]
+\[
+  V_{\mathrm{sgn}}\otimes V_{3,\mathrm{sgn}}\cong V_3.
+\]
+Los productos restantes son
+\[
+  V_2\otimes V_2
+  \cong V_{\mathrm{triv}}\oplus V_{\mathrm{sgn}}\oplus V_2,
+\]
+\[
+  V_2\otimes V_3
+  \cong V_3\oplus V_{3,\mathrm{sgn}},
+  \qquad
+  V_2\otimes V_{3,\mathrm{sgn}}
+  \cong V_3\oplus V_{3,\mathrm{sgn}},
+\]
+\[
+  V_3\otimes V_3
+  \cong V_{\mathrm{triv}}\oplus V_2\oplus V_3\oplus V_{3,\mathrm{sgn}},
+\]
+\[
+  V_3\otimes V_{3,\mathrm{sgn}}
+  \cong V_{\mathrm{sgn}}\oplus V_2\oplus V_3\oplus V_{3,\mathrm{sgn}},
+\]
+\[
+  V_{3,\mathrm{sgn}}\otimes V_{3,\mathrm{sgn}}
+  \cong V_{\mathrm{triv}}\oplus V_2\oplus V_3\oplus V_{3,\mathrm{sgn}}.
+\]
+Esto determina todos los tensores posibles de irreps de $S_4$.
+\end{enumerate}
 
 \end{document}

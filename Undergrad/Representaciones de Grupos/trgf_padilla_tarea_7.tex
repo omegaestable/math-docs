@@ -1,0 +1,618 @@
+%!LW recipe=pdflatex x3
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+
+\geometry{margin=2.5cm,includeheadfoot}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{0.28cm}
+\setlength{\footskip}{0.62cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.28em}
+\setlength{\abovedisplayskip}{0.5em}
+\setlength{\belowdisplayskip}{0.5em}
+\setlength{\abovedisplayshortskip}{0.25em}
+\setlength{\belowdisplayshortskip}{0.25em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.25em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.2em}
+
+\definecolor{repblue}{gray}{0}
+\definecolor{repteal}{gray}{0}
+\definecolor{repgray}{gray}{0}
+\definecolor{repaccent}{gray}{0}
+\definecolor{repline}{gray}{0}
+\definecolor{replight}{gray}{1}
+
+\hypersetup{
+  hidelinks,
+  pdftitle={TRGF Padilla Tarea 7},
+  pdfauthor={Juan Ignacio Padilla Barrientos}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{repblue}{\small\itshape TRGF Padilla}}
+\fancyhead[R]{\textcolor{repgray}{\small Seminario UCR I 2026}}
+\fancyfoot[C]{\textcolor{repgray}{\small \thepage/\pageref*{LastPage}}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+
+\tcbset{
+  enhanced,
+  sharp corners,
+  boxrule=0.45pt,
+  arc=0pt,
+  left=0.85em,
+  right=0.85em,
+  top=0.45em,
+  bottom=0.4em,
+  boxsep=0pt
+}
+
+\newcommand{\inlinehead}[2][repblue]{%
+  \par\smallskip
+  {\color{#1}\bfseries #2.}\hspace{0.45em}%
+}
+
+\newcommand{\answer}{\inlinehead{Respuesta}}
+
+\newcommand{\topbanner}{%
+  \begin{tcolorbox}[
+    colback=replight,
+    colframe=repline,
+    borderline west={1.2pt}{0pt}{repblue},
+    borderline east={1.2pt}{0pt}{repteal},
+    left=1.0em,
+    right=1.0em,
+    top=0.7em,
+    bottom=0.55em
+  ]
+    {\Large\bfseries\color{repblue} TRGF Padilla \textemdash\ Tarea 7}\hfill
+    {\color{repaccent}\small\itshape Problemas}\\[-0.1em]
+    {\normalsize\color{repteal} Seminario UCR I 2026}
+  \end{tcolorbox}
+}
+
+\newcounter{probcnt}
+
+\newcommand{\problem}[2]{%
+  \stepcounter{probcnt}%
+  \ifnum\value{probcnt}>1\newpage\fi
+  \par\vspace{0.25em}
+  {\large\bfseries\color{repblue} Problema #1}\par
+  {\color{repline}\rule{\linewidth}{0.55pt}}\par
+  \begin{tcolorbox}[
+    breakable,
+    colback=white,
+    colframe=repline,
+    borderline west={1.6pt}{0pt}{repteal},
+    left=0.7em,
+    right=0.7em,
+    top=0.35em,
+    bottom=0.3em,
+    before skip=0.35em,
+    after skip=0.45em
+  ]
+    #2
+  \end{tcolorbox}
+}
+
+\begin{document}
+
+\color{black}
+\topbanner
+\small
+
+\problem{1}{%
+Sean $(U,\pi)$ y $(V,\phi)$ dos irreps de un grupo finito $G$. Sea
+$L_0:U\to V$ cualquier transformacion lineal. Demuestre que la transformacion
+$L:U\to V$ dada por
+\[
+  L(u):=\frac{1}{|G|}\sum_{g\in G}\phi(g^{-1})L_0\bigl(\pi(g)u\bigr)
+\]
+es igual a $0$ si $U\not\cong V$ y vale
+\[
+  \frac{\operatorname{Tr}(L_0)}{\dim U}\operatorname{Id}_U
+\]
+si $U=V$.
+}
+
+\answer
+Primero observemos que $L$ entrelaza las acciones de $G$. En efecto, si
+$h\in G$ y $u\in U$, entonces
+\[
+  L\bigl(\pi(h)u\bigr)
+  =\frac{1}{|G|}\sum_{g\in G}\phi(g^{-1})L_0\bigl(\pi(gh)u\bigr).
+\]
+Haciendo el cambio de variable $k=gh$, que recorre todo $G$ cuando $g$ recorre
+todo $G$, obtenemos
+\[
+  L\bigl(\pi(h)u\bigr)
+  =\frac{1}{|G|}\sum_{k\in G}\phi\bigl((kh^{-1})^{-1}\bigr)L_0\bigl(\pi(k)u\bigr)
+  =\frac{1}{|G|}\sum_{k\in G}\phi(hk^{-1})L_0\bigl(\pi(k)u\bigr).
+\]
+Como $\phi$ es representación,
+\[
+  L\bigl(\pi(h)u\bigr)
+  =\phi(h)\frac{1}{|G|}\sum_{k\in G}\phi(k^{-1})L_0\bigl(\pi(k)u\bigr)
+  =\phi(h)L(u).
+\]
+Por tanto,
+\[
+  L\circ\pi(h)=\phi(h)\circ L
+  \qquad (h\in G),
+\]
+es decir, $L\in \operatorname{Hom}_G(U,V)$.
+
+Si $U\not\cong V$, el Lema de Schur implica que
+\[
+  \operatorname{Hom}_G(U,V)=0,
+\]
+y por consiguiente $L=0$.
+
+Supongamos ahora que $U=V$; en este caso $L_0\in \operatorname{End}(U)$ y la
+fórmula define un endomorfismo $G$-equivariante de $U$. Por el Lema de Schur,
+existe $\lambda\in\CC$ tal que
+\[
+  L=\lambda\operatorname{Id}_U.
+\]
+Tomando trazas en la fórmula de $L$,
+\[
+  \operatorname{Tr}(L)
+  =\frac{1}{|G|}\sum_{g\in G}\operatorname{Tr}\bigl(\pi(g^{-1})L_0\pi(g)\bigr).
+\]
+Usando la invariancia cíclica de la traza,
+\[
+  \operatorname{Tr}\bigl(\pi(g^{-1})L_0\pi(g)\bigr)
+  =\operatorname{Tr}\bigl(L_0\pi(g)\pi(g^{-1})\bigr)
+  =\operatorname{Tr}(L_0)
+\]
+para todo $g\in G$. Así,
+\[
+  \operatorname{Tr}(L)
+  =\frac{1}{|G|}\sum_{g\in G}\operatorname{Tr}(L_0)
+  =\operatorname{Tr}(L_0).
+\]
+Por otra parte, como $L=\lambda\operatorname{Id}_U$,
+\[
+  \operatorname{Tr}(L)=\lambda\dim U.
+\]
+Luego
+\[
+  \lambda=\frac{\operatorname{Tr}(L_0)}{\dim U}.
+\]
+Concluimos que, cuando $U=V$,
+\[
+  L=\frac{\operatorname{Tr}(L_0)}{\dim U}\operatorname{Id}_U.
+\]
+Esto prueba ambos casos del enunciado.\hfill$\blacksquare$
+
+\problem{2}{%
+Sea $(U,\pi)$ una representacion irreducible de un grupo finito $G$.
+Demuestre que el homomorfismo de algebras
+\[
+  \pi:\CC[G]\to \operatorname{End}(U)
+\]
+es sobreyectivo.
+}
+
+\answer
+Sea $n:=\dim U$ y fijemos una base $e_1,\dots,e_n$ de $U$. Para cada
+$g\in G$, escribamos
+\[
+  \pi(g)=\bigl(a_{rs}(g)\bigr)_{1\le r,s\le n}.
+\]
+Ademas, para $1\le i,j\le n$, sea
+\[
+  E_{ij}\in \operatorname{End}(U)
+\]
+la matriz unidad definida por
+\[
+  E_{ij}(e_j)=e_i,
+  \qquad
+  E_{ij}(e_m)=0 \quad (m\neq j).
+\]
+
+Aplicamos ahora el Problema~1 con $V=U$, $\phi=\pi$ y $L_0=E_{ij}$. Como
+\[
+  \operatorname{Tr}(E_{ij})=\delta_{ij},
+\]
+obtenemos
+\[
+  \frac{1}{|G|}\sum_{g\in G}\pi(g^{-1})E_{ij}\pi(g)
+  =\frac{\delta_{ij}}{n}\operatorname{Id}_U.
+\]
+Tomando la entrada $(r,s)$ de ambos lados, se sigue que
+\[
+  \frac{1}{|G|}\sum_{g\in G} a_{ri}(g^{-1})\,a_{js}(g)
+  =\frac{\delta_{ij}\delta_{rs}}{n}.
+\]
+Haciendo el cambio de variable $g\mapsto g^{-1}$,
+\[
+  \frac{1}{|G|}\sum_{g\in G} a_{ri}(g)\,a_{js}(g^{-1})
+  =\frac{\delta_{ij}\delta_{rs}}{n}.
+\]
+
+Para $1\le p,q\le n$, definamos el elemento
+\[
+  x_{pq}:=\frac{n}{|G|}\sum_{g\in G} a_{qp}(g^{-1})\,g \in \CC[G].
+\]
+Entonces
+\[
+  \pi(x_{pq})
+  =\frac{n}{|G|}\sum_{g\in G} a_{qp}(g^{-1})\,\pi(g).
+\]
+Si tomamos la entrada $(r,s)$ de esta matriz, obtenemos
+\[
+  \bigl(\pi(x_{pq})\bigr)_{rs}
+  =\frac{n}{|G|}\sum_{g\in G} a_{qp}(g^{-1})\,a_{rs}(g).
+\]
+Aplicando la identidad anterior con $(r,i,j,s)=(r,s,q,p)$, resulta
+\[
+  \bigl(\pi(x_{pq})\bigr)_{rs}
+  =\delta_{rp}\delta_{sq}.
+\]
+Por tanto,
+\[
+  \pi(x_{pq})=E_{pq}.
+\]
+
+Hemos visto que toda matriz unidad $E_{pq}$ pertenece a la imagen de
+\[
+  \pi:\CC[G]\to \operatorname{End}(U).
+\]
+Como las matrices $E_{pq}$ forman una base de $\operatorname{End}(U)$,
+concluimos que la imagen de $\pi$ es todo $\operatorname{End}(U)$. En otras
+palabras, $\pi$ es sobreyectivo.\hfill$\blacksquare$
+
+\problem{3}{%
+Sea $A=\CC[x_g:g\in G]$ el anillo de polinomios que tiene una variable
+indeterminada por cada elemento de $G$.
+
+Sea $(U,\pi)$ una representacion irreducible de un grupo finito $G$, fije una
+base de $U$ y escriba $n:=\dim U$. En esa base, defina $f_{ij}\in A$, para
+$1\le i,j\le n$, como la funcion lineal dada por la entrada $(i,j)$ de la matriz
+\[
+  \pi\!\left(\sum_{g\in G} x_g g\right).
+\]
+Demuestre que los polinomios $f_{ij}$ son linealmente independientes en $A$.
+
+\smallskip
+\textit{Sugerencia: utilice el problema 1.}
+}
+
+\answer
+Sea $e_1,\dots,e_n$ la base fija de $U$, y para cada $g\in G$ escribamos
+\[
+  \pi(g)=\bigl(\pi(g)_{ij}\bigr)_{1\le i,j\le n}.
+\]
+Como
+\[
+  \pi\!\left(\sum_{g\in G} x_g g\right)=\sum_{g\in G} x_g\pi(g),
+\]
+la entrada $(i,j)$ de esa matriz es
+\[
+  f_{ij}=\sum_{g\in G} x_g\,\pi(g)_{ij}.
+\]
+
+Supongamos que existe una relacion lineal
+\[
+  \sum_{i,j=1}^n \lambda_{ij}f_{ij}=0
+  \qquad (\lambda_{ij}\in\CC).
+\]
+Sustituyendo la expresion anterior para $f_{ij}$, obtenemos
+\[
+  \sum_{g\in G} x_g\left(\sum_{i,j=1}^n \lambda_{ij}\pi(g)_{ij}\right)=0.
+\]
+Como las variables $x_g$ son algebraicamente independientes, el coeficiente de
+cada $x_g$ debe ser nulo; es decir,
+\[
+  \sum_{i,j=1}^n \lambda_{ij}\pi(g)_{ij}=0
+  \qquad (g\in G).
+\]
+
+Para $1\le a,b\le n$, sea $E_{ab}\in\operatorname{End}(U)$ la unidad
+matricial dada por
+\[
+  E_{ab}(e_b)=e_a,
+  \qquad
+  E_{ab}(e_t)=0\quad (t\ne b).
+\]
+Aplicando el Problema 1 al caso $U=V$ y $L_0=E_{ab}$, se obtiene
+\[
+  \frac{1}{|G|}\sum_{g\in G}\pi(g^{-1})E_{ab}\pi(g)
+  =\frac{\operatorname{Tr}(E_{ab})}{n}\operatorname{Id}_U
+  =\frac{\delta_{ab}}{n}\operatorname{Id}_U.
+\]
+Tomando la entrada $(k,\ell)$ de ambos lados, resulta
+\[
+  \frac{1}{|G|}\sum_{g\in G}\pi(g^{-1})_{ka}\,\pi(g)_{b\ell}
+  =\frac{\delta_{ab}\delta_{k\ell}}{n}.
+\]
+
+Fijemos ahora $a,k\in\{1,\dots,n\}$. Multiplicando la igualdad
+\(
+\sum_{i,j} \lambda_{ij}\pi(g)_{ij}=0
+\)
+por $\pi(g^{-1})_{ka}$ y promediando sobre $G$, obtenemos
+\[
+  0
+  =\sum_{i,j=1}^n \lambda_{ij}
+    \left(\frac{1}{|G|}\sum_{g\in G}\pi(g^{-1})_{ka}\,\pi(g)_{ij}\right).
+\]
+Usando la identidad anterior con $(b,\ell)=(i,j)$, se sigue que
+\[
+  0
+  =\sum_{i,j=1}^n \lambda_{ij}\frac{\delta_{ai}\delta_{kj}}{n}
+  =\frac{\lambda_{ak}}{n}.
+\]
+Por tanto $\lambda_{ak}=0$ para todo par $(a,k)$, y en consecuencia todas las
+constantes $\lambda_{ij}$ son nulas.
+
+Hemos probado que los polinomios $f_{ij}$ son linealmente independientes en
+$A$.\hfill$\blacksquare$
+
+\problem{4}{%
+Usando la notacion del problema anterior, demuestre que el polinomio
+\[
+  \det_U(G)=\det([f_{ij}])\in A
+\]
+es irreducible.
+
+\smallskip
+\textit{Este ejercicio termina de resolver las dudas que teniamos sobre el
+determinante de grupo: en efecto, los factores asociados a las irreps son todos
+irreducibles.}
+}
+
+\answer
+Sea $A_1\subseteq A$ el subespacio de los polinomios homogeneos de grado $1$.
+Por el Problema 3, las formas lineales
+\[
+  f_{11},f_{12},\dots,f_{nn}
+\]
+son linealmente independientes en $A_1$. Como $\dim_\CC A_1=|G|$, podemos
+completar esta familia a una base de $A_1$:
+\[
+  f_{11},f_{12},\dots,f_{nn},h_1,\dots,h_m,
+  \qquad m:=|G|-n^2.
+\]
+
+Consideremos ahora otro anillo de polinomios
+\[
+  B:=\CC[y_{ij}:1\le i,j\le n,\ z_1,\dots,z_m].
+\]
+Como las familias anteriores son bases de los espacios de formas lineales de
+$B$ y de $A$, existe un unico isomorfismo de $\CC$-algebras
+\[
+  \Phi:B\longrightarrow A
+\]
+tal que
+\[
+  \Phi(y_{ij})=f_{ij},
+  \qquad
+  \Phi(z_r)=h_r.
+\]
+Si definimos
+\[
+  D_n:=\det\bigl([y_{ij}]_{1\le i,j\le n}\bigr),
+\]
+entonces
+\[
+  \Phi(D_n)=\det\bigl([f_{ij}]\bigr)=\det_U(G).
+\]
+Por consiguiente, basta demostrar que $D_n$ es irreducible. Como $D_n$ no
+depende de las variables $z_r$, cualquier factorizacion no trivial de $D_n$ en
+$B$ daria una factorizacion no trivial en el subanillo
+$\CC[y_{ij}:1\le i,j\le n]$. Asi pues, basta probar la irreducibilidad de
+$D_n$ en el anillo de polinomios en las variables $y_{ij}$.
+
+Procedemos por induccion sobre $n$. Si $n=1$, entonces
+\[
+  D_1=y_{11},
+\]
+que es irreducible.
+
+Supongamos ahora $n\ge 2$ y que $D_{n-1}$ es irreducible. Sea
+\[
+  F:=\{y_{11},y_{12},\dots,y_{1n}\}
+\]
+el conjunto de variables de la primera fila. Todo monomio del determinante
+$D_n$ contiene exactamente una variable de la primera fila, de modo que $D_n$
+tiene grado total $1$ respecto de las variables de $F$. Si
+\[
+  D_n=P\,Q
+\]
+con $P,Q\in\CC[y_{ij}]$, entonces
+\[
+  \deg_F(P)+\deg_F(Q)=1.
+\]
+Tras intercambiar los factores si hace falta, podemos suponer que
+\[
+  \deg_F(Q)=0,
+\]
+es decir, que $Q$ no depende de ninguna variable de la primera fila.
+
+Expandiendo $D_n$ por la primera fila, obtenemos
+\[
+  D_n=\sum_{j=1}^n (-1)^{1+j} y_{1j}\Delta_j,
+\]
+donde $\Delta_j$ es el menor obtenido al eliminar la fila $1$ y la columna
+$j$. Como $Q$ no depende de las variables $y_{1j}$ y divide a $D_n$, debe
+dividir a cada coeficiente $\Delta_j$ de esta expansion. En particular,
+$Q\mid\Delta_1$ y $Q\mid\Delta_2$.
+
+Ahora bien, $\Delta_1$ y $\Delta_2$ son determinantes genericos de tamano
+$n-1$, luego por hipotesis inductiva ambos son irreducibles. Ademas, no son
+asociados: el polinomio $\Delta_1$ no depende de la variable $y_{21}$, mientras
+que $\Delta_2$ si depende de ella; de hecho, el monomio
+\[
+  y_{21}y_{33}y_{44}\cdots y_{nn}
+\]
+aparece en $\Delta_2$ con coeficiente $\pm1$. Por tanto, los unicos divisores
+comunes de $\Delta_1$ y $\Delta_2$ son unidades.
+
+Pero $Q$ divide a ambos, asi que $Q$ tiene que ser una unidad. Esto contradice
+que la factorizacion $D_n=P\,Q$ fuera no trivial. Concluimos que $D_n$ es
+irreducible, y como $\det_U(G)=\Phi(D_n)$, tambien $\det_U(G)$ es
+irreducible.\hfill$\blacksquare$
+
+\problem{5}{%
+Sean $c_1,\dots,c_n$ numeros reales positivos y $A=[a_{ij}]$ una matriz
+$n\times n$ que cumple que, para cualesquiera $1\le i_1,i_2\le n$,
+\[
+  \sum_{j=1}^n c_j a_{i_1 j}\,\overline{a_{i_2 j}}=\delta_{i_1=i_2}.
+\]
+
+Es decir, las filas de $A$ son ortonormales con respecto al producto interno que
+viene con la forma cuadratica asociada a
+$c_1x_1^2+\cdots+c_nx_n^2$.
+
+Demuestre que uno tambien tiene, para cualesquiera $1\le j_1,j_2\le n$,
+\[
+  \sum_{i=1}^n a_{i j_1}\,\overline{a_{i j_2}}
+  =\frac{1}{c_{j_1}}\,\delta_{j_1=j_2}.
+\]
+
+\smallskip
+\textit{En particular, las columnas de $A$ son ortogonales.}
+}
+
+\answer
+Sea
+\[
+  C:=\operatorname{diag}(c_1,\dots,c_n).
+\]
+La hipotesis del problema dice exactamente que
+\[
+  A C A^*=I_n,
+\]
+donde $A^*$ denota la traspuesta conjugada de $A$. En efecto, la entrada
+$(i_1,i_2)$ de $A C A^*$ es
+\[
+  \sum_{j=1}^n a_{i_1j}\,c_j\,\overline{a_{i_2j}},
+\]
+que por hipotesis vale $\delta_{i_1=i_2}$.
+
+Como cada $c_j$ es positivo, la matriz diagonal
+\[
+  C^{1/2}:=\operatorname{diag}(\sqrt{c_1},\dots,\sqrt{c_n})
+\]
+esta bien definida. Pongamos
+\[
+  B:=A C^{1/2}.
+\]
+Entonces
+\[
+  BB^*=A C^{1/2}(C^{1/2})A^*=A C A^*=I_n.
+\]
+Como $B$ es una matriz cuadrada y satisface $BB^*=I_n$, es invertible; de
+hecho $B^{-1}=B^*$. Por tanto tambien se tiene
+\[
+  B^*B=I_n.
+\]
+Sustituyendo $B=A C^{1/2}$, obtenemos
+\[
+  C^{1/2}A^*A C^{1/2}=I_n.
+\]
+Multiplicando a izquierda y derecha por $C^{-1/2}$, concluimos que
+\[
+  A^*A=C^{-1}=
+  \operatorname{diag}\!\left(\frac1{c_1},\dots,\frac1{c_n}\right).
+\]
+
+Ahora miramos la entrada $(j_2,j_1)$ de esta igualdad. Se obtiene
+\[
+  \sum_{i=1}^n \overline{a_{i j_2}}\,a_{i j_1}
+  =\frac{1}{c_{j_1}}\,\delta_{j_1=j_2}.
+\]
+Tomando conjugados en ambos lados, y usando que el lado derecho es real,
+llegamos a
+\[
+  \sum_{i=1}^n a_{i j_1}\,\overline{a_{i j_2}}
+  =\frac{1}{c_{j_1}}\,\delta_{j_1=j_2}.
+\]
+Esto es exactamente lo que se queria demostrar. En particular, si
+$j_1\ne j_2$, la suma vale $0$, de modo que las columnas son ortogonales.
+\hfill$\blacksquare$
+
+\problem{6}{%
+Sea $G$ un grupo finito, y sean $C_1$ y $C_2$ dos clases conjugadas de $G$, con
+$g_1\in C_1$ y $g_2\in C_2$. Utilice el problema anterior para demostrar que
+\[
+  \sum \chi_{U_i}(g_1)\,\overline{\chi_{U_i}(g_2)}
+  =\frac{|G|}{|C_1|}\,\delta_{C_1=C_2},
+\]
+donde la suma recorre todas las posibles irreps $(U_i,\pi_i)$ de $G$.
+}
+
+\answer
+Sea $K_1,\dots,K_r$ la lista de todas las clases conjugadas de $G$, y para
+cada $s$ fijemos un representante $h_s\in K_s$. Tambien enumeremos las irreps
+complejas de $G$ como
+\[
+  (U_1,\pi_1),\dots,(U_r,\pi_r),
+\]
+lo cual es posible porque el numero de irreps complejas de un grupo finito es
+igual al numero de clases conjugadas.
+
+Consideremos la matriz $M=[m_{is}]$ dada por
+\[
+  m_{is}:=\chi_{U_i}(h_s),
+  \qquad 1\le i,s\le r,
+\]
+y los numeros positivos
+\[
+  c_s:=\frac{|K_s|}{|G|}.
+\]
+La ortogonalidad usual de caracteres irreducibles dice que, para cualesquiera
+$1\le i_1,i_2\le r$,
+\[
+  \frac{1}{|G|}\sum_{g\in G}
+  \chi_{U_{i_1}}(g)\,\overline{\chi_{U_{i_2}}(g)}
+  =\delta_{i_1=i_2}.
+\]
+Agrupando la suma por clases conjugadas, esto se reescribe como
+\[
+  \sum_{s=1}^r \frac{|K_s|}{|G|}
+  \chi_{U_{i_1}}(h_s)\,\overline{\chi_{U_{i_2}}(h_s)}
+  =\delta_{i_1=i_2}.
+\]
+Es decir,
+\[
+  \sum_{s=1}^r c_s\,m_{i_1s}\,\overline{m_{i_2s}}
+  =\delta_{i_1=i_2}.
+\]
+Por tanto, la matriz $M$ satisface exactamente la hipotesis del Problema 5.
+Aplicando ese resultado, obtenemos que para cualesquiera $1\le s,t\le r$,
+\[
+  \sum_{i=1}^r m_{is}\,\overline{m_{it}}
+  =\frac{1}{c_s}\,\delta_{s=t}
+  =\frac{|G|}{|K_s|}\,\delta_{s=t}.
+\]
+
+Finalmente, sean $C_1$ y $C_2$ las clases conjugadas dadas en el enunciado. Si
+$C_1=K_s$ y $C_2=K_t$, con representantes $g_1=h_s$ y $g_2=h_t$, la igualdad
+anterior se convierte en
+\[
+  \sum_{i=1}^r \chi_{U_i}(g_1)\,\overline{\chi_{U_i}(g_2)}
+  =\frac{|G|}{|C_1|}\,\delta_{C_1=C_2}.
+\]
+Esto es exactamente la formula pedida.\hfill$\blacksquare$
+
+\end{document}
