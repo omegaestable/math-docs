@@ -168,7 +168,7 @@ Example usage:
 
 ```powershell
 c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/lint/run_repo_integration.py
-c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/lint/run_repo_integration.py --with-tex --tex-target corrected_partition_calculus_note.tex --tex-target "Undergrad/Representaciones de Grupos/trgf_padilla_tarea_6.tex"
+c:/Users/nacho/Documents/GitHub/math-docs/.venv/Scripts/python.exe scripts/lint/run_repo_integration.py --with-tex --tex-target "proofs/proof_attempts/corrected_partition_calculus_note.tex" --tex-target "Undergrad/Representaciones de Grupos/trgf_padilla_tarea_6.tex"
 ```
 
 ### Review Template

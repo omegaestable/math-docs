@@ -15,15 +15,20 @@
 
 # Keep this file tracked
 !.gitignore
+
+# Ignore hidden directories
 .agent/**
 .claude/**
 .vscode/**
 .tmp/**
-*.fls
-*.aux
-*.log
-*.gz
-*.out
 
-*.toc
-*.fbd_latexmk
+# Ignore LaTeX build artifacts
+**/*.fls
+**/*.aux
+**/*.log
+**/*.gz
+**/*.out
+**/*.toc
+**/*.fdb_latexmk
+**/*.synctex.gz
+**/*.auxlock

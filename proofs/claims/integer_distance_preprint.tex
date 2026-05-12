@@ -1,0 +1,404 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+
+\title{Integer-Distance Graphs on Planar Sets with No Three Collinear Points and No Four Concyclic Points}
+\author{}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\cross}[2]{\det(#1,#2)}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Let \(A\subset \R^2\) be an infinite set containing no three collinear points and no four concyclic points. Define a graph \(G(A)\) on vertex set \(A\) by joining two distinct points when their Euclidean distance is a positive integer. We prove that every such graph is countably colorable and has no infinite clique. The natural sharpness construction would require arbitrarily large finite point sets with pairwise integer distances, no three collinear points, and no four concyclic points. This finite problem is currently cited as open; the largest known examples have seven points. Accordingly, we separate the unconditional bounds from a conditional sharpness statement: if such finite point sets exist in all sizes, then there is an admissible \(A\) for which
+\[
+\chi(G(A))=\omega(G(A))=\aleph_0
+\]
+where \(\omega\) is interpreted as the supremum of clique cardinalities.
+\end{abstract}
+
+\section{Statement of the problem}
+
+Let \(A\subset \R^2\) be an infinite set satisfying:
+
+\begin{enumerate}
+    \item no three points of \(A\) lie on a line;
+    \item no four points of \(A\) lie on a circle.
+\end{enumerate}
+
+Define \(G(A)\) by
+\[
+V(G(A))=A,
+\]
+and, for distinct \(p,q\in A\),
+\[
+pq\in E(G(A))
+\quad\Longleftrightarrow\quad
+|p-q|\in \Z_{>0}.
+\]
+
+The goal is to determine how large the chromatic number and clique number of \(G(A)\) can be.
+
+Throughout, \(\omega(G)\) denotes the supremum of the cardinalities of cliques in \(G\). Thus a graph with cliques of arbitrarily large finite size but no infinite clique has \(\omega(G)=\aleph_0\) in this convention.
+
+\section{A universal countable coloring}
+
+\begin{lemma}
+For every \(A\subset \R^2\), the integer-distance graph \(G(A)\) satisfies
+\[
+\chi(G(A))\leq \aleph_0.
+\]
+\end{lemma}
+
+\begin{proof}
+Tile \(\R^2\) by half-open squares of side length \(1/3\), indexed by \(\Z^2\). Give all points of \(A\) lying in the same square the color corresponding to that square.
+
+There are countably many such squares. Moreover, the diameter of each square is
+\[
+\frac{\sqrt2}{3}<1.
+\]
+Thus two distinct points in the same square have distance strictly less than \(1\), and hence cannot be at positive integer distance. Therefore this is a proper coloring of \(G(A)\) using countably many colors.
+\end{proof}
+
+The same argument proves the slightly more general fact that any distance graph in the plane whose edge lengths are all at least \(1\) is countably colorable.
+
+So no example can have chromatic number larger than \(\aleph_0\).
+
+\section{Cliques are always finite}
+
+A clique in \(G(A)\) is a set of points whose pairwise distances are positive integers. The following elementary argument is a form of the Erdős--Anning obstruction to infinite planar integral point sets \cite{AnningErdos1945}.
+
+\begin{lemma}
+Let \(C\subset \R^2\) be an infinite set such that every two distinct points of \(C\) are at integer distance. Then \(C\) is collinear.
+\end{lemma}
+
+\begin{proof}
+Suppose, toward a contradiction, that \(C\) contains three noncollinear points. Translate the plane so that one of them is
+\[
+p=0,
+\]
+and call the other two
+\[
+q,r.
+\]
+Thus \(q,r\) are linearly independent vectors in \(\R^2\).
+
+For \(x\in C\), define
+\[
+m=|x|,
+\]
+and consider the two integer differences
+\[
+e=|x|-|x-q|,
+\qquad
+f=|x|-|x-r|.
+\]
+Since \(|x|\), \(|x-q|\), and \(|x-r|\) are integers, the quantities \(e\) and \(f\) are integers. By the reverse triangle inequality,
+\[
+-|q|\leq e\leq |q|,
+\qquad
+-|r|\leq f\leq |r|.
+\]
+Therefore only finitely many pairs \((e,f)\) are possible.
+
+Fix one such pair \((e,f)\). We show that only finitely many points \(x\) can produce it.
+
+The equation \(|x-q|=m-e\), after squaring, gives
+\[
+|x-q|^2=(m-e)^2.
+\]
+Since \(m^2=|x|^2\), this becomes
+\[
+|x|^2-2q\cdot x+|q|^2
+=
+m^2-2em+e^2,
+\]
+and hence
+\[
+2q\cdot x
+=
+|q|^2+2em-e^2.
+\]
+Similarly,
+\[
+2r\cdot x
+=
+|r|^2+2fm-f^2.
+\]
+
+Because \(q\) and \(r\) are linearly independent, these two linear equations determine \(x\) as an affine-linear function of \(m\):
+\[
+x=u m+v
+\]
+for some fixed vectors \(u,v\in \R^2\) depending only on \(q,r,e,f\).
+
+Now impose \(m=|x|\). We obtain
+\[
+m^2=|u m+v|^2,
+\]
+which is a quadratic equation in \(m\). Unless this quadratic is identically zero, it has at most two real solutions, and therefore gives at most two possible points \(x\).
+
+It remains only to exclude the possibility that the quadratic is identically zero. If it were identically zero, then the polynomial identity
+\[
+m^2=|u m+v|^2
+\]
+would hold for all real \(m\). Comparing coefficients gives
+\[
+|u|=1,\qquad u\cdot v=0,\qquad v=0.
+\]
+Thus \(x=um\) for every point in this fixed \((e,f)\)-class, so the corresponding points lie on the line through \(p=0\) in direction \(u\). For each such point, the condition
+\[
+|x|-|x-q|=e
+\]
+becomes
+\[
+m-|mu-q|=e.
+\]
+Squaring gives
+\[
+2m(u\cdot q-e)=|q|^2-e^2.
+\]
+Since this holds for infinitely many distinct values of \(m\), both sides must vanish as a polynomial in \(m\). Hence
+\[
+u\cdot q=e,
+\qquad
+|q|^2=e^2.
+\]
+Because \(|u|=1\), equality in Cauchy's inequality gives that \(q\) is parallel to \(u\). Applying the same argument to
+\[
+|x|-|x-r|=f
+\]
+shows that \(r\) is also parallel to \(u\). Thus \(p,q,r\) are collinear, contradicting the choice of \(p,q,r\).
+
+Thus each fixed pair \((e,f)\) gives only finitely many possible points \(x\). Since there are only finitely many possible pairs \((e,f)\), the set \(C\) must be finite, contradiction.
+
+Therefore an infinite pairwise-integral set \(C\) cannot contain three noncollinear points. Hence all points of \(C\) are collinear.
+\end{proof}
+
+\begin{corollary}
+If \(A\subset \R^2\) contains no three collinear points, then \(G(A)\) has no infinite clique.
+\end{corollary}
+
+\begin{proof}
+An infinite clique in \(G(A)\) would be an infinite set of pairwise integer distances. By the preceding lemma it would be collinear, contradicting the assumption that \(A\) has no three collinear points.
+\end{proof}
+
+Thus every clique in every admissible graph is finite. Whether there is a uniform finite upper bound on their sizes under the additional no-four-concyclic condition is tied to a separate finite integral-distance problem.
+
+\section{Finite integral point sets in general position}
+
+Call a finite set \(P\subset\R^2\) an integral cluster in general position if every two distinct points of \(P\) are at integer distance, no three points of \(P\) are collinear, and no four points of \(P\) are concyclic. Such sets are often called \(n\)-clusters when \(|P|=n\).
+
+There are classical constructions of large finite non-collinear integral point sets, including circle-based rational-distance constructions that can be scaled to integer distances \cite{Harborth1998}. These do not resolve the stronger condition used here, because putting many points on a circle violates the no-four-concyclic hypothesis. Noll and Bell classified many examples up to six points \cite{NollBell1989}, and Kreisel and Kurz found seven-point examples \cite{KreiselKurz2008}. Eppstein records the arbitrarily-large version with both no-three-collinear and no-four-concyclic constraints as an open problem \cite[Example~4]{Eppstein2026}.
+
+We therefore isolate the exact finite input needed for sharpness.
+
+\begin{assumption}[Unbounded integral clusters]\label{assumption:unbounded-clusters}
+For every integer \(n\geq 1\), there exists a finite set
+\[
+P_n\subset \R^2
+\]
+of cardinality \(n\) such that:
+\begin{enumerate}
+    \item every two distinct points of \(P_n\) are at integer distance;
+    \item no three points of \(P_n\) are collinear;
+    \item no four points of \(P_n\) are concyclic.
+\end{enumerate}
+\end{assumption}
+
+In graph-theoretic language, each \(P_n\) would give a copy of the complete graph \(K_n\) inside the corresponding integer-distance graph, while still satisfying the same general-position conditions.
+
+\begin{lemma}[Generic placement]
+Let \(F,P\subset\R^2\) be finite sets, each having no three collinear points and no four concyclic points. Then there is an orientation-preserving isometry
+\[
+x\longmapsto R_\theta x+t
+\]
+such that, writing \(Q=R_\theta P+t\), the following hold:
+\begin{enumerate}
+    \item \(Q\cap F=\varnothing\);
+    \item \(F\cup Q\) has no three collinear points and no four concyclic points;
+    \item no point of \(Q\) is at integer distance from a point of \(F\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+X=S^1\times \R^2
+\]
+be the parameter space of pairs \((\theta,t)\). This is a Baire space.
+
+For fixed \(x\in P\), \(y\in F\), and \(N\in\Z_{\geq 0}\), the condition
+\[
+|R_\theta x+t-y|=N
+\]
+defines a closed nowhere-dense subset of \(X\): for each fixed \(\theta\), it is either a point \((N=0)\) or a circle \((N>0)\) in the translation variable \(t\). Avoiding all these sets gives both \(Q\cap F=\varnothing\) and no cross integer distances.
+
+It remains to account for the general-position conditions. Since \(F\) and \(P\) already satisfy them internally, it is enough to consider triples and quadruples involving at least one point from each of \(F\) and \(Q\). There are only finitely many such choices.
+
+For a fixed mixed triple, collinearity is a closed nowhere-dense condition. Indeed, after fixing \(\theta\), the bad translations form a line in the translation plane: either one moving point must lie on the line through two fixed old points, or one old point must lie on the moving line through two selected points of \(R_\theta P+t\).
+
+For a fixed mixed quadruple, concyclicity is also a closed nowhere-dense condition. If the quadruple has one moving point and three old points, or three moving points and one old point, then for fixed \(\theta\) the bad translations form a circle. The only less immediate case is two old and two moving points. After translating coordinates, write the two old points as \(0\) and \(c\neq 0\), and the two moving points as \(s\) and \(s+d\), where \(d\neq 0\) is fixed once \(\theta\) is fixed. The determinant condition for these four points to lie on a circle is
+\[
+|c|^2\cross{s}{d}-|s|^2\cross{c}{d}+(2s\cdot d+|d|^2)\cross{c}{s}=0.
+\]
+This is a nonzero polynomial in \(s\). Its homogeneous quadratic part is
+\[
+-|s|^2\cross{c}{d}+2(s\cdot d)\cross{c}{s},
+\]
+which is not identically zero for nonzero \(c\) and \(d\). Hence its zero set has empty interior in the translation plane.
+
+Thus all forbidden conditions form a countable union of closed nowhere-dense subsets of \(X\). By Baire's theorem, their complement is nonempty. Any parameter in that complement gives the desired placement.
+\end{proof}
+
+\section{A conditional countably infinite example with arbitrarily large cliques}
+
+\begin{proposition}[Conditional on Assumption~\ref{assumption:unbounded-clusters}]
+Assume Assumption~\ref{assumption:unbounded-clusters}. Then there exists an infinite set \(A\subset \R^2\), with no three collinear points and no four concyclic points, such that \(G(A)\) contains a clique of size \(n\) for every \(n\geq 1\).
+\end{proposition}
+
+\begin{proof}
+For each \(n\), let \(P_n\) be a finite set of size \(n\) given by Assumption~\ref{assumption:unbounded-clusters}. We shall place isometric copies of these sets one by one.
+
+Suppose that, after finitely many steps, we have already placed finite sets
+\[
+Q_1,\dots,Q_{n-1}
+\]
+so that their union
+\[
+F_{n-1}=Q_1\cup\cdots\cup Q_{n-1}
+\]
+has no three collinear points and no four concyclic points.
+
+By the generic placement lemma, choose an isometric copy
+\[
+Q_n=R_\theta P_n+t
+\]
+that is disjoint from \(F_{n-1}\), creates no new collinear triple or concyclic quadruple, and creates no integer-distance edge between \(Q_n\) and \(F_{n-1}\).
+
+Proceeding inductively, define
+\[
+A=\bigcup_{n=1}^{\infty} Q_n.
+\]
+Every forbidden collinear triple or concyclic quadruple in \(A\) would already appear at some finite stage, but the construction avoids this at each stage. Hence \(A\) has no three collinear points and no four concyclic points.
+
+Moreover, each \(Q_n\) is an isometric copy of \(P_n\), so all distances inside \(Q_n\) are integers. Therefore \(Q_n\) spans a clique of size \(n\) in \(G(A)\). Since this holds for every \(n\), the graph \(G(A)\) contains arbitrarily large finite cliques.
+\end{proof}
+
+\section{Main conclusion}
+
+\begin{theorem}
+Let \(A\subset \R^2\) be an infinite set with no three collinear points and no four concyclic points. Then
+\[
+\chi(G(A))\leq \aleph_0,
+\]
+and \(G(A)\) has no infinite clique.
+
+Under Assumption~\ref{assumption:unbounded-clusters}, both bounds are sharp in the following sense: there exists such a set \(A\) for which
+\[
+\chi(G(A))=\aleph_0
+\]
+and
+\[
+\omega(G(A))=\aleph_0
+\]
+when \(\omega\) is interpreted as the supremum of clique cardinalities.
+\end{theorem}
+
+\begin{proof}
+The upper bound \(\chi(G(A))\leq \aleph_0\) follows from the square-tiling coloring. The nonexistence of infinite cliques follows from the integral-point-set lemma.
+
+For the conditional sharpness statement, take the set \(A\) constructed in the preceding proposition. Since \(G(A)\) contains a clique of size \(n\) for every \(n\),
+\[
+\chi(G(A))\geq n
+\]
+for every \(n\). Hence \(G(A)\) is not finitely colorable. Combining this with the universal countable upper bound gives
+\[
+\chi(G(A))=\aleph_0.
+\]
+
+Likewise, \(G(A)\) has cliques of arbitrarily large finite size, so
+\[
+\omega(G(A))=\aleph_0
+\]
+in the supremal convention. But by the earlier corollary, it still has no infinite clique.
+\end{proof}
+
+\section{Answer to the question}
+
+For every admissible \(A\),
+\[
+\chi(G(A))\leq \aleph_0,
+\]
+and \(G(A)\) has no infinite clique.
+
+The construction proving that this upper bound is attained by arbitrarily large cliques is conditional on Assumption~\ref{assumption:unbounded-clusters}. With the current references, the existence of arbitrarily large finite cliques under both general-position constraints remains open. Under that assumption, one obtains
+\[
+\chi(G(A))=\omega(G(A))=
+\aleph_0.
+\]
+
+Equivalently:
+
+\[
+\boxed{\text{Every admissible graph is countably colorable and has no infinite clique.}}
+\]
+
+\[
+\boxed{\text{Arbitrarily large finite cliques are conditional on an open finite problem.}}
+\]
+
+\begin{remark}
+The conditional construction above deliberately uses arbitrarily large cliques. It does not address the different question of whether one can force \(\chi(G(A))=\aleph_0\) while keeping the clique number bounded.
+\end{remark}
+
+\begin{thebibliography}{9}
+
+\bibitem{AnningErdos1945}
+N.~H. Anning and P.~Erdős,
+\emph{Integral distances},
+Bulletin of the American Mathematical Society \textbf{51} (1945), no.~8, 598--600.
+\href{https://doi.org/10.1090/S0002-9904-1945-08407-9}{doi:10.1090/S0002-9904-1945-08407-9}.
+
+\bibitem{Eppstein2026}
+D.~Eppstein,
+\emph{Non-Euclidean Erdős--Anning theorems},
+Journal of Computational Geometry \textbf{17} (2026), no.~2, 46--76.
+\href{https://doi.org/10.20382/jocg.v17i2a2}{doi:10.20382/jocg.v17i2a2}.
+
+\bibitem{Harborth1998}
+H.~Harborth,
+\emph{Integral distances in point sets},
+in \emph{Charlemagne and His Heritage: 1200 Years of Civilization and Science in Europe}, Vol.~2, Brepols, Turnhout, Belgium, 1998, 213--224.
+\href{https://doi.org/10.1484/M.STHS-EB.4.2017040}{doi:10.1484/M.STHS-EB.4.2017040}.
+
+\bibitem{KreiselKurz2008}
+T.~Kreisel and S.~Kurz,
+\emph{There are integral heptagons, no three points on a line, no four on a circle},
+Discrete \& Computational Geometry \textbf{39} (2008), no.~4, 786--790.
+\href{https://doi.org/10.1007/s00454-007-9038-6}{doi:10.1007/s00454-007-9038-6}.
+
+\bibitem{NollBell1989}
+L.~C. Noll and D.~I. Bell,
+\emph{\(n\)-clusters for \(1<n<7\)},
+Mathematics of Computation \textbf{53} (1989), 439--444.
+
+\end{thebibliography}
+
+\end{document}
