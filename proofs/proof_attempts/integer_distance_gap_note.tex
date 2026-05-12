@@ -1,0 +1,719 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+% id: proofs.integer-distance.gap-note.001
+% claim_id: GAP-IDIST-CLUSTERS-01
+% collection: proofs
+% language: en
+% source_path: proofs/claims/integer_distance_preprint.tex
+% source_locator: Section "Finite integral point sets in general position"; Assumption "Unbounded integral clusters"
+% proof_status: gap-present
+% gap_ids: GAP-IDIST-CLUSTERS-01, GAP-IDIST-ELLIPSE-B, GAP-IDIST-HYPERBOLA-D, GAP-IDIST-PARABOLA-E
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Qs}{\Q^{\square}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\setlist[itemize]{leftmargin=2em}
+\setlist[enumerate]{leftmargin=2em}
+\setlist[description]{leftmargin=2em,style=nextline}
+
+\title{Gap Note for the Finite Integer-Distance Cluster Problem}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This proof-attempt isolates two arithmetic routes toward the finite problem left
+open in \path{proofs/claims/integer_distance_preprint.tex}.  The first uses a
+Joukowski map from the unit circle to a noncircular ellipse; the second uses the
+rectangular hyperbola \(xy=1\).  Each route proves the geometric reduction and
+leaves one explicit arithmetic gap.
+\end{abstract}
+
+\section{Provenance and status}
+
+This note does not prove the main finite existence problem.  Its source-backed
+input is \path{proofs/claims/integer_distance_preprint.tex}, section ``Finite
+integral point sets in general position'', Assumption ``Unbounded integral
+clusters'', also logged as \texttt{GAP-IDIST-CLUSTERS-01}.  The reductions below
+are local derived claims: the geometric parts are proved here, while the terminal
+arithmetic inputs remain open.
+
+\begin{description}
+\item[source-backed]
+The preprint's Assumption ``Unbounded integral clusters'' asks for, for every
+\(n\), an \(n\)-point planar set with pairwise integer distances, no three
+collinear points, and no four concyclic points.
+
+\item[derived-claim]
+Either Missing Lemma B or Missing Lemma D below implies the source-backed
+finite cluster assumption.
+
+\item[open gap]
+The arithmetic statements \texttt{GAP-IDIST-ELLIPSE-B} and
+\texttt{GAP-IDIST-HYPERBOLA-D} are not proved here.  Section~\ref{sec:next-targets}
+also records \texttt{GAP-IDIST-PARABOLA-E}, a new open parabola route suggested
+after this note was first drafted.
+\end{description}
+
+Write
+\[
+\Qs=\set{q^2:q\in\Q}
+\]
+for the set of rational squares.
+
+\section{The finite target}
+
+\begin{definition}[Good finite set]
+A finite set \(S\subset\R^2\) is \emph{good} if:
+\begin{enumerate}
+\item for any distinct \(P,Q\in S\), the distance \(\abs{P-Q}\) is a positive
+integer;
+\item no three points of \(S\) are collinear;
+\item no four points of \(S\) are concyclic.
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}[Scaling rational distances]
+Let \(S\subset\R^2\) be finite.  Suppose every distance between two distinct
+points of \(S\) is a positive rational number.  Then there is a rational number
+\(M>0\) such that the dilation \(MS=\set{MP:P\in S}\) has all pairwise distances
+in \(\Z_{>0}\).  Collinearity and concyclicity relations are unchanged by this
+dilation.
+\end{lemma}
+
+\begin{proof}
+If \(D\), the finite set of pairwise distances in \(S\), is empty, take
+\(M=1\).  Otherwise write each \(d\in D\) in lowest terms and let \(M\) be a
+common multiple of all denominators.  Then \(Md\in\Z_{>0}\) for every
+\(d\in D\).  A nonzero homothety maps lines to lines and circles to circles.
+\end{proof}
+
+\begin{question}[Main finite problem]
+For every positive integer \(n\), does there exist a good set with exactly
+\(n\) points?
+\end{question}
+
+The next two sections reduce this question to arithmetic existence problems.
+
+\section{The Joukowski ellipse route}
+
+Let
+\[
+\T=\set{z\in\C:\abs z=1}.
+\]
+For \(\mu\in\C^\times\), define
+\[
+J_\mu(z)=z+\frac{\mu}{z}\qquad (z\in\T).
+\]
+
+\begin{lemma}[Derived claim: Joukowski distance identity]
+Let \(z_i,z_j\in\T\) be distinct.  Then
+\[
+\abs{J_\mu(z_i)-J_\mu(z_j)}
+=
+\abs{z_i-z_j}\,\abs{z_i z_j-\mu}.
+\]
+\end{lemma}
+
+\begin{proof}
+We compute
+\[
+J_\mu(z_i)-J_\mu(z_j)
+=z_i-z_j+\mu\left(\frac1{z_i}-\frac1{z_j}\right)
+=(z_i-z_j)\left(1-\frac{\mu}{z_i z_j}\right).
+\]
+Since \(\abs{z_i z_j}=1\), taking absolute values gives the identity.
+\end{proof}
+
+\begin{corollary}[Derived claim: rational-distance transfer]
+Let \(z_1,\ldots,z_n\in\T\) be distinct and let \(\mu\in\C^\times\).  If
+\[
+\abs{z_i-z_j}\in\Q_{>0}
+\quad\text{and}\quad
+\abs{z_i z_j-\mu}\in\Q_{>0}
+\]
+for all \(i\ne j\), then the points \(J_\mu(z_1),\ldots,J_\mu(z_n)\) have
+positive rational pairwise distances.
+\end{corollary}
+
+\begin{proof}
+The distance identity gives rational positive distances, hence distinct image
+points.
+\end{proof}
+
+\subsection{Ellipse normalization}
+
+Write
+\[
+\mu=\rho\eta^2,
+\qquad
+\rho=\abs\mu>0,
+\qquad
+\eta\in\T.
+\]
+If \(z=\eta w\), then
+\[
+J_\mu(z)=\eta\left(w+\frac{\rho}{w}\right).
+\]
+Thus it is enough to study
+\[
+E_\rho(w)=w+\frac{\rho}{w}\qquad (w\in\T).
+\]
+Writing \(w=e^{\ii t}\),
+\[
+E_\rho(w)=(1+\rho)\cos t+\ii(1-\rho)\sin t.
+\]
+If \(\rho\ne 1\), this parametrizes a nondegenerate noncircular ellipse, up to
+the harmless rotation by \(\eta\).
+
+\begin{lemma}[Derived claim: no three collinear on the ellipse]
+Assume \(\rho>0\) and \(\rho\ne 1\).  If \(w_1,
+\ldots,w_n\in\T\) are distinct, then no three of the points
+\(E_\rho(w_1),\ldots,E_\rho(w_n)\) are collinear.
+\end{lemma}
+
+\begin{proof}
+The image is contained in the real conic
+\[
+\frac{x^2}{{(1+\rho)}^2}+\frac{y^2}{{(1-\rho)}^2}=1,
+\]
+whose two denominators are nonzero.  A line intersects this nondegenerate conic
+in at most two real points.  Hence three distinct image points cannot be
+collinear.
+\end{proof}
+
+\begin{lemma}[Derived claim: four-cyclicity on the ellipse]\label{lem:ellipse-cyclic}
+Assume \(\rho>0\) and \(\rho\ne 1\).  Let
+\(w_1,w_2,w_3,w_4\in\T\) be distinct.  Then the four points
+\[
+E_\rho(w_1),\ E_\rho(w_2),\ E_\rho(w_3),\ E_\rho(w_4)
+\]
+are concyclic if and only if
+\[
+w_1w_2w_3w_4=1.
+\]
+\end{lemma}
+
+\begin{proof}
+Write a general circle in complex coordinates as
+\[
+\zeta\overline{\zeta}+A\zeta+\overline A\,\overline\zeta+B=0,
+\]
+where \(A\in\C\) and \(B\in\R\).  For \(\zeta=E_\rho(w)=w+\rho w^{-1}\) and
+\(\abs w=1\), we have
+\[
+\overline\zeta=w^{-1}+\rho w.
+\]
+After substitution and multiplication by \(w^2\), the circle equation becomes
+\[
+\rho w^4+(A+\rho\overline A)w^3+(1+\rho^2+B)w^2
++(\rho A+\overline A)w+\rho=0.
+\]
+Thus if four distinct parameters lie on one circle, they are the four roots of
+a quartic whose leading and constant coefficients are both \(\rho\).  Their
+product is therefore \(1\).
+
+Conversely, assume \(w_1w_2w_3w_4=1\).  Let
+\[
+\prod_{k=1}^4(w-w_k)=w^4-e_1w^3+e_2w^2-e_3w+1.
+\]
+Because all \(w_k\) lie on \(\T\), conjugating is the same as inverting.  Thus
+\(e_3=\overline{e_1}\).  Also \(\overline{e_2}\) is the sum of
+\(\frac{1}{w_i w_j}\) over the six unordered pairs.  Since
+\(w_1w_2w_3w_4=1\), these are exactly the complementary pair-products, so
+\(e_2\in\R\).  Write \(e_1=a+\ii b\).  The equations
+\[
+A+\rho\overline A=-\rho e_1,
+\qquad
+\rho A+\overline A=-\rho\overline{e_1}
+\]
+are solved by \(A=x+\ii y\) with
+\[
+x=-\frac{\rho a}{1+\rho},
+\qquad
+y=-\frac{\rho b}{1-\rho},
+\]
+using \(\rho>0\) and \(\rho\ne 1\).  Set \(B=\rho e_2-1-\rho^2\), which is real.
+The corresponding circle equation pulls back to
+\(\rho\prod_{k=1}^4(w-w_k)=0\).  Hence the four image points lie on that circle.
+\end{proof}
+
+\begin{corollary}[Audit correction: phase in the original variables]\label{cor:phase-correction}
+With the normalization \(\mu=\rho\eta^2\) and \(z=\eta w\), four points
+\(J_\mu(z_a),J_\mu(z_b),J_\mu(z_c),J_\mu(z_d)\) are concyclic if and only if
+\[
+z_a z_b z_c z_d=\eta^4={\left(\frac{\mu}{\abs\mu}\right)}^2.
+\]
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:ellipse-cyclic}, concyclicity is equivalent to
+\((z_a/\eta)(z_b/\eta)(z_c/\eta)(z_d/\eta)=1\).  Since
+\(\mu/\abs\mu=\eta^2\), this is exactly the stated condition.
+\end{proof}
+
+\begin{theorem}[Derived claim: conditional ellipse construction]\label{thm:ellipse-conditional}
+Suppose that for every \(n\ge 1\) there are distinct points
+\(z_1,\ldots,z_n\in\T\) and a number \(\mu\in\C^\times\) such that:
+\begin{enumerate}
+\item \(\abs{z_i-z_j}\in\Q_{>0}\) for all \(i\ne j\);
+\item \(\abs{z_i z_j-\mu}\in\Q_{>0}\) for all \(i\ne j\);
+\item \(\abs\mu\ne 1\);
+\item for all distinct \(a,b,c,d\),
+\[
+z_a z_b z_c z_d\ne {\left(\frac{\mu}{\abs\mu}\right)}^2.
+\]
+\end{enumerate}
+Then good sets exist in every finite cardinality.
+\end{theorem}
+
+\begin{proof}
+For a fixed \(n\), set
+\[
+S_n=\set{J_\mu(z_i):1\le i\le n}.
+\]
+The distance identity gives rational pairwise distances.  The ellipse
+normalization with \(\rho=\abs\mu\ne 1\) gives no three collinear points.  The
+phase criterion in Corollary~\ref{cor:phase-correction} gives no four concyclic
+points.  The scaling lemma turns \(S_n\) into a good set.
+\end{proof}
+
+\section{A concrete powers specialization}
+
+Let \(\theta\) satisfy \(\sin\theta,\cos\theta\in\Q\), and let
+\[
+u=e^{2\ii\theta}.
+\]
+Then every power of \(u\) has rational real and imaginary parts.  More is true:
+the chord lengths among powers of \(u\) are rational.
+
+\begin{lemma}[Derived claim: rational chord lengths from a rational angle point]
+If \(\sin\theta,\cos\theta\in\Q\), then
+\[
+\abs{u^i-u^j}=2\abs{\sin((i-j)\theta)}\in\Q
+\]
+for all integers \(i,j\), where \(u=e^{2\ii\theta}\).
+\end{lemma}
+
+\begin{proof}
+The trigonometric identity gives
+\[
+\abs{e^{2\ii i\theta}-e^{2\ii j\theta}}
+=2\abs{\sin((i-j)\theta)}.
+\]
+The number \(\sin(k\theta)\) is an integral polynomial expression in
+\(\sin\theta\) and \(\cos\theta\), so it is rational.
+\end{proof}
+
+\begin{remark}[Audit correction: the sample angle]
+The usable Pythagorean example is
+\[
+\cos\theta=\frac45,
+\qquad
+\sin\theta=\frac35.
+\]
+It gives
+\[
+u=e^{2\ii\theta}=\frac7{25}+\frac{24}{25}\ii.
+\]
+The values \(5/4\) and \(5/3\) cannot be sine or cosine values of a real angle.
+\end{remark}
+
+\begin{lemma}[Derived claim: the sample power is not torsion]
+For \(u=7/25+(24/25)\ii\), the unit complex number \(u\) is not a root of unity.
+\end{lemma}
+
+\begin{proof}
+If a root of unity \(\zeta\) has rational real part, then
+\(\zeta+\zeta^{-1}=2\operatorname{Re}(\zeta)\) is both rational and an algebraic
+integer, hence an integer.  For the present \(u\), this number is
+\(14/25\), not an integer.  Therefore \(u\) is not a root of unity.
+\end{proof}
+
+\begin{question}[Open gap: corrected Missing Lemma B]\label{q:missing-b}
+For every \(n\ge 1\), do there exist an angle \(\theta\) with
+\(\sin\theta,\cos\theta\in\Q\), a non-torsion point \(u=e^{2\ii\theta}\), and a
+rational number \(\rho\in\Q_{>0}\setminus\set{1}\) such that
+\[
+\abs{\rho-u^m}\in\Q
+\qquad
+\text{for every }m=3,4,\ldots,2n-1?
+\]
+\end{question}
+
+\begin{proposition}[Derived claim: Missing Lemma B implies the finite target]
+If Question~\ref{q:missing-b} has a positive answer for every \(n\), then good
+sets exist in every finite cardinality.
+\end{proposition}
+
+\begin{proof}
+Fix \(n\), take data from Question~\ref{q:missing-b}, and set \(z_i=u^i\) for
+\(1\le i\le n\).  The non-torsion condition makes the \(z_i\) distinct.  The
+preceding chord-length lemma gives \(\abs{z_i-z_j}\in\Q_{>0}\).  Since
+\(3\le i+j\le 2n-1\), Question~\ref{q:missing-b} gives
+\(\abs{z_i z_j-\rho}\in\Q_{>0}\).  Apply Theorem~\ref{thm:ellipse-conditional}
+with \(\mu=\rho\).
+
+For the four-cyclicity obstruction, \(\mu/\abs\mu=1\).  If
+\(z_a z_b z_c z_d=1\), then \(u^{a+b+c+d}=1\), contradicting non-torsion because
+\(a+b+c+d>0\).  Thus the product obstruction is avoided.
+\end{proof}
+
+\begin{question}[Stronger fixed-angle target]
+For the fixed value
+\[
+u=\frac7{25}+\frac{24}{25}\ii,
+\]
+does every \(n\) admit \(\rho\in\Q_{>0}\setminus\set{1}\) such that
+\[
+\rho^2+1-2\rho\operatorname{Re}(u^m)
+\]
+is a rational square for every \(m=3,4,\ldots,2n-1\)?
+\end{question}
+
+This fixed-angle target is stronger than Question~\ref{q:missing-b}.  A failure
+of the fixed-angle target would not by itself refute the moving-\(u\) version.
+
+\begin{remark}[Audit correction: rational coordinates alone]
+The condition \(u\in\T\cap\Q(i)\) does not by itself imply
+\(\abs{u^i-u^j}\in\Q\) for all \(i,j\).  The powers specialization above uses the
+stronger hypothesis \(u=e^{2\ii\theta}\) with \(\sin\theta,\cos\theta\in\Q\), which
+directly proves rational chord lengths.
+\end{remark}
+
+\section{The hyperbola route}
+
+For \(t\in\Q^\times\), define
+\[
+H(t)=\left(t,\frac1t\right)\in\R^2.
+\]
+
+\begin{lemma}[Derived claim: hyperbola distance formula]
+For distinct \(s,t\in\Q^\times\),
+\[
+\abs{H(s)-H(t)}
+=
+\frac{\abs{s-t}}{\abs{st}}\sqrt{{(st)}^2+1}.
+\]
+\end{lemma}
+
+\begin{proof}
+We have
+\[
+\frac1s-\frac1t=-\frac{s-t}{st}.
+\]
+Therefore
+\[
+\abs{H(s)-H(t)}^2
+={(s-t)}^2+{\left(\frac1s-\frac1t\right)}^2
+={(s-t)}^2\left(1+\frac1{s^2t^2}\right),
+\]
+which is the square of the displayed formula.
+\end{proof}
+
+\begin{corollary}[Derived claim: rational distances on the hyperbola]
+Let \(t_1,
+\ldots,t_n\in\Q^\times\) be distinct.  If
+\[
+{(t_i t_j)}^2+1\in\Qs
+\]
+for every \(i\ne j\), then the points \(H(t_1),\ldots,H(t_n)\) have rational
+pairwise distances.
+\end{corollary}
+
+\begin{proof}
+The prefactor \(\abs{t_i-t_j}/\abs{t_i t_j}\) is rational and positive.  The
+remaining square-root term is rational by hypothesis.
+\end{proof}
+
+\begin{lemma}[Derived claim: no three collinear on \(xy=1\)]
+No line in \(\R^2\) contains three distinct points of the hyperbola \(xy=1\).
+\end{lemma}
+
+\begin{proof}
+A vertical line intersects \(xy=1\) in at most one point.  Any nonvertical line
+has equation \(y=mx+b\).  Substitution gives
+\[
+x(mx+b)=1,
+\]
+a polynomial equation of degree at most two in \(x\).  Hence such a line has at
+most two intersections with the hyperbola.
+\end{proof}
+
+\begin{lemma}[Derived claim: four-cyclicity on \(xy=1\)]\label{lem:hyperbola-cyclic}
+Let \(t_a,t_b,t_c,t_d\in\Q^\times\) be distinct.  The four points
+\[
+H(t_a),\ H(t_b),\ H(t_c),\ H(t_d)
+\]
+are concyclic if and only if
+\[
+t_a t_b t_c t_d=1.
+\]
+\end{lemma}
+
+\begin{proof}
+A circle has equation
+\[
+x^2+y^2+Ax+By+C=0
+\]
+for some real \(A,B,C\).  Substituting \(y=1/x\) and multiplying by \(x^2\)
+gives
+\[
+x^4+Ax^3+Cx^2+Bx+1=0.
+\]
+Thus, if four distinct hyperbola parameters lie on one circle, they are the
+four roots of a monic quartic with constant coefficient \(1\), so their product
+is \(1\).
+
+Conversely, suppose \(t_a t_b t_c t_d=1\).  Write
+\[
+\prod_{r\in\set{a,b,c,d}}(x-t_r)=x^4-e_1x^3+e_2x^2-e_3x+1.
+\]
+Taking \(A=-e_1\), \(C=e_2\), and \(B=-e_3\), the circle equation above pulls
+back to this quartic.  Hence the four corresponding points lie on a circle.
+\end{proof}
+
+\begin{corollary}[Derived claim: positivity prevents concyclicity]
+If \(t_1,
+\ldots,t_n\in\Q\) are all greater than \(1\), then no four of the points
+\(H(t_1),\ldots,H(t_n)\) are concyclic.
+\end{corollary}
+
+\begin{proof}
+The product of any four distinct selected parameters is greater than \(1\), so
+Lemma~\ref{lem:hyperbola-cyclic} excludes concyclicity.
+\end{proof}
+
+\begin{question}[Open gap: Missing Lemma D]\label{q:missing-d}
+For every \(n\ge 1\), do there exist distinct rationals
+\[
+1<t_1<\cdots<t_n
+\]
+such that
+\[
+{(t_i t_j)}^2+1\in\Qs
+\qquad
+\text{for all }i<j?
+\]
+\end{question}
+
+\begin{theorem}[Derived claim: Missing Lemma D implies the finite target]
+If Question~\ref{q:missing-d} has a positive answer for every \(n\), then good
+sets exist in every finite cardinality.
+\end{theorem}
+
+\begin{proof}
+For a fixed \(n\), choose \(t_1,
+\ldots,t_n\) as in Question~\ref{q:missing-d} and set
+\[
+S_n=\set{H(t_i):1\le i\le n}.
+\]
+The hyperbola rational-distance corollary gives rational pairwise distances.
+The hyperbola line-intersection lemma gives no three collinear points.  Since
+all \(t_i>1\), the positivity corollary gives no four concyclic points.  The
+scaling lemma gives a good set with \(n\) points.
+\end{proof}
+
+\section{Equivalent forms of Missing Lemma D}
+
+Question~\ref{q:missing-d} can be restated in several ways useful for later
+agents.
+
+\begin{proposition}[Derived claim: square-entry form]
+Question~\ref{q:missing-d} is equivalent to the following statement: for every
+\(n\ge 1\), there exist distinct rational squares
+\[
+a_1,
+\ldots,a_n>1
+\]
+such that
+\[
+a_i a_j+1\in\Qs
+\qquad
+\text{for all }i<j.
+\]
+\end{proposition}
+
+\begin{proof}
+If \(t_i\) solve Question~\ref{q:missing-d}, set \(a_i=t_i^2\).  Conversely, if
+\(a_i\) are rational squares greater than \(1\), choose their positive rational
+square roots \(t_i>1\).  The displayed conditions are then identical.
+\end{proof}
+
+\begin{proposition}[Derived claim: multiplicative clique form]
+Let
+\[
+P=\set{x\in\Q_{>0}:x^2+1\in\Qs}.
+\]
+Question~\ref{q:missing-d} is equivalent to asking for arbitrarily large finite
+sets \(T\subset\Q_{>1}\) such that
+\[
+st\in P
+\qquad
+\text{for all distinct }s,t\in T.
+\]
+Moreover,
+\[
+P=\set{\frac{1-q^2}{2q}:q\in\Q,
+0<q<1}
+=\set{\frac{2r}{r^2-1}:r\in\Q,
+r>1}.
+\]
+\end{proposition}
+
+\begin{proof}
+The equivalence with Question~\ref{q:missing-d} follows from taking
+\(T=\set{t_1,
+\ldots,t_n}\).
+
+For the parametrization, solve \(x^2+1=y^2\) with \(x,y\in\Q\) and \(x>0\).
+Then
+\[
+(y-x)(y+x)=1.
+\]
+Put \(q=y-x\).  Since \(x>0\) and \(y>0\), one has \(0<q<1\), and
+\[
+x=\frac{1-q^2}{2q}.
+\]
+Conversely, this formula gives a positive rational \(x\) with
+\(x^2+1={((1+q^2)/(2q))}^2\).  The second parametrization follows by the change
+of variable \(q=(r-1)/(r+1)\), where \(r>1\).
+\end{proof}
+
+\section{Gap register}
+
+\begin{description}
+\item[\texttt{GAP-IDIST-CLUSTERS-01}]
+Source-backed finite obstruction from
+\path{proofs/claims/integer_distance_preprint.tex}: construct, for every
+\(n\), an \(n\)-point planar integral cluster with no three collinear points and
+no four concyclic points.
+
+\item[\texttt{GAP-IDIST-ELLIPSE-B}]
+Open arithmetic input for the ellipse route: prove Question~\ref{q:missing-b},
+or prove a variant strong enough to satisfy Theorem~\ref{thm:ellipse-conditional}.
+This is a simultaneous rational-distance problem from one rational real point
+to finitely many powers on the unit circle.
+
+\item[\texttt{GAP-IDIST-HYPERBOLA-D}]
+Open arithmetic input for the hyperbola route: prove Question~\ref{q:missing-d}.
+Equivalently, construct arbitrarily large rational Diophantine tuples whose
+entries are rational squares.
+
+\item[\texttt{GAP-IDIST-PARABOLA-E}]
+Open arithmetic input from the parabola route in Section~\ref{sec:next-targets}:
+construct arbitrarily large finite sets of positive rationals whose pairwise
+sums are rational legs of rational right triangles.
+
+\item[\texttt{GAP-IDIST-JOUKOWSKI-PHASE-01}]
+Audit item resolved in Corollary~\ref{cor:phase-correction}: under the
+normalization \(\mu=\rho\eta^2\), the product obstruction in the original
+\(z\)-variables is \({(\mu/\abs\mu)}^2\).
+
+\item[\texttt{GAP-IDIST-UNIT-POWERS-01}]
+Audit item resolved in the powers specialization: rational real and imaginary
+parts of \(u\) alone are not used as the chord-length hypothesis.  The note uses
+the stronger rational-angle condition \(u=e^{2\ii\theta}\) with
+\(\sin\theta,\cos\theta\in\Q\).
+\end{description}
+
+\section{Next attack target: standalone problem}\label{sec:next-targets}
+
+The most promising first gap to attack is now \texttt{GAP-IDIST-PARABOLA-E}.
+It is not proved here, and the proposed arithmetic-progression/CRT argument for
+it should not be treated as source-backed.  Its advantage is that the geometric
+verification is elementary and completely separated from the arithmetic input.
+
+\begin{question}[Open gap: standalone parabola problem]\label{q:missing-e}
+For every integer \(n\ge 1\), do there exist distinct positive rational numbers
+\[
+x_1,\ldots,x_n
+\]
+such that
+\[
+1+{(x_i+x_j)}^2\in\Qs
+\qquad
+\text{for all }i<j?
+\]
+Equivalently, can one find arbitrarily large finite subsets of \(\Q_{>0}\)
+whose pairwise sums are rational numbers \(s\) for which \(1+s^2\) is a rational
+square?
+\end{question}
+
+\begin{proposition}[Derived claim: the parabola problem implies the finite target]
+If Question~\ref{q:missing-e} has a positive answer for every \(n\), then good
+sets exist in every finite cardinality.
+\end{proposition}
+
+\begin{proof}
+Given \(x_1,\ldots,x_n\) from Question~\ref{q:missing-e}, set
+\[
+P_i=(x_i,x_i^2).
+\]
+For \(i\ne j\),
+\[
+\abs{P_i-P_j}^2
+={(x_i-x_j)}^2\bigl(1+{(x_i+x_j)}^2\bigr),
+\]
+so the pairwise distances are rational.  A line meets the parabola \(y=x^2\) in
+at most two points, so no three selected points are collinear.  If four selected
+points lie on a circle
+\[
+x^2+y^2+Dx+Ey+F=0,
+\]
+then substituting \(y=x^2\) gives
+\[
+x^4+(E+1)x^2+Dx+F=0.
+\]
+The four corresponding positive \(x\)-coordinates would be the roots of this
+quartic, whose \(x^3\)-coefficient is zero; their sum would be zero, impossible.
+The scaling lemma then gives a good set.
+\end{proof}
+
+A useful but stronger subproblem is to find, for every \(n\), a nonzero rational
+number \(d\) such that
+\[
+1+m^2d^2\in\Qs
+\qquad (m=3,4,\ldots,2n-1).
+\]
+Then \(x_i=id\) would solve Question~\ref{q:missing-e}.  This stronger statement
+is currently only a candidate attack route; the quoted Chinese-remainder or
+Kemnitz-style construction is not verified in this note and is false as stated
+for the sample formula tested during audit.
+
+The hyperbola target \texttt{GAP-IDIST-HYPERBOLA-D} remains the next cleanest
+alternative: find rational numbers \(t_i>1\) with
+\[
+{(t_i t_j)}^2+1\in\Qs
+\]
+for all pairs.  The ellipse target \texttt{GAP-IDIST-ELLIPSE-B} offers more
+parameters, but its bookkeeping is less convenient for a first standalone
+attack.
+
+\end{document}
